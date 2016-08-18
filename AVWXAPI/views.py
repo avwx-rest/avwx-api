@@ -9,15 +9,14 @@ Routes and views for the flask application.
 #stdlib
 from datetime import datetime
 #library
-from flask import Flask, render_template, request, Response, jsonify
+from flask import render_template, request, Response, jsonify
 #module
+from AVWXAPI import app
 from .avwxhandling import handle_report
 from .dicttoxml import dicttoxml as fxml
 
-APP = Flask(__name__)
-
-@APP.route('/')
-@APP.route('/home')
+@app.route('/')
+@app.route('/home')
 def home():
     """Renders the home page
     """
@@ -27,14 +26,14 @@ def home():
         year=datetime.now().year,
     )
 
-@APP.route('/api')
+@app.route('/api')
 def no_report():
     """Returns no report msg
     """
     return jsonify({'Error': 'No report type given'})
 
-@APP.route('/api/metar')
-@APP.route('/api/taf')
+@app.route('/api/metar')
+@app.route('/api/taf')
 def no_station():
     """Returns no station msg
     """
@@ -89,7 +88,7 @@ def format_response(resp, frmt):
     else:
         return jsonify(resp)
 
-@APP.route('/api/<string:rtype>/<string:station>')
+@app.route('/api/<string:rtype>/<string:station>')
 def new_style_report(rtype: str, station: str):
     """Returns the report for a given type and station
     """
@@ -101,7 +100,7 @@ def new_style_report(rtype: str, station: str):
     resp = handle_report(rtype, station, options)
     return format_response(resp, data_format)
 
-@APP.route('/api/<string:rtype>.php')
+@app.route('/api/<string:rtype>.php')
 def old_style_report(rtype: str):
     """Handles the previous endpoint and data input
     """
