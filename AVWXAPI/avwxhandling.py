@@ -129,6 +129,8 @@ def handle_report(rtype: str, loc: [str], opts: [str]) -> {str: object}:
             rhash = get_metar_hash(station, report)
         else:
             rhash = get_taf_hash(station)
+        if 'Error' in rhash:
+            return rhash
         rhash[HASH_KEYS[0]] = datetime.utcnow()
         #Send the new hash to redis
         rserv.hmset(rkey, rhash)
