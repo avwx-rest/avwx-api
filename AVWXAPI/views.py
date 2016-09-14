@@ -6,10 +6,8 @@ Routes and views for the flask application.
 
 # pylint: disable=W0702
 
-#stdlib
-from datetime import datetime
 #library
-from flask import render_template, request, Response, jsonify
+from flask import request, Response, jsonify
 #module
 from AVWXAPI import app
 from .avwxhandling import handle_report
@@ -18,13 +16,19 @@ from .dicttoxml import dicttoxml as fxml
 @app.route('/')
 @app.route('/home')
 def home():
-    """Renders the home page
-    """
-    return render_template(
-        'index.html',
-        title='Home Page',
-        year=datetime.now().year,
-    )
+    return app.send_static_file('html/home.html')
+@app.route('/about')
+def about():
+    return app.send_static_file('html/about.html')
+@app.route('/contact')
+def contact():
+    return app.send_static_file('html/contact.html')
+@app.route('/documentation')
+def documentation():
+    return app.send_static_file('html/documentation.html')
+@app.route('/updates')
+def updates():
+    return app.send_static_file('html/updates.html')
 
 @app.route('/api')
 def no_report():

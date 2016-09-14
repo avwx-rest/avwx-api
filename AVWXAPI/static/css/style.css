@@ -1,0 +1,45 @@
+/*
+A custom Bootstrap 3.1 template
+from http://bootply.com
+
+This CSS code should follow the 'bootstrap.css'
+in your HTML file.
+
+license: MIT
+author: bootply.com
+
+Modded: Michael duPont
+*/
+
+.icon-bar {
+	background-color:#fff;
+}
+
+.navbar-trans {
+	background-color:#4f68ae;
+    color:#fff;
+}
+
+.navbar-trans li>a:hover,.navbar-trans li>a:focus,.navbar-trans li.active {
+	background-color:#4a71c2;
+}
+
+#nav-active {
+	background-color:#4a71c2;
+}
+
+.navbar-trans a{
+    color:#fefefe;
+}
+
+.navbar-trans .form-control:focus {
+	border-color: #eee;
+	outline: 0;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(100,100,100,0.6);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(100,100,100,0.6);
+}
+
+a.list-group-item.active,[class*='-info'] {
+	background-color: #168ccc;
+    color:#fff;
+}

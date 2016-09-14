@@ -112,7 +112,7 @@ def handle_report(rtype: str, loc: [str], opts: [str]) -> {str: object}:
         report = geodata['observation'] if rtype == 'metar' else None
     else:
         #Do things given only station
-        station = loc[0]
+        station = loc[0].upper()
         report = None
     #Create redis key from station name and report type
     dlevel = data_level(opts)
