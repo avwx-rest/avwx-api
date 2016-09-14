@@ -41,6 +41,10 @@ section h2, h4 {
     margin-right: -10px;
 }
 
+.alert {
+    background-color: #4a71c2
+}
+
 footer {
     margin-top: 12px;
     height: 8px;
