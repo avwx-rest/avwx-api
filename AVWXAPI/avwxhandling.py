@@ -29,7 +29,8 @@ COORD_URL = 'http://api.geonames.org/findNearByWeatherJSON?lat={}&lng={}&usernam
 HASH_KEYS = ('timestamp', 'standard', 'translate', 'summary')
 
 ERRORS = [
-    'Station Lookup Error: {} not found for {} ({})'
+    'Station Lookup Error: {} not found for {} ({})',
+    'Report Parsing Error: Could not parse {} report ({})'
 ]
 
 def get_data_for_corrds(lat: str, lon: str) -> {str: object}:
@@ -134,15 +135,41 @@ def handle_report(rtype: str, loc: [str], opts: [str]) -> {str: object}:
         rhash[HASH_KEYS[0]] = datetime.utcnow()
         #Send the new hash to redis
         rserv.hmset(rkey, rhash)
-        ret_dict = rhash[dlevel]
+        rdict = rhash[dlevel]
     else:
         #Decode the binary blob into a usable dictionary
-        ret_dict = literal_eval(rhash[dlevel].decode('ascii'))
+        rdict = literal_eval(rhash[dlevel].decode('ascii'))
     #Add station info if requested
     if 'info' in opts:
-        ret_dict['Info'] = getInfoForStation(station)
-    return ret_dict
+        rdict['Info'] = getInfoForStation(station)
+    return rdict
 
+def parse_given(rtype: str, report: str, opts: [str]):
+    """Attepts to parse a given report supplied by the user
+    """
+    try:
+        if rtype == 'metar':
+            rdict = parseMETAR(report)
+        else:
+            rdict = parseTAF(report)
+        if 'translate' in opts or 'summary' in opts:
+            if rtype == 'metar':
+                rdict['Translations'] = translateMETAR(rdict)
+                if 'summary' in opts:
+                    rdict['Summary'] = createMETARSummary(rdict['Translations'])
+            else:
+                trans = translateTAF(rdict)
+                rdict['Translations'] = trans
+                if 'summary' in opts:
+                    #Special handling for TAF summary response
+                    for i in range(len(trans['Forecast'])):
+                        rdict['Forecast'][i]['Summary'] = createTAFLineSummary(trans['Forecast'][i])
+        #Add station info if requested
+        if 'info' in opts:
+            rdict['Info'] = getInfoForStation(rdict['Station'])
+        return rdict
+    except Exception as exc:
+        return {'Error': ERRORS[1].format(rtype, exc)}
 
 #https://azure.microsoft.com/en-us/documentation/articles/cache-python-get-started/
 #https://redis-py.readthedocs.io/en/latest/#redis.StrictRedis.hmset

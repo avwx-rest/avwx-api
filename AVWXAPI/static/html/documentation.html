@@ -48,7 +48,7 @@
 <div class="nav-spacer"></div>
 
 <section class="container">
-    <h2>API Design</h2>
+    <h1>Station/Coord API</h1>
     <p class="alert alert-info" role="alert">https://avwx.rest/api/&lt;report type&gt;/&lt;station | lat,lon&gt;</p>
     <p><b>Note</b>: The url parameters shown in the METAR and TAF examples can also be placed in the request header instead.</p>
     <h4>Header/URL Parameters</h4>
@@ -76,6 +76,11 @@
     <p><b>translate</b> - Provides basic translations for most fields in the report. See below for the keys in each report.</p>
     <p>Reports include a key for 'Units' which contains the units associated with each measurement. Contains the following keys: Wind-Speed, Visibility, Altitude, Temperature, Altimeter</p>
     <p><b>summary</b> - Includes a translation summary string for METAR and TAF forecasts. Doesn't require calling translation</p>
+    <h1>Parsing API</h1>
+    <p class="alert alert-info" role="alert">https://avwx.rest/api/parse/&lt;report type&gt;</p>
+    <p>Attempts to parse a given METAR or TAF report using the AVWX engine. A "report" parameter must be supplied in either the url (with spaces replaced with "%20") or in the header as is.</p>
+    <p>All response keys, shared options, and response formats for the station/coord API are supported.</p>
+    <p>Example with URL parameter: <a href="https://avwx.rest/api/parse/metar?report=KJFK%20012251Z%2004012KT%2010SM%20OVC011%2016/13%20A3014&options=info,translate">https://avwx.rest/api/parse/metar?report=KJFK%20012251Z%2004012KT%2010SM%20OVC011%2016/13%20A3014&options=info,translate</a></p>
 </section>
 
 <footer>
