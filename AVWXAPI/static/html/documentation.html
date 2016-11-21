@@ -52,12 +52,12 @@
     <p class="alert alert-info" role="alert">https://avwx.rest/api/&lt;report type&gt;/&lt;station | lat,lon&gt;</p>
     <p><b>Note</b>: The url parameters shown in the METAR and TAF examples can also be placed in the request header instead.</p>
     <h4>Header/URL Parameters</h4>
-    <p><b>format</b>: JSON (default) or XML</p>
+    <p><b>format</b>: JSON (default), XML, or YAML</p>
     <p><b>options</b>: info, translate, summary (details below)</p>
     <h2>METAR</h2>
     <p>METAR reports are surface observations for a particular airfield or other station location. There are two standard formats: International and North American. The parser works with both, but it is up to the developer to do the correct interpretation of the data. Use the 'Units' key for labling and conversions.</p>
     <p>The METAR API can be called using the station's ICAO or coordinates (lat,lon), in which case the API will return the station nearest to those coordinates. Additionally, the call can include the desired format and will return JSON if none is given.</p>
-    <p>Returns a JSON or XML document with the following keys: Station, Time, Flight-Rules, Wind-Direction, Wind-Speed, Wind-Gust, Wind-Variable-Dir, Visibility, Runway-Visibility, Altimeter, Temperature, Dewpoint, Cloud-List, Other-List, Remarks, Raw-Report, Units</p>
+    <p>Returns a JSON, XML, or YAML document with the following keys: Station, Time, Flight-Rules, Wind-Direction, Wind-Speed, Wind-Gust, Wind-Variable-Dir, Visibility, Runway-Visibility, Altimeter, Temperature, Dewpoint, Cloud-List, Other-List, Remarks, Raw-Report, Units</p>
     <p>Translations with the following keys: Wind, Visibility, Clouds, Temperature, Dewpoint, Altimeter, Other</p>
     <p><a href="/static/examples/exampleMetar.xml">Ficticious METAR XML with all fields present</a></p>
     <p>Look-up by ICAO with JSON format: <a href="/api/metar/KJFK">http://avwx.rest/api/metar/KJFK</a></p>
@@ -65,7 +65,7 @@
     <h2>TAF</h2>
     <p>TAF reports are atmospheric conditions for an area within five nautical miles of a particular airfield or other station location. Unlike METAR which only has two standard formats, TAF reports vary considderably more based on their geography. For example, Oceania TAF reports include two unique keys: Temp-List and Alt-List.</p>
     <p>Like METAR, you can look-up TAF data by station ICAO or coordinates. Format option also exists.</p>
-    <p>Returns a JSON or XML document with the following keys: Station, Time, Forecast, Remarks, Min-Temp, Max-Temp, Units [, Temp-List, Alt-List (Oceania only)]</p>
+    <p>Returns a JSON, XML, or YAML document with the following keys: Station, Time, Forecast, Remarks, Min-Temp, Max-Temp, Units [, Temp-List, Alt-List (Oceania only)]</p>
     <p>Forecast is a list of forecasts in the TAF report with the following keys: Type , Start-Time, End-Time, Wind-Direction, Wind-Speed, Wind-Gust, Wind-Shear, Visibility, Altimeter, Cloud-List, Icing-List, Turb-List, Other-List, Probability, Raw-Line</p>
     <p>Translations with the following keys: Forecast, Min-Temp, Max-Temp. Forecast keys: Flight-Rules, Wind, Visibility, Clouds, Altimeter, Wind-Shear, Turbulance, Icing, Other</p>
     <p><a href="/static/examples/exampleTaf.xml">Ficticious TAF XML with all fields present</a></p>

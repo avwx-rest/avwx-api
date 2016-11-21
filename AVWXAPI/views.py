@@ -6,6 +6,8 @@ Routes and views for the flask application.
 
 # pylint: disable=W0702
 
+#stdlib
+import yaml
 #library
 from flask import request, Response, jsonify
 #module
@@ -92,7 +94,7 @@ def check_for_errors(rtype: str, sid: [str], dfrm: str, opts: [str], ignore_stat
             return 'Not a valid station input: {}'.format(sid)
         if len(sid) == 2 and len([s for s in sid if is_num(s)]) != 2:
             return 'Not a valid coordinate pair: {}'.format(sid)
-    if dfrm not in ['json', 'xml']:
+    if dfrm not in ['json', 'xml', 'yaml']:
         return 'Not a valid data return format: {}'.format(dfrm)
     bad_opts = [s for s in opts if s not in ('info', 'summary', 'translate')]
     if bad_opts:
@@ -105,6 +107,8 @@ def format_response(resp, frmt):
     """
     if frmt == 'xml':
         return Response(fxml(resp, custom_root='METAR'), mimetype='text/xml')
+    elif frmt == 'yaml':
+        return yaml.dump(resp, default_flow_style=False)
     else:
         return jsonify(resp)
 
