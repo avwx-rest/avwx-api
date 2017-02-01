@@ -6,9 +6,8 @@ Routes and views for the flask application.
 
 # pylint: disable=W0702
 
-#stdlib
-import yaml
 #library
+import yaml
 from flask import request, Response, jsonify
 #module
 from AVWXAPI import app
@@ -158,3 +157,28 @@ def given_report(rtype: str):
         return jsonify({'Error': error})
     resp = parse_given(rtype, report, options)
     return format_response(resp, data_format)
+
+##-------------------------------------------------------##
+# AI Service Endpoints
+
+RTYPE_MAP = {
+    'fetch_metar': 'metar',
+    'fetch_taf': 'taf'
+}
+
+@app.route('/api/apiai', methods=['POST'])
+def api_ai_report():
+    """Endpoint servicing api.ai service for Slack, FBM, Google Assistant/Home
+    """
+    req_body = request.get_json()
+    rtype = RTYPE_MAP[req_body['result']['action']]
+    station = req_body['result']['parameters']['airport']['ICAO']
+    wxret = handle_report(rtype, station, ['summary'])
+    resp = {
+        'speech': wxret['Summary'],
+        'displayText': wxret['Summary'],
+        'data': wxret,
+        'contextOut': [],
+        'source': 'avwx.rest'
+    }
+    return jsonify(resp)
