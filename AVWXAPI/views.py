@@ -183,8 +183,9 @@ def api_ai_report():
     rtype = RTYPE_MAP[action]
     station = req_body['result']['parameters']['airport']['ICAO']
     wxret = handle_report(rtype, [station], ['speech'])
+    name = req_body['result']['parameters']['airport']['name']
     resp = {
-        'speech': wxret['Speech'],
+        'speech': 'Conditions at ' + name + '. ' + wxret['Speech'],
         'displayText': wxret['Summary'],
         'data': wxret,
         'contextOut': [],
