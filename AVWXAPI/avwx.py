@@ -35,12 +35,11 @@
 # You can run this test code by running this file: python avwx.py
 
 import sqlite3 , json , sys
-if sys.version_info[0] == 2: import urllib2
-elif sys.version_info[0] == 3: from urllib.request import urlopen
 from itertools import permutations
 from time import strftime
 from copy import copy
 from os import path
+from requests import get
 from .xmltodict import parse
 
 ##--Logic Vars

@@ -22,11 +22,11 @@ import redis
 from requests import get
 #module
 from .avwx import getMETAR, getTAF, parseMETAR, parseTAF, translateMETAR, translateTAF, \
-                  createMETARSummary, createTAFLineSummary, getInfoForStation
+                  createMETARSummary, createTAFLineSummary, createMETARSpeech, getInfoForStation
 from .credentials import GN_USER, REDIS_CRED
 
 COORD_URL = 'http://api.geonames.org/findNearByWeatherJSON?lat={}&lng={}&username=' + GN_USER
-HASH_KEYS = ('timestamp', 'standard', 'translate', 'summary')
+HASH_KEYS = ('timestamp', 'standard', 'translate', 'summary', 'speech')
 
 ERRORS = [
     'Station Lookup Error: {} not found for {} ({})',
@@ -49,9 +49,9 @@ def get_data_for_corrds(lat: str, lon: str) -> {str: object}:
         return {'Error':'Coord Lookup Error: Unknown Error (0) / ' + str(exc)}
 
 def data_level(opts: [str]):
-    """Returns data level key depending on values in options
+    """Returns data level key depending on values in options (descending order)
     """
-    for key in HASH_KEYS[1:]:
+    for key in HASH_KEYS[:1:-1]:
         if key in opts:
             return key
     return HASH_KEYS[1]
@@ -74,7 +74,10 @@ def get_metar_hash(station: str, report: str) -> {str: object}:
     ret_hash[HASH_KEYS[2]] = deepcopy(parse_state)
     #Summary response
     parse_state['Summary'] = createMETARSummary(parse_state['Translations'])
-    ret_hash[HASH_KEYS[3]] = parse_state
+    ret_hash[HASH_KEYS[3]] = deepcopy(parse_state)
+    #Speech response
+    parse_state['Speech'] = createMETARSpeech(parse_state)
+    ret_hash[HASH_KEYS[4]] = parse_state
     return ret_hash
 
 def get_taf_hash(station: str) -> {str: object}:
@@ -157,6 +160,8 @@ def parse_given(rtype: str, report: str, opts: [str]):
                 rdict['Translations'] = translateMETAR(rdict)
                 if 'summary' in opts:
                     rdict['Summary'] = createMETARSummary(rdict['Translations'])
+                if 'speech' in opts:
+                    rdict['Speech'] = createMETARSpeech(rdict)
             else:
                 trans = translateTAF(rdict)
                 rdict['Translations'] = trans

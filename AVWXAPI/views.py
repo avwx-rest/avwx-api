@@ -95,7 +95,7 @@ def check_for_errors(rtype: str, sid: [str], dfrm: str, opts: [str], ignore_stat
             return 'Not a valid coordinate pair: {}'.format(sid)
     if dfrm not in ['json', 'xml', 'yaml']:
         return 'Not a valid data return format: {}'.format(dfrm)
-    bad_opts = [s for s in opts if s not in ('info', 'summary', 'translate')]
+    bad_opts = [s for s in opts if s not in ('info', 'speech', 'summary', 'translate')]
     if bad_opts:
         return 'One or more invalid options were given: {}'.format(bad_opts)
 
@@ -162,8 +162,8 @@ def given_report(rtype: str):
 # AI Service Endpoints
 
 RTYPE_MAP = {
-    'fetch_metar': 'metar',
-    'fetch_taf': 'taf'
+    'fetch_metar': 'metar'#,
+    #'fetch_taf': 'taf'
 }
 
 @app.route('/api/apiai', methods=['POST'])
@@ -171,11 +171,20 @@ def api_ai_report():
     """Endpoint servicing api.ai service for Slack, FBM, Google Assistant/Home
     """
     req_body = request.get_json()
-    rtype = RTYPE_MAP[req_body['result']['action']]
+    action = req_body['result']['action']
+    if action not in RTYPE_MAP:
+        return {
+            'speech': 'This action is not yet supported',
+            'displayText': 'This action is not yet supported',
+            'data': {},
+            'contextOut': [],
+            'source': 'avwx.rest'
+        }
+    rtype = RTYPE_MAP[action]
     station = req_body['result']['parameters']['airport']['ICAO']
-    wxret = handle_report(rtype, station, ['summary'])
+    wxret = handle_report(rtype, station, ['speech'])
     resp = {
-        'speech': wxret['Summary'],
+        'speech': wxret['Speech'],
         'displayText': wxret['Summary'],
         'data': wxret,
         'contextOut': [],
