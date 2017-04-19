@@ -191,7 +191,7 @@ def api_ai_report():
         resp['data'] = wxret
     return jsonify(resp)
 
-@app.route('api/alexa', methods=['POST'])
+@app.route('/api/alexa', methods=['POST'])
 def alexa_report():
     """Endpoint servicing Amazon Alexa skills
     """
