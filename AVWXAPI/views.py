@@ -162,33 +162,48 @@ def given_report(rtype: str):
 # AI Service Endpoints
 
 RTYPE_MAP = {
-    'fetch_metar': 'metar'#,
-    #'fetch_taf': 'taf'
+    'fetch_metar': 'metar',
+    'GetMETAR': 'metar'#,
+    #'fetch_taf': 'taf',
+    #'GetTAF': 'taf'
 }
 
 @app.route('/api/apiai', methods=['POST'])
 def api_ai_report():
     """Endpoint servicing api.ai service for Slack, FBM, Google Assistant/Home
     """
+    resp = {'speech': '', 'displayText': '', 'data': {}, 'contextOut': [], 'source': 'avwx.rest'}
     req_body = request.get_json()
     action = req_body['result']['action']
     if action not in RTYPE_MAP:
-        return {
-            'speech': 'This action is not yet supported',
-            'displayText': 'This action is not yet supported',
-            'data': {},
-            'contextOut': [],
-            'source': 'avwx.rest'
-        }
-    rtype = RTYPE_MAP[action]
-    station = req_body['result']['parameters']['airport']['ICAO']
-    wxret = handle_report(rtype, [station], ['speech'])
-    name = req_body['result']['parameters']['airport']['name']
-    resp = {
-        'speech': 'Conditions at ' + name + '. ' + wxret['Speech'],
-        'displayText': wxret['Summary'],
-        'data': wxret,
-        'contextOut': [],
-        'source': 'avwx.rest'
-    }
+        resp['speech'] = 'This action is not yet supported'
+        resp['displayText'] = 'This action is not yet supported'
+    else:
+        rtype = RTYPE_MAP[action]
+        station = req_body['result']['parameters']['airport']['ICAO']
+        wxret = handle_report(rtype, [station], ['speech'])
+        name = req_body['result']['parameters']['airport']['name']
+        resp['speech'] = 'Conditions at ' + name + '. ' + wxret['Speech']
+        resp['displayText'] = wxret['Summary']
+        resp['data'] = wxret
+    return jsonify(resp)
+
+@app.route('api/alexa', methods=['POST'])
+def alexa_report():
+    """Endpoint servicing Amazon Alexa skills
+    """
+    resp = {'version': '0.1', 'response': {
+            'outputSpeech': {'type': 'SSML', 'ssml': ''},
+            'card': {'content': '', 'title': '', 'type': 'Simple'},
+            'shouldEndSession': True}, 'sessionAttributes': {}}
+    
+    req_body = request.get_json()
+    intent = req_body['request']['intent']
+    action = intent['name']
+    if action not in RTYPE_MAP:
+        resp['response']['outputSpeech']['ssml'] = '<speak>This action is not yet supported</speak>'
+        resp['response']
+    else:
+        rtype = RTYPE_MAP[action]
+        airport = intent['slots']['airport']['value']
     return jsonify(resp)
