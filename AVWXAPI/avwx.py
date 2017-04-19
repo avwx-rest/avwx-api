@@ -74,6 +74,10 @@ requestURL = """https://aviationweather.gov/adds/dataserver_current/httpparam?da
 ####################################################################################################################################
 ##--Shared Functions
 
+#Returns True if val contains only '/' characters
+def isUnknown(val):
+	return val == '/'*len(val)
+
 #Returns the index of the earliest occurence of an item from a list in a string
 def findFirstInList(txt,aList):
 	startIndex = len(txt)+1
@@ -433,7 +437,7 @@ def __getClouds(wxData):
 #Note: Common practice is to report IFR if visibility unavailable
 def getFlightRules(vis , splitCloud):
 	#Parse visibility
-	if vis == '': return 2
+	if vis == '' or isUnknown(vis): return 2
 	elif vis == 'P6': vis = 10
 	elif vis.find('/') != -1:
 		if vis[0] == 'M': vis = 0
@@ -837,7 +841,7 @@ def translateWind(wDir , wSpd , wGst , wVar=[] , unit='kt', cardinals=True):
 def translateVisibility(vis , unit='m'):
 	if vis == 'P6': return 'Greater than 6sm ( >9999m )'
 	if vis == 'M1/4': return 'Less than .25sm ( <0400m )'
-	if vis.find('/') != -1: vis = float(vis[:vis.find('/')]) / int(vis[vis.find('/')+1:])
+	if vis.find('/') != -1 and not isUnknown(vis): vis = float(vis[:vis.find('/')]) / int(vis[vis.find('/')+1:])
 	try: float(vis)
 	except ValueError: return ''
 	if unit == 'm':
@@ -1072,11 +1076,12 @@ def removeLeadingZeros(num):
 
 def speakWind(wDir , wSpd , wGst , wVar=[] , unit='kt'):
 	if unit in spokenUnits: unit = spokenUnits[unit]
-	if wDir != '000': wDir = speakNumbers(wDir)
+	if wDir not in ('000', 'VRB'): wDir = speakNumbers(wDir)
 	for i, val in enumerate(wVar): wVar[i] = speakNumbers(val)
 	return 'Winds ' + translateWind(wDir , removeLeadingZeros(wSpd) , removeLeadingZeros(wGst) , wVar , unit, cardinals=False)
 
 def speakTemperature(header, temp, unit='C'):
+	if isUnknown(temp): return 'Temperature Unknown'
 	if unit in spokenUnits: unit = spokenUnits[unit]
 	temp = speakNumbers(removeLeadingZeros(temp))
 	useS = '' if temp in ('one', 'minus one') else 's'
@@ -1092,7 +1097,8 @@ def unpackFraction(num):
 		return num
 
 def speakVisibility(vis, unit='m'):
-	if vis.startswith('M'):
+	if isUnknown(vis): return 'Visibility Unknown'
+	elif vis.startswith('M'):
 		vis = 'less than ' + speakNumbers(removeLeadingZeros(vis[1:]))
 	elif vis.startswith('P'):
 		vis = 'greater than ' + speakNumbers(removeLeadingZeros(vis[1:]))
@@ -1113,7 +1119,8 @@ def speakVisibility(vis, unit='m'):
 
 def speakAltimeter(alt, unit='inHg'):
 	ret = 'Altimeter '
-	if unit == 'inHg': ret += speakNumbers(alt[:2]) + ' point ' + speakNumbers(alt[2:])
+	if isUnknown(alt): ret += 'Unknown'
+	elif unit == 'inHg': ret += speakNumbers(alt[:2]) + ' point ' + speakNumbers(alt[2:])
 	elif unit == 'hPa': ret += speakNumbers(alt)
 	return ret
 

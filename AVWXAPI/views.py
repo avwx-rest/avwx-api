@@ -195,11 +195,13 @@ def api_ai_report():
 def alexa_report():
     """Endpoint servicing Amazon Alexa skills
     """
-    resp = {'version': '0.1', 'response': {
-            'outputSpeech': {'type': 'SSML', 'ssml': ''},
-            'card': {'content': '', 'title': '', 'type': 'Simple'},
-            'shouldEndSession': True}, 'sessionAttributes': {}}
-    
+    resp = {'version': '0.1',
+            'response': {
+                'outputSpeech': {'type': 'SSML', 'ssml': ''},
+                'card': {'content': '', 'title': '', 'type': 'Simple'},
+                'shouldEndSession': True},
+            'sessionAttributes': {}}
+
     req_body = request.get_json()
     intent = req_body['request']['intent']
     action = intent['name']
