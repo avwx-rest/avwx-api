@@ -588,7 +588,7 @@ def getTAF(station):
 	except:
 		return 0
 		
-#getMETAR2 scrapes the report from html
+#getTAF2 scrapes the report from html
 def getTAF2(station):
 	try:
 		url = 'http://www.aviationweather.gov/taf/data?ids=' + station + '&format=raw&submit=Get+TAF+data'
