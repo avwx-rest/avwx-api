@@ -53,7 +53,7 @@
     <p><b>Note</b>: The url parameters shown in the METAR and TAF examples can also be placed in the request header instead.</p>
     <h4>Header/URL Parameters</h4>
     <p><b>format</b>: JSON (default), XML, or YAML</p>
-    <p><b>options</b>: info, translate, summary (details below)</p>
+    <p><b>options</b>: info, translate, summary, speech (METAR only for now)</p>
     <h2>METAR</h2>
     <p>METAR reports are surface observations for a particular airfield or other station location. There are two standard formats: International and North American. The parser works with both, but it is up to the developer to do the correct interpretation of the data. Use the 'Units' key for labling and conversions.</p>
     <p>The METAR API can be called using the station's ICAO or coordinates (lat,lon), in which case the API will return the station nearest to those coordinates. Additionally, the call can include the desired format and will return JSON if none is given.</p>
@@ -61,7 +61,7 @@
     <p>Translations with the following keys: Wind, Visibility, Clouds, Temperature, Dewpoint, Altimeter, Other</p>
     <p><a href="/static/examples/exampleMetar.xml">Ficticious METAR XML with all fields present</a></p>
     <p>Look-up by ICAO with JSON format: <a href="/api/metar/KJFK">http://avwx.rest/api/metar/KJFK</a></p>
-    <p>Look-up by coordinates with info and translate options: <a href="/api/metar/51.47,-0.4?options=info,translate">http://avwx.rest/api/metar/51.47,-0.4?options=info,translate</a></p>
+    <p>Look-up by coordinates with info and speech options: <a href="/api/metar/51.47,-0.4?options=info,speech">http://avwx.rest/api/metar/51.47,-0.4?options=info,speech</a></p>
     <h2>TAF</h2>
     <p>TAF reports are atmospheric conditions for an area within five nautical miles of a particular airfield or other station location. Unlike METAR which only has two standard formats, TAF reports vary considderably more based on their geography. For example, Oceania TAF reports include two unique keys: Temp-List and Alt-List.</p>
     <p>Like METAR, you can look-up TAF data by station ICAO or coordinates. Format option also exists.</p>
@@ -70,12 +70,14 @@
     <p>Translations with the following keys: Forecast, Min-Temp, Max-Temp. Forecast keys: Flight-Rules, Wind, Visibility, Clouds, Altimeter, Wind-Shear, Turbulance, Icing, Other</p>
     <p><a href="/static/examples/exampleTaf.xml">Ficticious TAF XML with all fields present</a></p>
     <p>Look-up by ICAO: <a href="/api/taf/KJFK?options=summary">http://avwx.rest/api/taf/KJFK?options=summary</a></p>
-    <p>Look-up by coordinates with JSON format: <a href="/api/taf/51.47,-0.4?format=XML">http://avwx.rest/api/taf/51.47,-0.4?format=XML</a></p>
+    <p>Look-up by coordinates in XML format: <a href="/api/taf/51.47,-0.4?format=XML">http://avwx.rest/api/taf/51.47,-0.4?format=XML</a></p>
 	<h2>Shared Options</h2>
     <p><b>info</b> - Provides basic info for the requested station along with the report. Info is sourced and cross-referenced from several databases. Contains the following keys: ICAO, IATA, Country, State, City, Name, Elevation (meters), Latitude, Longitude, Priority (mapping zoom)</p>
     <p><b>translate</b> - Provides basic translations for most fields in the report. See below for the keys in each report.</p>
+    <p><b>summary</b> - Includes a translation summary string for METAR and TAF forecasts.</p>
+    <p><b>speech</b> - Adds a version of the summary string designed to be spoken by a voice assistant (currently available for METAR only).</p>
+    <p>The translate, summary, and speech options are cumulative. Calling summary will also include the translations, and calling speech includes all three.</p>
     <p>Reports include a key for 'Units' which contains the units associated with each measurement. Contains the following keys: Wind-Speed, Visibility, Altitude, Temperature, Altimeter</p>
-    <p><b>summary</b> - Includes a translation summary string for METAR and TAF forecasts. Doesn't require calling translation</p>
     <h1>Parsing API</h1>
     <p class="alert alert-info" role="alert">https://avwx.rest/api/parse/&lt;report type&gt;</p>
     <p>Attempts to parse a given METAR or TAF report using the AVWX engine. A "report" parameter must be supplied in either the url (with spaces replaced with "%20") or in the header as is.</p>
