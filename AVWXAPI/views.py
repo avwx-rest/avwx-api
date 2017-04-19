@@ -117,6 +117,7 @@ def format_response(resp, frmt):
 def new_style_report(rtype: str, station: str):
     """Returns the report for a given type and station
     """
+    rtype = rtype.lower()
     station = station.split(',')
     options, data_format = get_settings()
     error = check_for_errors(rtype, station, data_format, options)
@@ -129,6 +130,7 @@ def new_style_report(rtype: str, station: str):
 def old_style_report(rtype: str):
     """Handles the previous endpoint and data input
     """
+    rtype = rtype.lower()
     #Get the station or coordinates
     station = get_req_value('station')
     if not station:
@@ -147,6 +149,7 @@ def old_style_report(rtype: str):
 def given_report(rtype: str):
     """Returns the attmpted parse of a user-supplied report
     """
+    rtype = rtype.lower()
     report = get_req_value('report')
     if not report:
         return jsonify({'Error': 'No report string given'})
