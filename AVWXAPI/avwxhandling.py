@@ -14,15 +14,14 @@ GN_USER = 'geonames_username'
 # pylint: disable=E1101,W0703
 
 #stdlib
-from ast import literal_eval
 from copy import deepcopy
 from datetime import datetime, timedelta
+from ast import literal_eval
 #library
 import redis
 from requests import get
 #module
-from .avwx import getMETAR, getTAF, parseMETAR, parseTAF, translateMETAR, translateTAF, \
-                  createMETARSummary, createTAFLineSummary, createMETARSpeech, getInfoForStation
+import avwx
 from .credentials import GN_USER, REDIS_CRED
 
 COORD_URL = 'http://api.geonames.org/findNearByWeatherJSON?lat={}&lng={}&username=' + GN_USER
@@ -61,22 +60,28 @@ def get_metar_hash(station: str, report: str) -> {str: object}:
     We can skip fetching the report if geonames already returned it
     """
     ret_hash = {}
+    metar = avwx.Metar(station)
     #Fetch report if one wasn't received via geonames
     if not report:
-        report = getMETAR(station)
-    if isinstance(report, int):
-        return {'Error': ERRORS[0].format('METAR', station, report)}
+        try:
+            metar.update()
+        except avwx.exceptions.InvalidRequest as exc:
+            return {'Error': ERRORS[0].format('METAR', station, exc)}
+        except Exception as exc:
+            return {'Error': ERRORS[0].format('METAR', station, exc)}
+    else:
+        metar.update(report)
     #Standard response
-    parse_state = parseMETAR(report.strip())
+    parse_state = metar.data
     ret_hash[HASH_KEYS[1]] = deepcopy(parse_state)
     #Translate response
-    parse_state['Translations'] = translateMETAR(parse_state)
+    parse_state['Translations'] = metar.translations
     ret_hash[HASH_KEYS[2]] = deepcopy(parse_state)
     #Summary response
-    parse_state['Summary'] = createMETARSummary(parse_state['Translations'])
+    parse_state['Summary'] = metar.summary
     ret_hash[HASH_KEYS[3]] = deepcopy(parse_state)
     #Speech response
-    parse_state['Speech'] = createMETARSpeech(parse_state)
+    parse_state['Speech'] = metar.speech
     ret_hash[HASH_KEYS[4]] = parse_state
     return ret_hash
 
@@ -84,20 +89,24 @@ def get_taf_hash(station: str) -> {str: object}:
     """Get the full TAF hash for a given station
     """
     ret_hash = {}
+    taf = avwx.Taf(station)
     #Fetch new report
-    report = getTAF(station)
-    if isinstance(report, int):
-        return {'Error': ERRORS[0].format('TAF', station, report)}
+    try:
+        taf.update()
+    except avwx.exceptions.InvalidRequest as exc:
+        return {'Error': ERRORS[0].format('TAF', station, exc)}
+    except Exception as exc:
+        return {'Error': ERRORS[0].format('TAF', station, exc)}
     #Standard response
-    parse_state = parseTAF(report.strip())
+    parse_state = taf.data
     ret_hash[HASH_KEYS[1]] = deepcopy(parse_state)
     #Translate response
-    trans = translateTAF(parse_state)
-    parse_state['Translations'] = trans
+    parse_state['Translations'] = taf.translations
     ret_hash[HASH_KEYS[2]] = deepcopy(parse_state)
     #Special handling for TAF summary response
-    for i in range(len(trans['Forecast'])):
-        parse_state['Forecast'][i]['Summary'] = createTAFLineSummary(trans['Forecast'][i])
+    for i, forecast in enumerate(taf.translations['Forecast']):
+        print(i, forecast)
+        parse_state['Forecast'][i]['Summary'] = avwx.summary.taf(forecast)
     ret_hash[HASH_KEYS[3]] = parse_state
     return ret_hash
 
@@ -144,35 +153,37 @@ def handle_report(rtype: str, loc: [str], opts: [str]) -> {str: object}:
         rdict = literal_eval(rhash[dlevel].decode('ascii'))
     #Add station info if requested
     if 'info' in opts:
-        rdict['Info'] = getInfoForStation(station)
+        rdict['Info'] = avwx.Report(station).station_info
     return rdict
 
 def parse_given(rtype: str, report: str, opts: [str]):
     """Attepts to parse a given report supplied by the user
     """
+    if len(report) < 4:
+        return {'Error': 'Could not find station at beginning of report'}
+    station = report[:4]
     try:
-        if rtype == 'metar':
-            rdict = parseMETAR(report)
-        else:
-            rdict = parseTAF(report)
+        ureport = avwx.Metar(station) if rtype == 'metar' else avwx.Taf(station)
+        ureport.update(report)
+        rdict = ureport.data
         if 'translate' in opts or 'summary' in opts:
+            rdict['Translations'] = ureport.translations
             if rtype == 'metar':
-                rdict['Translations'] = translateMETAR(rdict)
                 if 'summary' in opts:
-                    rdict['Summary'] = createMETARSummary(rdict['Translations'])
+                    rdict['Summary'] = ureport.summary
                 if 'speech' in opts:
-                    rdict['Speech'] = createMETARSpeech(rdict)
+                    rdict['Speech'] = ureport.speech
             else:
-                trans = translateTAF(rdict)
-                rdict['Translations'] = trans
                 if 'summary' in opts:
                     #Special handling for TAF summary response
-                    for i in range(len(trans['Forecast'])):
-                        rdict['Forecast'][i]['Summary'] = createTAFLineSummary(trans['Forecast'][i])
+                    for i, forecast in enumerate(ureport.translations['Forecast']):
+                        rdict['Forecast'][i]['Summary'] = avwx.summary.taf(forecast)
         #Add station info if requested
         if 'info' in opts:
-            rdict['Info'] = getInfoForStation(rdict['Station'])
+            rdict['Info'] = ureport.station_info
         return rdict
+    except avwx.exceptions.BadStation as exc:
+        return {'Error': ERRORS[0].format(rtype, exc)}
     except Exception as exc:
         return {'Error': ERRORS[1].format(rtype, exc)}
 

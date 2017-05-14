@@ -1,3 +1,4 @@
+avwx-engine>=0.9.1
 flask>=0.12
 requests>=2.10
 redis>=2.10.5
