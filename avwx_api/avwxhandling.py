@@ -6,7 +6,8 @@ Data handling between inputs, redis, and avwx function library
 Requires credentials.py
 REDIS_CRED = {
     'host': 'redis_host_url',
-    'password': 'redis_pw'
+    'password': 'redis_pw',
+    'port': 6380
 }
 GN_USER = 'geonames_username'
 """
@@ -18,11 +19,11 @@ from copy import deepcopy
 from datetime import datetime, timedelta
 from ast import literal_eval
 #library
+import avwx
 import redis
 from requests import get
 #module
-import avwx
-from .credentials import GN_USER, REDIS_CRED
+from avwx_api.credentials import GN_USER, REDIS_CRED
 
 COORD_URL = 'http://api.geonames.org/findNearByWeatherJSON?lat={}&lng={}&username=' + GN_USER
 HASH_KEYS = ('timestamp', 'standard', 'translate', 'summary', 'speech')
@@ -131,7 +132,7 @@ def handle_report(rtype: str, loc: [str], opts: [str]) -> {str: object}:
     dlevel = data_level(opts)
     rkey = '{}-{}'.format(station, rtype)
     #Fetch hash from redis cache
-    rserv = redis.StrictRedis(host=REDIS_CRED['host'], port=6380, db=0,
+    rserv = redis.StrictRedis(host=REDIS_CRED['host'], port=REDIS_CRED['port'], db=0,
                               password=REDIS_CRED['password'], ssl=True)
     rhash = dict(zip(HASH_KEYS, rserv.hmget(rkey, HASH_KEYS)))
     rhdt = rhash[HASH_KEYS[0]]

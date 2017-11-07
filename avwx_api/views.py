@@ -8,11 +8,11 @@ Routes and views for the flask application.
 
 #library
 import yaml
+from dicttoxml import dicttoxml as fxml
 from flask import request, Response, jsonify
 #module
-from AVWXAPI import app
-from .avwxhandling import handle_report, parse_given
-from .dicttoxml import dicttoxml as fxml
+from avwx_api import app
+from avwx_api.avwxhandling import handle_report, parse_given
 
 ##-------------------------------------------------------##
 # Static Web Pages
@@ -207,7 +207,6 @@ def alexa_report():
     action = intent['name']
     if action not in RTYPE_MAP:
         resp['response']['outputSpeech']['ssml'] = '<speak>This action is not yet supported</speak>'
-        resp['response']
     else:
         rtype = RTYPE_MAP[action]
         airport = intent['slots']['airport']['value']

@@ -5,7 +5,7 @@ This script runs the AVWX application using a development server.
 """
 
 from os import environ
-from AVWXAPI import app
+from avwx_api import app
 
 if __name__ == '__main__':
     HOST = environ.get('SERVER_HOST', 'localhost')

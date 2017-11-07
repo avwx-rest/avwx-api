@@ -1,4 +1,5 @@
 from flask import Flask
+
 app = Flask(__name__)
 
-import AVWXAPI.views
+import avwx_api.views
