@@ -1,7 +1,6 @@
-#!/usr/bin/python3
-
 """
-Routes and views for the flask application.
+Michael duPont - michael@mdupont.com
+avwx_api.views - Routes and views for the flask application
 """
 
 # pylint: disable=W0702
@@ -12,7 +11,7 @@ from dicttoxml import dicttoxml as fxml
 from flask import request, Response, jsonify
 #module
 from avwx_api import app
-from avwx_api.avwxhandling import handle_report, parse_given
+from avwx_api.handling import handle_report, parse_given
 
 ##-------------------------------------------------------##
 # Static Web Pages

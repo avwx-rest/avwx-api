@@ -76,7 +76,6 @@
     <p><b>translate</b> - Provides basic translations for most fields in the report. See below for the keys in each report.</p>
     <p><b>summary</b> - Includes a translation summary string for METAR and TAF forecasts.</p>
     <p><b>speech</b> - Adds a version of the summary string designed to be spoken by a voice assistant (currently available for METAR only).</p>
-    <p>The translate, summary, and speech options are cumulative. Calling summary will also include the translations, and calling speech includes all three.</p>
     <p>Reports include a key for 'Units' which contains the units associated with each measurement. Contains the following keys: Wind-Speed, Visibility, Altitude, Temperature, Altimeter</p>
     <h1>Parsing API</h1>
     <p class="alert alert-info" role="alert">https://avwx.rest/api/parse/&lt;report type&gt;</p>
@@ -84,9 +83,6 @@
     <p>All response keys, shared options, and response formats for the station/coord API are supported.</p>
     <p>Example with URL parameter: <a href="https://avwx.rest/api/parse/metar?report=KJFK%20012251Z%2004012KT%2010SM%20OVC011%2016/13%20A3014&options=info,translate">https://avwx.rest/api/parse/metar?report=KJFK%20012251Z%2004012KT%2010SM%20OVC011%2016/13%20A3014&options=info,translate</a></p>
 </section>
-
-<footer>
-</footer>
 
 </body>
 
