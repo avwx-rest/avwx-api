@@ -1,0 +1,23 @@
+# Start from the official Python 3.6 container
+FROM python:3.6.2
+
+# Expose the default Flask port
+EXPOSE 80
+
+# Set the main working directory
+WORKDIR /home/avwx
+
+# Set the service credentials as environment variables
+ENV MONGO_URI='mongodb://cache:password==@loc.test.com:12345'
+ENV GN_USER='geonames-username'
+
+# Install the require Python packages
+COPY requirements.txt /home/avwx/requirements.txt
+RUN pip install -Ur requirements.txt
+
+# Copy the application code
+COPY runserver.py /home/avwx/runserver.py
+COPY avwx_api /home/avwx/avwx_api
+
+# Run the application
+CMD ["python", "runserver.py"]

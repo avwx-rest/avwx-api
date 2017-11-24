@@ -5,12 +5,15 @@ avwx_api.handling - Data handling between inputs, cache, and avwx
 
 # pylint: disable=E1101,W0703
 
-#library
+# stdlib
+from os import environ
+# library
 import avwx
 from requests import get
-#module
+# module
 from avwx_api.cache import Cache
-from avwx_api.credentials import GN_USER
+
+GN_USER = environ['GN_USER']
 
 CACHE = Cache()
 

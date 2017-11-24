@@ -5,10 +5,11 @@ avwx_api.cache - Class for communicating with the report cache
 
 # stdlib
 from datetime import datetime, timedelta
+from os import environ
 # library
 import pymongo
-# module
-from avwx_api.credentials import MONGO_URI
+
+MONGO_URI = environ['MONGO_URI']
 
 class Cache(object):
     """Controls connections with the MongoDB-compatible document cache"""
