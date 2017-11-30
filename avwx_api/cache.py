@@ -21,13 +21,19 @@ class Cache(object):
             'taf': db.taf
         }
 
-    def get(self, rtype: str, station: str, not_expired: bool = True) -> {str: object}:
+    @staticmethod
+    def has_expired(time: datetime, minutes: int = 2) -> bool:
+        """Returns True if a datetime is older than the number of minutes given"""
+        return datetime.utcnow() > time + timedelta(minutes=minutes)
+
+    def get(self, rtype: str, station: str, force: bool = False) -> {str: object}:
         """Returns the current cached data for a report type and station or None
         
         By default, will only return if the cache timestamp has not been exceeded
+        Can force the cache to return if force is True
         """
         data = self.tables[rtype].find_one({'_id': station})
-        if isinstance(data, dict) and datetime.utcnow() > data['timestamp'] + timedelta(minutes=2):
+        if force or (isinstance(data, dict) and not self.has_expired(data['timestamp'])):
             return data
 
     def update(self, rtype: str, data: {str: object}):
