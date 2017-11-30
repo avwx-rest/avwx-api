@@ -2,7 +2,7 @@
 FROM python:3.6.2
 
 # Expose the default Flask port
-EXPOSE 80
+EXPOSE 8000
 
 # Set the main working directory
 WORKDIR /home/avwx
