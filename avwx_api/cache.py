@@ -9,7 +9,7 @@ from os import environ
 # library
 import pymongo
 
-MONGO_URI = environ['MONGO_URI']
+MONGO_URI = environ.get('MONGO_URI', None)
 
 class Cache(object):
     """Controls connections with the MongoDB-compatible document cache"""
@@ -30,7 +30,7 @@ class Cache(object):
 
     def get(self, rtype: str, station: str, force: bool = False) -> {str: object}:
         """Returns the current cached data for a report type and station or None
-        
+
         By default, will only return if the cache timestamp has not been exceeded
         Can force the cache to return if force is True
         """

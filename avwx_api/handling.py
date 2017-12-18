@@ -6,6 +6,7 @@ avwx_api.handling - Data handling between inputs, cache, and avwx
 # pylint: disable=E1101,W0703
 
 # stdlib
+from datetime import datetime
 from os import environ
 # library
 import avwx
@@ -13,7 +14,7 @@ from requests import get
 # module
 from avwx_api.cache import Cache
 
-GN_USER = environ['GN_USER']
+GN_USER = environ.get('GN_USER', '')
 
 CACHE = Cache()
 
@@ -26,8 +27,8 @@ OPTION_KEYS = {
 }
 
 ERRORS = [
-    'Station Lookup Error: {} not found for {} ({})',
-    'Report Parsing Error: Could not parse {} report ({})'
+    'Station Lookup Error: {} not found for {}. There might not be a current report in ADDS',
+    'Report Parsing Error: Could not parse {} report. Please contact the admin with raw report'
 ]
 
 def get_data_for_corrds(lat: str, lon: str) -> {str: object}:
@@ -40,14 +41,14 @@ def get_data_for_corrds(lat: str, lon: str) -> {str: object}:
             return data['weatherObservation']
         elif 'status' in data:
             return {'Error':'Coord Lookup Error: ' + str(data['status']['message'])}
-        else:
-            return {'Error':'Coord Lookup Error: Unknown Error (1)'}
+        return {'Error':'Coord Lookup Error: Unknown Error (1)'}
     except Exception as exc:
-        return {'Error':'Coord Lookup Error: Unknown Error (0) / ' + str(exc)}
+        print(exc)
+        return {'Error':'Coord Lookup Error: Unknown Error (0)'}
 
 def new_report(rtype: str, station: str, report: str) -> {str: object}:
-    """Fetch and parse METAR data for a given station
-    
+    """Fetch and parse report data for a given station
+
     We can skip fetching the report if geonames already returned it
     """
     parser = (avwx.Metar if rtype == 'metar' else avwx.Taf)(station)
@@ -56,9 +57,11 @@ def new_report(rtype: str, station: str, report: str) -> {str: object}:
         try:
             parser.update()
         except avwx.exceptions.InvalidRequest as exc:
-            return {'Error': ERRORS[0].format(rtype.upper(), station, exc)}
+            print('Invalid Request:', exc)
+            return {'Error': ERRORS[0].format(rtype.upper(), station)}
         except Exception as exc:
-            return {'Error': ERRORS[0].format(rtype.upper(), station, exc)}
+            print('unknown Error', exc)
+            return {'Error': ERRORS[0].format(rtype.upper(), station)}
     else:
         parser.update(report)
     # Retrieve report data
@@ -74,8 +77,7 @@ def new_report(rtype: str, station: str, report: str) -> {str: object}:
     return data
 
 def format_report(rtype: str, data: {str: object}, options: [str]) -> {str: object}:
-    """Formats the report/cache data into the expected response format
-    """
+    """Formats the report/cache data into the expected response format"""
     ret = data['data']
     if rtype == 'metar':
         for opt, key in OPTION_KEYS.items():
@@ -89,10 +91,11 @@ def format_report(rtype: str, data: {str: object}, options: [str]) -> {str: obje
                 ret['Forecast'][i]['Summary'] = data['summary'][i]
     return ret
 
-def handle_report(rtype: str, loc: [str], opts: [str]) -> {str: object}:
+def handle_report(rtype: str, loc: [str], opts: [str], nofail: bool = False) -> {str: object}:
     """Returns weather data for the given report type, station, and options
 
     Uses a cache to store recent report hashes which are (at most) two minutes old
+    If nofail and a new report can't be fetched, the cache will be returned with a warning
     """
     if len(loc) == 2:
         #Do things given goedata contains station and metar report
@@ -107,42 +110,59 @@ def handle_report(rtype: str, loc: [str], opts: [str]) -> {str: object}:
         report = None
     # Fetch an existing and up-to-date cache or make a new report
     data = CACHE.get(rtype, station) or new_report(rtype, station, report)
+    resp = {'Meta': {'Timestamp': datetime.utcnow()}}
+    if 'timestamp' in data:
+        resp['Meta']['Cache-Timestamp'] = data['timestamp']
+    # Handle errors according to nofail arguement
     if 'Error' in data:
-        return data
+        if nofail:
+            cache = CACHE.get(rtype, station)
+            if cache is None:
+                resp['Error'] = 'No report or cache was found for the requested station'
+                return resp
+            data = cache
+            resp['Meta']['cache-timestamp'] = data['timestamp']
+            resp['Meta']['Warning'] = 'A no-fail condition was requested. This data might be out of date'
+        else:
+            resp.update(data)
+            return resp
     # Format the return data
-    data = format_report(rtype, data, opts)
+    resp.update(format_report(rtype, data, opts))
     #Add station info if requested
     if 'info' in opts:
-        data['Info'] = avwx.Report(station).station_info
-    return data
+        resp['Info'] = avwx.Report(station).station_info
+    return resp
 
 def parse_given(rtype: str, report: str, opts: [str]):
-    """Attepts to parse a given report supplied by the user
-    """
+    """Attepts to parse a given report supplied by the user"""
     if len(report) < 4:
-        return {'Error': 'Could not find station at beginning of report'}
+        return {
+            'Error': 'Could not find station at beginning of report',
+            'Timestamp': datetime.utcnow()
+        }
     station = report[:4]
     try:
         ureport = avwx.Metar(station) if rtype == 'metar' else avwx.Taf(station)
         ureport.update(report)
-        rdict = ureport.data
+        resp = ureport.data
+        resp['Meta'] = {'Timestamp': datetime.utcnow()}
         if 'translate' in opts or 'summary' in opts:
-            rdict['Translations'] = ureport.translations
+            resp['Translations'] = ureport.translations
             if rtype == 'metar':
                 if 'summary' in opts:
-                    rdict['Summary'] = ureport.summary
+                    resp['Summary'] = ureport.summary
                 if 'speech' in opts:
-                    rdict['Speech'] = ureport.speech
+                    resp['Speech'] = ureport.speech
             else:
                 if 'summary' in opts:
                     #Special handling for TAF summary response
                     for i, forecast in enumerate(ureport.translations['Forecast']):
-                        rdict['Forecast'][i]['Summary'] = avwx.summary.taf(forecast)
+                        resp['Forecast'][i]['Summary'] = avwx.summary.taf(forecast)
         #Add station info if requested
         if 'info' in opts:
-            rdict['Info'] = ureport.station_info
-        return rdict
-    except avwx.exceptions.BadStation as exc:
-        return {'Error': ERRORS[0].format(rtype, exc)}
-    except Exception as exc:
-        return {'Error': ERRORS[1].format(rtype, exc)}
+            resp['Info'] = ureport.station_info
+        return resp
+    except avwx.exceptions.BadStation:
+        return {'Error': ERRORS[0].format(rtype), 'Timestamp': datetime.utcnow()}
+    except:
+        return {'Error': ERRORS[1].format(rtype), 'Timestamp': datetime.utcnow()}

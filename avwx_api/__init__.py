@@ -12,3 +12,4 @@ cors = CORS(app, resources={
 })
 
 import avwx_api.views
+import avwx_api.api

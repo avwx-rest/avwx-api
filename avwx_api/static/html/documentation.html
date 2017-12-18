@@ -52,8 +52,9 @@
     <p class="alert alert-info" role="alert">https://avwx.rest/api/&lt;report type&gt;/&lt;station | lat,lon&gt;</p>
     <p><b>Note</b>: The url parameters shown in the METAR and TAF examples can also be placed in the request header instead.</p>
     <h4>Header/URL Parameters</h4>
-    <p><b>format</b>: JSON (default), XML, or YAML</p>
+    <p><b>format</b>: json (default), xml, or yaml</p>
     <p><b>options</b>: info, translate, summary, speech (METAR only for now)</p>
+    <p><b>onfail</b>: error (default) or cache. Cache will return potentially out-of-date info if AVWX's report sources are unavailable</p>
     <h2>METAR</h2>
     <p>METAR reports are surface observations for a particular airfield or other station location. There are two standard formats: International and North American. The parser works with both, but it is up to the developer to do the correct interpretation of the data. Use the 'Units' key for labling and conversions.</p>
     <p>The METAR API can be called using the station's ICAO or coordinates (lat,lon), in which case the API will return the station nearest to those coordinates. Additionally, the call can include the desired format and will return JSON if none is given.</p>
@@ -70,7 +71,7 @@
     <p>Translations with the following keys: Forecast, Min-Temp, Max-Temp. Forecast keys: Flight-Rules, Wind, Visibility, Clouds, Altimeter, Wind-Shear, Turbulance, Icing, Other</p>
     <p><a href="/static/examples/exampleTaf.xml">Ficticious TAF XML with all fields present</a></p>
     <p>Look-up by ICAO: <a href="/api/taf/KJFK?options=summary">http://avwx.rest/api/taf/KJFK?options=summary</a></p>
-    <p>Look-up by coordinates in XML format: <a href="/api/taf/51.47,-0.4?format=XML">http://avwx.rest/api/taf/51.47,-0.4?format=XML</a></p>
+    <p>Look-up by coordinates in XML format: <a href="/api/taf/51.47,-0.4?format=xml">http://avwx.rest/api/taf/51.47,-0.4?format=xml</a></p>
 	<h2>Shared Options</h2>
     <p><b>info</b> - Provides basic info for the requested station along with the report. Info is sourced and cross-referenced from several databases. Contains the following keys: ICAO, IATA, Country, State, City, Name, Elevation (meters), Latitude, Longitude, Priority (mapping zoom)</p>
     <p><b>translate</b> - Provides basic translations for most fields in the report. See below for the keys in each report.</p>
@@ -81,7 +82,7 @@
     <p class="alert alert-info" role="alert">https://avwx.rest/api/parse/&lt;report type&gt;</p>
     <p>Attempts to parse a given METAR or TAF report using the AVWX engine. A "report" parameter must be supplied in either the url (with spaces replaced with "%20") or in the header as is.</p>
     <p>All response keys, shared options, and response formats for the station/coord API are supported.</p>
-    <p>Example with URL parameter: <a href="https://avwx.rest/api/parse/metar?report=KJFK%20012251Z%2004012KT%2010SM%20OVC011%2016/13%20A3014&options=info,translate">https://avwx.rest/api/parse/metar?report=KJFK%20012251Z%2004012KT%2010SM%20OVC011%2016/13%20A3014&options=info,translate</a></p>
+    <p>Example with URL parameter: <a href="/api/parse/metar?report=KJFK%20012251Z%2004012KT%2010SM%20OVC011%2016/13%20A3014&options=info,translate">https://avwx.rest/api/parse/metar?report=KJFK%20012251Z%2004012KT%2010SM%20OVC011%2016/13%20A3014&options=info,translate</a></p>
 </section>
 
 </body>

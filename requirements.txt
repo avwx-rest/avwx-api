@@ -2,6 +2,7 @@ avwx-engine>=0.9.4
 dicttoxml~=1.7
 flask~=0.12
 flask-cors~=3.0
+flask-restful~=0.3
 pymongo~=3.5
 pyyaml~=3.12
 requests~=2.18
