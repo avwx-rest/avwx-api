@@ -70,6 +70,7 @@ def new_report(rtype: str, station: str, report: str) -> {str: object}:
         'translate': parser.translations,
         'summary': parser.summary
     }
+    data['data']['Raw-Report'] = parser.raw
     if rtype == 'metar':
         data['speech'] = parser.speech
     # Update the cache with the new report data
