@@ -1,0 +1,60 @@
+# Template for defining UserSays examples
+
+# give-color-intent:
+
+#  UserSays:
+#    - My color is blue
+#    - red is my favorite color
+
+#  Annotations:
+#    - blue: sys.color     # maps param value -> entity
+#    - red: sys.color
+
+#  Events:
+#    - event1              # adds a triggerable event named 'event1' to the intent
+
+
+
+ask-metar:
+  UserSays:
+  - METAR report for Orlando International Airport
+  - METAR for Orlando International Airport
+  - METAR for KMCO
+  - METAR at JFK
+  - METAR for Honolulu
+  - METAR for Honolulu International
+  - METAR observation for KLEX
+  - Surface observation at KLEX
+  - Surface conditions at KLEX
+  - METAR at Orlando Executive
+  Annotations:
+  - KLEX: sys.airport
+  - KMCO: sys.airport
+  - JFK: sys.airport
+  - Orlando International Airport: sys.airport
+  - Honolulu: sys.airport
+  - Honolulu International: sys.airport
+  - Orlando Executive: sys.airport
+  # Events:
+  # - 
+ask-taf:
+  UserSays:
+  - TAF report for Orlando International Airport
+  - TAF for Orlando International Airport
+  - TAF for KMCO
+  - TAF for JFK
+  - TAF for Honolulu
+  - TAF for Honolulu International
+  - TAF forecast for KLEX
+  - Weather forecast at KLEX
+  - TAF at Orlando Executive
+  Annotations:
+  - KLEX: sys.airport
+  - KMCO: sys.airport
+  - JFK: sys.airport
+  - Orlando International Airport: sys.airport
+  - Honolulu: sys.airport
+  - Honolulu International: sys.airport
+  - Orlando Executive: sys.airport
+  # Events:
+  # - 

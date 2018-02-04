@@ -125,65 +125,6 @@ class ParseEndpoint(Endpoint):
         resp = parse_given(rtype, report, options)
         return self.format_response(resp, rtype)
 
-RTYPE_MAP = {
-    'fetch_metar': 'metar',
-    'GetMETAR': 'metar'
-    # 'fetch_taf': 'taf',
-    # 'GetTAF': 'taf'
-}
-
-class APIAIEndpoint(Resource):
-    """api.ai request endpoint"""
-
-    def post(self):
-        """Endpoint servicing api.ai service for Slack, FBM, Google Assistant/Home"""
-        resp = {
-            'speech': '',
-            'displayText': '',
-            'data': {},
-            'contextOut': [],
-            'source': 'avwx.rest'
-        }
-        req_body = request.get_json()
-        action = req_body['result']['action']
-        if action not in RTYPE_MAP:
-            resp['speech'] = 'This action is not yet supported'
-            resp['displayText'] = 'This action is not yet supported'
-        else:
-            rtype = RTYPE_MAP[action]
-            station = req_body['result']['parameters']['airport']['ICAO']
-            wxret = handle_report(rtype, [station], ['speech'])
-            name = req_body['result']['parameters']['airport']['name']
-            resp['speech'] = 'Conditions at ' + name + '. ' + wxret['Speech']
-            resp['displayText'] = wxret['Summary']
-            resp['data'] = wxret
-        return jsonify(resp)
-
-class AlexaEndpoint(Resource):
-    """Amazon Alexa request endpoint"""
-
-    def post(self):
-        """Endpoint servicing Amazon Alexa skills"""
-        resp = {'version': '0.1',
-                'response': {
-                    'outputSpeech': {'type': 'SSML', 'ssml': ''},
-                    'card': {'content': '', 'title': '', 'type': 'Simple'},
-                    'shouldEndSession': True},
-                'sessionAttributes': {}}
-
-        req_body = request.get_json()
-        intent = req_body['request']['intent']
-        action = intent['name']
-        if action not in RTYPE_MAP:
-            resp['response']['outputSpeech']['ssml'] = '<speak>This action is not yet supported</speak>'
-        else:
-            rtype = RTYPE_MAP[action]
-            airport = intent['slots']['airport']['value']
-            # Note: Not yet implemented
-        return jsonify(resp)
-
 api.add_resource(ReportEndpoint, '/api/<string:rtype>/<string:station>')
 api.add_resource(PHPReportEndpoint, '/api/<string:rtype>.php')
 api.add_resource(ParseEndpoint, '/api/parse/<string:rtype>')
-api.add_resource(APIAIEndpoint, '/api/apiai')
-api.add_resource(AlexaEndpoint, '/api/alexa')
