@@ -1,5 +1,5 @@
 # Start from the official Python 3.6 container
-FROM python:3.6.2
+FROM python:3.6.4
 
 # Expose the default Flask port
 EXPOSE 8000
@@ -10,7 +10,7 @@ WORKDIR /home/avwx
 # Set the service credentials as environment variables
 ENV MONGO_URI='mongodb://cache:password==@loc.test.com:12345'
 ENV GN_USER='geonames-username'
-ENV CLIENT_ACCESS_TOKEN='dialogue flow client key'
+ENV CLIENT_ACCESS_TOKEN='dialogflow client key'
 
 # Install the require Python packages
 COPY requirements.txt /home/avwx/requirements.txt
