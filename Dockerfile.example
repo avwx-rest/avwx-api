@@ -15,10 +15,11 @@ ENV CLIENT_ACCESS_TOKEN='dialogflow client key'
 # Install the require Python packages
 COPY requirements.txt /home/avwx/requirements.txt
 RUN pip install -Ur requirements.txt
+RUN pip install -U gunicorn
 
 # Copy the application code
-COPY runserver.py /home/avwx/runserver.py
 COPY avwx_api /home/avwx/avwx_api
+COPY gunicorn_config.py /home/avwx/gunicorn_config.py
 
 # Run the application
-CMD ["python", "runserver.py"]
+CMD ["gunicorn", "avwx_api:app", "-c", "gunicorn_config.py"]
