@@ -16,6 +16,7 @@ ENV MONGO_URI='mongodb://avwx-mongo:27017'
 
 # http://www.geonames.org/login
 ENV GN_USER='geonames-username'
+ENV CLIENT_ACCESS_TOKEN='dialogflow client key'
 
 # Go to your dashboard to get an agent API key https://console.dialogflow.com/api-client/
 ENV CLIENT_ACCESS_TOKEN='dialog flow api key'
@@ -23,10 +24,11 @@ ENV CLIENT_ACCESS_TOKEN='dialog flow api key'
 # Install the require Python packages
 COPY requirements.txt /home/avwx/requirements.txt
 RUN pip install -Ur requirements.txt
+RUN pip install -U gunicorn
 
 # Copy the application code
-COPY runserver.py /home/avwx/runserver.py
 COPY avwx_api /home/avwx/avwx_api
+COPY gunicorn_config.py /home/avwx/gunicorn_config.py
 
 # Run the application
-CMD ["python", "runserver.py"]
+CMD ["gunicorn", "avwx_api:app", "-c", "gunicorn_config.py"]

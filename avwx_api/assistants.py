@@ -33,7 +33,8 @@ def metar_google(airport):
     """
     wxret = handle_report('metar', [airport['ICAO']], ['summary', 'speech'])
     speech = 'Conditions at ' + airport['name'] + '. ' + wxret['Speech']
-    return assist.tell(speech, display_text=wxret['Summary'])
+    text = wxret['Raw-Report'] + ' —— ' + wxret['Summary']
+    return assist.tell(speech, display_text=text)
 
 @google.action('ask-taf', mapping=STATION_MAP)
 def taf_google(airport):
