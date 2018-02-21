@@ -91,10 +91,13 @@ class Endpoint(Resource):
 
         resp = handle_report(rtype, station, options, nofail)
 
+        # if any, use the http code from the dict
+        status_code = resp.pop("Code", 200)
+
         response = self.format_response(resp, rtype)
         
-        # if any, use the http code from the response
-        response.status_code = resp.get("Code", 200)
+        response.status_code = status_code
+    
         return response
 
 class ReportEndpoint(Endpoint):
