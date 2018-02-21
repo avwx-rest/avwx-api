@@ -21,9 +21,21 @@ pip install -Ur requirements.txt
 pip install -U gunicorn
 ```
 
+### Local Mongo in Docker (Optional)
+
+Start a local mongo via docker that will be accessible via `localhost:27017` (see next step)
+```bash
+docker run -p 27017:27017 --name dev-mongo -it mongo
+```
 ### Run API
 
 ```bash
+export GN_USER='geonames-username'
+export CLIENT_ACCESS_TOKEN='dialog flow api key'
+
+# if not set, no caching will be performed 
+export MONGO_URI='mongodb://localhost:27017'
+
 gunicorn --reload  avwx_api:app -c gunicorn_config.py
 ```
 ## Docker
