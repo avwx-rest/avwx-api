@@ -12,6 +12,20 @@ The API is a Python3 Flask application in a Docker container. It sources METAR a
 
 Additional info can be found on the [service's about page](http://avwx.rest/about).
 
+## Development
+
+### Dependencies 
+
+```bash
+pip install -Ur requirements.txt
+pip install -U gunicorn
+```
+
+### Run API
+
+```bash
+gunicorn --reload  avwx_api:app -c gunicorn_config.py
+```
 ## Docker
 
 The application can run in a Docker container with two services. The `docker-compose.yml` creates:
