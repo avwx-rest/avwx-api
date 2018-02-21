@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+    avwx-api:
+        build: .
+        ports:
+            - 80:8000
+        restart: always
+
+    avwx-mongo:
+        image: mongo 
+        restart: always
+      
