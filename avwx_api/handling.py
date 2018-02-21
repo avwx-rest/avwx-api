@@ -58,10 +58,10 @@ def new_report(rtype: str, station: str, report: str) -> {str: object}:
             parser.update()
         except avwx.exceptions.InvalidRequest as exc:
             print('Invalid Request:', exc)
-            return {'Error': ERRORS[0].format(rtype.upper(), station)}
+            return {'Error': ERRORS[0].format(rtype.upper(), station), 'Code': 404}
         except Exception as exc:
             print('unknown Error', exc)
-            return {'Error': ERRORS[0].format(rtype.upper(), station)}
+            return {'Error': ERRORS[0].format(rtype.upper(), station), 'Code': 404}
     else:
         parser.update(report)
     # Retrieve report data
