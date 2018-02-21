@@ -58,10 +58,10 @@ def new_report(rtype: str, station: str, report: str) -> {str: object}:
             parser.update()
         except avwx.exceptions.InvalidRequest as exc:
             print('Invalid Request:', exc)
-            return {'Error': ERRORS[0].format(rtype.upper(), station)}
+            return {'Error': ERRORS[0].format(rtype.upper(), station), 'Code': 404}
         except Exception as exc:
             print('unknown Error', exc)
-            return {'Error': ERRORS[0].format(rtype.upper(), station)}
+            return {'Error': ERRORS[0].format(rtype.upper(), station), 'Code': 404}
     else:
         parser.update(report)
     # Retrieve report data
@@ -109,9 +109,16 @@ def handle_report(rtype: str, loc: [str], opts: [str], nofail: bool = False) -> 
         #Do things given only station
         station = loc[0].upper()
         report = None
+
+    resp = {'Meta': {'Timestamp': datetime.utcnow()}}        
     # Fetch an existing and up-to-date cache or make a new report
-    data = CACHE.get(rtype, station) or new_report(rtype, station, report)
-    resp = {'Meta': {'Timestamp': datetime.utcnow()}}
+    try:
+        data = CACHE.get(rtype, station) or new_report(rtype, station, report)
+    except avwx.exceptions.BadStation as e:
+        resp["Error"] = str(e)
+        resp["Code"] = 400
+        return resp
+    
     if 'timestamp' in data:
         resp['Meta']['Cache-Timestamp'] = data['timestamp']
     # Handle errors according to nofail arguement

@@ -88,8 +88,17 @@ class Endpoint(Resource):
         if error:
             return jsonify({'Error': error})
         nofail = self.get_param('onfail') == 'cache'
+
         resp = handle_report(rtype, station, options, nofail)
-        return self.format_response(resp, rtype)
+
+        # if any, use the http code from the dict
+        status_code = resp.pop("Code", 200)
+
+        response = self.format_response(resp, rtype)
+        
+        response.status_code = status_code
+    
+        return response
 
 class ReportEndpoint(Endpoint):
     """Standard report endpoint"""
