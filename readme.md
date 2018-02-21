@@ -12,6 +12,47 @@ The API is a Python3 Flask application in a Docker container. It sources METAR a
 
 Additional info can be found on the [service's about page](http://avwx.rest/about).
 
+## Docker
+
+The application can run in a Docker container with two services. The `docker-compose.yml` creates:
+
+- `avwx-api`: A Flask application that runs the API
+- `avwx-mongo`: A mongoDB container used for the cache
+
+Both services will be part of a same [Docker network](https://docs.docker.com/network/network-tutorial-standalone/#use-user-defined-bridge-networks) `avwxapi_default`
+
+### Dockerfile
+
+Copy the example `Dockerfile.example` to `Docker` and replace your own API keys
+
+```bash
+cp Dockerfile.example Dockerfile
+```
+
+
+### Build & run
+
+```bash
+docker-compose build
+
+# Run detached or attached by omitting the -d
+docker-compose up -d
+```
+
+The service should be running on port `80`
+
+```
+curl http://0.0.0.0:80/api/metar/KSBP | jq
+``` 
+
+### Stopping 
+
+```bash
+docker-compose stop
+```
+
+
+
 ## License
 
 Copyright © 2017 Michael duPont  

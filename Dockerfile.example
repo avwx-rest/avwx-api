@@ -8,9 +8,17 @@ EXPOSE 8000
 WORKDIR /home/avwx
 
 # Set the service credentials as environment variables
-ENV MONGO_URI='mongodb://cache:password==@loc.test.com:12345'
+# the host 'avwx-mongo' comes from the docker-compose.yaml 
+ENV MONGO_URI='mongodb://avwx-mongo:27017'
+
+# If you are not deploying using Docker, set the host of your own mongoDB
+# ENV MONGO_URI='mongodb://cache:password==@loc.test.com:12345'
+
+# http://www.geonames.org/login
 ENV GN_USER='geonames-username'
-ENV CLIENT_ACCESS_TOKEN='dialogue flow client key'
+
+# Go to your dashboard to get an agent API key https://console.dialogflow.com/api-client/
+ENV CLIENT_ACCESS_TOKEN='dialog flow api key'
 
 # Install the require Python packages
 COPY requirements.txt /home/avwx/requirements.txt
