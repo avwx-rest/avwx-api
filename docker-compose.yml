@@ -2,6 +2,8 @@ version: '3'
 
 services:
     avwx-api:
+        depends_on:
+            - avwx-mongo
         build: .
         ports:
             - 80:8000
