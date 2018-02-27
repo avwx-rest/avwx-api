@@ -39,10 +39,10 @@ def updates():
 @app.route('/api')
 def no_report():
     """Returns no report msg"""
-    return jsonify({'Error': 'No report type given'})
+    return jsonify({'Error': 'No report type given'}), 400
 
 @app.route('/api/metar')
 @app.route('/api/taf')
 def no_station():
     """Returns no station msg"""
-    return jsonify({'Error': 'No station given'})
+    return jsonify({'Error': 'No station given'}), 400
