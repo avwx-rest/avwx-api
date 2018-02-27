@@ -1,4 +1,4 @@
-avwx-engine>=0.11.1
+avwx-engine>=0.11.2
 dicttoxml~=1.7
 flask~=0.12
 flask-assistant~=0.2
