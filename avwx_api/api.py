@@ -79,6 +79,12 @@ class Endpoint(Resource):
             return Response(yaml.dump(output, default_flow_style=False), mimetype='text/x-yaml')
         return jsonify(output)
 
+    def make_response(self, output: dict, rtype: str, code: int) -> Response:
+        """Returns a formatted Response object with the API output and status code"""
+        resp = self.format_response(output, rtype)
+        resp.status_code = code
+        return resp
+
     def get_report(self, rtype: str, station: str) -> Response:
         """Common request logic for METAR and TAF requests"""
         rtype = rtype.lower()
@@ -86,17 +92,17 @@ class Endpoint(Resource):
         options = self.get_param('options', split=True)
         error = self.check_for_errors(rtype, station=station)
         if error:
-            return jsonify({'Error': error})
+            return self.make_response({'Error': error}, rtype, 400)
         nofail = self.get_param('onfail') == 'cache'
-        resp = handle_report(rtype, station, options, nofail)
-        return self.format_response(resp, rtype)
+        data, code = handle_report(rtype, station, options, nofail)
+        return self.make_response(data, rtype, code)
 
 class ReportEndpoint(Endpoint):
     """Standard report endpoint"""
 
     parser = args.report
 
-    def get(self, rtype: str, station: str):
+    def get(self, rtype: str, station: str) -> Response:
         """GET handler"""
         return self.get_report(rtype, station)
 
@@ -105,7 +111,7 @@ class PHPReportEndpoint(Endpoint):
 
     parser = args.php_report
 
-    def get(self, rtype: str):
+    def get(self, rtype: str) -> Response:
         """GET handler"""
         return self.get_report(rtype, self.get_param('station'))
 
@@ -114,16 +120,16 @@ class ParseEndpoint(Endpoint):
 
     parser = args.given
 
-    def get(self, rtype: str):
+    def get(self, rtype: str) -> Response:
         """GET handler"""
         rtype = rtype.lower()
         report = self.get_param('report')
         options = self.get_param('options', split=True) or []
         error = self.check_for_errors(rtype)
         if error:
-            return jsonify({'Error': error})
-        resp = parse_given(rtype, report, options)
-        return self.format_response(resp, rtype)
+            return self.make_response({'Error': error}, rtype, 400)
+        resp, code = parse_given(rtype, report, options)
+        return self.make_response(resp, rtype, code)
 
 api.add_resource(ReportEndpoint, '/api/<string:rtype>/<string:station>')
 api.add_resource(PHPReportEndpoint, '/api/<string:rtype>.php')
