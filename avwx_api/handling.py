@@ -131,7 +131,10 @@ def handle_report(rtype: str, loc: [str], opts: [str], nofail: bool = False) -> 
     resp.update(format_report(rtype, data, opts))
     #Add station info if requested
     if 'info' in opts:
-        resp['Info'] = avwx.Report(station).station_info
+        try:
+            resp['Info'] = avwx.Report(station).station_info
+        except avwx.exceptions.BadStation:
+            resp['Info'] = {}
     return resp
 
 def parse_given(rtype: str, report: str, opts: [str]):
