@@ -34,6 +34,10 @@ class Cache(object):
 
         Some keys in the METAR are '$' and this is not accepted by mongodb
         """    
+        
+        if in_dict is None:
+            return
+
         for k, v in in_dict.items():
             if k == key:
                 print("Replacing {} by {}".format(key, by_key))
