@@ -51,7 +51,12 @@ def new_report(rtype: str, station: str, report: str) -> (dict, int):
 
     We can skip fetching the report if geonames already returned it
     """
-    parser = (avwx.Metar if rtype == 'metar' else avwx.Taf)(station)
+
+    try:
+        parser = (avwx.Metar if rtype == 'metar' else avwx.Taf)(station)
+    except avwx.exceptions.BadStation as exc:
+        return {'Error': str(exc)}, 400
+
     # Fetch report if one wasn't received via geonames
     if not report:
         try:
