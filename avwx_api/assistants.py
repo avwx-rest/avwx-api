@@ -5,21 +5,13 @@ avwx_api.assistants - Endpoints and intents for voice assistants
 
 # library
 import flask_assistant as assist
+# import flask_ask as ask
 # module
 from avwx_api import app
 from avwx_api.handling import handle_report
 
 # Google Assistant intents
 
-# To update the Google Assistant engine, run
-# > schema avwx_api/assistants.py
-# from the project root.
-
-# Make sure to comment out calls to avwx_api
-# Intent utterances are put in templates/user_says.yaml
-
-# from flask import Flask
-# app = Flask(__name__)
 google = assist.Assistant(app, route='/google')
 
 STATION_MAP = {
@@ -44,3 +36,20 @@ def taf_google(airport):
     Not yet implemented by AVWX
     """
     return assist.tell('Sorry. Spoken TAF reports are not yet supported by AVWX')
+
+# Amazon Alexa intents
+
+# alexa = ask.Ask(app, '/alexa')
+
+# import logging
+# logging.getLogger("flask_ask").setLevel(logging.DEBUG)
+
+# @alexa.intent('ask_metar')
+# def metar_alexa(airport):
+#     """
+#     """
+#     print(airport)
+#     airport = {'ICAO': 'KMCO', 'name': 'Orlando International'}
+#     wxret = handle_report('metar', [airport['ICAO']], ['summary', 'speech'])
+#     speech = 'Conditions at ' + airport['name'] + '. ' + wxret['Speech']
+#     return ask.statement(speech).simple_card('METAR', wxret['summary'])
