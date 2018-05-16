@@ -23,7 +23,9 @@ def metar_google(airport):
     """
     Return a spoken and display METAR response
     """
-    wxret = handle_report('metar', [airport['ICAO']], ['summary', 'speech'])
+    wxret, status_code = handle_report('metar', [airport['ICAO']], ['summary', 'speech'])
+    if status_code != 200:
+        return assist.tell('There was a problem generating the response from the website')
     speech = 'Conditions at ' + airport['name'] + '. ' + wxret['Speech']
     text = wxret['Raw-Report'] + ' —— ' + wxret['Summary']
     return assist.tell(speech, display_text=text)
@@ -44,12 +46,18 @@ def taf_google(airport):
 # import logging
 # logging.getLogger("flask_ask").setLevel(logging.DEBUG)
 
-# @alexa.intent('ask_metar')
+# @alexa.launch
+# def alexa_welcome():
+#     return ask.question('Welcome to the aviation weather skill. How can I help you?')
+
+# @alexa.intent('ask_metar', convert={'airport': str})
 # def metar_alexa(airport):
 #     """
 #     """
 #     print(airport)
-#     airport = {'ICAO': 'KMCO', 'name': 'Orlando International'}
-#     wxret = handle_report('metar', [airport['ICAO']], ['summary', 'speech'])
-#     speech = 'Conditions at ' + airport['name'] + '. ' + wxret['Speech']
-#     return ask.statement(speech).simple_card('METAR', wxret['summary'])
+#     wxret, status_code = handle_report('metar', [airport], ['summary', 'speech'])[0]
+#     if status_code != 200:
+#         return ask.statement('There was a problem generating the response from the website')
+#     speech = wxret['Speech'].replace('kt.', ' knots.')
+#     speech = 'Conditions at ' + airport + '. ' + speech
+#     return ask.statement(speech).simple_card('METAR', wxret['Summary'])
