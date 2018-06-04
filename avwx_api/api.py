@@ -63,6 +63,7 @@ class ReportEndpoint(Resource):
             data, code = handle_report(rtype, params['station'], opts, nofail)
             resp = self.format_response(data, params['format'], rtype)
             resp.status_code = code
+        resp.headers['X-Robots-Tag'] = 'noindex'
         return resp
 
 class LegacyReportEndpoint(ReportEndpoint):
@@ -85,6 +86,7 @@ class ParseEndpoint(ReportEndpoint):
             data, code = parse_given(rtype, params['report'], opts)
             resp = self.format_response(data, params['format'], rtype)
             resp.status_code = code
+        resp.headers['X-Robots-Tag'] = 'noindex'
         return resp
 
 api.add_resource(ReportEndpoint, '/api/<string:rtype>/<string:station>')
