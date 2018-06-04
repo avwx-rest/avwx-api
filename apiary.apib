@@ -1,82 +1,714 @@
 FORMAT: 1A
 HOST: http://avwx.rest/api
 
-# avwx
+# AVWX
 
-AVWX REST API
+The AVWX REST API is a publically-available, open-source REST API for aviation weather.
 
-Stuff goes here
+The service organizes METAR and TAF reports into their individual elements and returns them in JSON, XML, or YAML format. It does a considderable amount of error correction so that your report is as clean and thorough as possible. It has additional services like providing station information, translating the report into English, and creating summary strings meant to be read or spoken.
 
-## METAR [/metar]
+## METAR [/metar/{location}{?format,options,onfail}]
 
-### List All Questions [GET]
+METAR reports are surface observations for a particular airfield or other station location. There are two standard formats: International and North American. The parser works with both, but it is up to the developer to do the correct interpretation of the data. Use the 'Units' key for labling and conversions.
+
+This endpoint is also available at /api/legacy/metar
+
++ Parameters
+    + location (string) - ICAO station ident or coordinate pair
+    + options (string) - Additional options to include (info, translate, summary, speech)
+    + format (string) - Desired response format (default=json, xml, yaml)
+    + onfail (string) - Error or use out-of-date cache when unable to fetch report (default=error, cache)
+
+### Get METAR Report for Station [GET]
+
+Get the METAR for a specific station by ICAO ident.
+
++ Parameters
+    + location:`KJFK`
+    + format: `json`
+    + onfail: `cache`
 
 + Response 200 (application/json)
 
-        [
-            {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 2048
-                    }, {
-                        "choice": "Python",
-                        "votes": 1024
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 512
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 256
-                    }
+        {
+            "Altimeter": "3029",
+            "Cloud-List": [
+                [
+                    "FEW",
+                    "034"
+                ],
+                [
+                    "OVC",
+                    "170"
                 ]
-            }
-        ]
+            ],
+            "Dewpoint": "07",
+            "Flight-Rules": "VFR",
+            "Meta": {
+                "Cache-Timestamp": "Fri, 18 May 2018 14:28:33 GMT",
+                "Timestamp": "Fri, 18 May 2018 14:59:48 GMT"
+            },
+            "Other-List": [],
+            "Raw-Report": "KJFK 181451Z 05013G24KT 10SM FEW034 OVC170 17/07 A3029 RMK AO2 PK WND 06029/1400 SLP257 T01670067 51023",
+            "Remarks": "RMK AO2 PK WND 06029/1400 SLP257 T01670067 51023",
+            "Remarks-Info": {
+                "Dew-Decimal": "6.7",
+                "Temp-Decimal": "16.7"
+            },
+            "Runway-Vis-List": [],
+            "Station": "KJFK",
+            "Temperature": "17",
+            "Time": "181451Z",
+            "Units": {
+                "Altimeter": "inHg",
+                "Altitude": "ft",
+                "Temperature": "C",
+                "Visibility": "sm",
+                "Wind-Speed": "kt"
+            },
+            "Visibility": "10",
+            "Wind-Direction": "050",
+            "Wind-Gust": "24",
+            "Wind-Speed": "13",
+            "Wind-Variable-Dir": []
+        }
 
-### Create a New Question [POST]
+### Get METAR Report for Coordinates [GET]
 
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
+Get the METAR for a coordinate pair (lat,lon). The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
 
-+ Request (application/json)
++ Parameters
+    + location: `51.47,-0.4`
+    + options: `info,speech`
+    + format: `json`
+
++ Response 200 (application/json)
 
         {
-            "question": "Favourite programming language?",
-            "choices": [
-                "Swift",
-                "Python",
-                "Objective-C",
-                "Ruby"
+            "Altimeter": "1024",
+            "Cloud-List": [],
+            "Dewpoint": "02",
+            "Flight-Rules": "VFR",
+            "Info": {
+                "City": "London",
+                "Country": "GBR",
+                "Elevation": "24.4",
+                "IATA": "LHR",
+                "ICAO": "EGLL",
+                "Latitude": "51.47916667",
+                "Longitude": "-0.450555556",
+                "Name": "Heathrow",
+                "Priority": "6",
+                "State": "ENG"
+            },
+            "Meta": {
+                "Cache-Timestamp": "Fri, 18 May 2018 17:44:58 GMT",
+                "Timestamp": "Fri, 18 May 2018 17:44:58 GMT"
+            },
+            "Other-List": [],
+            "Raw-Report": "EGLL 181720Z AUTO 36004KT 310V080 9999 NCD 17/02 Q1024 NOSIG",
+            "Remarks": "NOSIG",
+            "Remarks-Info": {},
+            "Runway-Vis-List": [],
+            "Speech": "Winds three six zero (variable three one zero to zero eight zero) at 4kt. Visibility one zero kilometers. Temperature one seven degrees Celsius. Dew point two degrees Celsius. Altimeter one zero two four. Sky clear",
+            "Station": "EGLL",
+            "Temperature": "17",
+            "Time": "181720Z",
+            "Units": {
+                "Altimeter": "hPa",
+                "Altitude": "ft",
+                "Temperature": "C",
+                "Visibility": "m",
+                "Wind-Speed": "kt"
+            },
+            "Visibility": "9999",
+            "Wind-Direction": "360",
+            "Wind-Gust": "",
+            "Wind-Speed": "04",
+            "Wind-Variable-Dir": [
+                "310",
+                "080"
             ]
         }
 
-+ Response 201 (application/json)
+### Parse a Given METAR [POST]
 
-    + Headers
+Parse a user-supplied METAR included as the plain text body of the request.
 
-            Location: /questions/2
++ Parameters
 
-    + Body
+    + location - ignored
+    + options: `translate` 
+    + format: `json`
+    + onfail - ignored
 
-            {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 0
-                    }, {
-                        "choice": "Python",
-                        "votes": 0
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 0
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 0
-                    }
++ Request (text/plain)
+
+        PHKO 181753Z 28004KT 6SM HZ SCT022 27/21 A3005 RMK AO2 SLP178 T02670206 10267 20239 53009
+
++ Response 200 (application/json)
+
+        {
+            "Altimeter": "3005",
+            "Cloud-List": [
+                [
+                    "SCT",
+                    "022"
                 ]
+            ],
+            "Dewpoint": "21",
+            "Flight-Rules": "VFR",
+            "Meta": {
+                "Timestamp": "Fri, 18 May 2018 18:35:22 GMT"
+            },
+            "Other-List": [
+                "HZ"
+            ],
+            "Raw-Report": "PHKO 181753Z 28004KT 6SM HZ SCT022 27/21 A3005 RMK AO2 SLP178 T02670206 10267 20239 53009",
+            "Remarks": "RMK AO2 SLP178 T02670206 10267 20239 53009",
+            "Remarks-Info": {
+                "Dew-Decimal": "20.6",
+                "Temp-Decimal": "26.7"
+            },
+            "Runway-Vis-List": [],
+            "Station": "PHKO",
+            "Temperature": "27",
+            "Time": "181753Z",
+            "Units": {
+                "Altimeter": "inHg",
+                "Altitude": "ft",
+                "Temperature": "C",
+                "Visibility": "sm",
+                "Wind-Speed": "kt"
+            },
+            "Visibility": "6",
+            "Wind-Direction": "280",
+            "Wind-Gust": "",
+            "Wind-Speed": "04",
+            "Wind-Variable-Dir": []
+        }
+
+## TAF [/taf/{location}{?format,options,onfail}]
+
+TAF reports are atmospheric conditions for an area within five nautical miles of a particular airfield or other station location. Unlike METAR which only has two standard formats, TAF reports vary considderably more based on their geography. For example, Oceania TAF reports include two unique keys: Temp-List and Alt-List.
+
+
+This endpoint is also available at /api/legacy/metar
+
++ Parameters
+    + location (string) - ICAO station ident or coordinate pair
+    + options (string) - Additional options to include (info, translate, summary)
+    + format (string) - Desired response format (default=json, xml, yaml)
+    + onfail (string) - Error or use out-of-date cache when unable to fetch report (default=error, cache)
+
+### Get TAF Report for Station [GET]
+
+Get the TAF for a specific station by ICAO ident.
+
++ Parameters
+    + location:`KJFK`
+    + options: `summary`
+    + format: `json`
+    + onfail: `cache`
+
++ Response 200 (application/json)
+
+        {
+            "Forecast": [
+                {
+                    "Altimeter": "",
+                    "Cloud-List": [
+                    [
+                        "SCT",
+                        "025"
+                    ],
+                    [
+                        "OVC",
+                        "035"
+                    ]
+                    ],
+                    "End-Time": "1924",
+                    "Flight-Rules": "VFR",
+                    "Icing-List": [],
+                    "Other-List": [],
+                    "Probability": "",
+                    "Raw-Line": "1818/1924 08017KT P6SM SCT025 OVC035",
+                    "Start-Time": "1818",
+                    "Summary": "Winds E-080 at 17kt, Vis greater than 6sm, Scattered clouds at 2500ft, Overcast layer at 3500ft",
+                    "Turb-List": [],
+                    "Type": "BASE",
+                    "Visibility": "P6",
+                    "Wind-Direction": "080",
+                    "Wind-Gust": "",
+                    "Wind-Shear": "",
+                    "Wind-Speed": "17"
+                },
+                {
+                    "Altimeter": "",
+                    "Cloud-List": [
+                        [
+                            "OVC",
+                            "035"
+                        ]
+                    ],
+                    "End-Time": "1903",
+                    "Flight-Rules": "VFR",
+                    "Icing-List": [],
+                    "Other-List": [],
+                    "Probability": "",
+                    "Raw-Line": "FM182300 08015KT P6SM OVC035",
+                    "Start-Time": "1823",
+                    "Summary": "Winds E-080 at 15kt, Vis greater than 6sm, Overcast layer at 3500ft",
+                    "Turb-List": [],
+                    "Type": "FROM",
+                    "Visibility": "P6",
+                    "Wind-Direction": "080",
+                    "Wind-Gust": "",
+                    "Wind-Shear": "",
+                    "Wind-Speed": "15"
+                },
+                {
+                    "Altimeter": "",
+                    "Cloud-List": [
+                        [
+                            "SCT",
+                            "020"
+                        ],
+                        [
+                            "BKN",
+                            "025"
+                        ],
+                        [
+                            "OVC",
+                            "100"
+                        ]
+                    ],
+                    "End-Time": "1906",
+                    "Flight-Rules": "MVFR",
+                    "Icing-List": [],
+                    "Other-List": [
+                        "VCSH"
+                    ],
+                    "Probability": "",
+                    "Raw-Line": "FM190300 06014KT P6SM VCSH SCT020 BKN025 OVC100",
+                    "Start-Time": "1903",
+                    "Summary": "Winds ENE-060 at 14kt, Vis greater than 6sm, Vicinity Showers, Scattered clouds at 2000ft, Broken layer at 2500ft, Overcast layer at 10000ft",
+                    "Turb-List": [],
+                    "Type": "FROM",
+                    "Visibility": "P6",
+                    "Wind-Direction": "060",
+                    "Wind-Gust": "",
+                    "Wind-Shear": "",
+                    "Wind-Speed": "14"
+                },
+                {
+                    "Altimeter": "",
+                    "Cloud-List": [
+                    [
+                        "OVC",
+                        "020"
+                    ]
+                    ],
+                    "End-Time": "1910",
+                    "Flight-Rules": "MVFR",
+                    "Icing-List": [],
+                    "Other-List": [
+                        "-RA",
+                        "BR"
+                    ],
+                    "Probability": "",
+                    "Raw-Line": "FM190600 06013KT 6SM -RA BR OVC020",
+                    "Start-Time": "1906",
+                    "Summary": "Winds ENE-060 at 13kt, Vis 6sm, Light Rain, Mist, Overcast layer at 2000ft",
+                    "Turb-List": [],
+                    "Type": "FROM",
+                    "Visibility": "6",
+                    "Wind-Direction": "060",
+                    "Wind-Gust": "",
+                    "Wind-Shear": "",
+                    "Wind-Speed": "13"
+                },
+                {
+                    "Altimeter": "",
+                    "Cloud-List": [
+                        [
+                            "BKN",
+                            "008"
+                        ],
+                        [
+                            "OVC",
+                            "015"
+                        ]
+                    ],
+                    "End-Time": "1914",
+                    "Flight-Rules": "IFR",
+                    "Icing-List": [],
+                    "Other-List": [
+                        "RA",
+                        "BR"
+                    ],
+                    "Probability": "",
+                    "Raw-Line": "FM191000 07011G20KT 3SM RA BR BKN008 OVC015",
+                    "Start-Time": "1910",
+                    "Summary": "Winds ENE-070 at 11kt gusting to 20kt, Vis 3sm, Rain, Mist, Broken layer at 800ft, Overcast layer at 1500ft",
+                    "Turb-List": [],
+                    "Type": "FROM",
+                    "Visibility": "3",
+                    "Wind-Direction": "070",
+                    "Wind-Gust": "20",
+                    "Wind-Shear": "",
+                    "Wind-Speed": "11"
+                },
+                {
+                    "Altimeter": "",
+                    "Cloud-List": [
+                        [
+                            "BKN",
+                            "006"
+                        ],
+                        [
+                            "OVC",
+                            "010"
+                        ]
+                    ],
+                    "End-Time": "1918",
+                    "Flight-Rules": "IFR",
+                    "Icing-List": [],
+                    "Other-List": [
+                        "-RA",
+                        "BR"
+                    ],
+                    "Probability": "",
+                    "Raw-Line": "FM191400 09012G21KT 3SM -RA BR BKN006 OVC010",
+                    "Start-Time": "1914",
+                    "Summary": "Winds E-090 at 12kt gusting to 21kt, Vis 3sm, Light Rain, Mist, Broken layer at 600ft, Overcast layer at 1000ft",
+                    "Turb-List": [],
+                    "Type": "FROM",
+                    "Visibility": "3",
+                    "Wind-Direction": "090",
+                    "Wind-Gust": "21",
+                    "Wind-Shear": "",
+                    "Wind-Speed": "12"
+                },
+                {
+                    "Altimeter": "",
+                    "Cloud-List": [
+                        [
+                            "BKN",
+                            "006"
+                        ],
+                        [
+                            "OVC",
+                            "010"
+                        ]
+                    ],
+                    "End-Time": "1924",
+                    "Flight-Rules": "IFR",
+                    "Icing-List": [],
+                    "Other-List": [
+                        "BR",
+                        "VCSH"
+                    ],
+                    "Probability": "",
+                    "Raw-Line": "FM191800 11013KT 2SM BR VCSH BKN006 OVC010",
+                    "Start-Time": "1918",
+                    "Summary": "Winds ESE-110 at 13kt, Vis 2sm, Mist, Vicinity Showers, Broken layer at 600ft, Overcast layer at 1000ft",
+                    "Turb-List": [],
+                    "Type": "FROM",
+                    "Visibility": "2",
+                    "Wind-Direction": "110",
+                    "Wind-Gust": "",
+                    "Wind-Shear": "",
+                    "Wind-Speed": "13"
+                }
+            ],
+            "Max-Temp": "",
+            "Meta": {
+                "Cache-Timestamp": "Fri, 18 May 2018 18:58:18 GMT",
+                "Timestamp": "Fri, 18 May 2018 18:58:18 GMT"
+            },
+            "Min-Temp": "",
+            "Raw-Report": "KJFK 181725Z 1818/1924 08017KT P6SM SCT025 OVC035 FM182300 08015KT P6SM OVC035 FM190300 06014KT P6SM VCSH SCT020 BKN025 OVC100 FM190600 06013KT 6SM -RA BR OVC020 FM191000 07011G20KT 3SM RA BR BKN008 OVC015 FM191400 09012G21KT 3SM -RA BR BKN006 OVC010 FM191800 11013KT 2SM BR VCSH BKN006 OVC010",
+            "Remarks": "",
+            "Station": "KJFK",
+            "Time": "181725Z",
+            "Units": {
+                "Altimeter": "inHg",
+                "Altitude": "ft",
+                "Temperature": "C",
+                "Visibility": "sm",
+                "Wind-Speed": "kt"
             }
+        }
+
+### Get TAF Report for Coordinates [GET]
+
+Get the TAF for a coordinate pair (lat,lon). The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
+
++ Parameters
+    + location: `51.47,-0.4`
+    + options: `info`
+    + format: `json`
+
++ Response 200 (application/json)
+
+        {
+            "Forecast": [
+                {
+                    "Altimeter": "",
+                    "Cloud-List": [
+                        [
+                            "FEW",
+                            "045"
+                        ]
+                    ],
+                    "End-Time": "1924",
+                    "Flight-Rules": "VFR",
+                    "Icing-List": [],
+                    "Other-List": [],
+                    "Probability": "",
+                    "Raw-Line": "1818/1924 VRB05KT 9999 FEW045",
+                    "Start-Time": "1818",
+                    "Turb-List": [],
+                    "Type": "BASE",
+                    "Visibility": "9999",
+                    "Wind-Direction": "VRB",
+                    "Wind-Gust": "",
+                    "Wind-Shear": "",
+                    "Wind-Speed": "05"
+                    },
+                    {
+                    "Altimeter": "",
+                    "Cloud-List": [],
+                    "End-Time": "1907",
+                    "Flight-Rules": "MVFR",
+                    "Icing-List": [],
+                    "Other-List": [],
+                    "Probability": "40",
+                    "Raw-Line": "PROB40 1902/1907 7000",
+                    "Start-Time": "1902",
+                    "Turb-List": [],
+                    "Type": "BASE",
+                    "Visibility": "7000",
+                    "Wind-Direction": "",
+                    "Wind-Gust": "",
+                    "Wind-Shear": "",
+                    "Wind-Speed": ""
+                }
+            ],
+            "Info": {
+                "City": "London",
+                "Country": "GBR",
+                "Elevation": "24.4",
+                "IATA": "LHR",
+                "ICAO": "EGLL",
+                "Latitude": "51.47916667",
+                "Longitude": "-0.450555556",
+                "Name": "Heathrow",
+                "Priority": "6",
+                "State": "ENG"
+            },
+            "Max-Temp": "",
+            "Meta": {
+                "Cache-Timestamp": "Fri, 18 May 2018 19:00:20 GMT",
+                "Timestamp": "Fri, 18 May 2018 19:01:21 GMT"
+            },
+            "Min-Temp": "",
+            "Raw-Report": "TAF EGLL 181657Z 1818/1924 VRB05KT 9999 FEW045 PROB40 1902/1907 7000",
+            "Remarks": "",
+            "Station": "EGLL",
+            "Time": "181657Z",
+            "Units": {
+                "Altimeter": "hPa",
+                "Altitude": "ft",
+                "Temperature": "C",
+                "Visibility": "m",
+                "Wind-Speed": "kt"
+            }
+        }
+
+### Parse a Given TAF [POST]
+
+Parse a user-supplied TAF included as the plain text body of the request.
+
++ Parameters
+
+    + location - ignored
+    + options: `translate` 
+    + format: `json`
+    + onfail - ignored
+
++ Request (text/plain)
+
+        PHKO 181735Z 1818/1918 VRB03KT P6SM FEW035 FM182000 20010KT P6SM FEW030 SCT060 FM190400 10007KT P6SM FEW030 BKN050 FM191200 VRB03KT P6SM SCT030
+
++ Response 200 (application/json)
+
+        {
+            "Forecast": [
+                {
+                    "Altimeter": "",
+                    "Cloud-List": [
+                        [
+                            "FEW",
+                            "035"
+                        ]
+                    ],
+                    "End-Time": "1918",
+                    "Flight-Rules": "VFR",
+                    "Icing-List": [],
+                    "Other-List": [],
+                    "Probability": "",
+                    "Raw-Line": "1818/1918 VRB03KT P6SM FEW035",
+                    "Start-Time": "1818",
+                    "Turb-List": [],
+                    "Type": "BASE",
+                    "Visibility": "P6",
+                    "Wind-Direction": "VRB",
+                    "Wind-Gust": "",
+                    "Wind-Shear": "",
+                    "Wind-Speed": "03"
+                },
+                {
+                    "Altimeter": "",
+                    "Cloud-List": [
+                        [
+                            "FEW",
+                            "030"
+                        ],
+                        [
+                            "SCT",
+                            "060"
+                        ]
+                    ],
+                    "End-Time": "1904",
+                    "Flight-Rules": "VFR",
+                    "Icing-List": [],
+                    "Other-List": [],
+                    "Probability": "",
+                    "Raw-Line": "FM182000 20010KT P6SM FEW030 SCT060",
+                    "Start-Time": "1820",
+                    "Turb-List": [],
+                    "Type": "FROM",
+                    "Visibility": "P6",
+                    "Wind-Direction": "200",
+                    "Wind-Gust": "",
+                    "Wind-Shear": "",
+                    "Wind-Speed": "10"
+                },
+                {
+                    "Altimeter": "",
+                    "Cloud-List": [
+                        [
+                            "FEW",
+                            "030"
+                        ],
+                        [
+                            "BKN",
+                            "050"
+                        ]
+                    ],
+                    "End-Time": "1912",
+                    "Flight-Rules": "VFR",
+                    "Icing-List": [],
+                    "Other-List": [],
+                    "Probability": "",
+                    "Raw-Line": "FM190400 10007KT P6SM FEW030 BKN050",
+                    "Start-Time": "1904",
+                    "Turb-List": [],
+                    "Type": "FROM",
+                    "Visibility": "P6",
+                    "Wind-Direction": "100",
+                    "Wind-Gust": "",
+                    "Wind-Shear": "",
+                    "Wind-Speed": "07"
+                },
+                {
+                    "Altimeter": "",
+                    "Cloud-List": [
+                        [
+                            "SCT",
+                            "030"
+                        ]
+                    ],
+                    "End-Time": "1918",
+                    "Flight-Rules": "VFR",
+                    "Icing-List": [],
+                    "Other-List": [],
+                    "Probability": "",
+                    "Raw-Line": "FM191200 VRB03KT P6SM SCT030",
+                    "Start-Time": "1912",
+                    "Turb-List": [],
+                    "Type": "FROM",
+                    "Visibility": "P6",
+                    "Wind-Direction": "VRB",
+                    "Wind-Gust": "",
+                    "Wind-Shear": "",
+                    "Wind-Speed": "03"
+                }
+            ],
+            "Max-Temp": "",
+            "Meta": {
+                "Cache-Timestamp": "Fri, 18 May 2018 19:21:46 GMT",
+                "Timestamp": "Fri, 18 May 2018 19:21:46 GMT"
+            },
+            "Min-Temp": "",
+            "Raw-Report": "PHKO 181735Z 1818/1918 VRB03KT P6SM FEW035 FM182000 20010KT P6SM FEW030 SCT060 FM190400 10007KT P6SM FEW030 BKN050 FM191200 VRB03KT P6SM SCT030",
+            "Remarks": "",
+            "Station": "PHKO",
+            "Time": "181735Z",
+            "Translations": {
+                "Forecast": [
+                    {
+                        "Altimeter": "",
+                        "Clouds": "Few clouds at 3500ft - Reported AGL",
+                        "Icing": "",
+                        "Other": "",
+                        "Turbulance": "",
+                        "Visibility": "Greater than 6sm ( >9999m )",
+                        "Wind": "Variable at 03kt",
+                        "Wind-Shear": ""
+                    },
+                    {
+                        "Altimeter": "",
+                        "Clouds": "Few clouds at 3000ft, Scattered clouds at 6000ft - Reported AGL",
+                        "Icing": "",
+                        "Other": "",
+                        "Turbulance": "",
+                        "Visibility": "Greater than 6sm ( >9999m )",
+                        "Wind": "S-200 at 10kt",
+                        "Wind-Shear": ""
+                    },
+                    {
+                        "Altimeter": "",
+                        "Clouds": "Few clouds at 3000ft, Broken layer at 5000ft - Reported AGL",
+                        "Icing": "",
+                        "Other": "",
+                        "Turbulance": "",
+                        "Visibility": "Greater than 6sm ( >9999m )",
+                        "Wind": "E-100 at 07kt",
+                        "Wind-Shear": ""
+                    },
+                    {
+                        "Altimeter": "",
+                        "Clouds": "Scattered clouds at 3000ft - Reported AGL",
+                        "Icing": "",
+                        "Other": "",
+                        "Turbulance": "",
+                        "Visibility": "Greater than 6sm ( >9999m )",
+                        "Wind": "Variable at 03kt",
+                        "Wind-Shear": ""
+                    }
+                ],
+                "Max-Temp": "",
+                "Min-Temp": "",
+                "Remarks": {}
+            },
+            "Units": {
+                "Altimeter": "inHg",
+                "Altitude": "ft",
+                "Temperature": "C",
+                "Visibility": "sm",
+                "Wind-Speed": "kt"
+            }
+        }
