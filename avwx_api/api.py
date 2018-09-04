@@ -141,6 +141,9 @@ class LegacyReportEndpoint(ReportEndpoint):
         resp.headers['X-Robots-Tag'] = 'noindex'
         return resp
 
+class LegacyCopy(LegacyReportEndpoint):
+    pass
+
 class ParseEndpoint(ReportEndpoint):
     """
     Given report endpoint
@@ -164,6 +167,7 @@ class ParseEndpoint(ReportEndpoint):
         resp.headers['X-Robots-Tag'] = 'noindex'
         return resp
 
-api.add_resource(ReportEndpoint, '/api/<string:rtype>/<string:station>')
+api.add_resource(ReportEndpoint, '/api/preview/<string:rtype>/<string:station>')
+api.add_resource(LegacyCopy, '/api/<string:rtype>/<string:station>')
 api.add_resource(LegacyReportEndpoint, '/api/legacy/<string:rtype>/<string:station>')
 api.add_resource(ParseEndpoint, '/api/parse/<string:rtype>')
