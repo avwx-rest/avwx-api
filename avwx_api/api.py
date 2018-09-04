@@ -29,6 +29,10 @@ class ReportEndpoint(Resource):
         """
         try:
             params = {'report_type': rtype.lower(), **request.headers, **request.args, **kwargs}
+            # Unpack param lists. Ex: options: ['info,speech'] -> options: 'info,speech'
+            for k, v in params.items():
+                if isinstance(v, list):
+                    params[k] = v[0]
             return self.struct(**self.validator(params))
         except (Invalid, MultipleInvalid) as exc:
             key = exc.path[0]
