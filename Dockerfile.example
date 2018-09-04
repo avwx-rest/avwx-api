@@ -1,5 +1,5 @@
-# Start from the official Python 3.6 container
-FROM python:3.6.5
+# Start from the official Python 3.7 container
+FROM python:3.7.0
 
 # Expose the default Flask port
 EXPOSE 8000

@@ -8,19 +8,21 @@ from typing import Callable
 # library
 from avwx.core import valid_station
 from avwx.exceptions import BadStation
-from voluptuous import All, In, Invalid, Required, Schema
+from voluptuous import All, In, Invalid, Required, Schema, REMOVE_EXTRA
 
 HELP = {
     'format': 'Accepted response formats (json, xml, yaml)',
     'onfail': 'Desired behavior when report fetch fails (error, cache)',
     'options': 'Response content and parsing options. Ex: "info,summary"',
-    'report': 'Raw report string to be parsed. Must be param encoded or in headers',
+    'report': 'Raw report string to be parsed. Given in the POST body as plain text',
     'report_type': 'Weather report type (metar, taf)',
     'station': 'ICAO station ID or coord pair. Ex: KJFK or "12.34,-12.34"'
 }
 
 def Location(loc: str) -> [str]:
-    """Validates a station ident or coordinate pair string"""
+    """
+    Validates a station ident or coordinate pair string
+    """
     loc = loc.split(',')
     if len(loc) == 1:
         try:
@@ -38,8 +40,12 @@ def Location(loc: str) -> [str]:
     return loc
 
 def SplitIn(values: (str,)) -> Callable:
-    """Returns a validator to check for given values in a comma-separated string"""
+    """
+    Returns a validator to check for given values in a comma-separated string
+    """
     def validator(csv: str) -> str:
+        if not csv:
+            return []
         split = csv.split(',')
         for val in split:
             if val not in values:
@@ -49,7 +55,7 @@ def SplitIn(values: (str,)) -> Callable:
 
 _shared = {
     Required('format', default='json'): All(str, In(('json', 'xml', 'yaml'))),
-    'options': All(str, SplitIn(('info', 'translate', 'summary', 'speech'))),
+    Required('options', default=''): All(str, SplitIn(('info', 'translate', 'summary', 'speech'))),
     Required('report_type'): All(str, In(('metar', 'taf')))
 }
 
@@ -57,9 +63,9 @@ report = Schema({
     Required('onfail', default='error'): All(str, In(('error', 'cache'))),
     Required('station'): All(str, Location),
     **_shared
-})
+}, extra=REMOVE_EXTRA)
 
 given = Schema({
     'report': str,
     **_shared
-})
+}, extra=REMOVE_EXTRA)
