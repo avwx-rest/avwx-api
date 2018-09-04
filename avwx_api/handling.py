@@ -160,7 +160,7 @@ def parse_given(rtype: str, report: str, opts: [str]) -> (dict, int):
         resp = asdict(ureport.data)
         resp['meta'] = {'timestamp': datetime.utcnow()}
         if 'translate' in opts:
-            resp['translations'] = ureport.translations
+            resp['translations'] = asdict(ureport.translations)
         if 'summary' in opts:
             if rtype == 'taf':
                 for i, forecast in enumerate(ureport.translations['forecast']):
