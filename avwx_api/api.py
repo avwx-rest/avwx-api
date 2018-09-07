@@ -148,13 +148,29 @@ class LegacyReportEndpoint(ReportEndpoint):
 class LegacyCopy(LegacyReportEndpoint):
     pass
 
-class ParseEndpoint(ReportEndpoint):
+class ParseEndpoint(LegacyReportEndpoint):
     """
     Given report endpoint
     """
 
     validator = validators.given
     struct = structs.GivenParams
+
+    def get(self, rtype: str) -> Response:
+        """
+        Legacy GET handler to parse given METAR and TAF reports
+        """
+        params = self.validate(rtype.lower())
+        if isinstance(params, dict):
+            resp = jsonify(params)
+            resp.status_code = 400
+        else:
+            data, code = parse_given(rtype, params.report, params.options)
+            data = self.revert_dict(data)
+            resp = self.format_response(data, params.format, rtype)
+            resp.status_code = code
+        resp.headers['X-Robots-Tag'] = 'noindex'
+        return resp
 
     def post(self, rtype: str) -> Response:
         """
@@ -174,4 +190,4 @@ class ParseEndpoint(ReportEndpoint):
 api.add_resource(ReportEndpoint, '/api/preview/<string:rtype>/<string:station>')
 api.add_resource(LegacyCopy, '/api/<string:rtype>/<string:station>')
 api.add_resource(LegacyReportEndpoint, '/api/legacy/<string:rtype>/<string:station>')
-api.add_resource(ParseEndpoint, '/api/parse/<string:rtype>')
+api.add_resource(ParseEndpoint, '/api/<string:rtype>/parse')
