@@ -1,12 +1,12 @@
 """
 Michael duPont - michael@mdupont.com
-avwx_api.views - Routes and views for the flask application
+avwx_api.views - Routes and views for the Quart application
 """
 
 # pylint: disable=W0702
 
 # library
-from flask import jsonify
+from quart import jsonify
 # module
 from avwx_api import app
 
@@ -14,44 +14,16 @@ from avwx_api import app
 
 @app.route('/')
 @app.route('/home')
-def home():
+async def home():
     """
     Returns static home page
     """
-    return app.send_static_file('html/home.html')
-
-@app.route('/about')
-def about():
-    """
-    Returns static about page
-    """
-    return app.send_static_file('html/about.html')
-
-@app.route('/contact')
-def contact():
-    """
-    Returns static contact page
-    """
-    return app.send_static_file('html/contact.html')
-
-@app.route('/documentation')
-def documentation():
-    """
-    Returns static documentation page
-    """
-    return app.send_static_file('html/documentation.html')
-
-@app.route('/updates')
-def updates():
-    """
-    Returns static updates page
-    """
-    return app.send_static_file('html/updates.html')
+    return await app.send_static_file('html/home.html')
 
 # API Routing Errors
 
 @app.route('/api')
-def no_report():
+async def no_report():
     """
     Returns no report msg
     """
@@ -59,7 +31,7 @@ def no_report():
 
 @app.route('/api/metar')
 @app.route('/api/taf')
-def no_station():
+async def no_station():
     """
     Returns no station msg
     """

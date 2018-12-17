@@ -1,7 +1,7 @@
 # Start from the official Python 3.7 container
-FROM python:3.7.0
+FROM python:3.7.1
 
-# Expose the default Flask port
+# Expose the default Quart port
 EXPOSE 8000
 
 # Set the main working directory
@@ -16,11 +16,11 @@ ENV CLIENT_ACCESS_TOKEN='dialogflow client key'
 COPY requirements.txt /home/avwx/requirements.txt
 RUN pip install -U pip
 RUN pip install -Ur requirements.txt
-RUN pip install -U gunicorn
+RUN pip install -U hypercorn
 
 # Copy the application code
 COPY avwx_api /home/avwx/avwx_api
-COPY gunicorn_config.py /home/avwx/gunicorn_config.py
+COPY hypercorn_config.py /home/avwx/hypercorn_config.py
 
 # Run the application
-CMD ["gunicorn", "avwx_api:app", "-c", "gunicorn_config.py"]
+CMD ["hypercorn", "avwx_api:app", "-c", "python:hypercorn_config.py"]

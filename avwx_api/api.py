@@ -6,15 +6,14 @@ avwx_api.api - Functional API endpoints separate from static views
 # library
 import yaml
 from dicttoxml import dicttoxml as fxml
-from flask import Response, jsonify, request
-from flask_restful import Api, Resource
+from quart import Response, jsonify, request
+from quart_openapi import Resource
 from voluptuous import Invalid, MultipleInvalid
 # module
 from avwx_api import app, structs, validators
 from avwx_api.handling import handle_report, parse_given
 
-api = Api(app)
-
+@app.route('/api/preview/<string:rtype>/<string:station>')
 class ReportEndpoint(Resource):
     """
     METAR and TAF report endpoint
@@ -53,7 +52,7 @@ class ReportEndpoint(Resource):
             return Response(yaml.dump(output, default_flow_style=False), mimetype='text/x-yaml')
         return jsonify(output)
 
-    def get(self, rtype: str, station: str) -> Response:
+    async def get(self, rtype: str, station: str) -> Response:
         """
         GET handler returning METAR and TAF reports
         """
@@ -63,12 +62,13 @@ class ReportEndpoint(Resource):
             resp.status_code = 400
         else:
             nofail = params.onfail == 'cache'
-            data, code = handle_report(rtype, params.station, params.options, nofail)
+            data, code = await handle_report(rtype, params.station, params.options, nofail)
             resp = self.format_response(data, params.format, rtype)
             resp.status_code = code
         resp.headers['X-Robots-Tag'] = 'noindex'
         return resp
 
+@app.route('/api/<string:rtype>/<string:station>')
 class LegacyReportEndpoint(ReportEndpoint):
     """
     Legacy report endpoint to return data in pre-Sept2018 format
@@ -128,7 +128,7 @@ class LegacyReportEndpoint(ReportEndpoint):
             resp[k] = self.revert_value(v)
         return resp
 
-    def get(self, rtype: str, station: str) -> Response:
+    async def get(self, rtype: str, station: str) -> Response:
         """
         GET handler returning METAR and TAF reports in the legacy format
         """
@@ -138,16 +138,18 @@ class LegacyReportEndpoint(ReportEndpoint):
             resp.status_code = 400
         else:
             nofail = params.onfail == 'cache'
-            data, code = handle_report(rtype, params.station, params.options, nofail)
+            data, code = await handle_report(rtype, params.station, params.options, nofail)
             data = self.revert_dict(data)
             resp = self.format_response(data, params.format, rtype)
             resp.status_code = code
         resp.headers['X-Robots-Tag'] = 'noindex'
         return resp
 
+@app.route('/api/<string:rtype>/<string:station>')
 class LegacyCopy(LegacyReportEndpoint):
     pass
 
+@app.route('/api/<string:rtype>/parse')
 class ParseEndpoint(LegacyReportEndpoint):
     """
     Given report endpoint
@@ -156,7 +158,7 @@ class ParseEndpoint(LegacyReportEndpoint):
     validator = validators.given
     struct = structs.GivenParams
 
-    def get(self, rtype: str) -> Response:
+    async def get(self, rtype: str) -> Response:
         """
         Legacy GET handler to parse given METAR and TAF reports
         """
@@ -172,11 +174,12 @@ class ParseEndpoint(LegacyReportEndpoint):
         resp.headers['X-Robots-Tag'] = 'noindex'
         return resp
 
-    def post(self, rtype: str) -> Response:
+    async def post(self, rtype: str) -> Response:
         """
         POST handler to parse given METAR and TAF reports
         """
-        params = self.validate(rtype.lower(), report=request.data.decode() or None)
+        data = await request.data
+        params = self.validate(rtype.lower(), report=data.decode() or None)
         if isinstance(params, dict):
             resp = jsonify(params)
             resp.status_code = 400
@@ -186,8 +189,3 @@ class ParseEndpoint(LegacyReportEndpoint):
             resp.status_code = code
         resp.headers['X-Robots-Tag'] = 'noindex'
         return resp
-
-api.add_resource(ReportEndpoint, '/api/preview/<string:rtype>/<string:station>')
-api.add_resource(LegacyCopy, '/api/<string:rtype>/<string:station>')
-api.add_resource(LegacyReportEndpoint, '/api/legacy/<string:rtype>/<string:station>')
-api.add_resource(ParseEndpoint, '/api/<string:rtype>/parse')

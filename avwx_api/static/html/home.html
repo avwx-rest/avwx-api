@@ -6,7 +6,7 @@
     <title>AVWX REST API</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    
+
     <!--Home Page Favicons-->
     <link rel="apple-touch-icon" sizes="57x57" href="/static/favicons/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/static/favicons/apple-icon-60x60.png">
@@ -25,12 +25,12 @@
     <meta name="msapplication-TileColor" content="#ff9933">
     <meta name="msapplication-TileImage" content="/static/favicons/ms-icon-144x144.png">
     <meta name="theme-color" content="#ff9933">
-    
+
     <!--LINK-->
     <link rel="stylesheet" href="/static/css/bootstrap/bootstrap.min.css" />
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+    <!-- <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" /> -->
     <link href="/static/css/style.css" rel="stylesheet" />
-    
+
     <!--Style-->
     <style type="text/css">
         html,body {
@@ -38,9 +38,9 @@
             background:center no-repeat fixed url('/static/img/airport-runway.jpg');
             background-size: cover;
         }
-        
+
         section {
-	        padding-top:70px;  
+	        padding-top:70px;
             padding-bottom:50px;
         }
 
@@ -52,28 +52,30 @@
             padding-top:10%;
             font-size:70px;
         }
-          
+
         .well {
-	        border-color:transparent;
+            border: none;
+            margin: 10px;
         }
-        
-        #sec-clear {
+
+        .sec-clear {
             background: linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25));
             color: #ececec;
         }
 
-        #sec-grey {
+        .sec-grey {
             background-color: #e1e2e3;
             color: #335e9e;
         }
 
-        #sec-git {
+        .sec-git {
             background-color: #e7e7e7;
             color: #333;
         }
     </style>
-    
+
     <!--SCRIPT-->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <script src="/static/js/scripts.js"></script>
@@ -95,16 +97,15 @@
         </div>
         <div class="navbar-collapse collapse" id="navbar-collapsible">
             <ul class="nav navbar-nav navbar-left">
-                <li><a href="/about">About</a></li>
-                <li><a href="/documentation">Documentation</a></li>
-                <li><a href="/updates">Updates</a></li>
-                <li><a href="/contact">Contact</a></li>
+                <li><a href="https://avwx.docs.apiary.io">Documentation</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#support">Support</a></li>
             </ul>
         </div>
     </div>
 </nav>
 
-<section class="container-fluid sec-full" id="sec-clear">
+<section class="container-fluid sec-full sec-clear">
 	<br></br>
   	<h1 class="text-center v-center">Aviation Weather REST API</h1>
 	<br></br>
@@ -131,21 +132,30 @@
     </div>
 </section>
 
-<section class="container-fluid" id="sec-grey">
+<section class="container-fluid sec-grey">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-danger" role="alert">
+                    Warning: The new response syntax (found at /api/preview/metar) will become the default on April 1st, 2019. If you need more time to update your apps, switch to the legacy endpoint (found at /api/legacy/metar) which will exist until July 1st, 2019
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container text-center">
         <div class="row">
             <div class="col-sm-4">
-		        <h1><i class="fa fa-cloud fa-4x"></i></h1>
+		        <h1><i class="fas fa-cloud fa-4x"></i></h1>
                 <h3>Reliable Sources</h3>
-                <p>Reports are pulled from <a href="http://aviationweather.gov" target="_blank">aviationweather.gov</a>, the offical source for aviation weather, and coordinate-to-station is pulled from <a href="http://www.geonames.org" target="_blank">geonames.org</a>, one of the most widely used sources of geography data</p>
+                <p>Most reports are pulled from <a href="http://aviationweather.gov" target="_blank">aviationweather.gov</a>, the offical source for aviation weather for pilots in the US, but support exists for additional sources on a regional basis. Coordinate-to-station is pulled from <a href="http://www.geonames.org" target="_blank">geonames.org</a>, one of the most widely used sources of geography data</p>
             </div>
             <div class="col-sm-4">
-		        <h1><i class="fa fa-area-chart fa-4x"></i></h1>
+		        <h1><i class="fas fa-chart-area fa-4x"></i></h1>
                 <h3>Data Analysis</h3>
-                <p>Not only is the report organized but every element is error-corrected and analyzed to provide additional information like "Flight-Rules"</p>
+                <p>Not only is the report organized but every element is error-corrected and analyzed to provide additional information like flight rules</p>
             </div>
             <div class="col-sm-4">
-                <h1><i class="fa fa-code fa-4x"></i></h1>
+                <h1><i class="fas fa-code fa-4x"></i></h1>
 		        <h3>Cross-Platform</h3>
                 <p>Parsed reports are returned in JSON, XML, or YAML format, which can be imported into any language on any platform. Great for battery-conscientious mobile applications</p>
             </div>
@@ -153,17 +163,106 @@
     </div>
 </section>
 
-<section class="container-fluid" id="sec-clear">
-    <div class="row">
-        <div class="col-sm-8 col-sm-offset-2 well text-center" id="sec-git">
-            <h1><i class="fa fa-github fa-5x"></i></h1>
-            <h1 style="margin-top: -20px;">Open-Source</h1>
-            <p class="lead">The engine is open-source on <a href="https://github.com/flyinactor91/AVWX-API" target="_blank">GitHub</a></p>
-            <br></br>
+<section class="container">
+    <div class="row text-center">
+        <div class="col-md-6">
+            <div class="well" id="sec-git">
+                <h1><i class="fas fa-book fa-5x"></i></h1>
+                <h1>Documentation</h1>
+                <p class="lead">API docs are available on <a href="https://avwx.docs.apiary.io" target="_blank">Apiary</a></p>
+                <br></br>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="well" id="sec-git">
+                <h1><i class="fab fa-github fa-5x"></i></h1>
+                <h1>Open-Source</h1>
+                <p class="lead">The <a href="https://github.com/flyinactor91/AVWX-API" target="_blank">AVWX API</a> and <a href="https://github.com/flyinactor91/AVWX-Engine" target="_blank">core library</a> are open-source on GitHub</p>
+                <br/>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container-fluid sec-grey" id="support">
+    <div class="row text-center">
+        <div class="col-sm-6">
+            <div class="well">
+                <h2>About</h2>
+                <p>The AVWX REST API is a publically-available REST API for aviation weather. The service organizes METAR and TAF reports into their individual elements and returns them in JSON, XML, or YAML format. It does a considderable amount of error correction so that your report is as clean and thorough as possible. It has additional services like providing station information, translating the report into English, and creating summary strings meant to be read or spoken. For more details, check out the <a href="https://avwx.docs.apiary.io">documentation</a>.</p>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="well">
+                <h2>Is AVWX Free?</h2>
+                <p>AVWX's core parsing services are now and will always be free. However, while the library is freely available, hosting this API costs money (about $200/month at its current usage). Donations are always welcome. If AVWX is powering your paid or commercial application, please consider making a recurring monthly donation.</p>
+                <a class="dbox-donation-button" href="https://donorbox.org/support-avwx" style="background:#2d81c5 url(https://d1iczxrky3cnb2.cloudfront.net/red_logo.png) no-repeat 56px center; color: #fff;text-decoration: none;font-family: Verdana,sans-serif;display: inline-block;font-size: 16px;padding: 17px 64px 17px 94px; -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; box-shadow: 0 2px 0 0 #1f5a89; text-shadow: 0 1px rgba(0, 0, 0, 0.3);" >Donate</a>
+                <!-- <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                    <input type="hidden" name="cmd" value="_s-xclick">
+                    <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----">
+                    <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                    <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+                </form> -->
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container" id="contact">
+    <div class="row text-center">
+        <div class="col-sm-4">
+            <div class="well">
+                <h2>Mailing List</h2>
+                <p>Join the AVWX mailing list to get notified of new features. You won't get more than a few a year</p>
+                <p>
+                    <div id="mc_embed_signup">
+                    <form action="https://rest.us17.list-manage.com/subscribe/post?u=547dadfe45ae821d56d2a5e52&amp;id=92e69d7b0f" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+                        <div id="mc_embed_signup_scroll">
+                        <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" required>
+                        <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                        <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_547dadfe45ae821d56d2a5e52_92e69d7b0f" tabindex="-1" value=""></div>
+                        <div class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
+                        </div>
+                    </form>
+                    </div>
+                </p>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="well">
+                <h2>About Me</h2>
+                <p>Hi, I'm Michael. I'm a pilot, machine learning engineer, and tech meetup organizer based in Orlando, FL. You can find more of my projects at <a href="http://mdupont.com">mdupont.com</a>.</p>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="well">
+                <h2>Contact</h2>
+                <p>Bugs? Comments? Feature Requests? Are you using the API and want your project to be featured? Email me at <a href="mailto:michael@mdupont.com">michael@mdupont.com</a>.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container-fluid sec-grey">
+    <div class="container">
+        <div class="row">
+            <h2>Who uses AVWX?</h2>
+            <p>The parser itself has been field-tested and in use since September 2014. It was originally made for a <a href="http://mdupont.com/Programming/METAR-RasPi">Raspberry Pi IoT project</a>, but was eventually made available as a public API. I've been contacted by flight schools, research institutions, and many mobile and desktop application developers. Here are a few of my favorite projects using AVWX.</p>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 col-md-5 col-md-offset-1">
+                        <b><a href="https://duck.co/ia/view/metar">AVWX on Duck Duck Go</a></b> - Example mobile card<br/>
+                        <img src="/static/img/ddgavwx.png" class="img-responsive" alt="Responsive image"/>
+                    </div>
+                    <div class="col-sm-6 col-md-5">
+                        <b><a href="https://aerolink.club/">AeroLink</a></b> - All-in-one flight app for South America<br/>
+                        <img src="/static/img/aerolink.png" class="img-responsive" alt="Responsive image"/>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
 </body>
-
 </html>

@@ -1,16 +1,14 @@
 """
 Michael duPont - michael@mdupont.com
-avwx_api.__init__ - High-level Flask application
+avwx_api.__init__ - High-level Quart application
 """
 
-from flask import Flask
-from flask_cors import CORS
+from quart_openapi import Pint
+from quart_cors import cors
 
-app = Flask(__name__)
-cors = CORS(app, resources={
-    r'/api/*': {'origins': '*'}
-})
+app = Pint(__name__)
+app = cors(app)
 
 import avwx_api.views
 import avwx_api.api
-import avwx_api.assistants
+# import avwx_api.assistants

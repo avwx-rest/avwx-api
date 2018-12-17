@@ -10,8 +10,8 @@ from dataclasses import asdict
 from datetime import datetime
 from os import environ
 # library
+import aiohttp
 import avwx
-from requests import get
 # module
 from avwx_api.cache import Cache
 
@@ -28,14 +28,16 @@ ERRORS = [
     'Report Parsing Error: Could not parse {} report. Please contact the admin with raw report'
 ]
 
-def get_data_for_corrds(lat: str, lon: str) -> (dict, int):
+async def get_data_for_corrds(lat: str, lon: str) -> (dict, int):
     """
     Return station/report geodata from geonames for a given latitude and longitude.
     
     Check for 'Error' key in returned dict
     """
     try:
-        data = get(COORD_URL.format(lat, lon)).json()
+        async with aiohttp.ClientSession() as sess:
+            async with sess.get(COORD_URL.format(lat, lon)) as resp:
+                data = await resp.json()
         if 'weatherObservation' in data:
             return data['weatherObservation'], 200
         elif 'status' in data:
@@ -45,7 +47,7 @@ def get_data_for_corrds(lat: str, lon: str) -> (dict, int):
         print(exc)
         return {'error':'Coord Lookup Error: Unknown Error (0)'}, 500
 
-def new_report(rtype: str, station: str, report: str) -> (dict, int):
+async def new_report(rtype: str, station: str, report: str) -> (dict, int):
     """
     Fetch and parse report data for a given station
 
@@ -58,7 +60,7 @@ def new_report(rtype: str, station: str, report: str) -> (dict, int):
     # Fetch report if one wasn't received via geonames
     if not report:
         try:
-            parser.update()
+            await parser.async_update()
         except avwx.exceptions.InvalidRequest as exc:
             print('Invalid Request:', exc)
             return {'error': ERRORS[0].format(rtype.upper(), station)}, 400
@@ -76,7 +78,7 @@ def new_report(rtype: str, station: str, report: str) -> (dict, int):
     }
     data['data']['units'] = asdict(parser.units)
     # Update the cache with the new report data
-    CACHE.update(rtype, data)
+    await CACHE.update(rtype, data)
     return data, 200
 
 def format_report(rtype: str, data: {str: object}, options: [str]) -> {str: object}:
@@ -93,7 +95,7 @@ def format_report(rtype: str, data: {str: object}, options: [str]) -> {str: obje
                 ret[opt] = data.get(opt)
     return ret
 
-def handle_report(rtype: str, loc: [str], opts: [str], nofail: bool = False) -> (dict, int):
+async def handle_report(rtype: str, loc: [str], opts: [str], nofail: bool = False) -> (dict, int):
     """
     Returns weather data for the given report type, station, and options
     Also returns the appropriate HTTP response code
@@ -103,7 +105,7 @@ def handle_report(rtype: str, loc: [str], opts: [str], nofail: bool = False) -> 
     """
     if len(loc) == 2:
         # Do things given goedata contains station and metar report
-        geodata, code = get_data_for_corrds(loc[0], loc[1])
+        geodata, code = await get_data_for_corrds(loc[0], loc[1])
         if code != 200:
             return geodata, code
         station = geodata['ICAO']
@@ -113,16 +115,16 @@ def handle_report(rtype: str, loc: [str], opts: [str], nofail: bool = False) -> 
         station = loc[0].upper()
         report = None
     # Fetch an existing and up-to-date cache or make a new report
-    data, code = CACHE.get(rtype, station), 200
+    data, code = await CACHE.get(rtype, station), 200
     if data is None:
-        data, code = new_report(rtype, station, report)
+        data, code = await new_report(rtype, station, report)
     resp = {'meta': {'timestamp': datetime.utcnow()}}
     if 'timestamp' in data:
         resp['meta']['cache-timestamp'] = data['timestamp']
     # Handle errors according to nofail arguement
     if code != 200:
         if nofail:
-            cache = CACHE.get(rtype, station)
+            cache = await CACHE.get(rtype, station)
             if cache is None:
                 resp['error'] = 'No report or cache was found for the requested station'
                 return resp, 400
@@ -163,7 +165,7 @@ def parse_given(rtype: str, report: str, opts: [str]) -> (dict, int):
             resp['translations'] = asdict(ureport.translations)
         if 'summary' in opts:
             if rtype == 'taf':
-                for i, forecast in enumerate(ureport.translations['forecast']):
+                for i in range(len(ureport.translations['forecast'])):
                     resp['forecast'][i]['summary'] = ureport.summary[i]
             else:
                 resp['summary'] = ureport.summary

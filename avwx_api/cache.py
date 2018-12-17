@@ -7,7 +7,7 @@ avwx_api.cache - Class for communicating with the report cache
 from datetime import datetime, timedelta
 from os import environ
 # library
-import pymongo
+from motor.motor_asyncio import AsyncIOMotorClient
 
 MONGO_URI = environ.get('MONGO_URI', None)
 
@@ -34,7 +34,7 @@ class Cache(object):
     def __init__(self):
         if not MONGO_URI:
             return
-        db = pymongo.MongoClient(MONGO_URI).report_cache
+        db = AsyncIOMotorClient(MONGO_URI).report_cache
         self.tables = {
             'metar': db.metar,
             'taf': db.taf
@@ -47,7 +47,7 @@ class Cache(object):
         """
         return datetime.utcnow() > time + timedelta(minutes=minutes)
 
-    def get(self, rtype: str, station: str, force: bool = False) -> {str: object}:
+    async def get(self, rtype: str, station: str, force: bool = False) -> {str: object}:
         """
         Returns the current cached data for a report type and station or None
 
@@ -56,12 +56,12 @@ class Cache(object):
         """
         if not MONGO_URI:
             return
-        data = self.tables[rtype].find_one({'_id': station})
+        data = await self.tables[rtype].find_one({'_id': station})
         data = replace_keys(data, '_$', '$')
         if force or (isinstance(data, dict) and not self.has_expired(data['timestamp'])):
             return data
 
-    def update(self, rtype: str, data: {str: object}):
+    async def update(self, rtype: str, data: {str: object}):
         """
         Update the cache
         """
@@ -70,4 +70,4 @@ class Cache(object):
         data = replace_keys(data, '$', '_$')
         data['timestamp'] = datetime.utcnow()
         id = data['data'].get('station')
-        self.tables[rtype].update({'_id': id}, data, upsert=True)
+        await self.tables[rtype].update_one({'_id': id}, data, upsert=True)
