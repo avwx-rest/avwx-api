@@ -8,6 +8,7 @@ import yaml
 from dicttoxml import dicttoxml as fxml
 from quart import Response, jsonify, request
 from quart_openapi import Resource
+from quart_openapi.cors import crossdomain
 from voluptuous import Invalid, MultipleInvalid
 # module
 from avwx_api import app, structs, validators
@@ -52,6 +53,7 @@ class ReportEndpoint(Resource):
             return Response(yaml.dump(output, default_flow_style=False), mimetype='text/x-yaml')
         return jsonify(output)
 
+    @crossdomain(origin='*')
     async def get(self, rtype: str, station: str) -> Response:
         """
         GET handler returning METAR and TAF reports
@@ -128,6 +130,7 @@ class LegacyReportEndpoint(ReportEndpoint):
             resp[k] = self.revert_value(v)
         return resp
 
+    @crossdomain(origin='*')
     async def get(self, rtype: str, station: str) -> Response:
         """
         GET handler returning METAR and TAF reports in the legacy format
@@ -158,22 +161,7 @@ class ParseEndpoint(LegacyReportEndpoint):
     validator = validators.given
     struct = structs.GivenParams
 
-    async def get(self, rtype: str) -> Response:
-        """
-        Legacy GET handler to parse given METAR and TAF reports
-        """
-        params = self.validate(rtype.lower())
-        if isinstance(params, dict):
-            resp = jsonify(params)
-            resp.status_code = 400
-        else:
-            data, code = parse_given(rtype, params.report, params.options)
-            data = self.revert_dict(data)
-            resp = self.format_response(data, params.format, rtype)
-            resp.status_code = code
-        resp.headers['X-Robots-Tag'] = 'noindex'
-        return resp
-
+    @crossdomain(origin='*')
     async def post(self, rtype: str) -> Response:
         """
         POST handler to parse given METAR and TAF reports
