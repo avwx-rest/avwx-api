@@ -4,6 +4,7 @@ avwx_api.assistants - Endpoints and intents for voice assistants
 """
 
 # library
+import quart.flask_patch
 import flask_assistant as assist
 # import flask_ask as ask
 # module
@@ -18,11 +19,11 @@ STATION_MAP = {
     'airport': 'sys.airport'
 }
 
-def make_response(airport: dict, rtype: str) -> [str]:
+async def make_response(airport: dict, rtype: str) -> [str]:
     """
     Make the speech and text response for an airport and report type
     """
-    wxret, status_code = handle_report(rtype, [airport['ICAO']], ['summary', 'speech'])
+    wxret, status_code = await handle_report(rtype, [airport['ICAO']], ['summary', 'speech'])
     if status_code != 200:
         return assist.tell('There was a problem generating the response from the website')
     speech = 'Conditions at ' + airport['name'] + '. ' + wxret['speech']
@@ -30,19 +31,19 @@ def make_response(airport: dict, rtype: str) -> [str]:
     return speech, text
 
 @google.action('ask-metar', mapping=STATION_MAP)
-def metar_google(airport):
+async def metar_google(airport):
     """
     Return a spoken and display METAR response
     """
-    speech, text = make_response('metar', airport)
+    speech, text = await make_response('metar', airport)
     return assist.tell(speech, display_text=text)
 
 @google.action('ask-taf', mapping=STATION_MAP)
-def taf_google(airport):
+async def taf_google(airport):
     """
     Return a spoken and display TAF response
     """
-    speech, text = make_response('taf', airport)
+    speech, text = await make_response('taf', airport)
     return assist.tell(speech, display_text=text)
 
 # Amazon Alexa intents
