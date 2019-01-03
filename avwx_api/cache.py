@@ -70,4 +70,4 @@ class Cache(object):
         data = replace_keys(data, '$', '_$')
         data['timestamp'] = datetime.utcnow()
         id = data['data'].get('station')
-        await self.tables[rtype].update_one({'_id': id}, data, upsert=True)
+        await self.tables[rtype].update_one({'_id': id}, {'$set': data}, upsert=True)
