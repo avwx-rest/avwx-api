@@ -20,6 +20,9 @@ ENV GN_USER='geonames-username'
 # Go to your dashboard to get an agent API key https://console.dialogflow.com/api-client/
 ENV CLIENT_ACCESS_TOKEN='dialog flow api key'
 
+# Go to your dashboard to get an agent API key https://console.dialogflow.com/api-client/
+ENV CLIENT_ACCESS_TOKEN='dialog flow api key'
+
 # Install the require Python packages
 COPY requirements.txt /home/avwx/requirements.txt
 RUN pip install -U pip
