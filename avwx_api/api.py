@@ -3,6 +3,8 @@ Michael duPont - michael@mdupont.com
 avwx_api.api - Functional API endpoints separate from static views
 """
 
+# stdlib
+import asyncio as aio
 # library
 import yaml
 from dicttoxml import dicttoxml as fxml
@@ -175,5 +177,37 @@ class ParseEndpoint(LegacyReportEndpoint):
             data, code = parse_given(rtype, params.report, params.options)
             resp = self.format_response(data, params.format, rtype)
             resp.status_code = code
+        resp.headers['X-Robots-Tag'] = 'noindex'
+        return resp
+
+# class TokenAuth(ReportEndpoint):
+
+@app.route('/api/preview/multi/<string:rtype>/<string:stations>')
+class MultiReportEndpoint(ReportEndpoint):
+    """
+    Multiple METAR and TAF reports in one endpoint
+    """
+
+    validator = validators.multi_report
+
+    @crossdomain(origin='*')
+    async def get(self, rtype: str, stations: str) -> Response:
+        """
+        GET handler returning multiple METAR and TAF reports
+        """
+        params = self.validate(rtype.lower(), station=stations)
+        if isinstance(params, dict):
+            resp = jsonify(params)
+            resp.status_code = 400
+        else:
+            nofail = params.onfail == 'cache'
+            results = await aio.gather(*[handle_report(
+                'metar',
+                [station],
+                params.options,
+                nofail
+            ) for station in params.station])
+            results = dict(zip(params.station, [r[0] for r in results]))
+            resp = self.format_response(results, params.format, rtype)
         resp.headers['X-Robots-Tag'] = 'noindex'
         return resp
