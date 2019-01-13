@@ -1,4 +1,4 @@
-aiohttp~=3.4
+aiohttp~=3.5
 asyncpg~=0.18
 avwx-engine>=1.0.8
 dataclasses>=0.6;python_version<"3.7"
@@ -7,7 +7,7 @@ dicttoxml~=1.7
 # flask-assistant~=0.2
 motor~=2.0
 pyyaml~=3.13
-quart~=0.6
+quart~=0.7
 quart-openapi>=1.3.10
 voluptuous~=0.11
 xmltodict~=0.11

@@ -20,6 +20,8 @@ async def validate_token() -> (str, int):
     """
     Aborts request if a header token is not valid
     """
+    if not token.PSQL_URI:
+        return
     auth_token = request.headers.get('Authorization')
     if not auth_token:
         abort(401)

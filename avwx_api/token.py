@@ -16,8 +16,6 @@ async def validate_token(token: str) -> bool:
     """
     Returns whether or not a given token is valid and active
     """
-    if not PSQL_URI:
-        return True
     conn = await asyncpg.connect(PSQL_URI)
     result = await conn.fetch(TOKEN_QUERY.format(token))
     await conn.close()
