@@ -7,6 +7,4 @@ from quart_openapi import Pint
 
 app = Pint(__name__)
 
-import avwx_api.views
-import avwx_api.api
-# import avwx_api.assistants
+from avwx_api import api, views

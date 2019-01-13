@@ -8,13 +8,24 @@ import asyncio as aio
 # library
 import yaml
 from dicttoxml import dicttoxml as fxml
-from quart import Response, jsonify, request
+from quart import Response, abort, jsonify, request
 from quart_openapi import Resource
 from quart_openapi.cors import crossdomain
 from voluptuous import Invalid, MultipleInvalid
 # module
-from avwx_api import app, structs, validators
+from avwx_api import app, structs, token, validators
 from avwx_api.handling import handle_report, parse_given
+
+async def validate_token() -> (str, int):
+    """
+    Aborts request if a header token is not valid
+    """
+    auth_token = request.headers.get('Authorization')
+    if not auth_token:
+        abort(401)
+    # Remove 'Token ' from token value
+    if not await token.validate_token(auth_token[7:]):
+        abort(403)
 
 @app.route('/api/preview/<string:rtype>/<string:station>')
 class ReportEndpoint(Resource):
@@ -180,8 +191,6 @@ class ParseEndpoint(LegacyReportEndpoint):
         resp.headers['X-Robots-Tag'] = 'noindex'
         return resp
 
-# class TokenAuth(ReportEndpoint):
-
 @app.route('/api/preview/multi/<string:rtype>/<string:stations>')
 class MultiReportEndpoint(ReportEndpoint):
     """
@@ -195,6 +204,7 @@ class MultiReportEndpoint(ReportEndpoint):
         """
         GET handler returning multiple METAR and TAF reports
         """
+        await validate_token()
         params = self.validate(rtype.lower(), station=stations)
         if isinstance(params, dict):
             resp = jsonify(params)

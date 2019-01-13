@@ -1,18 +1,74 @@
 # AVWX-API
-AVWX service API as a Flask app on Azure  
-Michael duPont - [mdupont.com](https://mdupont.com)
 
----
+![](https://avwx.rest/static/favicons/apple-icon-76x76.png)
+
+[![Requirements Status](https://requires.io/github/flyinactor91/AVWX-Account/requirements.svg?branch=master)](https://requires.io/github/flyinactor91/AVWX-API/requirements/?branch=master)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## About
-![](https://avwx.rest/static/favicons/apple-icon-76x76.png)  
-The AVWX REST API is a web service wrapper around an aviation weather function library I started as a [Raspberry Pi project](https://github.com/flyinactor91/METAR-RasPi) while finishing my private pilot certification. The standalone [library can be found here](https://github.com/flyinactor91/AVWX-Engine).
 
-The API is a Python3 Flask application in a Docker container. It sources METAR and TAF reports from NOAA ADDS (the backend of [aviationweather.gov](http://aviationweather.gov)) but provides a more accurate parse especially for international reporting stations. The API accepts a station's ICAO identifier (ex. KJFK, EGLL) or coordinate pair (lat, lon), in which case it uses [GeoNames](http://www.geonames.org/) to return the nearest station. Reports are fully parsed with all possible request combinations and saved in a document cache (also on Azure) for up to two minutes.
+The AVWX REST API is built as a Python Quart app which is a Flask-compatible async web backend. It sources METAR and TAF reports from NOAA ADDS and other localized weather sources (where available) via the [AVWX-Engine library](https://github.com/flyinactor91/AVWX-Engine) which I also maintain.
 
-Additional info can be found on the [service's about page](http://avwx.rest/about).
+The core benefit of AVWX over other sources is its parsing engine. It provides a more accurate interpretation of the raw report string than aging government sources and includes value-added features like calculating flight-rules, translating report elements into English, and providing text-to-speech representations of the report and its elements.
 
-## License
+For more information, go to the hosted version at [avwx.rest](https://avwx.rest).
 
-Copyright © 2017 Michael duPont  
-[MIT License](https://github.com/flyinactor91/AVWX-API/blob/master/LICENSE)
+## Quickstart
+
+The easiest way to get the app running is to create and run it in Docker. First, copy to example Dockerfile.
+
+```bash
+cp Dockerfile.example Dockerfile
+```
+
+Now we need to comment out three ENV vars in the Dockerfile. These are grouped together:
+
+```
+ENV MONGO_URI='...'
+ENV PSQL_URI='...'
+ENV GN_USER='...'
+```
+
+A quick explanation of what these do:
+
+- `MONGO_URI`: This connects the app to the request caching database. Commenting out disables caching
+- `PSQL_URI`: This connects the app to the account database for things like token authentication. Commenting out opens all endpoints
+- `GN_USER`: This is the GeoNames user name for coordinate lookup calls. Commenting out causes coord requests to fail. You can supply your own for testing
+
+Now you should be able to build and run the Docker container:
+
+```bash
+docker build -t avwx_api .
+docker run -p 8000:8000 avwx_api
+```
+
+It should now be available at [http://localhost:8000](http://localhost:8000)
+
+## Setup
+
+First we should install the app requirements and copy the env file. I recommend always installing into a virtual environment. Dotenv is not in the requirements file because it is only used in development.
+
+```bash
+pip install -r requirements.txt
+pip install python-dotenv
+cp .env.sample .env
+```
+
+For an explaination of the variables in `.env`, see the quickstart. Feel free to comment or replace these as you see fit.
+
+Before we can run the app, we need to tell Quart where the app is.
+
+```bash
+export QUART_APP=avwx_api:app
+export QUART_ENV=development
+```
+
+## Running
+
+Once the app is configured, use the Quart CLI to run it. It will be in development/debug mode.
+
+```bash
+quart run -p 8000
+```
+
+It should now be available at [http://localhost:8000](http://localhost:8000)
