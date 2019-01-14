@@ -11,6 +11,7 @@ WORKDIR /home/avwx
 ENV MONGO_URI='mongodb://cache:password==@loc.test.com:12345'
 ENV PSQL_URI='postgresql://localhost:5432/db'
 ENV GN_USER='geonames-username'
+ENV LOG_KEY='rollbar-server-key'
 
 # Install the require Python packages
 COPY requirements.txt /home/avwx/requirements.txt
