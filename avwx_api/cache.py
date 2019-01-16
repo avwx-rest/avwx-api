@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from os import environ
 # library
 from motor.motor_asyncio import AsyncIOMotorClient
+from pymongo.errors import OperationFailure
 
 MONGO_URI = environ.get('MONGO_URI', None)
 
@@ -70,4 +71,7 @@ class Cache(object):
         data = replace_keys(data, '$', '_$')
         data['timestamp'] = datetime.utcnow()
         id = data['data'].get('station')
-        await self.tables[rtype].update_one({'_id': id}, {'$set': data}, upsert=True)
+        try:
+            await self.tables[rtype].update_one({'_id': id}, {'$set': data}, upsert=True)
+        except OperationFailure:
+            pass
