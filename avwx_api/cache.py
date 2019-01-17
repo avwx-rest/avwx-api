@@ -57,7 +57,7 @@ class Cache(object):
         """
         if not MONGO_URI:
             return
-        data = await self.tables[rtype].find_one({'_id': station})
+        data = await self.tables[rtype.lower()].find_one({'_id': station})
         data = replace_keys(data, '_$', '$')
         if force or (isinstance(data, dict) and not self.has_expired(data['timestamp'])):
             return data
@@ -72,6 +72,6 @@ class Cache(object):
         data['timestamp'] = datetime.utcnow()
         id = data['data'].get('station')
         try:
-            await self.tables[rtype].update_one({'_id': id}, {'$set': data}, upsert=True)
+            await self.tables[rtype.lower()].update_one({'_id': id}, {'$set': data}, upsert=True)
         except OperationFailure:
             pass
