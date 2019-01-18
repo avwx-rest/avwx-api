@@ -46,6 +46,8 @@ class Cache(object):
         """
         Returns True if a datetime is older than the number of minutes given
         """
+        if not time:
+            return True
         return datetime.utcnow() > time + timedelta(minutes=minutes)
 
     async def get(self, rtype: str, station: str, force: bool = False) -> {str: object}:
@@ -59,7 +61,7 @@ class Cache(object):
             return
         data = await self.tables[rtype.lower()].find_one({'_id': station})
         data = replace_keys(data, '_$', '$')
-        if force or (isinstance(data, dict) and not self.has_expired(data['timestamp'])):
+        if force or (isinstance(data, dict) and not self.has_expired(data.get('timestamp'))):
             return data
 
     async def update(self, rtype: str, data: {str: object}):
