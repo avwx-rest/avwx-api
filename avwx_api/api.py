@@ -105,6 +105,10 @@ class LegacyReportEndpoint(ReportEndpoint):
         'wind_variable_direction': 'Wind-Variable-Dir',
     }
 
+    note = ("The /api/<report-type> endpoint will switch to the "
+            "/api/preview/<report-type> format on April 1, 2019. "
+            "If you need more time, use /api/legacy/<report-type>")
+
     def revert_value(self, value: object) -> object:
         """
         Reverts a value based on content type
@@ -157,15 +161,20 @@ class LegacyReportEndpoint(ReportEndpoint):
         else:
             nofail = params.onfail == 'cache'
             data, code = await handle_report(rtype, params.station, params.options, nofail)
+            if self.note:
+                if 'meta' not in data:
+                    data['meta'] = {}
+                data['meta']['note'] = self.note
             data = self.revert_dict(data)
             resp = self.format_response(data, params.format, rtype)
             resp.status_code = code
         resp.headers['X-Robots-Tag'] = 'noindex'
         return resp
 
-@app.route('/api/<string:rtype>/<string:station>')
+@app.route('/api/legacy/<string:rtype>/<string:station>')
 class LegacyCopy(LegacyReportEndpoint):
-    pass
+    
+    note = ("The legacy endpoint will be available until July 1, 2019")
 
 @app.route('/api/<string:rtype>/parse')
 class ParseEndpoint(LegacyReportEndpoint):
@@ -193,33 +202,33 @@ class ParseEndpoint(LegacyReportEndpoint):
         resp.headers['X-Robots-Tag'] = 'noindex'
         return resp
 
-@app.route('/api/preview/multi/<string:rtype>/<string:stations>')
-class MultiReportEndpoint(ReportEndpoint):
-    """
-    Multiple METAR and TAF reports in one endpoint
-    """
+# @app.route('/api/preview/multi/<string:rtype>/<string:stations>')
+# class MultiReportEndpoint(ReportEndpoint):
+#     """
+#     Multiple METAR and TAF reports in one endpoint
+#     """
 
-    validator = validators.multi_report
+#     validator = validators.multi_report
 
-    @crossdomain(origin='*')
-    async def get(self, rtype: str, stations: str) -> Response:
-        """
-        GET handler returning multiple METAR and TAF reports
-        """
-        await validate_token()
-        params = self.validate(rtype.lower(), station=stations)
-        if isinstance(params, dict):
-            resp = jsonify(params)
-            resp.status_code = 400
-        else:
-            nofail = params.onfail == 'cache'
-            results = await aio.gather(*[handle_report(
-                'metar',
-                [station],
-                params.options,
-                nofail
-            ) for station in params.station])
-            results = dict(zip(params.station, [r[0] for r in results]))
-            resp = self.format_response(results, params.format, rtype)
-        resp.headers['X-Robots-Tag'] = 'noindex'
-        return resp
+#     @crossdomain(origin='*')
+#     async def get(self, rtype: str, stations: str) -> Response:
+#         """
+#         GET handler returning multiple METAR and TAF reports
+#         """
+#         await validate_token()
+#         params = self.validate(rtype.lower(), station=stations)
+#         if isinstance(params, dict):
+#             resp = jsonify(params)
+#             resp.status_code = 400
+#         else:
+#             nofail = params.onfail == 'cache'
+#             results = await aio.gather(*[handle_report(
+#                 'metar',
+#                 [station],
+#                 params.options,
+#                 nofail
+#             ) for station in params.station])
+#             results = dict(zip(params.station, [r[0] for r in results]))
+#             resp = self.format_response(results, params.format, rtype)
+#         resp.headers['X-Robots-Tag'] = 'noindex'
+#         return resp

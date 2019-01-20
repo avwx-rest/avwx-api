@@ -28,6 +28,8 @@ ERRORS = [
     'Report Parsing Error: Could not parse {} report. Please contact the admin with raw report'
 ]
 
+_timeout = aiohttp.ClientTimeout(total=10)
+
 async def get_data_for_corrds(lat: str, lon: str) -> (dict, int):
     """
     Return station/report geodata from geonames for a given latitude and longitude.
@@ -35,7 +37,7 @@ async def get_data_for_corrds(lat: str, lon: str) -> (dict, int):
     Check for 'Error' key in returned dict
     """
     try:
-        async with aiohttp.ClientSession() as sess:
+        async with aiohttp.ClientSession(timeout=_timeout) as sess:
             async with sess.get(COORD_URL.format(lat, lon)) as resp:
                 data = await resp.json()
         if 'weatherObservation' in data:

@@ -4,11 +4,12 @@ avwx_api.cache - Class for communicating with the report cache
 """
 
 # stdlib
+import asyncio as aio
 from datetime import datetime, timedelta
 from os import environ
 # library
 from motor.motor_asyncio import AsyncIOMotorClient
-from pymongo.errors import OperationFailure
+from pymongo.errors import AutoReconnect, OperationFailure
 
 MONGO_URI = environ.get('MONGO_URI', None)
 
@@ -59,10 +60,16 @@ class Cache(object):
         """
         if not MONGO_URI:
             return
-        data = await self.tables[rtype.lower()].find_one({'_id': station})
-        data = replace_keys(data, '_$', '$')
-        if force or (isinstance(data, dict) and not self.has_expired(data.get('timestamp'))):
-            return data
+        for i in range(5):
+            try:
+                data = await self.tables[rtype.lower()].find_one({'_id': station})
+                data = replace_keys(data, '_$', '$')
+                if force or (isinstance(data, dict) and not self.has_expired(data.get('timestamp'))):
+                    return data
+            except OperationFailure:
+                return
+            except AutoReconnect:
+                await aio.sleep(0.5)
 
     async def update(self, rtype: str, data: {str: object}):
         """
@@ -73,7 +80,12 @@ class Cache(object):
         data = replace_keys(data, '$', '_$')
         data['timestamp'] = datetime.utcnow()
         id = data['data'].get('station')
-        try:
-            await self.tables[rtype.lower()].update_one({'_id': id}, {'$set': data}, upsert=True)
-        except OperationFailure:
-            pass
+        # Make five attempts to connect to server
+        for i in range(5):
+            try:
+                await self.tables[rtype.lower()].update_one({'_id': id}, {'$set': data}, upsert=True)
+                return
+            except OperationFailure:
+                return
+            except AutoReconnect:
+                await aio.sleep(0.5)
