@@ -11,7 +11,7 @@ The service organizes METAR and TAF reports into their individual elements and r
 
 METAR reports are surface observations for a particular airfield or other station location. There are two standard formats: International and North American. The parser works with both, but it is up to the developer to do the correct interpretation of the data. Use the 'Units' key for labling and conversions.
 
-This endpoint is also available at /api/legacy/metar
+This endpoint currently uses the old response format. The format will switch on **April 1, 2019** to the new response format found at /api/preview/metar. If you need more time, use the endpoint at /api/legacy/metar which will last until **July 1, 2019**
 
 + Parameters
     + location (string) - ICAO station ident or coordinate pair
@@ -22,6 +22,8 @@ This endpoint is also available at /api/legacy/metar
 ### Get METAR Report for Station [GET]
 
 Get the METAR for a specific station by ICAO ident.
+
+The example shown uses the new response format at /api/preview/metar
 
 + Parameters
     + location:`KJFK`
@@ -109,6 +111,8 @@ Get the METAR for a specific station by ICAO ident.
 ### Get METAR Report for Coordinates [GET]
 
 Get the METAR for a coordinate pair (lat,lon). The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
+
+The example shown uses the new response format at /api/preview/metar
 
 + Parameters
     + location: `51.47,-0.4`
@@ -205,11 +209,12 @@ Get the METAR for a coordinate pair (lat,lon). The API will return the station n
 
 ## Parse METAR [/metar/parse{?format,options,onfail}]
 
+Parses a METAR report supplied by the user.
+
 + Parameters
 
     + options (string) - Additional options to include (info, translate, summary, speech)
     + format (string) - Desired response format (default=json, xml, yaml)
-
 
 ### Parse a Given METAR [POST]
 
@@ -318,8 +323,7 @@ Parse a user-supplied METAR included as the plain text body of the request.
 
 TAF reports are atmospheric conditions for an area within five nautical miles of a particular airfield or other station location. Unlike METAR which only has two standard formats, TAF reports vary considderably more based on their geography. For example, Oceania TAF reports include two unique keys: Temp-List and Alt-List.
 
-
-This endpoint is also available at /api/legacy/metar
+This endpoint currently uses the old response format. The format will switch on **April 1, 2019** to the new response format found at /api/preview/taf. If you need more time, use the endpoint at /api/legacy/taf which will last until **July 1, 2019**
 
 + Parameters
     + location (string) - ICAO station ident or coordinate pair
@@ -330,6 +334,8 @@ This endpoint is also available at /api/legacy/metar
 ### Get TAF Report for Station [GET]
 
 Get the TAF for a specific station by ICAO ident.
+
+The example shown uses the new response format at /api/preview/taf
 
 + Parameters
     + location:`KJFK`
@@ -756,6 +762,8 @@ Get the TAF for a specific station by ICAO ident.
 
 Get the TAF for a coordinate pair (lat,lon). The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
 
+The example shown uses the new response format at /api/preview/taf
+
 + Parameters
     + location: `51.47,-0.4`
     + options: `info`
@@ -985,6 +993,8 @@ Get the TAF for a coordinate pair (lat,lon). The API will return the station nea
         }
 
 ## Parse TAF [/taf/parse{?format,options,onfail}]
+
+Parses a TAF report supplied by the user.
 
 + Parameters
 
@@ -1265,5 +1275,185 @@ Parse a user-supplied TAF included as the plain text body of the request.
                 "max_temp": "",
                 "min_temp": "",
                 "remarks": {}
+            }
+        }
+
+## Multi-Station Request [/multi/{report_type}/{locations}{?format,options,onfail}]
+
+This endpoint requires a paid API token and returns the results for multiple stations for a given report type ("metar", "taf"). It accepts the same request parameters as normal METAR and TAF requests, but accepts a comma-separated string of up to 10 stations in one call.
+
+### Get METAR Reports [GET]
+
+Shows a request for KJFK and KSFO in a single API call.
+
++ Parameters
+    + report_type:`metar`
+    + locations:`KJFK,KSFO`
+
++ Request
+    + Headers
+    
+            Authorization: Token my_secret_api_token
+
++ Response 200 (application/json)
+
+        {
+            "KJFK": {
+                "meta": {
+                    "timestamp": "Tue, 22 Jan 2019 05:16:57 GMT",
+                    "cache-timestamp": "Tue, 22 Jan 2019 05:15:20 GMT"
+                },
+                "altimeter": {
+                    "repr": "3041",
+                    "value": 30.41,
+                    "spoken": "three zero point four one"
+                },
+                "clouds": [
+                    {
+                        "repr": "FEW045",
+                        "type": "FEW",
+                        "altitude": 45,
+                        "modifier": null,
+                        "direction": null
+                    }
+                ],
+                "flight_rules": "VFR",
+                "other": [],
+                "sanitized": "KJFK 220451Z 30023G29KT 10SM FEW045 M10/M18 A3041 RMK AO2 PK WND 29029/0446 SLP296 T11001178 410941150",
+                "visibility": {
+                    "repr": "10",
+                    "value": 10,
+                    "spoken": "one zero"
+                },
+                "wind_direction": {
+                    "repr": "300",
+                    "value": 300,
+                    "spoken": "three zero zero"
+                },
+                "wind_gust": {
+                    "repr": "29",
+                    "value": 29,
+                    "spoken": "two nine"
+                },
+                "wind_speed": {
+                    "repr": "23",
+                    "value": 23,
+                    "spoken": "two three"
+                },
+                "raw": "KJFK 220451Z 30023G29KT 10SM FEW045 M10/M18 A3041 RMK AO2 PK WND 29029/0446 SLP296 T11001178 410941150",
+                "remarks": "RMK AO2 PK WND 29029/0446 SLP296 T11001178 410941150",
+                "station": "KJFK",
+                "time": {
+                    "repr": "220451Z",
+                    "dt": "Tue, 22 Jan 2019 04:51:00 GMT"
+                },
+                "dewpoint": {
+                    "repr": "M18",
+                    "value": -18,
+                    "spoken": "minus one eight"
+                },
+                "remarks_info": {
+                    "dewpoint_decimal": {
+                        "repr": "-17.8",
+                        "value": -17.8,
+                        "spoken": "minus one seven point eight"
+                    },
+                    "temperature_decimal": {
+                        "repr": "-10.0",
+                        "value": -10.0,
+                        "spoken": "minus one zero point zero"
+                    }
+                },
+                "runway_visibility": [],
+                "temperature": {
+                    "repr": "M10",
+                    "value": -10,
+                    "spoken": "minus one zero"
+                },
+                "wind_variable_direction": [],
+                "units": {
+                    "altimeter": "inHg",
+                    "altitude": "ft",
+                    "temperature": "C",
+                    "visibility": "sm",
+                    "wind_speed": "kt"
+                }
+            },
+            "KSFO": {
+                "meta": {
+                    "timestamp": "Tue, 22 Jan 2019 05:16:57 GMT",
+                    "cache-timestamp": "Tue, 22 Jan 2019 05:15:32 GMT"
+                },
+                "altimeter": {
+                    "repr": "3030",
+                    "value": 30.3,
+                    "spoken": "three zero point three"
+                },
+                "clouds": [
+                    {
+                        "repr": "FEW028",
+                        "type": "FEW",
+                        "altitude": 28,
+                        "modifier": null,
+                        "direction": null
+                    }
+                ],
+                "flight_rules": "VFR",
+                "other": [],
+                "sanitized": "KSFO 220456Z 30007KT 10SM FEW028 12/06 A3030 RMK AO2 SLP262 T01220061 $",
+                "visibility": {
+                    "repr": "10",
+                    "value": 10,
+                    "spoken": "one zero"
+                },
+                "wind_direction": {
+                    "repr": "300",
+                    "value": 300,
+                    "spoken": "three zero zero"
+                },
+                "wind_gust": null,
+                "wind_speed": {
+                    "repr": "07",
+                    "value": 7,
+                    "spoken": "seven"
+                },
+                "raw": "KSFO 220456Z 30007KT 10SM FEW028 12/06 A3030 RMK AO2 SLP262 T01220061 $",
+                "remarks": "RMK AO2 SLP262 T01220061 $",
+                "station": "KSFO",
+                "time": {
+                    "repr": "220456Z",
+                    "dt": "Tue, 22 Jan 2019 04:56:00 GMT"
+                },
+                "dewpoint": {
+                    "repr": "06",
+                    "value": 6,
+                    "spoken": "six"
+                },
+                "remarks_info": {
+                    "dewpoint_decimal": {
+                        "repr": "6.1",
+                        "value": 6.1,
+                        "spoken": "six point one"
+                    },
+                    "temperature_decimal": {
+                        "repr": "12.2",
+                        "value": 12.2,
+                        "spoken": "one two point two"
+                    }
+                },
+                "runway_visibility": [],
+                "temperature": {
+                    "repr": "12",
+                    "value": 12,
+                    "spoken": "one two"
+                },
+                "wind_variable_direction": [],
+                "units": {
+                    "altimeter": "inHg",
+                    "altitude": "ft",
+                    "temperature": "C",
+                    "visibility": "sm",
+                    "wind_speed": "kt"
+                }
             }
         }
