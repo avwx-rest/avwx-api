@@ -26,7 +26,7 @@ async def validate_token() -> (str, int):
     if not auth_token:
         abort(401)
     # Remove 'Token ' from token value
-    if not await token.validate_token(auth_token[7:]):
+    if not await token.validate_token(auth_token.strip()[7:]):
         abort(403)
 
 @app.route('/api/preview/<string:rtype>/<string:station>')
