@@ -202,7 +202,7 @@ class ParseEndpoint(LegacyReportEndpoint):
         resp.headers['X-Robots-Tag'] = 'noindex'
         return resp
 
-@app.route('/api/preview/multi/<string:rtype>/<string:stations>')
+@app.route('/api/multi/<string:rtype>/<string:stations>')
 class MultiReportEndpoint(ReportEndpoint):
     """
     Multiple METAR and TAF reports in one endpoint
