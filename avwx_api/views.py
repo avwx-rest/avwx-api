@@ -6,7 +6,8 @@ avwx_api.views - Routes and views for the Quart application
 # pylint: disable=W0702
 
 # library
-from quart import jsonify
+import avwx
+from quart import Response, jsonify
 # module
 from avwx_api import app
 
@@ -14,7 +15,7 @@ from avwx_api import app
 
 @app.route('/')
 @app.route('/home')
-async def home():
+async def home() -> Response:
     """
     Returns static home page
     """
@@ -23,16 +24,27 @@ async def home():
 # API Routing Errors
 
 @app.route('/api')
-async def no_report():
+async def no_report() -> Response:
     """
     Returns no report msg
     """
-    return jsonify({'Error': 'No report type given'}), 400
+    return jsonify({'error': 'No report type given'}), 400
 
 @app.route('/api/metar')
 @app.route('/api/taf')
-async def no_station():
+async def no_station() -> Response:
     """
     Returns no station msg
     """
-    return jsonify({'Error': 'No station given'}), 400
+    return jsonify({'error': 'No station given'}), 400
+
+@app.route('/api/station/<string:station>')
+async def station_endpoint(station: str) -> Response:
+    """
+    Returns raw station info if available
+    """
+    station = station.upper()
+    data = avwx.STATIONS.get(station)
+    if data:
+        return jsonify(data)
+    return jsonify({'error': f'Station ident "{station}" not found'})
