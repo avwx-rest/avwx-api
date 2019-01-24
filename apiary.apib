@@ -5,7 +5,60 @@ HOST: http://avwx.rest/api
 
 The AVWX REST API is a publically-available, open-source REST API for aviation weather.
 
-The service organizes METAR and TAF reports into their individual elements and returns them in JSON, XML, or YAML format. It does a considderable amount of error correction so that your report is as clean and thorough as possible. It has additional services like providing station information, translating the report into English, and creating summary strings meant to be read or spoken.
+## Station [/station/{ident}]
+
+Returns station information for an airfield or other location by ICAO ident. This is the same information provided when incluing the `info` option with weather requests.
+
++ Parameters
+    + ident (string) - ICAO station ident
+
+### Get Station Information [GET]
+
+This example shows station information for JKF International in New York City.
+
++ Parameters
+    + ident:`KJFK`
+
++ Response 200 (application/json)
+
+        {
+            "city": "New York City",
+            "country": "USA",
+            "elevation": 4.3,
+            "iata": "JFK",
+            "icao": "KJFK",
+            "latitude": 40.63975111,
+            "longitude": -73.77892556,
+            "name": "John F Kennedy International Airport",
+            "priority": 1,
+            "state": "NY",
+            "runways": [
+                {
+                    "length": 14572,
+                    "width": 150,
+                    "ident1": "13R",
+                    "ident2": "31L"
+                },
+                {
+                    "length": 11351,
+                    "width": 150,
+                    "ident1": "04L",
+                    "ident2": "22R"
+                },
+                {
+                    "length": 10000,
+                    "width": 150,
+                    "ident1": "13L",
+                    "ident2": "31R"
+                },
+                {
+                    "length": 8400,
+                    "width": 200,
+                    "ident1": "04R",
+                    "ident2": "22L"
+                }
+            ]
+        }
 
 ## METAR [/metar/{location}{?format,options,onfail}]
 
@@ -207,7 +260,7 @@ The example shown uses the new response format at /api/preview/metar
             ]
         }
 
-## Parse METAR [/metar/parse{?format,options,onfail}]
+## Parse METAR [/parse/metar{?format,options,onfail}]
 
 Parses a METAR report supplied by the user.
 
@@ -992,7 +1045,7 @@ The example shown uses the new response format at /api/preview/taf
             }
         }
 
-## Parse TAF [/taf/parse{?format,options,onfail}]
+## Parse TAF [/parse/taf{?format,options,onfail}]
 
 Parses a TAF report supplied by the user.
 
