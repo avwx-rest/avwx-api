@@ -13,11 +13,9 @@ from os import environ
 import aiohttp
 import avwx
 # module
-from avwx_api.cache import Cache
+from avwx_api import cache
 
 GN_USER = environ.get('GN_USER', '')
-
-CACHE = Cache()
 
 COORD_URL = 'http://api.geonames.org/findNearByWeatherJSON?lat={}&lng={}&username=' + GN_USER
 
@@ -80,7 +78,7 @@ async def new_report(rtype: str, station: str, report: str) -> (dict, int):
     }
     data['data']['units'] = asdict(parser.units)
     # Update the cache with the new report data
-    await CACHE.update(rtype, data)
+    await cache.update(rtype, data)
     return data, 200
 
 def format_report(rtype: str, data: {str: object}, options: [str]) -> {str: object}:
@@ -117,7 +115,7 @@ async def handle_report(rtype: str, loc: [str], opts: [str], nofail: bool = Fals
         station = loc[0].upper()
         report = None
     # Fetch an existing and up-to-date cache or make a new report
-    data, code = await CACHE.get(rtype, station), 200
+    data, code = await cache.get(rtype, station), 200
     if data is None:
         data, code = await new_report(rtype, station, report)
     resp = {'meta': {'timestamp': datetime.utcnow()}}
@@ -126,11 +124,11 @@ async def handle_report(rtype: str, loc: [str], opts: [str], nofail: bool = Fals
     # Handle errors according to nofail arguement
     if code != 200:
         if nofail:
-            cache = await CACHE.get(rtype, station)
-            if cache is None:
+            cached = await cache.get(rtype, station)
+            if cached is None:
                 resp['error'] = 'No report or cache was found for the requested station'
                 return resp, 400
-            data = cache
+            data = cached
             resp['meta'].update({
                 'cache-timestamp': data['timestamp'],
                 'warning': 'A no-fail condition was requested. This data might be out of date',
