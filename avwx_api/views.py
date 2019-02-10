@@ -8,6 +8,7 @@ avwx_api.views - Routes and views for the Quart application
 # library
 import avwx
 from quart import Response, jsonify
+from quart_openapi.cors import crossdomain
 # module
 from avwx_api import app
 
@@ -39,6 +40,7 @@ async def no_station() -> Response:
     return jsonify({'error': 'No station given'}), 400
 
 @app.route('/api/station/<string:station>')
+@crossdomain(origin='*')
 async def station_endpoint(station: str) -> Response:
     """
     Returns raw station info if available
