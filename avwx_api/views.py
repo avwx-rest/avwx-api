@@ -5,6 +5,8 @@ avwx_api.views - Routes and views for the Quart application
 
 # pylint: disable=W0702
 
+# stdlib
+from dataclasses import asdict
 # library
 import avwx
 from quart import Response, jsonify
@@ -46,7 +48,7 @@ async def station_endpoint(station: str) -> Response:
     Returns raw station info if available
     """
     station = station.upper()
-    data = avwx.STATIONS.get(station)
+    data = avwx.Station.from_icao(station)
     if data:
-        return jsonify(data)
+        return jsonify(asdict(data))
     return jsonify({'error': f'Station ident "{station}" not found'})
