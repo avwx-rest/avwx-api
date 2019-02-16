@@ -48,7 +48,9 @@ async def station_endpoint(station: str) -> Response:
     Returns raw station info if available
     """
     station = station.upper()
-    data = avwx.Station.from_icao(station)
-    if data:
-        return jsonify(asdict(data))
-    return jsonify({'error': f'Station ident "{station}" not found'})
+    try:
+        return jsonify(asdict(avwx.Station.from_icao(station)))
+    except avwx.exceptions.BadStation:
+        return jsonify({
+            'error': f'Station ident "{station}" not found. Email me if data is missing :)'
+        })
