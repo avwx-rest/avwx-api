@@ -23,8 +23,8 @@ OPTION_KEYS = ('summary', 'speech', 'translate')
 
 ERRORS = [
     'Station Lookup Error: {} not found for {}. There might not be a current report in ADDS',
-    'Report Parsing Error: Could not parse {} report. Please contact the admin with raw report'
-    'Station Lookup Error: {} does not appear to be a valid station. Please contact the admin.'
+    'Report Parsing Error: Could not parse {} report. Please contact the admin with raw report',
+    'Station Lookup Error: {} does not appear to be a valid station. Please contact the admin',
 ]
 
 _timeout = aiohttp.ClientTimeout(total=10)
