@@ -24,6 +24,7 @@ OPTION_KEYS = ('summary', 'speech', 'translate')
 ERRORS = [
     'Station Lookup Error: {} not found for {}. There might not be a current report in ADDS',
     'Report Parsing Error: Could not parse {} report. Please contact the admin with raw report'
+    'Station Lookup Error: {} does not appear to be a valid station. Please contact the admin.'
 ]
 
 _timeout = aiohttp.ClientTimeout(total=10)
@@ -150,7 +151,7 @@ def parse_given(rtype: str, report: str, opts: [str]) -> (dict, int):
     """
     Attepts to parse a given report supplied by the user
     """
-    if len(report) < 4:
+    if len(report) < 4 or '{' in report:
         return {
             'error': 'Could not find station at beginning of report',
             'timestamp': datetime.utcnow()
@@ -179,6 +180,6 @@ def parse_given(rtype: str, report: str, opts: [str]) -> (dict, int):
                 resp['info'] = {}
         return resp, 200
     except avwx.exceptions.BadStation:
-        return {'error': ERRORS[0].format(rtype), 'timestamp': datetime.utcnow()}, 400
+        return {'error': ERRORS[2].format(station), 'timestamp': datetime.utcnow()}, 400
     except:
         return {'error': ERRORS[1].format(rtype), 'timestamp': datetime.utcnow()}, 500
