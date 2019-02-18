@@ -12,6 +12,7 @@ from os import environ
 # library
 import aiohttp
 import avwx
+import rollbar
 # module
 from avwx_api import cache
 
@@ -43,9 +44,11 @@ async def get_data_for_corrds(lat: str, lon: str) -> (dict, int):
             return data['weatherObservation'], 200
         elif 'status' in data:
             return {'error':'Coord Lookup Error: ' + str(data['status']['message'])}, 400
+        rollbar.report_exc_info()
         return {'error':'Coord Lookup Error: Unknown Error (1)'}, 500
     except Exception as exc:
         print(exc)
+        rollbar.report_exc_info()
         return {'error':'Coord Lookup Error: Unknown Error (0)'}, 500
 
 async def new_report(rtype: str, station: str, report: str) -> (dict, int):
@@ -61,12 +64,14 @@ async def new_report(rtype: str, station: str, report: str) -> (dict, int):
     # Fetch report if one wasn't received via geonames
     if not report:
         try:
-            await parser.async_update()
+            if not await parser.async_update():
+                return {'error': ERRORS[0].format(rtype.upper(), station)}, 400
         except avwx.exceptions.InvalidRequest as exc:
             print('Invalid Request:', exc)
             return {'error': ERRORS[0].format(rtype.upper(), station)}, 400
         except Exception as exc:
             print('unknown Error', exc)
+            rollbar.report_exc_info()
             return {'error': ERRORS[0].format(rtype.upper(), station)}, 500
     else:
         parser.update(report)
@@ -182,4 +187,5 @@ def parse_given(rtype: str, report: str, opts: [str]) -> (dict, int):
     except avwx.exceptions.BadStation:
         return {'error': ERRORS[2].format(station), 'timestamp': datetime.utcnow()}, 400
     except:
+        rollbar.report_exc_info()
         return {'error': ERRORS[1].format(rtype), 'timestamp': datetime.utcnow()}, 500
