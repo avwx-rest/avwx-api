@@ -1,6 +1,6 @@
 """
 Michael duPont - michael@mdupont.com
-avwx_api.handling - Data handling between inputs, cache, and avwx
+avwx_api.handle.metar - Handle METAR requests
 """
 
 # pylint: disable=E1101,W0703
@@ -15,18 +15,12 @@ import avwx
 import rollbar
 # module
 from avwx_api import cache
+from avwx_api.handle import station_info, _HANDLE_MAP, ERRORS
 
 GN_USER = environ.get('GN_USER', '')
-
 COORD_URL = 'http://api.geonames.org/findNearByWeatherJSON?lat={}&lng={}&username=' + GN_USER
 
 OPTION_KEYS = ('summary', 'speech', 'translate')
-
-ERRORS = [
-    'Station Lookup Error: {} not found for {}. There might not be a current report in ADDS',
-    'Report Parsing Error: Could not parse {} report. Please contact the admin with raw report',
-    'Station Lookup Error: {} does not appear to be a valid station. Please contact the admin',
-]
 
 _timeout = aiohttp.ClientTimeout(total=10)
 
@@ -44,11 +38,11 @@ async def get_data_for_corrds(lat: str, lon: str) -> (dict, int):
             return data['weatherObservation'], 200
         elif 'status' in data:
             return {'error':'Coord Lookup Error: ' + str(data['status']['message'])}, 400
-        rollbar.report_exc_info()
+        # rollbar.report_exc_info()
         return {'error':'Coord Lookup Error: Unknown Error (1)'}, 500
     except Exception as exc:
-        print(exc)
-        rollbar.report_exc_info()
+        print('Unhandled Coord Error', exc)
+        # rollbar.report_exc_info()
         return {'error':'Coord Lookup Error: Unknown Error (0)'}, 500
 
 async def new_report(rtype: str, station: str, report: str) -> (dict, int):
@@ -58,11 +52,13 @@ async def new_report(rtype: str, station: str, report: str) -> (dict, int):
     We can skip fetching the report if geonames already returned it
     """
     try:
-        parser = (avwx.Metar if rtype == 'metar' else avwx.Taf)(station)
+        parser = _HANDLE_MAP[rtype](station)
     except avwx.exceptions.BadStation as exc:
         return {'error': str(exc)}, 400
     # Fetch report if one wasn't received via geonames
-    if not report:
+    if report:
+        parser.update(report)
+    else:
         try:
             if not await parser.async_update():
                 return {'error': ERRORS[0].format(rtype.upper(), station)}, 400
@@ -70,11 +66,9 @@ async def new_report(rtype: str, station: str, report: str) -> (dict, int):
             print('Invalid Request:', exc)
             return {'error': ERRORS[0].format(rtype.upper(), station)}, 400
         except Exception as exc:
-            print('unknown Error', exc)
+            print('Unknown Error', exc)
             rollbar.report_exc_info()
-            return {'error': ERRORS[0].format(rtype.upper(), station)}, 500
-    else:
-        parser.update(report)
+            return {'error': ERRORS[1].format(rtype.upper())}, 500
     # Retrieve report data
     data = {
         'data': asdict(parser.data),
@@ -84,7 +78,7 @@ async def new_report(rtype: str, station: str, report: str) -> (dict, int):
     }
     data['data']['units'] = asdict(parser.units)
     # Update the cache with the new report data
-    await cache.update(rtype, data)
+    await cache.update(rtype, station, data)
     return data, 200
 
 def format_report(rtype: str, data: {str: object}, options: [str]) -> {str: object}:
@@ -101,7 +95,7 @@ def format_report(rtype: str, data: {str: object}, options: [str]) -> {str: obje
                 ret[opt] = data.get(opt)
     return ret
 
-async def handle_report(rtype: str, loc: [str], opts: [str], nofail: bool = False) -> (dict, int):
+async def _handle_report(rtype: str, loc: [str], opts: [str], nofail: bool = False) -> (dict, int):
     """
     Returns weather data for the given report type, station, and options
     Also returns the appropriate HTTP response code
@@ -146,13 +140,10 @@ async def handle_report(rtype: str, loc: [str], opts: [str], nofail: bool = Fals
     resp.update(format_report(rtype, data, opts))
     # Add station info if requested
     if 'info' in opts:
-        try:
-            resp['info'] = asdict(avwx.Station.from_icao(station))
-        except avwx.exceptions.BadStation:
-            resp['info'] = {}
+        resp['info'] = station_info(station)
     return resp, code
 
-def parse_given(rtype: str, report: str, opts: [str]) -> (dict, int):
+def _parse_given(rtype: str, report: str, opts: [str]) -> (dict, int):
     """
     Attepts to parse a given report supplied by the user
     """
@@ -163,7 +154,7 @@ def parse_given(rtype: str, report: str, opts: [str]) -> (dict, int):
         }, 400
     station = report[:4]
     try:
-        ureport = avwx.Metar(station) if rtype == 'metar' else avwx.Taf(station)
+        ureport = _HANDLE_MAP[rtype](station)
         ureport.update(report)
         resp = asdict(ureport.data)
         resp['meta'] = {'timestamp': datetime.utcnow()}
@@ -179,13 +170,16 @@ def parse_given(rtype: str, report: str, opts: [str]) -> (dict, int):
             resp['speech'] = ureport.speech
         # Add station info if requested
         if 'info' in opts:
-            try:
-                resp['info'] = asdict(ureport.station_info)
-            except avwx.exceptions.BadStation:
-                resp['info'] = {}
+            resp['info'] = station_info(station)
         return resp, 200
     except avwx.exceptions.BadStation:
         return {'error': ERRORS[2].format(station), 'timestamp': datetime.utcnow()}, 400
     except:
-        rollbar.report_exc_info()
+        # rollbar.report_exc_info()
         return {'error': ERRORS[1].format(rtype), 'timestamp': datetime.utcnow()}, 500
+
+async def handle_report(loc: [str], opts: [str], nofail: bool = False) -> (dict, int):
+    return await _handle_report('metar', loc, opts, nofail)
+
+def parse_given(report: str, opts: [str]) -> (dict, int):
+    return _parse_given('metar', report, opts)

@@ -14,8 +14,7 @@ from quart_openapi import Resource
 from quart_openapi.cors import crossdomain
 from voluptuous import Invalid, MultipleInvalid
 # module
-from avwx_api import app, structs, token, validators
-from avwx_api.handling import handle_report, parse_given
+from avwx_api import app, handle, structs, token, validators
 
 async def validate_token() -> (str, int):
     """
@@ -76,7 +75,7 @@ class ReportEndpoint(Resource):
     @crossdomain(origin='*')
     async def get(self, station: str) -> Response:
         """
-        GET handler returning METAR and TAF reports
+        GET handler returning reports
         """
         params = self.validate(station=station)
         if isinstance(params, dict):
@@ -84,7 +83,8 @@ class ReportEndpoint(Resource):
             resp.status_code = 400
         else:
             nofail = params.onfail == 'cache'
-            data, code = await handle_report(self.report_type, params.station, params.options, nofail)
+            handler = getattr(handle, self.report_type).handle_report
+            data, code = await handler(params.station, params.options, nofail)
             resp = self.format_response(data, params.format)
             resp.status_code = code
         resp.headers['X-Robots-Tag'] = 'noindex'
@@ -164,7 +164,8 @@ class LegacyReportEndpoint(ReportEndpoint):
             resp.status_code = 400
         else:
             nofail = params.onfail == 'cache'
-            data, code = await handle_report(self.report_type, params.station, params.options, nofail)
+            handler = getattr(handle, self.report_type).handle_report
+            data, code = await handler(params.station, params.options, nofail)
             data = self.revert_dict(data)
             resp = self.format_response(data, params.format, meta='Meta')
             resp.status_code = code
@@ -193,7 +194,8 @@ class ParseEndpoint(ReportEndpoint):
             resp = jsonify(params)
             resp.status_code = 400
         else:
-            data, code = parse_given(self.report_type, params.report, params.options)
+            handler = getattr(handle, self.report_type).parse_given
+            data, code = handler(params.report, params.options)
             resp = self.format_response(data, params.format)
             resp.status_code = code
         resp.headers['X-Robots-Tag'] = 'noindex'
@@ -218,8 +220,8 @@ class MultiReportEndpoint(ReportEndpoint):
             resp.status_code = 400
         else:
             nofail = params.onfail == 'cache'
-            results = await aio.gather(*[handle_report(
-                self.report_type,
+            handler = getattr(handle, self.report_type).handle_report
+            results = await aio.gather(*[handler(
                 [station],
                 params.options,
                 nofail
@@ -276,3 +278,11 @@ class MetarMultiEndpoint(MultiReportEndpoint):
 @app.route('/api/multi/taf/<stations>')
 class TafMultiEndpoint(MultiReportEndpoint):
     report_type = 'taf'
+
+@app.route('/api/pirep/<station>')
+class PirepEndpoint(ReportEndpoint):
+    report_type = 'pirep'
+
+@app.route('/api/pirep/parse')
+class PirepParseEndpoint(ParseEndpoint):
+    report_type = 'pirep'

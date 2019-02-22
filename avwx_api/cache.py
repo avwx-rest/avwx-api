@@ -45,7 +45,7 @@ def has_expired(time: datetime, minutes: int = 2) -> bool:
         return True
     return datetime.utcnow() > time + timedelta(minutes=minutes)
 
-async def get(rtype: str, station: str, force: bool = False) -> {str: object}:
+async def get(table: str, key: str, force: bool = False) -> {str: object}:
     """
     Returns the current cached data for a report type and station or None
 
@@ -56,7 +56,7 @@ async def get(rtype: str, station: str, force: bool = False) -> {str: object}:
         return
     for i in range(5):
         try:
-            data = await cache_db[rtype.lower()].find_one({'_id': station})
+            data = await cache_db[table.lower()].find_one({'_id': key})
             data = replace_keys(data, '_$', '$')
             if force or (isinstance(data, dict) and not has_expired(data.get('timestamp'))):
                 return data
@@ -65,7 +65,7 @@ async def get(rtype: str, station: str, force: bool = False) -> {str: object}:
         except AutoReconnect:
             await aio.sleep(0.5)
 
-async def update(rtype: str, data: {str: object}):
+async def update(table: str, key: str, data: {str: object}):
     """
     Update the cache
     """
@@ -73,11 +73,10 @@ async def update(rtype: str, data: {str: object}):
         return
     data = replace_keys(data, '$', '_$')
     data['timestamp'] = datetime.utcnow()
-    id = data['data'].get('station')
     # Make five attempts to connect to server
     for i in range(5):
         try:
-            await cache_db[rtype.lower()].update_one({'_id': id}, {'$set': data}, upsert=True)
+            await cache_db[table.lower()].update_one({'_id': key}, {'$set': data}, upsert=True)
             return
         except OperationFailure:
             return

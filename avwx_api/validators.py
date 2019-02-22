@@ -15,7 +15,7 @@ HELP = {
     'onfail': 'Desired behavior when report fetch fails (error, cache)',
     'options': 'Response content and parsing options. Ex: "info,summary"',
     'report': 'Raw report string to be parsed. Given in the POST body as plain text',
-    'report_type': 'Weather report type (metar, taf)',
+    'report_type': 'Weather report type (metar, taf, pirep)',
     'station': 'ICAO station ID or coord pair. Ex: KJFK or "12.34,-12.34"'
 }
 
@@ -72,7 +72,7 @@ def SplitIn(values: (str,)) -> Callable:
 _shared = {
     Required('format', default='json'): All(str, In(('json', 'xml', 'yaml'))),
     Required('options', default=''): All(str, SplitIn(('info', 'translate', 'summary', 'speech'))),
-    Required('report_type'): All(str, In(('metar', 'taf')))
+    Required('report_type'): All(str, In(('metar', 'taf', 'pirep')))
 }
 
 _report = {
