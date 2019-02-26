@@ -11,23 +11,16 @@ import avwx
 import rollbar
 # module
 from avwx_api import cache
-from avwx_api.handle import station_info, _HANDLE_MAP, ERRORS
+from avwx_api.handle import update_parser, station_info, _HANDLE_MAP, ERRORS
 
 async def new_report(rtype: str, params: dict) -> (dict, int):
     """
     Fetch and parse report data for given params
     """
     parser = _HANDLE_MAP[rtype](**params)
-    try:
-        if not await parser.async_update():
-            return {'error': ERRORS[3].format(rtype.upper(), params)}, 400
-    except avwx.exceptions.InvalidRequest as exc:
-        print('Invalid Request:', exc)
-        return {'error': ERRORS[0].format(rtype.upper(), params)}, 400
-    except Exception as exc:
-        print('Unknown Error', exc)
-        rollbar.report_exc_info()
-        return {'error': ERRORS[1].format(rtype.upper())}, 500
+    error, code = await update_parser(parser, params)
+    if error:
+        return error, code
     data = {
         'data': [asdict(r) for r in parser.data],
     }
