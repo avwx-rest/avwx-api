@@ -55,7 +55,7 @@ async def update_parser(parser: avwx.Report, err_station: 'stringable' = None) -
             return {'error': ERRORS[5]}, 502
     except ConnectionError as exc:
         print('Connection Error:', exc)
-        return {'error': exc}, 502
+        return {'error': str(exc)}, 502
     except avwx.exceptions.SourceError as exc:
         print('Source Error:', exc)
         return {'error': str(exc)}, int(str(exc)[-3:])
