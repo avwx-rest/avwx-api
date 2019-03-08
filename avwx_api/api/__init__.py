@@ -6,7 +6,6 @@ avwx_api.api - Functional API endpoints separate from static views
 # stdlib
 import asyncio as aio
 # library
-import avwx
 import yaml
 from dicttoxml import dicttoxml as fxml
 from quart import Response, abort, jsonify, request
@@ -14,7 +13,7 @@ from quart_openapi import Resource
 from quart_openapi.cors import crossdomain
 from voluptuous import Invalid, MultipleInvalid
 # module
-from avwx_api import app, handle, structs, token, validators
+from avwx_api import handle, structs, token, validators
 
 async def validate_token() -> (str, int):
     """
@@ -29,15 +28,25 @@ async def validate_token() -> (str, int):
     if not await token.validate_token(auth_token.strip()[7:]):
         abort(403)
 
-class ReportEndpoint(Resource):
+class Report(Resource):
     """
-    METAR and TAF report endpoint
+    Base report endpoint
     """
 
     validator = validators.report
     struct = structs.FetchParams
     report_type: str = None
     note: str = None
+
+    # Replace the key's name in the final response
+    _key_repl: dict = None
+    # Remove the following keys from the final response
+    _key_remv: [str] = None
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._key_repl = {}
+        self._key_remv = []
 
     def validate(self, **kwargs) -> structs.Params:
         """
@@ -58,10 +67,32 @@ class ReportEndpoint(Resource):
                 'help': validators.HELP.get(key)
             }
 
+    def format_dict(self, output: dict) -> dict:
+        """
+        Formats a dict by recursively replacing and removing key
+
+        Returns the item as-is if not a dict
+        """
+        if not isinstance(output, dict):
+            return output
+        resp = {}
+        for k, v in output.items():
+            if k in self._key_remv:
+                continue
+            elif k in self._key_repl:
+                k = self._key_repl[k]
+            if isinstance(v, dict):
+                v = self.format_dict(v)
+            elif isinstance(v, list):
+                v = [self.format_dict(item) for item in v]
+            resp[k] = v
+        return resp
+
     def format_response(self, output: dict, format: str, meta: str = 'meta') -> Response:
         """
         Returns the output string based on format param
         """
+        output = self.format_dict(output)
         if self.note:
             if meta not in output:
                 output[meta] = {}
@@ -90,7 +121,7 @@ class ReportEndpoint(Resource):
         resp.headers['X-Robots-Tag'] = 'noindex'
         return resp
 
-class LegacyReportEndpoint(ReportEndpoint):
+class LegacyReport(Report):
     """
     Legacy report endpoint to return data in pre-Sept2018 format
 
@@ -120,7 +151,7 @@ class LegacyReportEndpoint(ReportEndpoint):
         if isinstance(value, dict):
             # Revert cloud layer
             if 'modifier' in value:
-                temp = [value['type'], str(value['altitude']).zfill(3)]
+                temp = [value['type'], str(value['base']).zfill(3)]
                 if value['modifier'] is not None:
                     temp.append(value['modifier'])
                 return temp
@@ -129,14 +160,14 @@ class LegacyReportEndpoint(ReportEndpoint):
                 return value['repr']
             # Else recursive call on embedded dict
             else:
-                return self.revert_dict(value)
+                return self.format_dict(value)
         elif isinstance(value, list):
             return [self.revert_value(item) for item in value]
         elif value is None:
             return ''
         return value
 
-    def revert_dict(self, data: dict) -> dict:
+    def format_dict(self, data: dict) -> dict:
         """
         Reverts a dict's keys and values to the legacy format
         """
@@ -166,13 +197,12 @@ class LegacyReportEndpoint(ReportEndpoint):
             nofail = params.onfail == 'cache'
             handler = getattr(handle, self.report_type).handle_report
             data, code = await handler(params.station, params.options, nofail)
-            data = self.revert_dict(data)
             resp = self.format_response(data, params.format, meta='Meta')
             resp.status_code = code
         resp.headers['X-Robots-Tag'] = 'noindex'
         return resp
 
-class ParseEndpoint(ReportEndpoint):
+class Parse(Report):
     """
     Given report endpoint
     """
@@ -181,7 +211,7 @@ class ParseEndpoint(ReportEndpoint):
     struct = structs.GivenParams
 
     async def get(self, *args) -> Response:
-        return abort(404)
+        return abort(405)
 
     @crossdomain(origin='*')
     async def post(self) -> Response:
@@ -201,7 +231,7 @@ class ParseEndpoint(ReportEndpoint):
         resp.headers['X-Robots-Tag'] = 'noindex'
         return resp
 
-class MultiReportEndpoint(ReportEndpoint):
+class MultiReport(Report):
     """
     Multiple METAR and TAF reports in one endpoint
     """
@@ -231,58 +261,4 @@ class MultiReportEndpoint(ReportEndpoint):
         resp.headers['X-Robots-Tag'] = 'noindex'
         return resp
 
-@app.route('/api/preview/metar/<station>')
-class MetarEndpoint(ReportEndpoint):
-    report_type = 'metar'
-
-@app.route('/api/preview/taf/<station>')
-class TafEndpoint(ReportEndpoint):
-    report_type = 'taf'
-
-@app.route('/api/metar/<station>')
-class MetarLegacyEndpoint(LegacyReportEndpoint):
-    report_type = 'metar'
-
-@app.route('/api/taf/<station>')
-class TafLegacyEndpoint(LegacyReportEndpoint):
-    report_type = 'taf'
-
-@app.route('/api/legacy/metar/<station>')
-class MetarLegacyCopy(MetarLegacyEndpoint):
-    note = "The legacy endpoint will be available until July 1, 2019"
-
-@app.route('/api/legacy/taf/<station>')
-class TafLegacyCopy(TafLegacyEndpoint):
-    note = "The legacy endpoint will be available until July 1, 2019"
-
-@app.route('/api/parse/metar')
-class MetarParseEndpoint(ParseEndpoint):
-    report_type = 'metar'
-
-@app.route('/api/metar/parse')
-class MetarParseLegacyEndpoint(MetarParseEndpoint):
-    note = "The parse endpoint has been moved to /api/parse/metar"
-
-@app.route('/api/parse/taf')
-class TafParseEndpoint(ParseEndpoint):
-    report_type = 'taf'
-
-@app.route('/api/taf/parse')
-class TafParseLegacyEndpoint(TafParseEndpoint):
-    note = "The parse endpoint has been moved to /api/parse/taf"
-
-@app.route('/api/multi/metar/<stations>')
-class MetarMultiEndpoint(MultiReportEndpoint):
-    report_type = 'metar'
-
-@app.route('/api/multi/taf/<stations>')
-class TafMultiEndpoint(MultiReportEndpoint):
-    report_type = 'taf'
-
-@app.route('/api/pirep/<station>')
-class PirepEndpoint(ReportEndpoint):
-    report_type = 'pirep'
-
-@app.route('/api/pirep/parse')
-class PirepParseEndpoint(ParseEndpoint):
-    report_type = 'pirep'
+from avwx_api.api import metar, pirep, taf

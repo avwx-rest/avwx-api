@@ -18,7 +18,7 @@ from avwx_api import cache
 from avwx_api.handle import update_parser, station_info, _HANDLE_MAP, ERRORS
 
 GN_USER = environ.get('GN_USER', '')
-COORD_URL = 'http://api.geonames.org/findNearByWeatherJSON?lat={}&lng={}&username=' + GN_USER
+COORD_URL = 'http://api.geonames.org/findNearByWeatherJSON?lat={}&lng={}&radius=200&username=' + GN_USER
 
 OPTION_KEYS = ('summary', 'speech', 'translate')
 
