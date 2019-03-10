@@ -211,7 +211,7 @@ class Parse(Report):
     struct = structs.GivenParams
 
     async def get(self, *args) -> Response:
-        return abort(405)
+        abort(405)
 
     @crossdomain(origin='*')
     async def post(self) -> Response:
