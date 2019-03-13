@@ -28,7 +28,7 @@ async def validate_token() -> (str, int):
     if not await token.validate_token(auth_token.strip()[7:]):
         abort(403)
 
-class Report(Resource):
+class Base(Resource):
     """
     Base report endpoint
     """
@@ -102,6 +102,10 @@ class Report(Resource):
         elif format == 'yaml':
             return Response(yaml.dump(output, default_flow_style=False), mimetype='text/x-yaml')
         return jsonify(output)
+
+class Report(Base):
+    """
+    """
 
     @crossdomain(origin='*')
     async def get(self, station: str) -> Response:
@@ -202,16 +206,13 @@ class LegacyReport(Report):
         resp.headers['X-Robots-Tag'] = 'noindex'
         return resp
 
-class Parse(Report):
+class Parse(Base):
     """
     Given report endpoint
     """
 
     validator = validators.given
     struct = structs.GivenParams
-
-    async def get(self, *args) -> Response:
-        abort(405)
 
     @crossdomain(origin='*')
     async def post(self) -> Response:
@@ -231,7 +232,7 @@ class Parse(Report):
         resp.headers['X-Robots-Tag'] = 'noindex'
         return resp
 
-class MultiReport(Report):
+class MultiReport(Base):
     """
     Multiple METAR and TAF reports in one endpoint
     """
