@@ -13,6 +13,7 @@ _key_remv = [
 @app.route('/api/pirep/<station>')
 class Pirep(Report):
     report_type = 'pirep'
+    # example = 'pirep'
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._key_remv = _key_remv
@@ -20,6 +21,7 @@ class Pirep(Report):
 @app.route('/api/parse/pirep')
 class PirepParse(Parse):
     report_type = 'pirep'
+    # example = 'pirep'
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._key_remv = _key_remv

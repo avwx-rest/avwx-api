@@ -1,0 +1,421 @@
+{
+    "meta": {
+        "timestamp": "2019-03-28T01:11:01.190885Z"
+    },
+    "data": [
+        {
+            "raw": "MYGF UA /OV ZFP346073 /TM 0103 /FL390 /TP B738 /TB CONT LGT CHOP 390 /RM POCKET OF CONT LIGHT CHOP LASTING ABOUT 3 MINUTES- THEN SMOOTH AWC-WEB",
+            "station": "MYGF",
+            "time": {
+                "repr": "0103",
+                "dt": "2019-03-28T01:03:00Z"
+            },
+            "remarks": "POCKET OF CONT LIGHT CHOP LASTING ABOUT 3 MINUTES- THEN SMOOTH AWC-WEB",
+            "aircraft": "B738",
+            "altitude": {
+                "repr": "390",
+                "value": 390,
+                "spoken": "three nine zero"
+            },
+            "clouds": null,
+            "flight_visibility": null,
+            "icing": null,
+            "location": {
+                "repr": "ZFP346073",
+                "station": "ZFP",
+                "distance": {
+                    "repr": "073",
+                    "value": 73,
+                    "spoken": "seven three"
+                }
+            },
+            "sanitized": "MYGF UA /OV ZFP346073 /TM 0103 /FL390 /TP B738 /TB CONT LGT CHOP 390 /RM POCKET OF CONT LIGHT CHOP LASTING ABOUT 3 MINUTES- THEN SMOOTH AWC-WEB",
+            "temperature": null,
+            "turbulance": {
+                "severity": "CONT LGT CHOP 390",
+                "floor": null,
+                "ceiling": null
+            },
+            "type": "UA",
+            "wx": null
+        },
+        {
+            "raw": "SFB UA /OV SFB270005/TM 0052/FL010/TP A320/SK OVC011",
+            "station": null,
+            "time": {
+                "repr": "0052",
+                "dt": "2019-03-28T00:52:00Z"
+            },
+            "remarks": null,
+            "aircraft": "A320",
+            "altitude": {
+                "repr": "010",
+                "value": 10,
+                "spoken": "one zero"
+            },
+            "clouds": [
+                {
+                    "repr": "OVC011",
+                    "type": "OVC",
+                    "base": 11,
+                    "top": null,
+                    "modifier": null
+                }
+            ],
+            "flight_visibility": null,
+            "icing": null,
+            "location": {
+                "repr": "SFB270005",
+                "station": "SFB",
+                "distance": {
+                    "repr": "005",
+                    "value": 5,
+                    "spoken": "five"
+                }
+            },
+            "sanitized": "SFB UA /OV SFB270005/TM 0052/FL010/TP A320/SK OVC011",
+            "temperature": null,
+            "turbulance": null,
+            "type": "UA",
+            "wx": null
+        },
+        {
+            "raw": "JAX UA /OV SSI200003/TM 0049/FL350/TP B737/TB CONT LGT CHOP 350/RM INTMT LIGHT CHOP FL370 AWC-WEB/",
+            "station": null,
+            "time": {
+                "repr": "0049",
+                "dt": "2019-03-28T00:49:00Z"
+            },
+            "remarks": "INTMT LIGHT CHOP FL370 AWC-WEB",
+            "aircraft": "B737",
+            "altitude": {
+                "repr": "350",
+                "value": 350,
+                "spoken": "three five zero"
+            },
+            "clouds": null,
+            "flight_visibility": null,
+            "icing": null,
+            "location": {
+                "repr": "SSI200003",
+                "station": "SSI",
+                "distance": {
+                    "repr": "003",
+                    "value": 3,
+                    "spoken": "three"
+                }
+            },
+            "sanitized": "JAX UA /OV SSI200003/TM 0049/FL350/TP B737/TB CONT LGT CHOP 350/RM INTMT LIGHT CHOP FL370 AWC-WEB/",
+            "temperature": null,
+            "turbulance": {
+                "severity": "CONT LGT CHOP 350",
+                "floor": null,
+                "ceiling": null
+            },
+            "type": "UA",
+            "wx": null
+        },
+        {
+            "raw": "GNV UA /OV OCF112014 /TM 0032 /FL370 /TP B737 /TB CONT LGT CHOP 360 /RM MOSTLY SMOOTH FL350 AWC-WEB",
+            "station": null,
+            "time": {
+                "repr": "0032",
+                "dt": "2019-03-28T00:32:00Z"
+            },
+            "remarks": "MOSTLY SMOOTH FL350 AWC-WEB",
+            "aircraft": "B737",
+            "altitude": {
+                "repr": "370",
+                "value": 370,
+                "spoken": "three seven zero"
+            },
+            "clouds": null,
+            "flight_visibility": null,
+            "icing": null,
+            "location": {
+                "repr": "OCF112014",
+                "station": "OCF",
+                "distance": {
+                    "repr": "014",
+                    "value": 14,
+                    "spoken": "one four"
+                }
+            },
+            "sanitized": "GNV UA /OV OCF112014 /TM 0032 /FL370 /TP B737 /TB CONT LGT CHOP 360 /RM MOSTLY SMOOTH FL350 AWC-WEB",
+            "temperature": null,
+            "turbulance": {
+                "severity": "CONT LGT CHOP 360",
+                "floor": null,
+                "ceiling": null
+            },
+            "type": "UA",
+            "wx": null
+        },
+        {
+            "raw": "MCO UA /OV ORL180010/TM 0010/FL016/TP A321/SK OVC016",
+            "station": null,
+            "time": {
+                "repr": "0010",
+                "dt": "2019-03-28T00:10:00Z"
+            },
+            "remarks": null,
+            "aircraft": "A321",
+            "altitude": {
+                "repr": "016",
+                "value": 16,
+                "spoken": "one six"
+            },
+            "clouds": [
+                {
+                    "repr": "OVC016",
+                    "type": "OVC",
+                    "base": 16,
+                    "top": null,
+                    "modifier": null
+                }
+            ],
+            "flight_visibility": null,
+            "icing": null,
+            "location": {
+                "repr": "ORL180010",
+                "station": "ORL",
+                "distance": {
+                    "repr": "010",
+                    "value": 10,
+                    "spoken": "one zero"
+                }
+            },
+            "sanitized": "MCO UA /OV ORL180010/TM 0010/FL016/TP A321/SK OVC016",
+            "temperature": null,
+            "turbulance": null,
+            "type": "UA",
+            "wx": null
+        },
+        {
+            "raw": "PBI UA /OV PBI348027/TM 0002/FL340/TP B739/TB OCNL MOD CHOP",
+            "station": null,
+            "time": {
+                "repr": "0002",
+                "dt": "2019-03-28T00:02:00Z"
+            },
+            "remarks": null,
+            "aircraft": "B739",
+            "altitude": {
+                "repr": "340",
+                "value": 340,
+                "spoken": "three four zero"
+            },
+            "clouds": null,
+            "flight_visibility": null,
+            "icing": null,
+            "location": {
+                "repr": "PBI348027",
+                "station": "PBI",
+                "distance": {
+                    "repr": "027",
+                    "value": 27,
+                    "spoken": "two seven"
+                }
+            },
+            "sanitized": "PBI UA /OV PBI348027/TM 0002/FL340/TP B739/TB OCNL MOD CHOP",
+            "temperature": null,
+            "turbulance": {
+                "severity": "OCNL MOD CHOP",
+                "floor": null,
+                "ceiling": null
+            },
+            "type": "UA",
+            "wx": null
+        },
+        {
+            "raw": "SFB UA /OV SFB/TM 2333/FL005/TP A320/RM +/- 10 KTS FINAL RWY 9L",
+            "station": null,
+            "time": {
+                "repr": "2333",
+                "dt": "2019-03-28T23:33:00Z"
+            },
+            "remarks": "+",
+            "aircraft": "A320",
+            "altitude": {
+                "repr": "005",
+                "value": 5,
+                "spoken": "five"
+            },
+            "clouds": null,
+            "flight_visibility": null,
+            "icing": null,
+            "location": {
+                "repr": "SFB",
+                "station": "SFB",
+                "distance": null
+            },
+            "sanitized": "SFB UA /OV SFB/TM 2333/FL005/TP A320/RM +/- 10 KTS FINAL RWY 9L",
+            "temperature": null,
+            "turbulance": null,
+            "type": "UA",
+            "wx": null
+        },
+        {
+            "raw": "MLB UA /OV MLB270010/TM 2325/FL018/TP BE20/SK BKN020",
+            "station": null,
+            "time": {
+                "repr": "2325",
+                "dt": "2019-03-28T23:25:00Z"
+            },
+            "remarks": null,
+            "aircraft": "BE20",
+            "altitude": {
+                "repr": "018",
+                "value": 18,
+                "spoken": "one eight"
+            },
+            "clouds": [
+                {
+                    "repr": "BKN020",
+                    "type": "BKN",
+                    "base": 20,
+                    "top": null,
+                    "modifier": null
+                }
+            ],
+            "flight_visibility": null,
+            "icing": null,
+            "location": {
+                "repr": "MLB270010",
+                "station": "MLB",
+                "distance": {
+                    "repr": "010",
+                    "value": 10,
+                    "spoken": "one zero"
+                }
+            },
+            "sanitized": "MLB UA /OV MLB270010/TM 2325/FL018/TP BE20/SK BKN020",
+            "temperature": null,
+            "turbulance": null,
+            "type": "UA",
+            "wx": null
+        },
+        {
+            "raw": "SFB UA /OV SFB/TM 2321/FL005/TP A319/SK OVC014/RM LIGHT CHOP BELOW 005",
+            "station": null,
+            "time": {
+                "repr": "2321",
+                "dt": "2019-03-28T23:21:00Z"
+            },
+            "remarks": "LIGHT CHOP BELOW 005",
+            "aircraft": "A319",
+            "altitude": {
+                "repr": "005",
+                "value": 5,
+                "spoken": "five"
+            },
+            "clouds": [
+                {
+                    "repr": "OVC014",
+                    "type": "OVC",
+                    "base": 14,
+                    "top": null,
+                    "modifier": null
+                }
+            ],
+            "flight_visibility": null,
+            "icing": null,
+            "location": {
+                "repr": "SFB",
+                "station": "SFB",
+                "distance": null
+            },
+            "sanitized": "SFB UA /OV SFB/TM 2321/FL005/TP A319/SK OVC014/RM LIGHT CHOP BELOW 005",
+            "temperature": null,
+            "turbulance": null,
+            "type": "UA",
+            "wx": null
+        },
+        {
+            "raw": "SFB UA /OV SFB/TM 2320/FL014/TP A319/SK OVC014",
+            "station": null,
+            "time": {
+                "repr": "2320",
+                "dt": "2019-03-28T23:20:00Z"
+            },
+            "remarks": null,
+            "aircraft": "A319",
+            "altitude": {
+                "repr": "014",
+                "value": 14,
+                "spoken": "one four"
+            },
+            "clouds": [
+                {
+                    "repr": "OVC014",
+                    "type": "OVC",
+                    "base": 14,
+                    "top": null,
+                    "modifier": null
+                }
+            ],
+            "flight_visibility": null,
+            "icing": null,
+            "location": {
+                "repr": "SFB",
+                "station": "SFB",
+                "distance": null
+            },
+            "sanitized": "SFB UA /OV SFB/TM 2320/FL014/TP A319/SK OVC014",
+            "temperature": null,
+            "turbulance": null,
+            "type": "UA",
+            "wx": null
+        },
+        {
+            "raw": "JAX UA /OV JAX/TM 2315/FL030/TP BE36/SK BASES 030/RM BKN",
+            "station": null,
+            "time": {
+                "repr": "2315",
+                "dt": "2019-03-28T23:15:00Z"
+            },
+            "remarks": "BKN",
+            "aircraft": "BE36",
+            "altitude": {
+                "repr": "030",
+                "value": 30,
+                "spoken": "three zero"
+            },
+            "clouds": [
+                {
+                    "repr": "BASES",
+                    "type": null,
+                    "base": null,
+                    "top": null,
+                    "modifier": "BASSE"
+                },
+                {
+                    "repr": "030",
+                    "type": null,
+                    "base": 30,
+                    "top": null,
+                    "modifier": null
+                }
+            ],
+            "flight_visibility": null,
+            "icing": null,
+            "location": {
+                "repr": "JAX",
+                "station": "JAX",
+                "distance": null
+            },
+            "sanitized": "JAX UA /OV JAX/TM 2315/FL030/TP BE36/SK BASES 030/RM BKN",
+            "temperature": null,
+            "turbulance": null,
+            "type": "UA",
+            "wx": null
+        }
+    ],
+    "units": {
+        "altimeter": "inHg",
+        "altitude": "ft",
+        "temperature": "C",
+        "visibility": "sm",
+        "wind_speed": "kt"
+    }
+}

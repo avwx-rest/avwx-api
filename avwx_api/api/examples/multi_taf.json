@@ -1,0 +1,452 @@
+{
+    "meta": {},
+    "KMCO": {
+        "meta": {
+            "timestamp": "2019-03-28T04:02:37.067927Z",
+            "cache-timestamp": "2019-03-28T04:02:36.978562Z"
+        },
+        "raw": "KMCO 280256Z 2803/2906 35015G20KT P6SM BKN015 OVC035 FM280600 35012KT P6SM BKN022 FM281400 02015G20KT P6SM SCT020 SCT035 FM290000 01008KT P6SM FEW040",
+        "station": "KMCO",
+        "time": {
+            "repr": "280256Z",
+            "dt": "2019-03-28T02:56:00Z"
+        },
+        "remarks": "",
+        "forecast": [
+            {
+                "altimeter": "",
+                "clouds": [
+                    {
+                        "repr": "BKN015",
+                        "type": "BKN",
+                        "altitude": 15,
+                        "modifier": null,
+                        "direction": null
+                    },
+                    {
+                        "repr": "OVC035",
+                        "type": "OVC",
+                        "altitude": 35,
+                        "modifier": null,
+                        "direction": null
+                    }
+                ],
+                "flight_rules": "MVFR",
+                "other": [],
+                "sanitized": "2803/2906 35015G20KT P6SM BKN015 OVC035",
+                "visibility": {
+                    "repr": "P6",
+                    "value": null,
+                    "spoken": "greater than six"
+                },
+                "wind_direction": {
+                    "repr": "350",
+                    "value": 350,
+                    "spoken": "three five zero"
+                },
+                "wind_gust": {
+                    "repr": "20",
+                    "value": 20,
+                    "spoken": "two zero"
+                },
+                "wind_speed": {
+                    "repr": "15",
+                    "value": 15,
+                    "spoken": "one five"
+                },
+                "end_time": {
+                    "repr": "2806",
+                    "dt": "2019-03-28T06:00:00Z"
+                },
+                "icing": [],
+                "probability": null,
+                "raw": "2803/2906 35015G20KT P6SM BKN015 OVC035",
+                "start_time": {
+                    "repr": "2803",
+                    "dt": "2019-03-28T03:00:00Z"
+                },
+                "turbulance": [],
+                "type": "FROM",
+                "wind_shear": ""
+            },
+            {
+                "altimeter": "",
+                "clouds": [
+                    {
+                        "repr": "BKN022",
+                        "type": "BKN",
+                        "altitude": 22,
+                        "modifier": null,
+                        "direction": null
+                    }
+                ],
+                "flight_rules": "MVFR",
+                "other": [],
+                "sanitized": "FM280600 35012KT P6SM BKN022",
+                "visibility": {
+                    "repr": "P6",
+                    "value": null,
+                    "spoken": "greater than six"
+                },
+                "wind_direction": {
+                    "repr": "350",
+                    "value": 350,
+                    "spoken": "three five zero"
+                },
+                "wind_gust": null,
+                "wind_speed": {
+                    "repr": "12",
+                    "value": 12,
+                    "spoken": "one two"
+                },
+                "end_time": {
+                    "repr": "2814",
+                    "dt": "2019-03-28T14:00:00Z"
+                },
+                "icing": [],
+                "probability": null,
+                "raw": "FM280600 35012KT P6SM BKN022",
+                "start_time": {
+                    "repr": "2806",
+                    "dt": "2019-03-28T06:00:00Z"
+                },
+                "turbulance": [],
+                "type": "FROM",
+                "wind_shear": ""
+            },
+            {
+                "altimeter": "",
+                "clouds": [
+                    {
+                        "repr": "SCT020",
+                        "type": "SCT",
+                        "altitude": 20,
+                        "modifier": null,
+                        "direction": null
+                    },
+                    {
+                        "repr": "SCT035",
+                        "type": "SCT",
+                        "altitude": 35,
+                        "modifier": null,
+                        "direction": null
+                    }
+                ],
+                "flight_rules": "VFR",
+                "other": [],
+                "sanitized": "FM281400 02015G20KT P6SM SCT020 SCT035",
+                "visibility": {
+                    "repr": "P6",
+                    "value": null,
+                    "spoken": "greater than six"
+                },
+                "wind_direction": {
+                    "repr": "020",
+                    "value": 20,
+                    "spoken": "zero two zero"
+                },
+                "wind_gust": {
+                    "repr": "20",
+                    "value": 20,
+                    "spoken": "two zero"
+                },
+                "wind_speed": {
+                    "repr": "15",
+                    "value": 15,
+                    "spoken": "one five"
+                },
+                "end_time": {
+                    "repr": "2900",
+                    "dt": "2019-03-29T00:00:00Z"
+                },
+                "icing": [],
+                "probability": null,
+                "raw": "FM281400 02015G20KT P6SM SCT020 SCT035",
+                "start_time": {
+                    "repr": "2814",
+                    "dt": "2019-03-28T14:00:00Z"
+                },
+                "turbulance": [],
+                "type": "FROM",
+                "wind_shear": ""
+            },
+            {
+                "altimeter": "",
+                "clouds": [
+                    {
+                        "repr": "FEW040",
+                        "type": "FEW",
+                        "altitude": 40,
+                        "modifier": null,
+                        "direction": null
+                    }
+                ],
+                "flight_rules": "VFR",
+                "other": [],
+                "sanitized": "FM290000 01008KT P6SM FEW040",
+                "visibility": {
+                    "repr": "P6",
+                    "value": null,
+                    "spoken": "greater than six"
+                },
+                "wind_direction": {
+                    "repr": "010",
+                    "value": 10,
+                    "spoken": "zero one zero"
+                },
+                "wind_gust": null,
+                "wind_speed": {
+                    "repr": "08",
+                    "value": 8,
+                    "spoken": "eight"
+                },
+                "end_time": {
+                    "repr": "2906",
+                    "dt": "2019-03-29T06:00:00Z"
+                },
+                "icing": [],
+                "probability": null,
+                "raw": "FM290000 01008KT P6SM FEW040",
+                "start_time": {
+                    "repr": "2900",
+                    "dt": "2019-03-29T00:00:00Z"
+                },
+                "turbulance": [],
+                "type": "FROM",
+                "wind_shear": ""
+            }
+        ],
+        "start_time": {
+            "repr": "2803",
+            "dt": "2019-03-28T03:00:00Z"
+        },
+        "end_time": {
+            "repr": "2906",
+            "dt": "2019-03-29T06:00:00Z"
+        },
+        "max_temp": "",
+        "min_temp": "",
+        "alts": null,
+        "temps": null,
+        "units": {
+            "altimeter": "inHg",
+            "altitude": "ft",
+            "temperature": "C",
+            "visibility": "sm",
+            "wind_speed": "kt"
+        }
+    },
+    "KJFK": {
+        "meta": {
+            "timestamp": "2019-03-28T04:02:37.048063Z",
+            "cache-timestamp": "2019-03-28T04:02:36.963629Z"
+        },
+        "raw": "KJFK 280234Z 2803/2906 16004KT P6SM SKC FM281300 18007KT P6SM FEW015 SCT250 FM281900 18013KT P6SM BKN200 FM290100 19008KT P6SM BKN120",
+        "station": "KJFK",
+        "time": {
+            "repr": "280234Z",
+            "dt": "2019-03-28T02:34:00Z"
+        },
+        "remarks": "",
+        "forecast": [
+            {
+                "altimeter": "",
+                "clouds": [],
+                "flight_rules": "VFR",
+                "other": [],
+                "sanitized": "2803/2906 16004KT P6SM SKC",
+                "visibility": {
+                    "repr": "P6",
+                    "value": null,
+                    "spoken": "greater than six"
+                },
+                "wind_direction": {
+                    "repr": "160",
+                    "value": 160,
+                    "spoken": "one six zero"
+                },
+                "wind_gust": null,
+                "wind_speed": {
+                    "repr": "04",
+                    "value": 4,
+                    "spoken": "four"
+                },
+                "end_time": {
+                    "repr": "2813",
+                    "dt": "2019-03-28T13:00:00Z"
+                },
+                "icing": [],
+                "probability": null,
+                "raw": "2803/2906 16004KT P6SM SKC",
+                "start_time": {
+                    "repr": "2803",
+                    "dt": "2019-03-28T03:00:00Z"
+                },
+                "turbulance": [],
+                "type": "FROM",
+                "wind_shear": ""
+            },
+            {
+                "altimeter": "",
+                "clouds": [
+                    {
+                        "repr": "FEW015",
+                        "type": "FEW",
+                        "altitude": 15,
+                        "modifier": null,
+                        "direction": null
+                    },
+                    {
+                        "repr": "SCT250",
+                        "type": "SCT",
+                        "altitude": 250,
+                        "modifier": null,
+                        "direction": null
+                    }
+                ],
+                "flight_rules": "VFR",
+                "other": [],
+                "sanitized": "FM281300 18007KT P6SM FEW015 SCT250",
+                "visibility": {
+                    "repr": "P6",
+                    "value": null,
+                    "spoken": "greater than six"
+                },
+                "wind_direction": {
+                    "repr": "180",
+                    "value": 180,
+                    "spoken": "one eight zero"
+                },
+                "wind_gust": null,
+                "wind_speed": {
+                    "repr": "07",
+                    "value": 7,
+                    "spoken": "seven"
+                },
+                "end_time": {
+                    "repr": "2819",
+                    "dt": "2019-03-28T19:00:00Z"
+                },
+                "icing": [],
+                "probability": null,
+                "raw": "FM281300 18007KT P6SM FEW015 SCT250",
+                "start_time": {
+                    "repr": "2813",
+                    "dt": "2019-03-28T13:00:00Z"
+                },
+                "turbulance": [],
+                "type": "FROM",
+                "wind_shear": ""
+            },
+            {
+                "altimeter": "",
+                "clouds": [
+                    {
+                        "repr": "BKN200",
+                        "type": "BKN",
+                        "altitude": 200,
+                        "modifier": null,
+                        "direction": null
+                    }
+                ],
+                "flight_rules": "VFR",
+                "other": [],
+                "sanitized": "FM281900 18013KT P6SM BKN200",
+                "visibility": {
+                    "repr": "P6",
+                    "value": null,
+                    "spoken": "greater than six"
+                },
+                "wind_direction": {
+                    "repr": "180",
+                    "value": 180,
+                    "spoken": "one eight zero"
+                },
+                "wind_gust": null,
+                "wind_speed": {
+                    "repr": "13",
+                    "value": 13,
+                    "spoken": "one three"
+                },
+                "end_time": {
+                    "repr": "2901",
+                    "dt": "2019-03-29T01:00:00Z"
+                },
+                "icing": [],
+                "probability": null,
+                "raw": "FM281900 18013KT P6SM BKN200",
+                "start_time": {
+                    "repr": "2819",
+                    "dt": "2019-03-28T19:00:00Z"
+                },
+                "turbulance": [],
+                "type": "FROM",
+                "wind_shear": ""
+            },
+            {
+                "altimeter": "",
+                "clouds": [
+                    {
+                        "repr": "BKN120",
+                        "type": "BKN",
+                        "altitude": 120,
+                        "modifier": null,
+                        "direction": null
+                    }
+                ],
+                "flight_rules": "VFR",
+                "other": [],
+                "sanitized": "FM290100 19008KT P6SM BKN120",
+                "visibility": {
+                    "repr": "P6",
+                    "value": null,
+                    "spoken": "greater than six"
+                },
+                "wind_direction": {
+                    "repr": "190",
+                    "value": 190,
+                    "spoken": "one nine zero"
+                },
+                "wind_gust": null,
+                "wind_speed": {
+                    "repr": "08",
+                    "value": 8,
+                    "spoken": "eight"
+                },
+                "end_time": {
+                    "repr": "2906",
+                    "dt": "2019-03-29T06:00:00Z"
+                },
+                "icing": [],
+                "probability": null,
+                "raw": "FM290100 19008KT P6SM BKN120",
+                "start_time": {
+                    "repr": "2901",
+                    "dt": "2019-03-29T01:00:00Z"
+                },
+                "turbulance": [],
+                "type": "FROM",
+                "wind_shear": ""
+            }
+        ],
+        "start_time": {
+            "repr": "2803",
+            "dt": "2019-03-28T03:00:00Z"
+        },
+        "end_time": {
+            "repr": "2906",
+            "dt": "2019-03-29T06:00:00Z"
+        },
+        "max_temp": "",
+        "min_temp": "",
+        "alts": null,
+        "temps": null,
+        "units": {
+            "altimeter": "inHg",
+            "altitude": "ft",
+            "temperature": "C",
+            "visibility": "sm",
+            "wind_speed": "kt"
+        }
+    }
+}

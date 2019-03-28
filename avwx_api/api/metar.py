@@ -47,6 +47,7 @@ class MetarParseLegacy(MetarParse):
 @app.route('/api/multi/metar/<stations>')
 class MetarMulti(MultiReport):
     report_type = 'metar'
+    example = 'multi_metar'
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._key_repl = _key_repl

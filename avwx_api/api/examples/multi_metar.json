@@ -1,0 +1,157 @@
+{
+    "meta": {},
+    "KMCO": {
+        "meta": {
+            "timestamp": "2019-03-28T03:47:53.574117Z",
+            "cache-timestamp": "2019-03-28T03:46:55.677000Z"
+        },
+        "altimeter": {
+            "repr": "3019",
+            "value": 30.19,
+            "spoken": "three zero point one nine"
+        },
+        "clouds": [
+            {
+                "repr": "OVC012",
+                "type": "OVC",
+                "altitude": 12,
+                "modifier": null,
+                "direction": null
+            }
+        ],
+        "flight_rules": "MVFR",
+        "other": [],
+        "sanitized": "KMCO 280333Z 36016KT 10SM OVC012 14/12 A3019 RMK AO2 T01440117",
+        "visibility": {
+            "repr": "10",
+            "value": 10,
+            "spoken": "one zero"
+        },
+        "wind_direction": {
+            "repr": "360",
+            "value": 360,
+            "spoken": "three six zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+            "repr": "16",
+            "value": 16,
+            "spoken": "one six"
+        },
+        "raw": "KMCO 280333Z 36016KT 10SM OVC012 14/12 A3019 RMK AO2 T01440117",
+        "station": "KMCO",
+        "time": {
+            "repr": "280333Z",
+            "dt": "2019-03-28T03:33:00Z"
+        },
+        "remarks": "RMK AO2 T01440117",
+        "dewpoint": {
+            "repr": "12",
+            "value": 12,
+            "spoken": "one two"
+        },
+        "remarks_info": {
+            "dewpoint_decimal": {
+                "repr": "11.7",
+                "value": 11.7,
+                "spoken": "one one point seven"
+            },
+            "temperature_decimal": {
+                "repr": "14.4",
+                "value": 14.4,
+                "spoken": "one four point four"
+            }
+        },
+        "runway_visibility": [],
+        "temperature": {
+            "repr": "14",
+            "value": 14,
+            "spoken": "one four"
+        },
+        "wind_variable_direction": [],
+        "units": {
+            "altimeter": "inHg",
+            "altitude": "ft",
+            "temperature": "C",
+            "visibility": "sm",
+            "wind_speed": "kt"
+        }
+    },
+    "KJFK": {
+        "meta": {
+            "timestamp": "2019-03-28T03:47:53.569417Z",
+            "cache-timestamp": "2019-03-28T03:45:53.760000Z"
+        },
+        "altimeter": {
+            "repr": "3053",
+            "value": 30.53,
+            "spoken": "three zero point five three"
+        },
+        "clouds": [
+            {
+                "repr": "FEW250",
+                "type": "FEW",
+                "altitude": 250,
+                "modifier": null,
+                "direction": null
+            }
+        ],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KJFK 280251Z 17005KT 10SM FEW250 02/M03 A3053 RMK AO2 SLP337 T00221033 50002",
+        "visibility": {
+            "repr": "10",
+            "value": 10,
+            "spoken": "one zero"
+        },
+        "wind_direction": {
+            "repr": "170",
+            "value": 170,
+            "spoken": "one seven zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+            "repr": "05",
+            "value": 5,
+            "spoken": "five"
+        },
+        "raw": "KJFK 280251Z 17005KT 10SM FEW250 02/M03 A3053 RMK AO2 SLP337 T00221033 50002",
+        "station": "KJFK",
+        "time": {
+            "repr": "280251Z",
+            "dt": "2019-03-28T02:51:00Z"
+        },
+        "remarks": "RMK AO2 SLP337 T00221033 50002",
+        "dewpoint": {
+            "repr": "M03",
+            "value": -3,
+            "spoken": "minus three"
+        },
+        "remarks_info": {
+            "dewpoint_decimal": {
+                "repr": "-3.3",
+                "value": -3.3,
+                "spoken": "minus three point three"
+            },
+            "temperature_decimal": {
+                "repr": "2.2",
+                "value": 2.2,
+                "spoken": "two point two"
+            }
+        },
+        "runway_visibility": [],
+        "temperature": {
+            "repr": "02",
+            "value": 2,
+            "spoken": "two"
+        },
+        "wind_variable_direction": [],
+        "units": {
+            "altimeter": "inHg",
+            "altitude": "ft",
+            "temperature": "C",
+            "visibility": "sm",
+            "wind_speed": "kt"
+        }
+    }
+}

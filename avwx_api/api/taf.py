@@ -47,6 +47,7 @@ class TafParseLegacy(TafParse):
 @app.route('/api/multi/taf/<stations>')
 class TafMulti(MultiReport):
     report_type = 'taf'
+    example = 'multi_taf'
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._key_repl = _key_repl
