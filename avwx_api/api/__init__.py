@@ -158,6 +158,7 @@ class Base(Resource):
 
 class Report(Base):
     """
+    Fetch Report Endpoint
     """
 
     @crossdomain(origin='*')
@@ -194,9 +195,9 @@ class LegacyReport(Report):
         'wind_variable_direction': 'Wind-Variable-Dir',
     }
 
-    note = ("The /api/<report-type> endpoint will switch to the "
-            "/api/preview/<report-type> format on April 1, 2019. "
-            "If you need more time, use /api/legacy/<report-type>")
+    note = ("The /api/<report-type> endpoint switched to the "
+            "new format on April 1, 2019. The /api/legacy/<report-type> "
+            "endpoint will be available until July 1, 2019")
 
     def revert_value(self, value: object) -> object:
         """

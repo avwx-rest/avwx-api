@@ -13,7 +13,7 @@ _key_remv = [
     'top',
 ]
 
-@app.route('/api/preview/taf/<station>')
+@app.route('/api/taf/<station>')
 class Taf(Report):
     report_type = 'taf'
     def __init__(self, *args, **kwargs):
@@ -21,16 +21,17 @@ class Taf(Report):
         self._key_repl = _key_repl
         self._key_remv = _key_remv
 
-@app.route('/api/taf/<station>')
+@app.route('/api/preview/taf/<station>')
+class TafCopy(Taf):
+    note = ("The new syntax can now be found at /api/taf. "
+            "The preview endpoint will be available until July 1, 2019")
+
+@app.route('/api/legacy/taf/<station>')
 class TafLegacy(LegacyReport):
     report_type = 'taf'
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._key_remv = _key_remv
-
-@app.route('/api/legacy/taf/<station>')
-class TafLegacyCopy(TafLegacy):
-    note = "The legacy endpoint will be available until July 1, 2019"
+        self._key_remv = _key_remv    
 
 @app.route('/api/parse/taf')
 class TafParse(Parse):
@@ -39,10 +40,6 @@ class TafParse(Parse):
         super().__init__(*args, **kwargs)
         self._key_repl = _key_repl
         self._key_remv = _key_remv
-
-@app.route('/api/taf/parse')
-class TafParseLegacy(TafParse):
-    note = "The parse endpoint has been moved to /api/parse/taf"
 
 @app.route('/api/multi/taf/<stations>')
 class TafMulti(MultiReport):

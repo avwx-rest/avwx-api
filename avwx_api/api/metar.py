@@ -13,7 +13,7 @@ _key_remv = [
     'top',
 ]
 
-@app.route('/api/preview/metar/<station>')
+@app.route('/api/metar/<station>')
 class Metar(Report):
     report_type = 'metar'
     def __init__(self, *args, **kwargs):
@@ -21,16 +21,17 @@ class Metar(Report):
         self._key_repl = _key_repl
         self._key_remv = _key_remv
 
-@app.route('/api/metar/<station>')
+@app.route('/api/preview/metar/<station>')
+class MetarCopy(Metar):
+    note = ("The new syntax can now be found at /api/metar. "
+            "The preview endpoint will be available until July 1, 2019")
+
+@app.route('/api/legacy/metar/<station>')
 class MetarLegacy(LegacyReport):
     report_type = 'metar'
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._key_remv = _key_remv
-
-@app.route('/api/legacy/metar/<station>')
-class MetarLegacyCopy(MetarLegacy):
-    note = "The legacy endpoint will be available until July 1, 2019"
+        self._key_remv = _key_remv    
 
 @app.route('/api/parse/metar')
 class MetarParse(Parse):
@@ -39,10 +40,6 @@ class MetarParse(Parse):
         super().__init__(*args, **kwargs)
         self._key_repl = _key_repl
         self._key_remv = _key_remv
-
-@app.route('/api/metar/parse')
-class MetarParseLegacy(MetarParse):
-    note = "The parse endpoint has been moved to /api/parse/metar"
 
 @app.route('/api/multi/metar/<stations>')
 class MetarMulti(MultiReport):
