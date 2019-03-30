@@ -11,9 +11,10 @@ def report_exception(app, exception):
 
 
 def _hook(request, data):
-    data['framework'] = 'quart'
+    data["framework"] = "quart"
 
     if request:
-        data['context'] = str(request.url_rule)
+        data["context"] = str(request.url_rule)
+
 
 rollbar.BASE_DATA_HOOK = _hook

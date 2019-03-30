@@ -7,11 +7,13 @@ avwx_api.token - Manages connections to work with authentication tokens
 import asyncio as aio
 from os import environ
 from ssl import SSLContext
+
 # library
 import asyncpg
 
-PSQL_URI = environ.get('PSQL_URI', None)
+PSQL_URI = environ.get("PSQL_URI", None)
 TOKEN_QUERY = "SELECT active_token, plan FROM public.user WHERE apitoken = '{}'"
+
 
 async def validate_token(token: str) -> bool:
     """
@@ -22,4 +24,4 @@ async def validate_token(token: str) -> bool:
     await conn.close()
     if not result:
         return False
-    return result[0]['active_token']
+    return result[0]["active_token"]

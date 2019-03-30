@@ -8,6 +8,7 @@ import json
 import asyncio as aio
 from functools import wraps
 from os import path
+
 # library
 import yaml
 from dicttoxml import dicttoxml as fxml
@@ -15,6 +16,7 @@ from quart import Response, abort, jsonify, request
 from quart_openapi import Resource
 from quart_openapi.cors import crossdomain
 from voluptuous import Invalid, MultipleInvalid
+
 # module
 from avwx_api import handle, structs, token, validators
 
@@ -25,18 +27,21 @@ VALIDATION_ERROR_MESSAGES = {
 
 _DIR = path.dirname(path.realpath(__file__))
 
+
 def check_params_with_station(func):
     @wraps(func)
     async def wrapper(self, *args, **kwargs):
-        station = kwargs.get('station') or kwargs.get('stations')
+        station = kwargs.get("station") or kwargs.get("stations")
         params = self.validate_params(station=station)
         if isinstance(params, dict):
             resp = jsonify(params)
             resp.status_code = 400
-            resp.headers['X-Robots-Tag'] = 'noindex'
+            resp.headers["X-Robots-Tag"] = "noindex"
             return resp
         return await func(self, params, *args, **kwargs)
+
     return wrapper
+
 
 def token_flag(func):
     @wraps(func)
@@ -46,9 +51,10 @@ def token_flag(func):
             if err_code:
                 resp = jsonify(self.make_example_response(err_code))
                 resp.status_code = err_code
-                resp.headers['X-Robots-Tag'] = 'noindex'
+                resp.headers["X-Robots-Tag"] = "noindex"
                 return resp
         return await func(self, *args, **kwargs)
+
     return wrapper
 
 
@@ -84,7 +90,7 @@ class Base(Resource):
         """
         if not token.PSQL_URI:
             return
-        auth_token = request.headers.get('Authorization')
+        auth_token = request.headers.get("Authorization")
         if not auth_token or len(auth_token) < 10:
             return 401
         # Remove 'Token ' from token value
@@ -96,7 +102,12 @@ class Base(Resource):
         Returns all validated request parameters or an error response dict
         """
         try:
-            params = {'report_type': self.report_type, **request.headers, **request.args, **kwargs}
+            params = {
+                "report_type": self.report_type,
+                **request.headers,
+                **request.args,
+                **kwargs,
+            }
             # Unpack param lists. Ex: options: ['info,speech'] -> options: 'info,speech'
             for k, v in params.items():
                 if isinstance(v, list):
@@ -105,19 +116,19 @@ class Base(Resource):
         except (Invalid, MultipleInvalid) as exc:
             key = exc.path[0]
             return {
-                'error': str(exc.msg),
-                'param': key,
-                'help': validators.HELP.get(key)
+                "error": str(exc.msg),
+                "param": key,
+                "help": validators.HELP.get(key),
             }
 
     def make_example_response(self, error_code: int) -> dict:
         """
         Returns an example payload when validation fails
         """
-        data = json.load(open(path.join(_DIR, 'examples', self.example+'.json')))
+        data = json.load(open(path.join(_DIR, "examples", self.example + ".json")))
         msg = VALIDATION_ERROR_MESSAGES[error_code]
         msg += " Here's an example response for testing purposes"
-        data['meta'] = {'validation_error': msg}
+        data["meta"] = {"validation_error": msg}
         return data
 
     def format_dict(self, output: dict) -> dict:
@@ -141,7 +152,9 @@ class Base(Resource):
             resp[k] = v
         return resp
 
-    def format_response(self, output: dict, format: str, meta: str = 'meta') -> Response:
+    def format_response(
+        self, output: dict, format: str, meta: str = "meta"
+    ) -> Response:
         """
         Returns the output string based on format param
         """
@@ -149,32 +162,38 @@ class Base(Resource):
         if self.note:
             if meta not in output:
                 output[meta] = {}
-            output[meta]['note'] = self.note
-        if format == 'xml':
-            return Response(fxml(output, custom_root=self.report_type.upper()), mimetype='text/xml')
-        elif format == 'yaml':
-            return Response(yaml.dump(output, default_flow_style=False), mimetype='text/x-yaml')
+            output[meta]["note"] = self.note
+        if format == "xml":
+            return Response(
+                fxml(output, custom_root=self.report_type.upper()), mimetype="text/xml"
+            )
+        elif format == "yaml":
+            return Response(
+                yaml.dump(output, default_flow_style=False), mimetype="text/x-yaml"
+            )
         return jsonify(output)
+
 
 class Report(Base):
     """
     Fetch Report Endpoint
     """
 
-    @crossdomain(origin='*')
+    @crossdomain(origin="*")
     @check_params_with_station
     @token_flag
     async def get(self, params: structs.Params, station: str) -> Response:
         """
         GET handler returning reports
         """
-        nofail = params.onfail == 'cache'
+        nofail = params.onfail == "cache"
         handler = getattr(handle, self.report_type).handle_report
         data, code = await handler(params.station, params.options, nofail)
         resp = self.format_response(data, params.format)
         resp.status_code = code
-        resp.headers['X-Robots-Tag'] = 'noindex'
+        resp.headers["X-Robots-Tag"] = "noindex"
         return resp
+
 
 class LegacyReport(Report):
     """
@@ -184,20 +203,22 @@ class LegacyReport(Report):
     """
 
     key_repl = {
-        'clouds': 'Cloud-List',
-        'dewpoint_decimal': 'Dew-Decimal',
-        'icing': 'Icing-List',
-        'other': 'Other-List',
-        'raw': 'Raw-Report',
-        'runway_visibility': 'Runway-Vis-List',
-        'temperature_decimal': 'Temp-Decimal',
-        'turbulance': 'Turb-List',
-        'wind_variable_direction': 'Wind-Variable-Dir',
+        "clouds": "Cloud-List",
+        "dewpoint_decimal": "Dew-Decimal",
+        "icing": "Icing-List",
+        "other": "Other-List",
+        "raw": "Raw-Report",
+        "runway_visibility": "Runway-Vis-List",
+        "temperature_decimal": "Temp-Decimal",
+        "turbulance": "Turb-List",
+        "wind_variable_direction": "Wind-Variable-Dir",
     }
 
-    note = ("The /api/<report-type> endpoint switched to the "
-            "new format on April 1, 2019. The /api/legacy/<report-type> "
-            "endpoint will be available until July 1, 2019")
+    note = (
+        "The /api/<report-type> endpoint switched to the "
+        "new format on April 1, 2019. The /api/legacy/<report-type> "
+        "endpoint will be available until July 1, 2019"
+    )
 
     def revert_value(self, value: object) -> object:
         """
@@ -205,21 +226,21 @@ class LegacyReport(Report):
         """
         if isinstance(value, dict):
             # Revert cloud layer
-            if 'modifier' in value:
-                temp = [value['type'], str(value['base']).zfill(3)]
-                if value['modifier'] is not None:
-                    temp.append(value['modifier'])
+            if "modifier" in value:
+                temp = [value["type"], str(value["base"]).zfill(3)]
+                if value["modifier"] is not None:
+                    temp.append(value["modifier"])
                 return temp
             # Revert number or timestamp
-            elif 'repr' in value:
-                return value['repr']
+            elif "repr" in value:
+                return value["repr"]
             # Else recursive call on embedded dict
             else:
                 return self.format_dict(value)
         elif isinstance(value, list):
             return [self.revert_value(item) for item in value]
         elif value is None:
-            return ''
+            return ""
         return value
 
     def format_dict(self, data: dict) -> dict:
@@ -229,29 +250,30 @@ class LegacyReport(Report):
         resp = {}
         for k, v in data.items():
             # Special case for TAF line
-            if k == 'raw' and 'wind_shear' in data:
-                k = 'Raw-Line'
+            if k == "raw" and "wind_shear" in data:
+                k = "Raw-Line"
             elif k in self.key_repl:
                 k = self.key_repl[k]
             # 'flight_rules' -> 'Flight-Rules'
             else:
-                k = k.replace('_', '-').title()
+                k = k.replace("_", "-").title()
             resp[k] = self.revert_value(v)
         return resp
 
-    @crossdomain(origin='*')
+    @crossdomain(origin="*")
     @check_params_with_station
     async def get(self, params: structs.Params, station: str) -> Response:
         """
         GET handler returning METAR and TAF reports in the legacy format
         """
-        nofail = params.onfail == 'cache'
+        nofail = params.onfail == "cache"
         handler = getattr(handle, self.report_type).handle_report
         data, code = await handler(params.station, params.options, nofail)
-        resp = self.format_response(data, params.format, meta='Meta')
+        resp = self.format_response(data, params.format, meta="Meta")
         resp.status_code = code
-        resp.headers['X-Robots-Tag'] = 'noindex'
+        resp.headers["X-Robots-Tag"] = "noindex"
         return resp
+
 
 class Parse(Base):
     """
@@ -261,7 +283,7 @@ class Parse(Base):
     validator = validators.given
     struct = structs.GivenParams
 
-    @crossdomain(origin='*')
+    @crossdomain(origin="*")
     @token_flag
     async def post(self) -> Response:
         """
@@ -272,7 +294,7 @@ class Parse(Base):
         if isinstance(params, dict):
             resp = jsonify(params)
             resp.status_code = 400
-            resp.headers['X-Robots-Tag'] = 'noindex'
+            resp.headers["X-Robots-Tag"] = "noindex"
             return resp
         # Handle token validation
         code = None
@@ -285,8 +307,9 @@ class Parse(Base):
             data, code = handler(params.report, params.options)
             resp = self.format_response(data, params.format)
         resp.status_code = code
-        resp.headers['X-Robots-Tag'] = 'noindex'
+        resp.headers["X-Robots-Tag"] = "noindex"
         return resp
+
 
 class MultiReport(Base):
     """
@@ -295,23 +318,22 @@ class MultiReport(Base):
 
     validator = validators.multi_report
 
-    @crossdomain(origin='*')
+    @crossdomain(origin="*")
     @check_params_with_station
     @token_flag
     async def get(self, params: structs.Params, stations: str) -> Response:
         """
         GET handler returning multiple METAR and TAF reports
         """
-        nofail = params.onfail == 'cache'
+        nofail = params.onfail == "cache"
         handler = getattr(handle, self.report_type).handle_report
-        results = await aio.gather(*[handler(
-            [station],
-            params.options,
-            nofail
-        ) for station in params.station])
+        results = await aio.gather(
+            *[handler([station], params.options, nofail) for station in params.station]
+        )
         data = dict(zip(params.station, [r[0] for r in results]))
         resp = self.format_response(data, params.format)
-        resp.headers['X-Robots-Tag'] = 'noindex'
+        resp.headers["X-Robots-Tag"] = "noindex"
         return resp
+
 
 from avwx_api.api import metar, pirep, taf

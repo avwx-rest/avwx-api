@@ -7,20 +7,24 @@ avwx_api.cache - Class for communicating with the report cache
 import asyncio as aio
 from datetime import datetime, timedelta
 from os import environ
+
 # library
 from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo.errors import AutoReconnect, OperationFailure
+
 # module
 from avwx_api import app
 
 cache_db = None
 
+
 @app.before_serving
 def init_cache():
-    mongo_uri = environ.get('MONGO_URI')
+    mongo_uri = environ.get("MONGO_URI")
     if mongo_uri:
         global cache_db
         cache_db = AsyncIOMotorClient(mongo_uri).report_cache
+
 
 def replace_keys(data: dict, key: str, by_key: str) -> dict:
     """
@@ -37,6 +41,7 @@ def replace_keys(data: dict, key: str, by_key: str) -> dict:
             data[k] = replace_keys(v, key, by_key)
     return data
 
+
 def has_expired(time: datetime, minutes: int = 2) -> bool:
     """
     Returns True if a datetime is older than the number of minutes given
@@ -44,6 +49,7 @@ def has_expired(time: datetime, minutes: int = 2) -> bool:
     if not time:
         return True
     return datetime.utcnow() > time + timedelta(minutes=minutes)
+
 
 async def get(table: str, key: str, force: bool = False) -> {str: object}:
     """
@@ -56,14 +62,17 @@ async def get(table: str, key: str, force: bool = False) -> {str: object}:
         return
     for i in range(5):
         try:
-            data = await cache_db[table.lower()].find_one({'_id': key})
-            data = replace_keys(data, '_$', '$')
-            if force or (isinstance(data, dict) and not has_expired(data.get('timestamp'))):
+            data = await cache_db[table.lower()].find_one({"_id": key})
+            data = replace_keys(data, "_$", "$")
+            if force or (
+                isinstance(data, dict) and not has_expired(data.get("timestamp"))
+            ):
                 return data
         except OperationFailure:
             return
         except AutoReconnect:
             await aio.sleep(0.5)
+
 
 async def update(table: str, key: str, data: {str: object}):
     """
@@ -71,12 +80,14 @@ async def update(table: str, key: str, data: {str: object}):
     """
     if not cache_db:
         return
-    data = replace_keys(data, '$', '_$')
-    data['timestamp'] = datetime.utcnow()
+    data = replace_keys(data, "$", "_$")
+    data["timestamp"] = datetime.utcnow()
     # Make five attempts to connect to server
     for i in range(5):
         try:
-            await cache_db[table.lower()].update_one({'_id': key}, {'$set': data}, upsert=True)
+            await cache_db[table.lower()].update_one(
+                {"_id": key}, {"$set": data}, upsert=True
+            )
             return
         except OperationFailure:
             return
