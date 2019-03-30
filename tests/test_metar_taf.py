@@ -30,8 +30,8 @@ async def test_fetch():
         resp = await _fetch(rtype)
         data = await resp.json
         print(data)
-        assert "Station" in data
-        assert data["Station"] == "KJFK"
+        assert "station" in data
+        assert data["station"] == "KJFK"
 
 
 @pytest.mark.asyncio
@@ -45,8 +45,8 @@ async def test_coords():
         resp = await _fetch(rtype, target="28.4293,-81.3089")
         data = await resp.json
         print(data)
-        assert "Station" in data
-        assert data["Station"] == "KMCO"
+        assert "station" in data
+        assert data["station"] == "KMCO"
 
 
 @pytest.mark.asyncio
@@ -58,7 +58,7 @@ async def test_parse():
         ("metar", "KJFK 192351Z 11006KT 10SM BKN055 BKN080 21/19 A3005"),
         ("taf", "PHKO 181735Z 1818/1918 VRB03KT P6SM FEW035"),
     ):
-        resp = await CLIENT.post(URL.format(rtype, "parse"), data=report)
+        resp = await CLIENT.post(URL.format("parse", rtype), data=report)
         assert resp.status_code == 200
         data = await resp.json
         print(data)
