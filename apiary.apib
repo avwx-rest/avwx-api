@@ -64,8 +64,6 @@ This example shows station information for JKF International in New York City.
 
 METAR reports are surface observations for a particular airfield or other station location. There are two standard formats: International and North American. The parser works with both, but it is up to the developer to do the correct interpretation of the data. Use the 'Units' key for labling and conversions.
 
-This endpoint currently uses the old response format. The format will switch on **April 1, 2019** to the new response format found at /api/preview/metar. If you need more time, use the endpoint at /api/legacy/metar which will last until **July 1, 2019**
-
 + Parameters
     + location (string) - ICAO station ident or coordinate pair
     + options (string) - Additional options to include (info, translate, summary, speech)
@@ -75,8 +73,6 @@ This endpoint currently uses the old response format. The format will switch on 
 ### Get METAR Report for Station [GET]
 
 Get the METAR for a specific station by ICAO ident.
-
-The example shown uses the new response format at /api/preview/metar
 
 + Parameters
     + location:`KJFK`
@@ -164,8 +160,6 @@ The example shown uses the new response format at /api/preview/metar
 ### Get METAR Report for Coordinates [GET]
 
 Get the METAR for a coordinate pair (lat,lon). The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
-
-The example shown uses the new response format at /api/preview/metar
 
 + Parameters
     + location: `51.47,-0.4`
@@ -376,8 +370,6 @@ Parse a user-supplied METAR included as the plain text body of the request.
 
 TAF reports are atmospheric conditions for an area within five nautical miles of a particular airfield or other station location. Unlike METAR which only has two standard formats, TAF reports vary considderably more based on their geography. For example, Oceania TAF reports include two unique keys: Temp-List and Alt-List.
 
-This endpoint currently uses the old response format. The format will switch on **April 1, 2019** to the new response format found at /api/preview/taf. If you need more time, use the endpoint at /api/legacy/taf which will last until **July 1, 2019**
-
 + Parameters
     + location (string) - ICAO station ident or coordinate pair
     + options (string) - Additional options to include (info, translate, summary)
@@ -387,8 +379,6 @@ This endpoint currently uses the old response format. The format will switch on 
 ### Get TAF Report for Station [GET]
 
 Get the TAF for a specific station by ICAO ident.
-
-The example shown uses the new response format at /api/preview/taf
 
 + Parameters
     + location:`KJFK`
@@ -814,8 +804,6 @@ The example shown uses the new response format at /api/preview/taf
 ### Get TAF Report for Coordinates [GET]
 
 Get the TAF for a coordinate pair (lat,lon). The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
-
-The example shown uses the new response format at /api/preview/taf
 
 + Parameters
     + location: `51.47,-0.4`
