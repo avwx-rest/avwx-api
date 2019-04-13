@@ -70,6 +70,9 @@ async def update_parser(
     # Parse the fetched data
     try:
         parser._post_update()
+    except avwx.exceptions.BadStation as exc:
+        print("Unknown Station:", exc)
+        return {"error": ERRORS[2].format(parser.station)}, 400
     except Exception as exc:
         print("Unknown Parsing Error", exc)
         rollbar.report_exc_info(extra_data={"raw": parser.raw})
