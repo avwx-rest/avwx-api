@@ -17,7 +17,7 @@ ENV LOG_KEY='rollbar-server-key'
 COPY requirements.txt /home/avwx/requirements.txt
 RUN pip install -U pip
 RUN pip install -Ur requirements.txt
-RUN pip install -U hypercorn
+RUN pip install -U hypercorn~=0.6
 
 # Copy the application code
 COPY avwx_api /home/avwx/avwx_api
