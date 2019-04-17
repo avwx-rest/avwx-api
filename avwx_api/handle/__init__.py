@@ -65,7 +65,7 @@ async def update_parser(
         return {"error": ERRORS[0].format(rtype, err_station)}, 400
     except Exception as exc:
         print("Unknown Fetching Error", exc)
-        rollbar.report_exc_info()
+        rollbar.report_exc_info(extra_data={"state": "fetch", "raw": parser.raw})
         return {"error": ERRORS[4].format(rtype)}, 500
     # Parse the fetched data
     try:
@@ -75,7 +75,7 @@ async def update_parser(
         return {"error": ERRORS[2].format(parser.station)}, 400
     except Exception as exc:
         print("Unknown Parsing Error", exc)
-        rollbar.report_exc_info(extra_data={"raw": parser.raw})
+        rollbar.report_exc_info(extra_data={"state": "parse", "raw": parser.raw})
         return {"error": ERRORS[1].format(rtype)}, 500
     return None, None
 

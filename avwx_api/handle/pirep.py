@@ -86,8 +86,9 @@ def _parse_given(rtype: str, report: str, opts: [str]) -> (dict, int):
         resp = asdict(ureport.data[0])
         resp["meta"] = {"timestamp": datetime.utcnow()}
         return resp, 200
-    except:
-        # rollbar.report_exc_info()
+    except Exception as exc:
+        print("Unknown Parsing Error", exc)
+        rollbar.report_exc_info(extra_data={"state": "given", "raw": report})
         return {"error": ERRORS[1].format(rtype), "timestamp": datetime.utcnow()}, 500
 
 

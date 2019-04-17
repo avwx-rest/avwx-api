@@ -67,7 +67,11 @@ async def new_report(rtype: str, station: str, report: str) -> (dict, int):
         return {"error": str(exc)}, 400
     # Fetch report if one wasn't received via geonames
     if report:
-        parser.update(report)
+        try:
+            parser.update(report)
+        except Exception as exc:
+            print("Unknown Parsing Error", exc)
+            rollbar.report_exc_info(extra_data={"state": "given", "raw": report})
     else:
         error, code = await update_parser(parser, station)
         if error:
@@ -157,7 +161,7 @@ def _parse_given(rtype: str, report: str, opts: [str]) -> (dict, int):
     """
     Attepts to parse a given report supplied by the user
     """
-    if len(report) < 4 or "{" in report:
+    if len(report) < 4 or "{" in report or "[" in report:
         return (
             {
                 "error": "Could not find station at beginning of report",
@@ -187,8 +191,9 @@ def _parse_given(rtype: str, report: str, opts: [str]) -> (dict, int):
         return resp, 200
     except avwx.exceptions.BadStation:
         return {"error": ERRORS[2].format(station), "timestamp": datetime.utcnow()}, 400
-    except:
-        # rollbar.report_exc_info()
+    except Exception as exc:
+        print("Unknown Parsing Error", exc)
+        rollbar.report_exc_info(extra_data={"state": "given", "raw": report})
         return {"error": ERRORS[1].format(rtype), "timestamp": datetime.utcnow()}, 500
 
 
