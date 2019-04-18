@@ -13,8 +13,7 @@ from quart.json import JSONEncoder
 from quart_openapi import Pint
 import rollbar
 
-# from rollbar.contrib.quart import report_exception
-from avwx_api.rollbar_handler import report_exception
+from rollbar.contrib.quart import report_exception
 
 app = Pint(__name__)
 
