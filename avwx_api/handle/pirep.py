@@ -60,7 +60,7 @@ async def _handle_report(
         cache_data = await cache.get(rtype, station)
         if cache_data is None:
             resp["error"] = "No report or cache was found for the requested station"
-            return resp, 400
+            return resp, 204
         data = cache_data
         resp["meta"].update(
             {

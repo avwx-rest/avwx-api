@@ -1,5 +1,5 @@
 # Start from the official Python 3.7 container
-FROM python:3.7.2
+FROM python:3.7.3
 
 # Expose the default Quart port
 EXPOSE 8000

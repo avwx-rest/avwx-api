@@ -55,27 +55,17 @@ async def get_data_for_corrds(lat: str, lon: str) -> (dict, int):
         return {"error": "Coord Lookup Error: Unknown Error (0)"}, 500
 
 
-async def new_report(rtype: str, station: str, report: str) -> (dict, int):
+async def new_report(rtype: str, station: str) -> (dict, int):
     """
     Fetch and parse report data for a given station
-
-    We can skip fetching the report if geonames already returned it
     """
     try:
         parser = _HANDLE_MAP[rtype](station)
     except avwx.exceptions.BadStation as exc:
         return {"error": str(exc)}, 400
-    # Fetch report if one wasn't received via geonames
-    if report:
-        try:
-            parser.update(report)
-        except Exception as exc:
-            print("Unknown Parsing Error", exc)
-            rollbar.report_exc_info(extra_data={"state": "given", "raw": report})
-    else:
-        error, code = await update_parser(parser, station)
-        if error:
-            return error, code
+    error, code = await update_parser(parser, station)
+    if error:
+        return error, code
     # Retrieve report data
     data = {
         "data": asdict(parser.data),
@@ -115,20 +105,16 @@ async def _handle_report(
     If nofail and a new report can't be fetched, the cache will be returned with a warning
     """
     if len(loc) == 2:
-        # Do things given goedata contains station and metar report
-        geodata, code = await get_data_for_corrds(loc[0], loc[1])
+        geodata, code = await get_data_for_corrds(*loc)
         if code != 200:
             return geodata, code
         station = geodata["ICAO"]
-        report = geodata["observation"] if rtype == "metar" else None
     else:
-        # Do things given only station
         station = loc[0].upper()
-        report = None
     # Fetch an existing and up-to-date cache or make a new report
     data, code = await cache.get(rtype, station), 200
     if data is None:
-        data, code = await new_report(rtype, station, report)
+        data, code = await new_report(rtype, station)
     resp = {"meta": {"timestamp": datetime.utcnow()}}
     if "timestamp" in data:
         resp["meta"]["cache-timestamp"] = data["timestamp"]
@@ -138,7 +124,7 @@ async def _handle_report(
             cache_data = await cache.get(rtype, station)
             if cache_data is None:
                 resp["error"] = "No report or cache was found for the requested station"
-                return resp, 400
+                return resp, 204
             data = cache_data
             resp["meta"].update(
                 {

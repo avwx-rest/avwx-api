@@ -1,6 +1,6 @@
 aiohttp~=3.5
 asyncpg~=0.18
-avwx-engine>=1.1a13
+avwx-engine>=1.1a14
 dataclasses>=0.6;python_version<"3.7"
 dicttoxml~=1.7
 # hypercorn~=0.6
