@@ -22,42 +22,46 @@ This example shows station information for JKF International in New York City.
 + Response 200 (application/json)
 
         {
-            "city": "New York City",
-            "country": "USA",
-            "elevation": 4.3,
+            "city": "New York",
+            "country": "US",
+            "elevation_ft": 13,
+            "elevation_m": 4,
             "iata": "JFK",
             "icao": "KJFK",
-            "latitude": 40.63975111,
-            "longitude": -73.77892556,
+            "latitude": 40.63980103,
+            "longitude": -73.77890015,
             "name": "John F Kennedy International Airport",
-            "priority": 1,
-            "state": "NY",
+            "note": "Manhattan, New York City, NYC, Idlewild",
             "runways": [
                 {
-                    "length": 14572,
-                    "width": 150,
+                    "length_ft": 14572,
+                    "width_ft": 150,
                     "ident1": "13R",
                     "ident2": "31L"
                 },
                 {
-                    "length": 11351,
-                    "width": 150,
+                    "length_ft": 11351,
+                    "width_ft": 150,
                     "ident1": "04L",
                     "ident2": "22R"
                 },
                 {
-                    "length": 10000,
-                    "width": 150,
+                    "length_ft": 10000,
+                    "width_ft": 150,
                     "ident1": "13L",
                     "ident2": "31R"
                 },
                 {
-                    "length": 8400,
-                    "width": 200,
+                    "length_ft": 8400,
+                    "width_ft": 200,
                     "ident1": "04R",
                     "ident2": "22L"
                 }
-            ]
+            ],
+            "state": "NY",
+            "type": "large_airport",
+            "website": "http://www.panynj.gov/CommutingTravel/airports/html/kennedy.html",
+            "wiki": "http://en.wikipedia.org/wiki/John_F._Kennedy_International_Airport"
         }
 
 ## METAR [/metar/{location}{?format,options,onfail}]
@@ -159,7 +163,7 @@ Get the METAR for a specific station by ICAO ident.
 
 ### Get METAR Report for Coordinates [GET]
 
-Get the METAR for a coordinate pair (lat,lon). The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
+Get the METAR for a lat,lon coordinate pair. The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
 
 + Parameters
     + location: `51.47,-0.4`
@@ -254,7 +258,7 @@ Get the METAR for a coordinate pair (lat,lon). The API will return the station n
             ]
         }
 
-## Parse METAR [/parse/metar{?format,options,onfail}]
+## Parse METAR [/parse/metar{?format,options}]
 
 Parses a METAR report supplied by the user.
 
@@ -803,7 +807,7 @@ Get the TAF for a specific station by ICAO ident.
 
 ### Get TAF Report for Coordinates [GET]
 
-Get the TAF for a coordinate pair (lat,lon). The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
+Get the TAF for a lat,lon coordinate pair. The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
 
 + Parameters
     + location: `51.47,-0.4`
@@ -1033,7 +1037,7 @@ Get the TAF for a coordinate pair (lat,lon). The API will return the station nea
             }
         }
 
-## Parse TAF [/parse/taf{?format,options,onfail}]
+## Parse TAF [/parse/taf{?format,options}]
 
 Parses a TAF report supplied by the user.
 
@@ -1316,6 +1320,441 @@ Parse a user-supplied TAF included as the plain text body of the request.
                 "max_temp": "",
                 "min_temp": "",
                 "remarks": {}
+            }
+        }
+
+## PIREP [/pirep/{location}{?format,options,onfail}]
+
+A PIREP (Pilot Report) is an observation made by pilots inflight meant to aid controllers and pilots routing around adverse conditions and other conditions of note. They typically contain icing, turbulance, cloud types/bases/tops, and other info at a known distance and radial from a ground station. They are released as they come in.
+
+This endpoint requires a paid API token.
+
+Note: translate, summary, and speech options not yet available
+
++ Parameters
+    + location (string) - ICAO station ident or coordinate pair
+    + options (string) - Additional options to include (info)
+    + format (string) - Desired response format (default=json, xml, yaml)
+    + onfail (string) - Error or use out-of-date cache when unable to fetch report (default=error, cache)
+
+### Get PIREP Report for Station [GET]
+
+Get PIREPs within 200 miles of a specific station by ICAO ident.
+
++ Parameters
+    + location:`KMCO`
+    + format: `json`
+
++ Request (text/plain)
+
+    + Headers
+
+            Authorization: Token my_secret_api_token
+
++ Response 200 (application/json)
+
+        {
+            "meta": {
+                "timestamp": "2019-05-27T21:46:53.248533Z",
+                "cache-timestamp": "2019-05-27T21:46:55.201833Z"
+            },
+            "data": [
+                {
+                    "raw": "OCF UA /OV OCF/TM 2103/FL110/TP GLF5/TB MOD",
+                    "station": "OCF",
+                    "time": {
+                        "repr": "2103",
+                        "dt": "2019-05-27T21:03:00Z"
+                    },
+                    "remarks": null,
+                    "aircraft": {
+                        "code": "GLF5",
+                        "type": "Gulfstream V"
+                    },
+                    "altitude": {
+                        "repr": "110",
+                        "value": 110,
+                        "spoken": "one one zero"
+                    },
+                    "clouds": null,
+                    "flight_visibility": null,
+                    "icing": null,
+                    "location": {
+                        "repr": "OCF",
+                        "station": "OCF",
+                        "distance": null
+                    },
+                    "sanitized": "OCF UA /OV OCF/TM 2103/FL110/TP GLF5/TB MOD",
+                    "temperature": null,
+                    "turbulance": {
+                        "severity": "MOD",
+                        "floor": null,
+                        "ceiling": null
+                    },
+                    "type": "UA",
+                    "wx": null
+                },
+                {
+                    "raw": "OCF UA /OV OCF125020/TM 2035/FL110/TP B738/TB CONT MOD CHOP",
+                    "station": "OCF",
+                    "time": {
+                        "repr": "2035",
+                        "dt": "2019-05-27T20:35:00Z"
+                    },
+                    "remarks": null,
+                    "aircraft": {
+                        "code": "B738",
+                        "type": "Boeing 737-800"
+                    },
+                    "altitude": {
+                        "repr": "110",
+                        "value": 110,
+                        "spoken": "one one zero"
+                    },
+                    "clouds": null,
+                    "flight_visibility": null,
+                    "icing": null,
+                    "location": {
+                        "repr": "OCF125020",
+                        "station": "OCF",
+                        "distance": {
+                            "repr": "020",
+                            "value": 20,
+                            "spoken": "two zero"
+                        }
+                    },
+                    "sanitized": "OCF UA /OV OCF125020/TM 2035/FL110/TP B738/TB CONT MOD CHOP",
+                    "temperature": null,
+                    "turbulance": {
+                        "severity": "CONT MOD CHOP",
+                        "floor": null,
+                        "ceiling": null
+                    },
+                    "type": "UA",
+                    "wx": null
+                },
+                {
+                    "raw": "MCO UA /OV LEESE/TM 2030/FL120/TP B737/TB CONT MOD",
+                    "station": "MCO",
+                    "time": {
+                        "repr": "2030",
+                        "dt": "2019-05-27T20:30:00Z"
+                    },
+                    "remarks": null,
+                    "aircraft": {
+                        "code": "B737",
+                        "type": "Boeing 737-700"
+                    },
+                    "altitude": {
+                        "repr": "120",
+                        "value": 120,
+                        "spoken": "one two zero"
+                    },
+                    "clouds": null,
+                    "flight_visibility": null,
+                    "icing": null,
+                    "location": {
+                        "repr": "LEESE",
+                        "station": null,
+                        "distance": null
+                    },
+                    "sanitized": "MCO UA /OV LEESE/TM 2030/FL120/TP B737/TB CONT MOD",
+                    "temperature": null,
+                    "turbulance": {
+                        "severity": "CONT MOD",
+                        "floor": null,
+                        "ceiling": null
+                    },
+                    "type": "UA",
+                    "wx": null
+                }
+            ],
+            "units": {
+                "altimeter": "inHg",
+                "altitude": "ft",
+                "temperature": "C",
+                "visibility": "sm",
+                "wind_speed": "kt"
+            },
+            "timestamp": "2019-05-27T21:46:55.201833Z"
+        }
+
+### Get PIREP Report for Coords [GET]
+
+Get PIREPs within 200 miles of a lat,lon coordinate pair.
+
++ Parameters
+    + location:`21.32,-157.92`
+    + format: `json`
+
++ Request (text/plain)
+
+    + Headers
+
+            Authorization: Token my_secret_api_token
+
++ Response 200 (application/json)
+
+        {
+            "meta": {
+                "timestamp": "2019-05-27T22:09:08.227499Z"
+            },
+            "data": [
+                {
+                    "raw": "ITO UA /OV ITO320020/TM 2125/FL058/TP C208/SK SCT040",
+                    "station": "ITO",
+                    "time": {
+                        "repr": "2125",
+                        "dt": "2019-05-27T21:25:00Z"
+                    },
+                    "remarks": null,
+                    "aircraft": {
+                        "code": "C208",
+                        "type": "Cessna 208 Caravan"
+                    },
+                    "altitude": {
+                        "repr": "058",
+                        "value": 58,
+                        "spoken": "five eight"
+                    },
+                    "clouds": [
+                        {
+                            "repr": "SCT040",
+                            "type": "SCT",
+                            "base": 40,
+                            "top": null,
+                            "modifier": null
+                        }
+                    ],
+                    "flight_visibility": null,
+                    "icing": null,
+                    "location": {
+                        "repr": "ITO320020",
+                        "station": "ITO",
+                        "distance": {
+                            "repr": "020",
+                            "value": 20,
+                            "spoken": "two zero"
+                        }
+                    },
+                    "sanitized": "ITO UA /OV ITO320020/TM 2125/FL058/TP C208/SK SCT040",
+                    "temperature": null,
+                    "turbulance": null,
+                    "type": "UA",
+                    "wx": null
+                },
+                {
+                    "raw": "MKK UA /OV MKK/TM 2120/FL050/TP C208/SK BKN047-TOP065/WV 26010KT/TB NEG",
+                    "station": "MKK",
+                    "time": {
+                        "repr": "2120",
+                        "dt": "2019-05-27T21:20:00Z"
+                    },
+                    "remarks": null,
+                    "aircraft": {
+                        "code": "C208",
+                        "type": "Cessna 208 Caravan"
+                    },
+                    "altitude": {
+                        "repr": "050",
+                        "value": 50,
+                        "spoken": "five zero"
+                    },
+                    "clouds": [
+                        {
+                            "repr": "BKN047-TOP065",
+                            "type": "BKN",
+                            "base": 47,
+                            "top": 65,
+                            "modifier": null
+                        }
+                    ],
+                    "flight_visibility": null,
+                    "icing": null,
+                    "location": {
+                        "repr": "MKK",
+                        "station": "MKK",
+                        "distance": null
+                    },
+                    "sanitized": "MKK UA /OV MKK/TM 2120/FL050/TP C208/SK BKN047-TOP065/WV 26010KT/TB NEG",
+                    "temperature": null,
+                    "turbulance": {
+                        "severity": "NEG",
+                        "floor": null,
+                        "ceiling": null
+                    },
+                    "type": "UA",
+                    "wx": null
+                },
+                {
+                    "raw": "000 UAXX01 KAWN 272100 RRH LIH UA /OV LIH135010/TM 2106/FL042/TP C182/SK SCT025 SCT050/WX 10+",
+                    "station": "000",
+                    "time": {
+                        "repr": "2106",
+                        "dt": "2019-05-27T21:06:00Z"
+                    },
+                    "remarks": null,
+                    "aircraft": {
+                        "code": "C182",
+                        "type": "Cessna 182 Skylane"
+                    },
+                    "altitude": {
+                        "repr": "042",
+                        "value": 42,
+                        "spoken": "four two"
+                    },
+                    "clouds": [
+                        {
+                            "repr": "SCT025",
+                            "type": "SCT",
+                            "base": 25,
+                            "top": null,
+                            "modifier": null
+                        },
+                        {
+                            "repr": "SCT050",
+                            "type": "SCT",
+                            "base": 50,
+                            "top": null,
+                            "modifier": null
+                        }
+                    ],
+                    "flight_visibility": null,
+                    "icing": null,
+                    "location": {
+                        "repr": "LIH135010",
+                        "station": "LIH",
+                        "distance": {
+                            "repr": "010",
+                            "value": 10,
+                            "spoken": "one zero"
+                        }
+                    },
+                    "sanitized": "000 UAXX01 KAWN 272100 RRH LIH UA /OV LIH135010/TM 2106/FL042/TP C182/SK SCT025 SCT050/WX 10+",
+                    "temperature": null,
+                    "turbulance": null,
+                    "type": "UA",
+                    "wx": [
+                        "10+"
+                    ]
+                },
+                {
+                    "raw": "LIH UA /OV NAPUA/TM 2038/FL035/TP B717/SK CLR",
+                    "station": "LIH",
+                    "time": {
+                        "repr": "2038",
+                        "dt": "2019-05-27T20:38:00Z"
+                    },
+                    "remarks": null,
+                    "aircraft": "B717",
+                    "altitude": {
+                        "repr": "035",
+                        "value": 35,
+                        "spoken": "three five"
+                    },
+                    "clouds": [
+                        {
+                            "repr": "CLR",
+                            "type": null,
+                            "base": null,
+                            "top": null,
+                            "modifier": "CLR"
+                        }
+                    ],
+                    "flight_visibility": null,
+                    "icing": null,
+                    "location": {
+                        "repr": "NAPUA",
+                        "station": null,
+                        "distance": null
+                    },
+                    "sanitized": "LIH UA /OV NAPUA/TM 2038/FL035/TP B717/SK CLR",
+                    "temperature": null,
+                    "turbulance": null,
+                    "type": "UA",
+                    "wx": null
+                }
+            ],
+            "units": {
+                "altimeter": "inHg",
+                "altitude": "ft",
+                "temperature": "C",
+                "visibility": "sm",
+                "wind_speed": "kt"
+            }
+        }
+
+## Parse PIREP [/parse/pirep{?format,options}]
+
+Parses a PIREP report supplied by the user.
+
+Note: translate, summary, and speech options not yet available
+
++ Parameters
+
+    + options (string) - Additional options to include (info)
+    + format (string) - Desired response format (default=json, xml, yaml)
+
+### Parse a Given PIREP [POST]
+
+Parse a user-supplied TAF included as the plain text body of the request.
+
++ Parameters
+
+    + format: `json`
+
++ Request (text/plain)
+
+    + Headers
+
+            Authorization: Token my_secret_api_token
+
+    + Body
+
+            IMM UA /OV 2IS/TM 2258/FL055/TP P28A/TB NEG BLO 055/RM DURC
+
++ Response 200 (application/json)
+
+        {
+            "raw": "IMM UA /OV 2IS/TM 2258/FL055/TP P28A/TB NEG BLO 055/RM DURC",
+            "station": "IMM",
+            "time": {
+                "repr": "2258",
+                "dt": "2019-05-27T22:58:00Z"
+            },
+            "remarks": "DURC",
+            "aircraft": {
+                "code": "P28A",
+                "type": "Piper PA-28 (up to 180 hp)"
+            },
+            "altitude": {
+                "repr": "055",
+                "value": 55,
+                "spoken": "five five"
+            },
+            "clouds": null,
+            "flight_visibility": null,
+            "icing": null,
+            "location": {
+                "repr": "2IS",
+                "station": "2IS",
+                "distance": null
+            },
+            "sanitized": "IMM UA /OV 2IS/TM 2258/FL055/TP P28A/TB NEG BLO 055/RM DURC",
+            "temperature": null,
+            "turbulance": {
+                "severity": "NEG",
+                "floor": null,
+                "ceiling": {
+                    "repr": "055",
+                    "value": 55,
+                    "spoken": "five five"
+                }
+            },
+            "type": "UA",
+            "wx": null,
+            "meta": {
+                "timestamp": "2019-05-27T21:22:48.875848Z"
             }
         }
 
