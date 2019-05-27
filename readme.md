@@ -2,7 +2,7 @@
 
 ![](https://avwx.rest/static/favicons/apple-icon-76x76.png)
 
-[![Requirements Status](https://requires.io/github/flyinactor91/AVWX-Account/requirements.svg?branch=master)](https://requires.io/github/flyinactor91/AVWX-API/requirements/?branch=master)
+[![Requirements Status](https://requires.io/github/avwx-rest/AVWX-API/requirements.svg?branch=master)](https://requires.io/github/avwx-rest/AVWX-API/requirements/?branch=master)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## About
@@ -72,3 +72,15 @@ quart run -p 8000
 ```
 
 It should now be available at [http://localhost:8000](http://localhost:8000)
+
+## Develop
+
+Code checked into this repository is expected to be run through the `black` code formatter first.
+
+```bash
+# Install black
+pip install black
+
+# Format py package files
+find avwx_api -iname "*.py" | xargs black
+```

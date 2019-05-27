@@ -72,7 +72,6 @@ async def _handle_report(
     # Add station info if requested
     if station and "info" in opts:
         resp["info"] = station_info(station)
-    # Update the cache with the new report data
     return resp, code
 
 
