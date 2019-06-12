@@ -5,7 +5,7 @@ avwx_api.__init__ - High-level Quart application
 
 # stdlib
 from datetime import date
-from os import environ, path
+from os import environ
 
 # library
 from quart import got_request_exception
@@ -42,11 +42,7 @@ def init_rollbar():
     key = environ.get("LOG_KEY")
     if not (key and app.env == "production"):
         return
-    rollbar.init(
-        key,
-        root=path.dirname(path.realpath(__file__)),
-        allow_logging_basic_config=False,
-    )
+    rollbar.init(key, root="avwx_api", allow_logging_basic_config=False)
     got_request_exception.connect(report_exception, app, weak=False)
 
 

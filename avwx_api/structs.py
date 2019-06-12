@@ -14,9 +14,15 @@ class Params(object):
 
 
 @dataclass
-class FetchParams(Params):
+class StationParams(Params):
     onfail: str
-    station: str
+    station: "avwx.Station"
+
+
+@dataclass
+class LocationParams(Params):
+    location: "avwx.Station/(float, float)"
+    onfail: str
 
 
 @dataclass

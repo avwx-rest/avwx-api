@@ -12,6 +12,7 @@ _key_remv = ["top"]
 
 @app.route("/api/taf/<station>")
 class Taf(Report):
+
     report_type = "taf"
 
     def __init__(self, *args, **kwargs):
@@ -22,6 +23,7 @@ class Taf(Report):
 
 @app.route("/api/preview/taf/<station>")
 class TafCopy(Taf):
+
     note = (
         "The new syntax can now be found at /api/taf. "
         "The preview endpoint will be available until July 1, 2019"
@@ -30,6 +32,7 @@ class TafCopy(Taf):
 
 @app.route("/api/legacy/taf/<station>")
 class TafLegacy(LegacyReport):
+
     report_type = "taf"
 
     def __init__(self, *args, **kwargs):
@@ -39,6 +42,7 @@ class TafLegacy(LegacyReport):
 
 @app.route("/api/parse/taf")
 class TafParse(Parse):
+
     report_type = "taf"
 
     def __init__(self, *args, **kwargs):
@@ -49,6 +53,7 @@ class TafParse(Parse):
 
 @app.route("/api/multi/taf/<stations>")
 class TafMulti(MultiReport):
+
     report_type = "taf"
     example = "multi_taf"
 

@@ -23,7 +23,7 @@ cp Dockerfile.example Dockerfile
 
 Now we need to comment out three ENV vars in the Dockerfile. These are grouped together:
 
-```
+```docker
 ENV MONGO_URI='...'
 ENV PSQL_URI='...'
 ENV GN_USER='...'

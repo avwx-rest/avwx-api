@@ -12,6 +12,7 @@ _key_remv = ["top"]
 
 @app.route("/api/metar/<station>")
 class Metar(Report):
+
     report_type = "metar"
 
     def __init__(self, *args, **kwargs):
@@ -22,6 +23,7 @@ class Metar(Report):
 
 @app.route("/api/preview/metar/<station>")
 class MetarCopy(Metar):
+
     note = (
         "The new syntax can now be found at /api/metar. "
         "The preview endpoint will be available until July 1, 2019"
@@ -30,6 +32,7 @@ class MetarCopy(Metar):
 
 @app.route("/api/legacy/metar/<station>")
 class MetarLegacy(LegacyReport):
+
     report_type = "metar"
 
     def __init__(self, *args, **kwargs):
@@ -39,6 +42,7 @@ class MetarLegacy(LegacyReport):
 
 @app.route("/api/parse/metar")
 class MetarParse(Parse):
+
     report_type = "metar"
 
     def __init__(self, *args, **kwargs):
@@ -49,6 +53,7 @@ class MetarParse(Parse):
 
 @app.route("/api/multi/metar/<stations>")
 class MetarMulti(MultiReport):
+
     report_type = "metar"
     example = "multi_metar"
 

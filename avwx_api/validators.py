@@ -7,9 +7,16 @@ avwx_api.validators - Parameter validators
 from typing import Callable
 
 # library
-from avwx.core import valid_station
+from avwx import Station
 from avwx.exceptions import BadStation
-from voluptuous import All, In, Invalid, Required, Schema, REMOVE_EXTRA
+from voluptuous import All, Coerce, In, Invalid, Range, Required, Schema, REMOVE_EXTRA
+
+
+REPORT_TYPES = ("metar", "taf", "pirep")
+OPTIONS = ("info", "translate", "summary", "speech")
+FORMATS = ("json", "xml", "yaml")
+ONFAIL = ("error", "cache")
+
 
 HELP = {
     "format": "Accepted response formats (json, xml, yaml)",
@@ -18,31 +25,41 @@ HELP = {
     "report": "Raw report string to be parsed. Given in the POST body as plain text",
     "report_type": "Weather report type (metar, taf, pirep)",
     "station": 'ICAO station ID or coord pair. Ex: KJFK or "12.34,-12.34"',
+    "location": 'ICAO station ID or coord pair. Ex: KJFK or "12.34,-12.34"',
 }
 
 
-def Location(loc: str) -> [str]:
-    """
-    Validates a station ident or coordinate pair string
-    """
-    loc = loc.upper().split(",")
-    if len(loc) == 1:
-        try:
-            valid_station(loc[0])
-        except BadStation:
-            raise Invalid(f"{loc[0]} is not a valid ICAO station ident")
-    elif len(loc) == 2:
-        try:
-            float(loc[0])
-            float(loc[1])
-        except:
-            raise Invalid(f"{loc} is not a valid coordinate pair")
-    else:
-        raise Invalid(f"{loc} is not a valid station/coordinate pair")
-    return loc
+Latitude = All(Coerce(float), Range(-90, 90))
+Longitude = All(Coerce(float), Range(-180, 180))
 
 
-def MultiStation(stations: str) -> [str]:
+def Location(coerce_station: bool = True) -> Callable:
+    """
+    Converts a station ident or coordinate pair string into a Station
+    """
+
+    def validator(loc: str):
+        loc = loc.upper().split(",")
+        if len(loc) == 1:
+            try:
+                return Station.from_icao(loc[0])
+            except BadStation:
+                raise Invalid(f"{loc[0]} is not a valid ICAO station ident")
+        elif len(loc) == 2:
+            try:
+                lat, lon = Latitude(loc[0]), Longitude(loc[1])
+                if coerce_station:
+                    return Station.nearest(lat, lon)[0]
+                return lat, lon
+            except:
+                raise Invalid(f"{loc} is not a valid coordinate pair")
+        else:
+            raise Invalid(f"{loc} is not a valid station/coordinate pair")
+
+    return validator
+
+
+def MultiStation(stations: str) -> [Station]:
     """
     Validates a comma-separated list of station idents
     """
@@ -51,12 +68,13 @@ def MultiStation(stations: str) -> [str]:
         raise Invalid("Could not find any stations in the request")
     if len(stations) > 10:
         raise Invalid("Multi requests are limited to 10 stations or less")
+    ret = []
     for station in stations:
         try:
-            valid_station(station)
+            ret.append(Station.from_icao(station))
         except BadStation:
             raise Invalid(f"{station} is not a valid ICAO station ident")
-    return stations
+    return ret
 
 
 def SplitIn(values: (str,)) -> Callable:
@@ -77,23 +95,24 @@ def SplitIn(values: (str,)) -> Callable:
 
 
 _shared = {
-    Required("format", default="json"): All(str, In(("json", "xml", "yaml"))),
-    Required("options", default=""): All(
-        str, SplitIn(("info", "translate", "summary", "speech"))
-    ),
-    Required("report_type"): All(str, In(("metar", "taf", "pirep"))),
+    Required("format", default="json"): All(str, In(FORMATS)),
+    Required("options", default=""): All(str, SplitIn(OPTIONS)),
+    Required("report_type"): All(str, In(REPORT_TYPES)),
 }
 
-_report = {
-    **_shared,
-    Required("onfail", default="error"): All(str, In(("error", "cache"))),
-    Required("station"): All(str, Location),
-}
+_location = {**_shared, Required("onfail", default="error"): All(str, In(ONFAIL))}
 
-report = Schema(_report, extra=REMOVE_EXTRA)
+station = Schema(
+    {**_location, Required("station"): All(str, Location())}, extra=REMOVE_EXTRA
+)
 
-given = Schema({**_shared, "report": str}, extra=REMOVE_EXTRA)
+location = Schema(
+    {**_location, Required("location"): All(str, Location(coerce_station=False))},
+    extra=REMOVE_EXTRA,
+)
 
-multi_report = Schema(
-    {**_report, Required("station"): All(str, MultiStation)}, extra=REMOVE_EXTRA
+report = Schema({**_shared, "report": str}, extra=REMOVE_EXTRA)
+
+stations = Schema(
+    {**_location, Required("stations"): All(str, MultiStation)}, extra=REMOVE_EXTRA
 )

@@ -6,8 +6,9 @@ avwx_api.api - Functional API endpoints separate from static views
 # stdlib
 import json
 import asyncio as aio
+from datetime import datetime
 from functools import wraps
-from os import path
+from pathlib import Path
 
 # library
 import yaml
@@ -25,20 +26,15 @@ VALIDATION_ERROR_MESSAGES = {
     403: 'Your auth token could not be found or is inactive. Does the value look like "Token 12345abcde"?',
 }
 
-_DIR = path.dirname(path.realpath(__file__))
 
-
-def check_params_with_station(func):
+def check_params(func):
     @wraps(func)
     async def wrapper(self, *args, **kwargs):
-        station = kwargs.get("station") or kwargs.get("stations")
-        params = self.validate_params(station=station)
+        loc = {self.loc_param: kwargs.get(self.loc_param)}
+        params = self.validate_params(**loc)
         if isinstance(params, dict):
-            resp = jsonify(params)
-            resp.status_code = 400
-            resp.headers["X-Robots-Tag"] = "noindex"
-            return resp
-        return await func(self, params, *args, **kwargs)
+            return self.make_response(params, code=400)
+        return await func(self, params)
 
     return wrapper
 
@@ -49,10 +45,8 @@ def token_flag(func):
         if self.example:
             err_code = await self.validate_token()
             if err_code:
-                resp = jsonify(self.make_example_response(err_code))
-                resp.status_code = err_code
-                resp.headers["X-Robots-Tag"] = "noindex"
-                return resp
+                data = self.make_example_response(err_code)
+                return self.make_response(data, code=err_code)
         return await func(self, *args, **kwargs)
 
     return wrapper
@@ -63,10 +57,13 @@ class Base(Resource):
     Base report endpoint
     """
 
-    validator = validators.report
-    struct = structs.FetchParams
+    validator = validators.station
+    struct = structs.StationParams
     report_type: str = None
     note: str = None
+
+    # Name of parameter used for report location
+    loc_param: str = "station"
 
     # Filename of the sample response when token validation fails
     # This also tells the token_flag decorator to check for a token
@@ -93,8 +90,9 @@ class Base(Resource):
         auth_token = request.headers.get("Authorization")
         if not auth_token or len(auth_token) < 10:
             return 401
-        # Remove 'Token ' from token value
-        if not await token.validate_token(auth_token.strip()[7:]):
+        # Remove prefix from token value
+        auth_token = auth_token.strip().split()[-1]
+        if not await token.validate_token(auth_token):
             return 403
 
     def validate_params(self, **kwargs) -> structs.Params:
@@ -125,7 +123,8 @@ class Base(Resource):
         """
         Returns an example payload when validation fails
         """
-        data = json.load(open(path.join(_DIR, "examples", self.example + ".json")))
+        path = Path(__file__).parent.joinpath("examples", f"{self.example}.json")
+        data = json.load(path.open())
         msg = VALIDATION_ERROR_MESSAGES[error_code]
         msg += " Here's an example response for testing purposes"
         data["meta"] = {"validation_error": msg}
@@ -152,26 +151,32 @@ class Base(Resource):
             resp[k] = v
         return resp
 
-    def format_response(
-        self, output: dict, format: str, meta: str = "meta"
+    def make_response(
+        self, output: dict, format: str = "json", code: int = 200, meta: str = "meta"
     ) -> Response:
         """
         Returns the output string based on format param
         """
         output = self.format_dict(output)
+        if "error" in output and "meta" not in output:
+            output["timestamp"] = datetime.utcnow()
         if self.note:
             if meta not in output:
                 output[meta] = {}
             output[meta]["note"] = self.note
         if format == "xml":
-            return Response(
+            resp = Response(
                 fxml(output, custom_root=self.report_type.upper()), mimetype="text/xml"
             )
         elif format == "yaml":
-            return Response(
+            resp = Response(
                 yaml.dump(output, default_flow_style=False), mimetype="text/x-yaml"
             )
-        return jsonify(output)
+        else:
+            resp = jsonify(output)
+        resp.status_code = code
+        resp.headers["X-Robots-Tag"] = "noindex"
+        return resp
 
 
 class Report(Base):
@@ -180,19 +185,18 @@ class Report(Base):
     """
 
     @crossdomain(origin="*")
-    @check_params_with_station
+    @check_params
     @token_flag
-    async def get(self, params: structs.Params, station: str) -> Response:
+    async def get(self, params: structs.Params) -> Response:
         """
         GET handler returning reports
         """
         nofail = params.onfail == "cache"
         handler = getattr(handle, self.report_type).handle_report
-        data, code = await handler(params.station, params.options, nofail)
-        resp = self.format_response(data, params.format)
-        resp.status_code = code
-        resp.headers["X-Robots-Tag"] = "noindex"
-        return resp
+        data, code = await handler(
+            getattr(params, self.loc_param), params.options, nofail
+        )
+        return self.make_response(data, params.format, code)
 
 
 class LegacyReport(Report):
@@ -261,18 +265,17 @@ class LegacyReport(Report):
         return resp
 
     @crossdomain(origin="*")
-    @check_params_with_station
-    async def get(self, params: structs.Params, station: str) -> Response:
+    @check_params
+    async def get(self, params: structs.Params) -> Response:
         """
         GET handler returning METAR and TAF reports in the legacy format
         """
         nofail = params.onfail == "cache"
         handler = getattr(handle, self.report_type).handle_report
-        data, code = await handler(params.station, params.options, nofail)
-        resp = self.format_response(data, params.format, meta="Meta")
-        resp.status_code = code
-        resp.headers["X-Robots-Tag"] = "noindex"
-        return resp
+        data, code = await handler(
+            getattr(params, self.loc_param), params.options, nofail
+        )
+        return self.make_response(data, params.format, code, meta="Meta")
 
 
 class Parse(Base):
@@ -280,7 +283,7 @@ class Parse(Base):
     Given report endpoint
     """
 
-    validator = validators.given
+    validator = validators.report
     struct = structs.GivenParams
 
     @crossdomain(origin="*")
@@ -292,23 +295,11 @@ class Parse(Base):
         data = await request.data
         params = self.validate_params(report=data.decode() or None)
         if isinstance(params, dict):
-            resp = jsonify(params)
-            resp.status_code = 400
-            resp.headers["X-Robots-Tag"] = "noindex"
-            return resp
-        # Handle token validation
-        code = None
-        if self.example:
-            code = await self.validate_token()
-        if code:
-            data = self.make_example_response(err)
+            data, code = params, 400
         else:
             handler = getattr(handle, self.report_type).parse_given
             data, code = handler(params.report, params.options)
-            resp = self.format_response(data, params.format)
-        resp.status_code = code
-        resp.headers["X-Robots-Tag"] = "noindex"
-        return resp
+        return self.make_response(data, params.format, code)
 
 
 class MultiReport(Base):
@@ -316,24 +307,23 @@ class MultiReport(Base):
     Multiple METAR and TAF reports in one endpoint
     """
 
-    validator = validators.multi_report
+    validator = validators.stations
+    loc_param = "stations"
 
     @crossdomain(origin="*")
-    @check_params_with_station
+    @check_params
     @token_flag
-    async def get(self, params: structs.Params, stations: str) -> Response:
+    async def get(self, params: structs.Params) -> Response:
         """
         GET handler returning multiple METAR and TAF reports
         """
         nofail = params.onfail == "cache"
         handler = getattr(handle, self.report_type).handle_report
         results = await aio.gather(
-            *[handler([station], params.options, nofail) for station in params.station]
+            *[handler([station], params.options, nofail) for station in params.stations]
         )
-        data = dict(zip(params.station, [r[0] for r in results]))
-        resp = self.format_response(data, params.format)
-        resp.headers["X-Robots-Tag"] = "noindex"
-        return resp
+        data = dict(zip(getattr(params, self.loc_param), [r[0] for r in results]))
+        return self.make_response(data, params.format)
 
 
 from avwx_api.api import metar, pirep, taf

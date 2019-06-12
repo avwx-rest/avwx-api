@@ -23,16 +23,6 @@ ERRORS = [
 _HANDLE_MAP = {"metar": avwx.Metar, "taf": avwx.Taf, "pirep": avwx.Pireps}
 
 
-def station_info(station: str) -> dict:
-    """
-    Return station info as a dict if available
-    """
-    try:
-        return asdict(avwx.Station.from_icao(station))
-    except avwx.exceptions.BadStation:
-        return {}
-
-
 async def update_parser(
     parser: avwx.Report, err_station: "stringable" = None
 ) -> (dict, int):
