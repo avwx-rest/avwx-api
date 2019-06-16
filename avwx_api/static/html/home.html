@@ -126,7 +126,16 @@
                 <p>Inflight observations meant to aid controllers and pilots routing around adverse conditions and others of note</p>
             </div>
         </div>
-        <div class="row"><br></div>
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-1 text-center">
+                <h3>Station Info</h3>
+                <p>Station data includes name, idents, coordinates, runways, and other useful fields</p>
+            </div>
+            <div class="col-sm-4 col-sm-offset-2 text-center">
+                <h3>Coordinate Search</h3>
+                <p>Reports and stations can be returned nearest a coordinate pair</p>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -145,17 +154,17 @@
             <div class="col-sm-4">
 		        <h1><i class="fas fa-cloud fa-4x"></i></h1>
                 <h3>Reliable Sources</h3>
-                <p>Most reports are pulled from <a href="http://aviationweather.gov" target="_blank">aviationweather.gov</a>, the offical source for aviation weather for pilots in the US, but support exists for additional sources on a regional basis. Coordinate-to-station is pulled from <a href="http://www.geonames.org" target="_blank">geonames.org</a>, one of the most widely used sources of geography data</p>
+                <p>Most reports are pulled from <a href="http://aviationweather.gov" target="_blank">aviationweather.gov</a>, the offical source for aviation weather for pilots in the US, but support exists for additional sources on a regional basis. Station information is compiled from [OurAirports](http://ourairports.com)</p>
             </div>
             <div class="col-sm-4">
 		        <h1><i class="fas fa-chart-area fa-4x"></i></h1>
                 <h3>Data Analysis</h3>
-                <p>Not only is the report organized but every element is error-corrected and analyzed to provide additional information like flight rules</p>
+                <p>Reports are sanitized eliminating common errors with manual entry. Flight rules are calculated for each time period in the report. Additional features like value interpretation, translation, and text-to-speech are available per element and for the report as a whole</p>
             </div>
             <div class="col-sm-4">
                 <h1><i class="fas fa-code fa-4x"></i></h1>
 		        <h3>Cross-Platform</h3>
-                <p>Parsed reports are returned in JSON, XML, or YAML format, which can be imported into any language on any platform. Great for battery-conscientious mobile applications</p>
+                <p>Parsed reports are returned in JSON, XML, or YAML format, which can be imported into any language on any platform. Great for battery-conscientious mobile and IoT applications</p>
             </div>
         </div>
     </div>
@@ -175,7 +184,7 @@
             <div class="well" id="sec-git">
                 <h1><i class="fab fa-github fa-5x"></i></h1>
                 <h1>Open-Source</h1>
-                <p class="lead">The <a href="https://github.com/avwx-rest/AVWX-API" target="_blank">AVWX API</a> and <a href="https://github.com/avwx-rest/AVWX-Engine" target="_blank">core library</a> are open-source on GitHub</p>
+                <p class="lead">All parsing and server code is available on <a href="https://github.com/avwx-rest" target="_blank">GitHub</a> for security audits. Pull requests are welcome</p>
                 <br/>
             </div>
         </div>
@@ -243,13 +252,17 @@
             <p>The parser itself has been field-tested and in use since September 2014. It was originally made for a <a href="http://mdupont.com/Programming/METAR-RasPi">Raspberry Pi IoT project</a>, but was eventually made available as a public API. I've been contacted by flight schools, research institutions, and many mobile and desktop application developers. Here are a few of my favorite projects using AVWX.</p>
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-6 col-md-5 col-md-offset-1">
+                    <div class="col-sm-4">
                         <b><a href="https://duck.co/ia/view/metar">AVWX on Duck Duck Go</a></b> - Example mobile card<br/>
                         <img src="/static/img/ddgavwx.png" class="img-responsive" alt="Responsive image"/>
                     </div>
-                    <div class="col-sm-6 col-md-5">
+                    <div class="col-sm-4">
                         <b><a href="https://aerolink.club/">AeroLink</a></b> - All-in-one flight app for South America<br/>
                         <img src="/static/img/aerolink.png" class="img-responsive" alt="Responsive image"/>
+                    </div>
+                    <div class="col-sm-4">
+                        <b><a href="https://sndaviation.com/">FleetCaptain</a></b> - Flight school fleet management<br/>
+                        <img src="/static/img/fleetcaptain.png" class="img-responsive" alt="Responsive image"/>
                     </div>
                 </div>
             </div>
