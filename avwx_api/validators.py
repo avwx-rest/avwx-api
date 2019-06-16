@@ -44,6 +44,10 @@ HELP = {
 }
 
 
+# Includes non-airport reporting stations
+ICAO_WHITELIST = ("EHFS", "EHSA")
+
+
 Latitude = All(Coerce(float), Range(-90, 90))
 Longitude = All(Coerce(float), Range(-180, 180))
 
@@ -67,10 +71,13 @@ def Location(coerce_station: bool = True) -> Callable:
     def validator(loc: str) -> Station:
         loc = loc.upper().split(",")
         if len(loc) == 1:
+            icao = loc[0]
             try:
-                return Station.from_icao(loc[0])
+                return Station.from_icao(icao)
             except BadStation:
-                raise Invalid(f"{loc[0]} is not a valid ICAO station ident")
+                if icao in ICAO_WHITELIST:
+                    return Station(*([None]*4), "DNE", icao, *([None]*9))
+                raise Invalid(f"{icao} is not a valid ICAO station ident")
         elif len(loc) == 2:
             try:
                 lat, lon = Latitude(loc[0]), Longitude(loc[1])
