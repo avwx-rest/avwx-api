@@ -46,20 +46,3 @@ async def no_station() -> Response:
     Returns no station msg
     """
     return jsonify({"error": "No station given"}), 400
-
-
-@app.route("/api/station/<string:station>")
-@crossdomain(origin="*")
-async def station_endpoint(station: str) -> Response:
-    """
-    Returns raw station info if available
-    """
-    station = station.upper()
-    try:
-        return jsonify(asdict(avwx.Station.from_icao(station)))
-    except avwx.exceptions.BadStation:
-        return jsonify(
-            {
-                "error": f'Station ident "{station}" not found. Email me if data is missing :)'
-            }
-        )

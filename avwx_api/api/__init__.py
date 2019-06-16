@@ -57,8 +57,8 @@ class Base(Resource):
     Base report endpoint
     """
 
-    validator = validators.station
-    struct = structs.StationParams
+    validator: validators.Schema
+    struct: structs.Params
     report_type: str = None
     note: str = None
 
@@ -127,7 +127,10 @@ class Base(Resource):
         data = json.load(path.open())
         msg = VALIDATION_ERROR_MESSAGES[error_code]
         msg += " Here's an example response for testing purposes"
-        data["meta"] = {"validation_error": msg}
+        if isinstance(data, dict):
+            data["meta"] = {"validation_error": msg}
+        elif isinstance(data, list):
+            data.insert(0, {"validation_error": msg})
         return data
 
     def format_dict(self, output: dict) -> dict:
@@ -158,7 +161,7 @@ class Base(Resource):
         Returns the output string based on format param
         """
         output = self.format_dict(output)
-        if "error" in output and "meta" not in output:
+        if "error" in output and meta not in output:
             output["timestamp"] = datetime.utcnow()
         if self.note:
             if meta not in output:
@@ -183,6 +186,9 @@ class Report(Base):
     """
     Fetch Report Endpoint
     """
+
+    validator = validators.report_station
+    struct = structs.ReportStationParams
 
     @crossdomain(origin="*")
     @check_params
@@ -283,8 +289,8 @@ class Parse(Base):
     Given report endpoint
     """
 
-    validator = validators.report
-    struct = structs.GivenParams
+    validator = validators.report_given
+    struct = structs.ReportGivenParams
 
     @crossdomain(origin="*")
     @token_flag
@@ -307,7 +313,8 @@ class MultiReport(Base):
     Multiple METAR and TAF reports in one endpoint
     """
 
-    validator = validators.stations
+    validator = validators.report_stations
+    struct = structs.ReportStationsParams
     loc_param = "stations"
 
     @crossdomain(origin="*")
@@ -317,13 +324,15 @@ class MultiReport(Base):
         """
         GET handler returning multiple METAR and TAF reports
         """
+        locs = getattr(params, self.loc_param)
         nofail = params.onfail == "cache"
         handler = getattr(handle, self.report_type).handle_report
         results = await aio.gather(
-            *[handler([station], params.options, nofail) for station in params.stations]
+            *[handler(loc, params.options, nofail) for loc in locs]
         )
-        data = dict(zip(getattr(params, self.loc_param), [r[0] for r in results]))
+        keys = [loc.icao if hasattr(loc, "icao") else loc for loc in locs]
+        data = dict(zip(keys, [r[0] for r in results]))
         return self.make_response(data, params.format)
 
 
-from avwx_api.api import metar, pirep, taf
+from avwx_api.api import metar, pirep, station, taf

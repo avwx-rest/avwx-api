@@ -9,7 +9,17 @@ from typing import Callable
 # library
 from avwx import Station
 from avwx.exceptions import BadStation
-from voluptuous import All, Coerce, In, Invalid, Range, Required, Schema, REMOVE_EXTRA
+from voluptuous import (
+    All,
+    Boolean,
+    Coerce,
+    In,
+    Invalid,
+    Range,
+    Required,
+    Schema,
+    REMOVE_EXTRA,
+)
 
 
 REPORT_TYPES = ("metar", "taf", "pirep")
@@ -26,6 +36,11 @@ HELP = {
     "report_type": "Weather report type (metar, taf, pirep)",
     "station": 'ICAO station ID or coord pair. Ex: KJFK or "12.34,-12.34"',
     "location": 'ICAO station ID or coord pair. Ex: KJFK or "12.34,-12.34"',
+    "stations": 'ICAO station IDs. Ex: "KMCO,KLEX,KJFK"',
+    "coord": 'Coordinate pair. Ex: "12.34,-12.34"',
+    "n": "Number of stations to return",
+    "reporting": "Limit results to reporting stations",
+    "maxdist": "Max coordinate distance",
 }
 
 
@@ -33,12 +48,23 @@ Latitude = All(Coerce(float), Range(-90, 90))
 Longitude = All(Coerce(float), Range(-180, 180))
 
 
+def Coordinate(coord: str) -> (float, float):
+    """
+    Converts a coordinate string into float tuple
+    """
+    try:
+        cstr = coord.split(",")
+        return Latitude(cstr[0]), Longitude(cstr[1])
+    except:
+        raise Invalid(f"{coord} is not a valid coordinate pair")
+
+
 def Location(coerce_station: bool = True) -> Callable:
     """
     Converts a station ident or coordinate pair string into a Station
     """
 
-    def validator(loc: str):
+    def validator(loc: str) -> Station:
         loc = loc.upper().split(",")
         if len(loc) == 1:
             try:
@@ -94,25 +120,46 @@ def SplitIn(values: (str,)) -> Callable:
     return validator
 
 
-_shared = {
-    Required("format", default="json"): All(str, In(FORMATS)),
-    Required("options", default=""): All(str, SplitIn(OPTIONS)),
-    Required("report_type"): All(str, In(REPORT_TYPES)),
+_required = {Required("format", default="json"): In(FORMATS)}
+_report_shared = {
+    Required("options", default=""): SplitIn(OPTIONS),
+    Required("report_type"): In(REPORT_TYPES),
 }
+_uses_cache = {Required("onfail", default="error"): In(ONFAIL)}
 
-_location = {**_shared, Required("onfail", default="error"): All(str, In(ONFAIL))}
-
-station = Schema(
-    {**_location, Required("station"): All(str, Location())}, extra=REMOVE_EXTRA
-)
-
-location = Schema(
-    {**_location, Required("location"): All(str, Location(coerce_station=False))},
+report_station = Schema(
+    {**_required, **_report_shared, **_uses_cache, Required("station"): Location()},
     extra=REMOVE_EXTRA,
 )
 
-report = Schema({**_shared, "report": str}, extra=REMOVE_EXTRA)
+report_location = Schema(
+    {
+        **_required,
+        **_report_shared,
+        **_uses_cache,
+        Required("location"): Location(coerce_station=False),
+    },
+    extra=REMOVE_EXTRA,
+)
 
-stations = Schema(
-    {**_location, Required("stations"): All(str, MultiStation)}, extra=REMOVE_EXTRA
+report_given = Schema(
+    {**_required, **_report_shared, Required("report"): str}, extra=REMOVE_EXTRA
+)
+
+report_stations = Schema(
+    {**_required, **_report_shared, **_uses_cache, Required("stations"): MultiStation},
+    extra=REMOVE_EXTRA,
+)
+
+station = Schema({**_required, Required("station"): Location()}, extra=REMOVE_EXTRA)
+
+coord_search = Schema(
+    {
+        **_required,
+        Required("coord"): Coordinate,
+        Required("n", default=10): All(Coerce(int), Range(min=1, max=200)),
+        Required("reporting", default=True): Boolean(None),
+        Required("maxdist", default=10): All(Coerce(float), Range(min=0, max=360)),
+    },
+    extra=REMOVE_EXTRA,
 )
