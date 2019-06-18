@@ -5,12 +5,13 @@ HOST: https://avwx.rest/api
 
 The AVWX REST API is a publically-available, open-source REST API for aviation weather.
 
-## Station [/station/{ident}]
+## Station [/station/{ident}{?format}]
 
 Returns station information for an airfield or other location by ICAO ident. This is the same information provided when incluing the `info` option with weather requests.
 
 + Parameters
     + ident (string) - ICAO station ident
+    + format (string) - Desired response format (default=json, xml, yaml)
 
 ### Get Station Information [GET]
 
@@ -64,6 +65,128 @@ This example shows station information for JKF International in New York City.
             "wiki": "http://en.wikipedia.org/wiki/John_F._Kennedy_International_Airport"
         }
 
+## Nearest Stations [/station/near/{coord}{?n,reporting,format}]
+
+Returns the nearest stations to a coordinate pair. By default, these are only reporting stations, but this can be disabled to return smaller airports with non-reporting AWOS/ASOS as well.
+
++ Parameters
+    + coord (string) - Coordinate pair
+    + n (number) - Number of stations to return (default=10)
+    + reporting (boolean) - Only include reporting stations (default=true)
+    + format (string) - Desired response format (default=json, xml, yaml)
+
+### Get Stations around a coordinate [GET]
+
+This example returns reporting stations around Melbourne Beach, FL
+
++ Parameters
+    + coord: `28.1,-81`
+    + n: 3
+
++ Response 200 (application/json)
+
+        [
+            {
+                "distance": 0.35470923554481676,
+                "station": {
+                    "city": "Melbourne",
+                    "country": "US",
+                    "elevation_ft": 33,
+                    "elevation_m": 10,
+                    "iata": "MLB",
+                    "icao": "KMLB",
+                    "latitude": 28.102800369262695,
+                    "longitude": -80.64530181884766,
+                    "name": "Melbourne International Airport",
+                    "note": null,
+                    "runways": [
+                        {
+                            "length_ft": 10181,
+                            "width_ft": 150,
+                            "ident1": "09R",
+                            "ident2": "27L"
+                        },
+                        {
+                            "length_ft": 6000,
+                            "width_ft": 150,
+                            "ident1": "09L",
+                            "ident2": "27R"
+                        },
+                        {
+                            "length_ft": 3001,
+                            "width_ft": 75,
+                            "ident1": "05",
+                            "ident2": "23"
+                        }
+                    ],
+                    "state": "FL",
+                    "type": "medium_airport",
+                    "website": null,
+                    "wiki": "http://en.wikipedia.org/wiki/Melbourne_International_Airport"
+                }
+            },
+            {
+                "distance": 0.3965858305687431,
+                "station": {
+                    "city": "Merritt Island",
+                    "country": "US",
+                    "elevation_ft": 6,
+                    "elevation_m": 2,
+                    "iata": "COI",
+                    "icao": "KCOI",
+                    "latitude": 28.341600418099997,
+                    "longitude": -80.6855010986,
+                    "name": "Merritt Island Airport",
+                    "note": null,
+                    "runways": [
+                        {
+                            "length_ft": 3601,
+                            "width_ft": 75,
+                            "ident1": "11",
+                            "ident2": "29"
+                        }
+                    ],
+                    "state": "FL",
+                    "type": "small_airport",
+                    "website": null,
+                    "wiki": "http://en.wikipedia.org/wiki/Merritt_Island_Airport"
+                }
+            },
+            {
+                "distance": 0.41257732917308576,
+                "station": {
+                    "city": "Cocoa Beach",
+                    "country": "US",
+                    "elevation_ft": 8,
+                    "elevation_m": 2,
+                    "iata": "COF",
+                    "icao": "KCOF",
+                    "latitude": 28.2348995209,
+                    "longitude": -80.6100997925,
+                    "name": "Patrick Air Force Base",
+                    "note": "Naval Air Station Banana River",
+                    "runways": [
+                        {
+                            "length_ft": 9023,
+                            "width_ft": 200,
+                            "ident1": "03",
+                            "ident2": "21"
+                        },
+                        {
+                            "length_ft": 4000,
+                            "width_ft": 200,
+                            "ident1": "11",
+                            "ident2": "29"
+                        }
+                    ],
+                    "state": "FL",
+                    "type": "medium_airport",
+                    "website": "http://www.patrick.af.mil/",
+                    "wiki": "http://en.wikipedia.org/wiki/Patrick_Air_Force_Base"
+                }
+            }
+        ]
+
 ## METAR [/metar/{location}{?format,options,onfail}]
 
 METAR reports are surface observations for a particular airfield or other station location. There are two standard formats: International and North American. The parser works with both, but it is up to the developer to do the correct interpretation of the data. Use the 'Units' key for labling and conversions.
@@ -79,7 +202,7 @@ METAR reports are surface observations for a particular airfield or other statio
 Get the METAR for a specific station by ICAO ident.
 
 + Parameters
-    + location:`KJFK`
+    + location: `KJFK`
     + format: `json`
     + onfail: `cache`
 
@@ -1687,6 +1810,8 @@ Get PIREPs within 200 miles of a lat,lon coordinate pair.
 ## Parse PIREP [/parse/pirep{?format,options}]
 
 Parses a PIREP report supplied by the user.
+
+This endpoint requires a paid API token.
 
 Note: translate, summary, and speech options not yet available
 
