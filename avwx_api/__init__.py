@@ -4,13 +4,12 @@ avwx_api.__init__ - High-level Quart application
 """
 
 # stdlib
-import asyncio as aio
 from datetime import date
 from os import environ
 
 # library
 from motor.motor_asyncio import AsyncIOMotorClient
-from quart import g, got_request_exception
+from quart import got_request_exception
 from quart.json import JSONEncoder
 from quart_openapi import Pint
 import rollbar
@@ -49,14 +48,14 @@ def init_rollbar():
     got_request_exception.connect(report_exception, app, weak=False)
 
 
-def get_db():
-    """
-    Returns the MongoDB client
-    """
-    if not hasattr(g, "db"):
-        mongo_uri = environ.get("MONGO_URI")
-        g.db = AsyncIOMotorClient(mongo_uri).report_cache if mongo_uri else None
-    return g.db
+mdb = None
+
+
+@app.before_first_request
+def init_db():
+    global mdb
+    mongo_uri = environ.get("MONGO_URI")
+    mdb = AsyncIOMotorClient(mongo_uri).report_cache if mongo_uri else None
 
 
 from avwx_api import api, views

@@ -10,9 +10,6 @@ from datetime import datetime, timedelta
 # library
 from pymongo.errors import AutoReconnect, OperationFailure
 
-# module
-from avwx_api import get_db
-
 
 # Table expiration in minutes
 EXPIRES = {"token": 15}
@@ -66,10 +63,11 @@ async def get(table: str, key: str, force: bool = False) -> {str: object}:
     By default, will only return if the cache timestamp has not been exceeded
     Can force the cache to return if force is True
     """
-    db = get_db()
-    if db is None:
+    from avwx_api import mdb
+
+    if mdb is None:
         return
-    op = db[table.lower()].find_one({"_id": key})
+    op = mdb[table.lower()].find_one({"_id": key})
     data = await call(op)
     data = replace_keys(data, "_$", "$")
     if force:
@@ -83,12 +81,12 @@ async def update(table: str, key: str, data: {str: object}):
     """
     Update the cache
     """
-    db = get_db()
-    if not db:
+    from avwx_api import mdb
+
+    if mdb is None:
         return
     data = replace_keys(data, "$", "_$")
     data["timestamp"] = datetime.utcnow()
-    # Make five attempts to connect to server
-    op = db[table.lower()].update_one({"_id": key}, {"$set": data}, upsert=True)
+    op = mdb[table.lower()].update_one({"_id": key}, {"$set": data}, upsert=True)
     await call(op)
     return

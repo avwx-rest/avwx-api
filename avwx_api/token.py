@@ -13,7 +13,7 @@ import asyncpg
 from pymongo import UpdateOne
 
 # module
-from avwx_api import cache, get_db
+from avwx_api import cache
 
 
 PSQL_URI = environ.get("PSQL_URI", None)
@@ -41,8 +41,9 @@ async def increment_token(token: str, maxv: int = None) -> bool:
 
     Returns True if the token has hit its daily limit
     """
-    db = get_db()
-    if db is None:
+    from avwx_api import mdb
+
+    if mdb is None:
         return False
     key = datetime.utcnow().strftime(r"%Y-%m-%d")
     # Create or increment the date counter
@@ -52,7 +53,7 @@ async def increment_token(token: str, maxv: int = None) -> bool:
         ops.append(
             UpdateOne({"_id": token, key: {"$gte": maxv}}, {"$set": {key: maxv}})
         )
-    op = db.token_counter.bulk_write(ops)
+    op = mdb.token_counter.bulk_write(ops)
     r = await cache.call(op)
     # Limit met if both operations modified the object
     return r.modified_count > 1
