@@ -5,13 +5,8 @@ avwx_api.views - Routes and views for the Quart application
 
 # pylint: disable=W0702
 
-# stdlib
-from dataclasses import asdict
-
 # library
-import avwx
 from quart import Response, jsonify
-from quart_openapi.cors import crossdomain
 
 # module
 from avwx_api import app

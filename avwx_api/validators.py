@@ -76,7 +76,7 @@ def Location(coerce_station: bool = True) -> Callable:
                 return Station.from_icao(icao)
             except BadStation:
                 if icao in ICAO_WHITELIST:
-                    return Station(*([None]*4), "DNE", icao, *([None]*9))
+                    return Station(*([None] * 4), "DNE", icao, *([None] * 9))
                 raise Invalid(f"{icao} is not a valid ICAO station ident")
         elif len(loc) == 2:
             try:
@@ -102,11 +102,11 @@ def MultiStation(stations: str) -> [Station]:
     if len(stations) > 10:
         raise Invalid("Multi requests are limited to 10 stations or less")
     ret = []
-    for station in stations:
+    for stn in stations:
         try:
-            ret.append(Station.from_icao(station))
+            ret.append(Station.from_icao(stn))
         except BadStation:
-            raise Invalid(f"{station} is not a valid ICAO station ident")
+            raise Invalid(f"{stn} is not a valid ICAO station ident")
     return ret
 
 

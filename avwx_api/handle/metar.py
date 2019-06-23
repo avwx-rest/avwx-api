@@ -8,10 +8,8 @@ avwx_api.handle.metar - Handle METAR requests
 # stdlib
 from dataclasses import asdict
 from datetime import datetime
-from os import environ
 
 # library
-import aiohttp
 import avwx
 import rollbar
 
@@ -26,7 +24,10 @@ async def new_report(rtype: str, station: avwx.Station) -> (dict, int):
     """
     Fetch and parse report data for a given station
     """
-    parser = _HANDLE_MAP[rtype](station.icao)
+    try:
+        parser = _HANDLE_MAP[rtype](station.icao)
+    except avwx.exceptions.BadStation:
+        return {"error": f"{station.icao} does not publish reports"}, 400
     error, code = await update_parser(parser, station)
     if error:
         return error, code
@@ -68,8 +69,8 @@ async def _handle_report(
     Uses a cache to store recent report hashes which are (at most) two minutes old
     If nofail and a new report can't be fetched, the cache will be returned with a warning
     """
-    if not station.sends_reports:
-        return {"error": f"{station.icao} does not publish reports"}, 200
+    # if not station.sends_reports:
+    #     return {"error": f"{station.icao} does not publish reports"}, 400
     # Fetch an existing and up-to-date cache or make a new report
     data, code = await cache.get(rtype, station.icao), 200
     if data is None:

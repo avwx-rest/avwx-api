@@ -24,6 +24,7 @@ from avwx_api import handle, structs, token, validators
 VALIDATION_ERROR_MESSAGES = {
     401: 'You are missing the "Authorization" header.',
     403: 'Your auth token could not be found or is inactive. Does the value look like "Token 12345abcde"?',
+    429: "Your auth token has hit it's daily rate limit. Considder upgrading your plan.",
 }
 
 
@@ -92,8 +93,14 @@ class Base(Resource):
             return 401
         # Remove prefix from token value
         auth_token = auth_token.strip().split()[-1]
-        if not await token.validate_token(auth_token):
+        token_data = await token.get_token(auth_token)
+        if not (token_data and token_data["active_token"]):
             return 403
+        # Returns True if exceeded rate limit
+        limit = token.LIMITS.get(token_data["plan"], None)
+        if await token.increment_token(auth_token, limit):
+            return 429
+        return
 
     def validate_params(self, **kwargs) -> structs.Params:
         """
@@ -245,8 +252,7 @@ class LegacyReport(Report):
             elif "repr" in value:
                 return value["repr"]
             # Else recursive call on embedded dict
-            else:
-                return self.format_dict(value)
+            return self.format_dict(value)
         elif isinstance(value, list):
             return [self.revert_value(item) for item in value]
         elif value is None:

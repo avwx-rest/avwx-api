@@ -1,4 +1,3 @@
-aiohttp~=3.5
 asyncpg~=0.18
 avwx-engine[scipy]>=1.2.2
 dataclasses>=0.6;python_version<"3.7"
@@ -10,4 +9,3 @@ quart~=0.9
 quart-openapi>=1.4
 rollbar>=0.14.7
 voluptuous~=0.11
-xmltodict~=0.12

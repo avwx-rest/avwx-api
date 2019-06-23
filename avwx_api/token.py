@@ -4,19 +4,23 @@ avwx_api.token - Manages connections to work with authentication tokens
 """
 
 # stdlib
-import asyncio as aio
+from datetime import datetime
 from os import environ
 from ssl import SSLContext
 
 # library
 import asyncpg
+from pymongo import UpdateOne
 
 # module
-from avwx_api import cache
+from avwx_api import cache, get_db
 
 
 PSQL_URI = environ.get("PSQL_URI", None)
 TOKEN_QUERY = "SELECT active_token, plan FROM public.user WHERE apitoken = '{}'"
+
+
+LIMITS = {"basic": None, "enterprise": None}
 
 
 async def _get_token_data(token: str) -> dict:
@@ -31,18 +35,35 @@ async def _get_token_data(token: str) -> dict:
     return result[0]
 
 
-async def validate_token(token: str) -> bool:
+async def increment_token(token: str, maxv: int = None) -> bool:
     """
-    Returns whether or not a given token is valid and active
+    Increments a token value in the counter
+
+    Returns True if the token has hit its daily limit
     """
-    # Check cache for token
-    data = await cache.get("token", token)
-    if data:
-        return True
-    # Fetch token
-    data = await _get_token_data(token)
-    if not (data and data["active_token"]):
+    db = get_db()
+    if db is None:
         return False
-    # Update cache
-    await cache.update("token", token, dict(data))
-    return True
+    key = datetime.utcnow().strftime(r"%Y-%m-%d")
+    # Create or increment the date counter
+    ops = [UpdateOne({"_id": token}, {"$inc": {key: 1}}, upsert=True)]
+    # Reset counter to max if at or exceeded max value
+    if maxv is not None:
+        ops.append(
+            UpdateOne({"_id": token, key: {"$gte": maxv}}, {"$set": {key: maxv}})
+        )
+    op = db.token_counter.bulk_write(ops)
+    r = await cache.call(op)
+    # Limit met if both operations modified the object
+    return r.modified_count > 1
+
+
+async def get_token(token: str) -> dict:
+    """
+    Returns account data associated with token value
+    """
+    data = await cache.get("token", token)
+    if not data:
+        data = await _get_token_data(token)
+        await cache.update("token", token, dict(data))
+    return data
