@@ -19,7 +19,7 @@ from quart_openapi.cors import crossdomain
 from voluptuous import Invalid, MultipleInvalid
 
 # module
-from avwx_api import handle, structs, token, validators
+from avwx_api import counter, handle, structs, token, validators
 
 VALIDATION_ERROR_MESSAGES = {
     401: 'You are missing the "Authorization" header.',
@@ -206,9 +206,15 @@ class Report(Base):
         """
         nofail = params.onfail == "cache"
         handler = getattr(handle, self.report_type).handle_report
-        data, code = await handler(
-            getattr(params, self.loc_param), params.options, nofail
-        )
+        coros = [
+            handler(getattr(params, self.loc_param), params.options, nofail),
+            counter.from_params(params, self.report_type),
+        ]
+        for resp in await aio.gather(*coros):
+            # This assumes that secondary coros do not return anything
+            if resp is not None:
+                data, code = resp
+                break
         return self.make_response(data, params.format, code)
 
 
@@ -302,7 +308,7 @@ class Parse(Base):
     @token_flag
     async def post(self) -> Response:
         """
-        POST handler to parse given METAR and TAF reports
+        POST handler to parse given reports
         """
         data = await request.data
         params = self.validate_params(report=data.decode() or None)
@@ -311,6 +317,10 @@ class Parse(Base):
         else:
             handler = getattr(handle, self.report_type).parse_given
             data, code = handler(params.report, params.options)
+            if "station" in data:
+                await counter.increment_station(
+                    data["station"], self.report_type + "-given"
+                )
         return self.make_response(data, params.format, code)
 
 
@@ -328,16 +338,20 @@ class MultiReport(Base):
     @token_flag
     async def get(self, params: structs.Params) -> Response:
         """
-        GET handler returning multiple METAR and TAF reports
+        GET handler returning multiple reports
         """
         locs = getattr(params, self.loc_param)
         nofail = params.onfail == "cache"
         handler = getattr(handle, self.report_type).handle_report
         results = await aio.gather(
-            *[handler(loc, params.options, nofail) for loc in locs]
+            *[handler(loc, params.options, nofail) for loc in locs],
+            *[
+                counter.increment_station(loc.icao, self.report_type + "-multi")
+                for loc in locs
+            ],
         )
         keys = [loc.icao if hasattr(loc, "icao") else loc for loc in locs]
-        data = dict(zip(keys, [r[0] for r in results]))
+        data = dict(zip(keys, [r[0] for r in results if r]))
         return self.make_response(data, params.format)
 
 

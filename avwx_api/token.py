@@ -66,5 +66,6 @@ async def get_token(token: str) -> dict:
     data = await cache.get("token", token)
     if not data:
         data = await _get_token_data(token)
-        await cache.update("token", token, dict(data))
+        if data:
+            await cache.update("token", token, dict(data))
     return data

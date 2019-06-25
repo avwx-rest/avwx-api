@@ -44,6 +44,9 @@ async def update_parser(
                 pass
         else:
             return {"error": ERRORS[5]}, 502
+    except aio.CancelledError:
+        print("Cancelled Error")
+        return {"error": "Server rebooting. Try again"}, 503
     except ConnectionError as exc:
         print("Connection Error:", exc)
         return {"error": str(exc)}, 502

@@ -12,7 +12,7 @@ from quart import Response
 from quart_openapi.cors import crossdomain
 
 # module
-from avwx_api import app, structs, validators
+from avwx_api import app, counter, structs, validators
 from avwx_api.api import Base, check_params, token_flag
 
 
@@ -31,6 +31,7 @@ class Station(Base):
         """
         Returns raw station info if available
         """
+        await counter.increment_station(params.station.icao, "station")
         return self.make_response(asdict(params.station), params.format)
 
 
