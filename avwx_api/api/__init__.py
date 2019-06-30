@@ -23,7 +23,7 @@ from avwx_api import counter, handle, structs, token, validators
 
 VALIDATION_ERROR_MESSAGES = {
     401: 'You are missing the "Authorization" header.',
-    403: 'Your auth token could not be found or is inactive. Does the value look like "Token 12345abcde"?',
+    403: 'Your auth token could not be found, is inactive, or does not have permission to access this resource. Does the value look like "Token 12345abcde"?',
     429: "Your auth token has hit it's daily rate limit. Considder upgrading your plan.",
 }
 
@@ -94,10 +94,10 @@ class Base(Resource):
         # Remove prefix from token value
         auth_token = auth_token.strip().split()[-1]
         token_data = await token.get_token(auth_token)
-        if not (token_data and token_data["active_token"]):
+        if token_data is None or not token.is_paid(token_data):
             return 403
         # Returns True if exceeded rate limit
-        limit = token.LIMITS.get(token_data["plan"], None)
+        limit = token.LIMITS.get(token_data["name"], None)
         if await token.increment_token(auth_token, limit):
             return 429
         return

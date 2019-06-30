@@ -17,10 +17,16 @@ from avwx_api import cache
 
 
 PSQL_URI = environ.get("PSQL_URI", None)
-TOKEN_QUERY = "SELECT active_token, plan FROM public.user WHERE apitoken = '{}'"
+TOKEN_QUERY = """
+SELECT u.active_token, p.name, p.type
+FROM public.user u
+JOIN public.plan p 
+ON u.plan_id = p.id
+WHERE apitoken = '{}';
+"""
 
 
-LIMITS = {"basic": None, "enterprise": None}
+LIMITS = {"pro": None, "enterprise": None}
 
 
 async def _get_token_data(token: str) -> dict:
@@ -32,7 +38,7 @@ async def _get_token_data(token: str) -> dict:
     await conn.close()
     if not result:
         return
-    return result[0]
+    return dict(result[0])
 
 
 async def increment_token(token: str, maxv: int = None) -> bool:
@@ -67,5 +73,12 @@ async def get_token(token: str) -> dict:
     if not data:
         data = await _get_token_data(token)
         if data:
-            await cache.update("token", token, dict(data))
+            await cache.update("token", token, data)
     return data
+
+
+def is_paid(token: dict) -> bool:
+    """
+    Returns if a token is an active paid token
+    """
+    return token["active_token"] and token["type"] == "paid"

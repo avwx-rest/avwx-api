@@ -14,14 +14,14 @@ async def increment_station(icao: str, request_type: str):
     """
     Increments a station counter
     """
-    from avwx_api import mdb
+    # from avwx_api import mdb
 
-    if mdb is None:
-        return
-    date = datetime.utcnow().strftime(r"%Y-%m-%d")
-    await mdb.station_counter.update_one(
-        {"_id": icao}, {"$inc": {f"{request_type}.{date}": 1}}, upsert=True
-    )
+    # if mdb is None:
+    #     return
+    # date = datetime.utcnow().strftime(r"%Y-%m-%d")
+    # await mdb.station_counter.update_one(
+    #     {"_id": icao}, {"$inc": {f"{request_type}.{date}": 1}}, upsert=True
+    # )
     return
 
 
