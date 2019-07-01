@@ -175,9 +175,8 @@ class Base(Resource):
                 output[meta] = {}
             output[meta]["note"] = self.note
         if format == "xml":
-            resp = Response(
-                fxml(output, custom_root=self.report_type.upper()), mimetype="text/xml"
-            )
+            root = self.report_type.upper() if self.report_type else "AVWX"
+            resp = Response(fxml(output, custom_root=root), mimetype="text/xml")
         elif format == "yaml":
             resp = Response(
                 yaml.dump(output, default_flow_style=False), mimetype="text/x-yaml"
@@ -216,84 +215,6 @@ class Report(Base):
                 data, code = resp
                 break
         return self.make_response(data, params.format, code)
-
-
-class LegacyReport(Report):
-    """
-    Legacy report endpoint to return data in pre-Sept2018 format
-
-    Will eventually be phased out
-    """
-
-    key_repl = {
-        "clouds": "Cloud-List",
-        "dewpoint_decimal": "Dew-Decimal",
-        "icing": "Icing-List",
-        "other": "Other-List",
-        "raw": "Raw-Report",
-        "runway_visibility": "Runway-Vis-List",
-        "temperature_decimal": "Temp-Decimal",
-        "turbulance": "Turb-List",
-        "wind_variable_direction": "Wind-Variable-Dir",
-    }
-
-    note = (
-        "The /api/<report-type> endpoint switched to the "
-        "new format on April 1, 2019. The /api/legacy/<report-type> "
-        "endpoint will be available until July 1, 2019"
-    )
-
-    def revert_value(self, value: object) -> object:
-        """
-        Reverts a value based on content type
-        """
-        if isinstance(value, dict):
-            # Revert cloud layer
-            if "modifier" in value:
-                temp = [value["type"], str(value["base"]).zfill(3)]
-                if value["modifier"] is not None:
-                    temp.append(value["modifier"])
-                return temp
-            # Revert number or timestamp
-            elif "repr" in value:
-                return value["repr"]
-            # Else recursive call on embedded dict
-            return self.format_dict(value)
-        elif isinstance(value, list):
-            return [self.revert_value(item) for item in value]
-        elif value is None:
-            return ""
-        return value
-
-    def format_dict(self, data: dict) -> dict:
-        """
-        Reverts a dict's keys and values to the legacy format
-        """
-        resp = {}
-        for k, v in data.items():
-            # Special case for TAF line
-            if k == "raw" and "wind_shear" in data:
-                k = "Raw-Line"
-            elif k in self.key_repl:
-                k = self.key_repl[k]
-            # 'flight_rules' -> 'Flight-Rules'
-            else:
-                k = k.replace("_", "-").title()
-            resp[k] = self.revert_value(v)
-        return resp
-
-    @crossdomain(origin="*")
-    @check_params
-    async def get(self, params: structs.Params) -> Response:
-        """
-        GET handler returning METAR and TAF reports in the legacy format
-        """
-        nofail = params.onfail == "cache"
-        handler = getattr(handle, self.report_type).handle_report
-        data, code = await handler(
-            getattr(params, self.loc_param), params.options, nofail
-        )
-        return self.make_response(data, params.format, code, meta="Meta")
 
 
 class Parse(Base):

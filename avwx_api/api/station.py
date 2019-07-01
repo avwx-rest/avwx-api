@@ -24,6 +24,7 @@ class Station(Base):
 
     validator = validators.station
     struct = structs.StationParams
+    report_type = "station"
 
     @crossdomain(origin="*")
     @check_params
@@ -43,6 +44,7 @@ class Near(Base):
 
     validator = validators.coord_search
     struct = structs.CoordSearchParams
+    report_type = "station"
     loc_param = "coord"
     example = "stations_near"
 
