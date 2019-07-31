@@ -1,5 +1,5 @@
 # Start from the official Python 3.7 container
-FROM python:3.7.3
+FROM python:3.7.4
 
 # Expose the default Quart port
 EXPOSE 8000
@@ -15,8 +15,7 @@ ENV LOG_KEY='rollbar-server-key'
 # Install the require Python packages
 COPY requirements.txt /home/avwx/requirements.txt
 RUN pip install -U pip
-RUN pip install -Ur requirements.txt
-RUN pip install -U hypercorn~=0.6
+RUN pip install -Ur requirements.txt --no-cache-dir --compile
 
 # Copy the application code
 COPY avwx_api /home/avwx/avwx_api
