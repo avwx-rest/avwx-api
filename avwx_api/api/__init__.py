@@ -204,16 +204,10 @@ class Report(Base):
         GET handler returning reports
         """
         nofail = params.onfail == "cache"
+        loc = getattr(params, self.loc_param)
         handler = getattr(handle, self.report_type).handle_report
-        coros = [
-            handler(getattr(params, self.loc_param), params.options, nofail),
-            counter.from_params(params, self.report_type),
-        ]
-        for resp in await aio.gather(*coros):
-            # This assumes that secondary coros do not return anything
-            if resp is not None:
-                data, code = resp
-                break
+        counter.from_params(params, self.report_type)
+        data, code = await handler(loc, params.options, nofail)
         return self.make_response(data, params.format, code)
 
 
@@ -238,10 +232,9 @@ class Parse(Base):
         else:
             handler = getattr(handle, self.report_type).parse_given
             data, code = handler(params.report, params.options)
-            if "station" in data:
-                await counter.increment_station(
-                    data["station"], self.report_type + "-given"
-                )
+            # if "station" in data:
+            #     rtype = self.report_type + "-given"
+            #     counter.increment_station(data["station"], rtype)
         return self.make_response(data, params.format, code)
 
 
@@ -264,13 +257,11 @@ class MultiReport(Base):
         locs = getattr(params, self.loc_param)
         nofail = params.onfail == "cache"
         handler = getattr(handle, self.report_type).handle_report
-        results = await aio.gather(
-            *[handler(loc, params.options, nofail) for loc in locs],
-            *[
-                counter.increment_station(loc.icao, self.report_type + "-multi")
-                for loc in locs
-            ],
-        )
+        coros = []
+        for loc in locs:
+            coros.append(handler(loc, params.options, nofail))
+            # counter.increment_station(loc.icao, self.report_type + "-multi")
+        results = await aio.gather(*coros)
         keys = [loc.icao if hasattr(loc, "icao") else loc for loc in locs]
         data = dict(zip(keys, [r[0] for r in results if r]))
         return self.make_response(data, params.format)

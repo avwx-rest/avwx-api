@@ -52,7 +52,7 @@ mdb = None
 
 
 @app.before_first_request
-def init_db():
+def init_clients():
     global mdb
     mongo_uri = environ.get("MONGO_URI")
     mdb = AsyncIOMotorClient(mongo_uri).report_cache if mongo_uri else None
