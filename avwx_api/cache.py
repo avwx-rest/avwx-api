@@ -67,7 +67,7 @@ async def get(table: str, key: str, force: bool = False) -> {str: object}:
 
     if mdb is None:
         return
-    op = mdb[table.lower()].find_one({"_id": key})
+    op = mdb.cache[table.lower()].find_one({"_id": key})
     data = await call(op)
     data = replace_keys(data, "_$", "$")
     if force:
@@ -87,6 +87,6 @@ async def update(table: str, key: str, data: {str: object}):
         return
     data = replace_keys(data, "$", "_$")
     data["timestamp"] = datetime.utcnow()
-    op = mdb[table.lower()].update_one({"_id": key}, {"$set": data}, upsert=True)
+    op = mdb.cache[table.lower()].update_one({"_id": key}, {"$set": data}, upsert=True)
     await call(op)
     return

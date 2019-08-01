@@ -32,7 +32,7 @@ class Station(Base):
         """
         Returns raw station info if available
         """
-        # counter.increment_station(params.station.icao, "station")
+        counter.increment_station(params.station.icao, "station")
         return self.make_response(asdict(params.station), params.format)
 
 

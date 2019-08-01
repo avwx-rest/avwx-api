@@ -232,9 +232,9 @@ class Parse(Base):
         else:
             handler = getattr(handle, self.report_type).parse_given
             data, code = handler(params.report, params.options)
-            # if "station" in data:
-            #     rtype = self.report_type + "-given"
-            #     counter.increment_station(data["station"], rtype)
+            if "station" in data:
+                rtype = self.report_type + "-given"
+                counter.increment_station(data["station"], rtype)
         return self.make_response(data, params.format, code)
 
 
@@ -260,7 +260,7 @@ class MultiReport(Base):
         coros = []
         for loc in locs:
             coros.append(handler(loc, params.options, nofail))
-            # counter.increment_station(loc.icao, self.report_type + "-multi")
+            counter.increment_station(loc.icao, self.report_type + "-multi")
         results = await aio.gather(*coros)
         keys = [loc.icao if hasattr(loc, "icao") else loc for loc in locs]
         data = dict(zip(keys, [r[0] for r in results if r]))

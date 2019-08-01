@@ -59,7 +59,7 @@ async def increment_token(token: str, maxv: int = None) -> bool:
         ops.append(
             UpdateOne({"_id": token, key: {"$gte": maxv}}, {"$set": {key: maxv}})
         )
-    op = mdb.token_counter.bulk_write(ops)
+    op = mdb.counter.token.bulk_write(ops)
     r = await cache.call(op)
     # Limit met if both operations modified the object
     return r.modified_count > 1

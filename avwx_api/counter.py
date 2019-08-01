@@ -52,7 +52,7 @@ async def worker():
         if mdb is None:
             continue
         date = datetime.utcnow().strftime(r"%Y-%m-%d")
-        await mdb.station_counter.update_one(
+        await mdb.counter.station.update_one(
             {"_id": icao}, {"$inc": {f"{request_type}.{date}": 1}}, upsert=True
         )
         queue.task_done()
