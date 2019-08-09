@@ -17,7 +17,7 @@ ERRORS = [
     "Station Lookup Error: {} does not appear to be a valid station. Please contact the admin",
     "Report Lookup Error: No {} reports were found for {}. Either the station doesn't exist or there are no active reports",
     "Report Lookup Error: An unknown error occurred fetch the {} report. An error report has been sent to the admin",
-    "Report Lookup Error: Unable to reach data source after 5 attempts",
+    "Report Lookup Error: Unable to fetch report from {}. You might wish to use '?onfail=cache' to return the most recent report even if it's not up-to-date",
 ]
 
 _HANDLE_MAP = {"metar": avwx.Metar, "taf": avwx.Taf, "pirep": avwx.Pireps}
@@ -32,33 +32,36 @@ async def update_parser(
     Attempts to fetch five times before giving up
     """
     rtype = parser.__class__.__name__.upper()
+    state_info = {"state": "fetch", "station": parser.station, "source": parser.service}
     # Update the parser's raw data
     try:
-        for _ in range(5):
+        for _ in range(3):
             try:
-                if not await parser.async_update(disable_post=True):
+                if not await parser.async_update(timeout=2, disable_post=True):
                     ierr = 0 if isinstance(err_station, str) else 3
                     return {"error": ERRORS[ierr].format(rtype, err_station)}, 400
                 break
             except aio.TimeoutError:
                 pass
         else:
-            return {"error": ERRORS[5]}, 502
+            return {"error": ERRORS[5].format(parser.service.__class__.__name__)}, 502
     except aio.CancelledError:
         print("Cancelled Error")
         return {"error": "Server rebooting. Try again"}, 503
     except ConnectionError as exc:
         print("Connection Error:", exc)
+        rollbar.report_exc_info(extra_data=state_info)
         return {"error": str(exc)}, 502
     except avwx.exceptions.SourceError as exc:
         print("Source Error:", exc)
+        rollbar.report_exc_info(extra_data=state_info)
         return {"error": str(exc)}, int(str(exc)[-3:])
     except avwx.exceptions.InvalidRequest as exc:
         print("Invalid Request:", exc)
         return {"error": ERRORS[0].format(rtype, err_station)}, 400
     except Exception as exc:
         print("Unknown Fetching Error", exc)
-        rollbar.report_exc_info(extra_data={"state": "fetch", "raw": parser.raw})
+        rollbar.report_exc_info(extra_data=state_info)
         return {"error": ERRORS[4].format(rtype)}, 500
     # Parse the fetched data
     try:
@@ -68,8 +71,10 @@ async def update_parser(
         return {"error": ERRORS[2].format(parser.station)}, 400
     except Exception as exc:
         print("Unknown Parsing Error", exc)
-        rollbar.report_exc_info(extra_data={"state": "parse", "raw": parser.raw})
-        return {"error": ERRORS[1].format(rtype)}, 500
+        state_info["state"] = "parse"
+        state_info["raw"] = parser.raw
+        rollbar.report_exc_info(extra_data=state_info)
+        return {"error": ERRORS[1].format(rtype), "raw": parser.raw}, 500
     return None, None
 
 

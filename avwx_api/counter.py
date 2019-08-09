@@ -5,7 +5,6 @@ avwx_api.counter - Usage counting for analytics
 
 # stdlib
 import asyncio as aio
-from contextlib import asynccontextmanager
 from datetime import datetime
 
 # library
