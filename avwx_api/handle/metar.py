@@ -69,8 +69,8 @@ async def _handle_report(
     Uses a cache to store recent report hashes which are (at most) two minutes old
     If nofail and a new report can't be fetched, the cache will be returned with a warning
     """
-    # if not station.sends_reports:
-    #     return {"error": f"{station.icao} does not publish reports"}, 400
+    if not station.sends_reports:
+        return {"error": f"{station.icao} does not publish reports"}, 400
     # Fetch an existing and up-to-date cache or make a new report
     data, code = await cache.get(rtype, station.icao), 200
     if data is None:
