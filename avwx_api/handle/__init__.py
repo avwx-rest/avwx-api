@@ -44,6 +44,8 @@ async def update_parser(
             except aio.TimeoutError:
                 pass
         else:
+            # msg = f"Unable to call {parser.service.__class__.__name__}"
+            # rollbar.report_message(msg, extra_data=state_info)
             return {"error": ERRORS[5].format(parser.service.__class__.__name__)}, 502
     except aio.CancelledError:
         print("Cancelled Error")

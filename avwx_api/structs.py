@@ -49,6 +49,7 @@ class StationParams(Params):
 class CoordSearchParams:
     coord: (float, float)
     n: int
+    airport: bool
     reporting: bool
     maxdist: float
     format: str

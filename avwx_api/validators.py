@@ -39,6 +39,7 @@ HELP = {
     "stations": 'ICAO station IDs. Ex: "KMCO,KLEX,KJFK"',
     "coord": 'Coordinate pair. Ex: "12.34,-12.34"',
     "n": "Number of stations to return",
+    "airport": "Limit results to airports",
     "reporting": "Limit results to reporting stations",
     "maxdist": "Max coordinate distance",
 }
@@ -165,6 +166,7 @@ coord_search = Schema(
         **_required,
         Required("coord"): Coordinate,
         Required("n", default=10): All(Coerce(int), Range(min=1, max=200)),
+        Required("airport", default=True): Boolean(None),
         Required("reporting", default=True): Boolean(None),
         Required("maxdist", default=10): All(Coerce(float), Range(min=0, max=360)),
     },

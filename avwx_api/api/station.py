@@ -55,10 +55,11 @@ class Near(Base):
         """
         Returns raw station info if available
         """
-        lat, lon = params.coord
-        n, reporting, dist = params.n, params.reporting, params.maxdist
-        stations = avwx.station.nearest(lat, lon, n, reporting, dist)
-        if isinstance(stations, tuple):
+        stations = avwx.station.nearest(
+            *params.coord, params.n, params.airport, params.reporting, params.maxdist
+        )
+        if isinstance(stations, dict):
             stations = [stations]
-        data = [{"distance": d, "station": asdict(s)} for s, d in stations]
-        return self.make_response(data, params.format)
+        for i, stn in enumerate(stations):
+            stations[i]["station"] = asdict(stn["station"])
+        return self.make_response(stations, params.format)
