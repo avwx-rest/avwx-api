@@ -37,21 +37,23 @@ async def _handle_report(
     Uses a cache to store recent report hashes which are (at most) two minutes old
     If nofail and a new report can't be fetched, the cache will be returned with a warning
     """
-    station, data, code = None, None, 200
+    station, data, code, cache_data = None, None, 200, None
     # If station was given
     if isinstance(loc, avwx.Station):
         station = loc
         if not station.sends_reports:
             return {"error": f"{station.icao} does not publish reports"}, 200
         # Fetch an existing and up-to-date cache
-        data, code = await cache.get(rtype, station.icao), 200
+        cache_data, code = await cache.get(rtype, station.icao), 200
         # If no cache, get new data
-        if not data:
+        if cache_data is None or cache.has_expired(cache_data.get("timestamp"), rtype):
             data, code = await new_report(
                 _HANDLE_MAP[rtype](station_ident=station.icao), station.icao
             )
             if code == 200:
                 await cache.update(rtype, station.icao, data)
+        else:
+            data = cache_data
     # Else coordinates. We don't cache coordinates
     else:
         data, code = await new_report(_HANDLE_MAP[rtype](lat=loc[0], lon=loc[1]), loc)
@@ -60,15 +62,14 @@ async def _handle_report(
         resp["meta"]["cache-timestamp"] = data["timestamp"]
     # Handle errors according to nofail arguement
     if code != 200 and nofail:
-        cache_data = await cache.get(rtype, station.icao)
         if cache_data is None:
-            resp["error"] = "No report or cache was found for the requested station"
+            resp["error"] = "No report or cache was found for the requested location"
             return resp, 204
         data = cache_data
         resp["meta"].update(
             {
                 "cache-timestamp": data["timestamp"],
-                "warning": "A no-fail condition was requested. This data might be out of date",
+                "warning": "Unable to fetch reports. This cached data might be out of date. To return an error instead, set ?onfail=error",
             }
         )
     resp.update(data)

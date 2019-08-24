@@ -72,19 +72,20 @@ async def _handle_report(
     if not station.sends_reports:
         return {"error": f"{station.icao} does not publish reports"}, 400
     # Fetch an existing and up-to-date cache or make a new report
-    data, code = await cache.get(rtype, station.icao), 200
-    if data is None:
+    cache_data, code = await cache.get(rtype, station.icao, force=True), 200
+    if cache_data is None or cache.has_expired(cache_data.get("timestamp"), rtype):
         data, code = await new_report(rtype, station)
+    else:
+        data = cache_data
     resp = {"meta": {"timestamp": datetime.utcnow()}}
     if "timestamp" in data:
         resp["meta"]["cache-timestamp"] = data["timestamp"]
     # Handle errors according to nofail arguement
     if code != 200:
         if nofail:
-            cache_data = await cache.get(rtype, station.icao, force=True)
             if cache_data is None:
                 resp["error"] = "No report or cache was found for the requested station"
-                return resp, code
+                return resp, 204
             data, code = cache_data, 200
             resp["meta"].update(
                 {

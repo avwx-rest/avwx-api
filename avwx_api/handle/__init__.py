@@ -32,7 +32,12 @@ async def update_parser(
     Attempts to fetch five times before giving up
     """
     rtype = parser.__class__.__name__.upper()
-    state_info = {"state": "fetch", "station": parser.station, "source": parser.service}
+    state_info = {
+        "state": "fetch",
+        "type": rtype,
+        "station": getattr(parser, "station", None),
+        "source": parser.service,
+    }
     # Update the parser's raw data
     try:
         for _ in range(3):
