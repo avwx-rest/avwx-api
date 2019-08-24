@@ -133,7 +133,7 @@ _report_shared = {
     Required("options", default=""): SplitIn(OPTIONS),
     Required("report_type"): In(REPORT_TYPES),
 }
-_uses_cache = {Required("onfail", default="error"): In(ONFAIL)}
+_uses_cache = {Required("onfail", default="cache"): In(ONFAIL)}
 
 report_station = Schema(
     {**_required, **_report_shared, **_uses_cache, Required("station"): Location()},

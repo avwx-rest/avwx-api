@@ -81,15 +81,15 @@ async def _handle_report(
     # Handle errors according to nofail arguement
     if code != 200:
         if nofail:
-            cache_data = await cache.get(rtype, station.icao)
+            cache_data = await cache.get(rtype, station.icao, force=True)
             if cache_data is None:
                 resp["error"] = "No report or cache was found for the requested station"
-                return resp, 200
-            data = cache_data
+                return resp, code
+            data, code = cache_data, 200
             resp["meta"].update(
                 {
                     "cache-timestamp": data["timestamp"],
-                    "warning": "A no-fail condition was requested. This data might be out of date",
+                    "warning": "Unable to fetch report. This cached data might be out of date. To return an error instead, set ?onfail=error",
                 }
             )
         else:
