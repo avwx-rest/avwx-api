@@ -64,7 +64,9 @@ def Coordinate(coord: str) -> (float, float):
         raise Invalid(f"{coord} is not a valid coordinate pair")
 
 
-def Location(coerce_station: bool = True) -> Callable:
+def Location(
+    coerce_station: bool = True, airport: bool = False, reporting: bool = True
+) -> Callable:
     """
     Converts a station ident or coordinate pair string into a Station
     """
@@ -83,7 +85,9 @@ def Location(coerce_station: bool = True) -> Callable:
             try:
                 lat, lon = Latitude(loc[0]), Longitude(loc[1])
                 if coerce_station:
-                    return Station.nearest(lat, lon)[0]
+                    return Station.nearest(
+                        lat, lon, is_airport=airport, sends_reports=reporting
+                    )[0]
                 return lat, lon
             except:
                 raise Invalid(f"{loc} is not a valid coordinate pair")
@@ -134,21 +138,36 @@ _report_shared = {
     Required("report_type"): In(REPORT_TYPES),
 }
 _uses_cache = {Required("onfail", default="cache"): In(ONFAIL)}
+_station_search = {
+    Required("airport", default=True): Boolean(None),
+    Required("reporting", default=True): Boolean(None),
+}
 
-report_station = Schema(
-    {**_required, **_report_shared, **_uses_cache, Required("station"): Location()},
-    extra=REMOVE_EXTRA,
-)
 
-report_location = Schema(
-    {
-        **_required,
-        **_report_shared,
-        **_uses_cache,
-        Required("location"): Location(coerce_station=False),
-    },
-    extra=REMOVE_EXTRA,
-)
+def _coord_search_validator(param_name: str, coerce_station: bool) -> Callable:
+    """
+    Returns a validator the pre-validates nearest station parameters
+    """
+
+    # NOTE: API class is passing self param to this function
+    def validator(_, params: dict) -> dict:
+        search_params = Schema(_station_search, extra=REMOVE_EXTRA)(params)
+        return Schema(
+            {
+                **_required,
+                **_report_shared,
+                **_uses_cache,
+                Required(param_name): Location(coerce_station, **search_params),
+            },
+            extra=REMOVE_EXTRA,
+        )(params)
+
+    return validator
+
+
+report_station = _coord_search_validator("station", True)
+report_location = _coord_search_validator("location", False)
+
 
 report_given = Schema(
     {**_required, **_report_shared, Required("report"): str}, extra=REMOVE_EXTRA
@@ -164,10 +183,9 @@ station = Schema({**_required, Required("station"): Location()}, extra=REMOVE_EX
 coord_search = Schema(
     {
         **_required,
+        **_station_search,
         Required("coord"): Coordinate,
         Required("n", default=10): All(Coerce(int), Range(min=1, max=200)),
-        Required("airport", default=True): Boolean(None),
-        Required("reporting", default=True): Boolean(None),
         Required("maxdist", default=10): All(Coerce(float), Range(min=0, max=360)),
     },
     extra=REMOVE_EXTRA,

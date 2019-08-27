@@ -51,5 +51,6 @@ class CoordSearchParams:
     n: int
     airport: bool
     reporting: bool
+    airport: bool
     maxdist: float
     format: str
