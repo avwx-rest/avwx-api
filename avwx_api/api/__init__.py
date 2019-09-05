@@ -228,13 +228,12 @@ class Parse(Base):
         data = await request.data
         params = self.validate_params(report=data.decode() or None)
         if isinstance(params, dict):
-            data, code = params, 400
-        else:
-            handler = getattr(handle, self.report_type).parse_given
-            data, code = handler(params.report, params.options)
-            if "station" in data:
-                rtype = self.report_type + "-given"
-                counter.increment_station(data["station"], rtype)
+            return self.make_response(params, code=400)
+        handler = getattr(handle, self.report_type).parse_given
+        data, code = handler(params.report, params.options)
+        if "station" in data:
+            rtype = self.report_type + "-given"
+            counter.increment_station(data["station"], rtype)
         return self.make_response(data, params.format, code)
 
 
