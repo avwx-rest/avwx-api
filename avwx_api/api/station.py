@@ -13,7 +13,7 @@ from quart_openapi.cors import crossdomain
 
 # module
 from avwx_api import app, counter, structs, validators
-from avwx_api.api import Base, check_params, token_flag
+from avwx_api.api import Base, parse_params, token_check
 
 
 @app.route("/api/station/<station>")
@@ -27,7 +27,7 @@ class Station(Base):
     report_type = "station"
 
     @crossdomain(origin="*")
-    @check_params
+    @parse_params
     async def get(self, params: structs.Params) -> Response:
         """
         Returns raw station info if available
@@ -47,10 +47,11 @@ class Near(Base):
     report_type = "station"
     loc_param = "coord"
     example = "stations_near"
+    plan_types = ("paid",)
 
     @crossdomain(origin="*")
-    @check_params
-    @token_flag
+    @parse_params
+    @token_check
     async def get(self, params: structs.Params) -> Response:
         """
         Returns raw station info if available

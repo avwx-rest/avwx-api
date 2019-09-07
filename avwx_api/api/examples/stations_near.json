@@ -1,362 +1,390 @@
 [
-    {
-      "distance": 0.3692948898012635,
-      "station": {
-        "city": "Melbourne",
-        "country": "US",
-        "elevation_ft": 33,
-        "elevation_m": 10,
-        "iata": "MLB",
-        "icao": "KMLB",
-        "latitude": 28.102800369262695,
-        "longitude": -80.64530181884766,
-        "name": "Melbourne International Airport",
-        "note": null,
-        "runways": [
-          {
-            "length_ft": 10181,
-            "width_ft": 150,
-            "ident1": "09R",
-            "ident2": "27L"
-          },
-          {
-            "length_ft": 6000,
-            "width_ft": 150,
-            "ident1": "09L",
-            "ident2": "27R"
-          },
-          {
-            "length_ft": 3001,
-            "width_ft": 75,
-            "ident1": "05",
-            "ident2": "23"
-          }
-        ],
-        "state": "FL",
-        "type": "medium_airport",
-        "website": null,
-        "wiki": "http://en.wikipedia.org/wiki/Melbourne_International_Airport"
-      }
+  {
+    "station": {
+      "city": "Melbourne",
+      "country": "US",
+      "elevation_ft": 33,
+      "elevation_m": 10,
+      "iata": "MLB",
+      "icao": "KMLB",
+      "latitude": 28.102800369262695,
+      "longitude": -80.64530181884766,
+      "name": "Melbourne International Airport",
+      "note": null,
+      "reporting": true,
+      "runways": [
+        {
+          "length_ft": 10181,
+          "width_ft": 150,
+          "ident1": "09R",
+          "ident2": "27L"
+        },
+        {
+          "length_ft": 6000,
+          "width_ft": 150,
+          "ident1": "09L",
+          "ident2": "27R"
+        },
+        {
+          "length_ft": 3001,
+          "width_ft": 75,
+          "ident1": "05",
+          "ident2": "23"
+        }
+      ],
+      "state": "FL",
+      "type": "medium_airport",
+      "website": null,
+      "wiki": "http://en.wikipedia.org/wiki/Melbourne_International_Airport"
     },
-    {
-      "distance": 0.4551922195376337,
-      "station": {
-        "city": "Cocoa Beach",
-        "country": "US",
-        "elevation_ft": 8,
-        "elevation_m": 2,
-        "iata": "COF",
-        "icao": "KCOF",
-        "latitude": 28.2348995209,
-        "longitude": -80.6100997925,
-        "name": "Patrick Air Force Base",
-        "note": "Naval Air Station Banana River",
-        "runways": [
-          {
-            "length_ft": 9023,
-            "width_ft": 200,
-            "ident1": "03",
-            "ident2": "21"
-          },
-          {
-            "length_ft": 4000,
-            "width_ft": 200,
-            "ident1": "11",
-            "ident2": "29"
-          }
-        ],
-        "state": "FL",
-        "type": "medium_airport",
-        "website": "http://www.patrick.af.mil/",
-        "wiki": "http://en.wikipedia.org/wiki/Patrick_Air_Force_Base"
-      }
+    "coordinate_distance": 0.35470923554481676,
+    "nautical_miles": 18.786513433151878,
+    "miles": 21.619133558889384,
+    "kilometers": 34.79262287819728
+  },
+  {
+    "station": {
+      "city": "Cocoa Beach",
+      "country": "US",
+      "elevation_ft": 8,
+      "elevation_m": 2,
+      "iata": "COF",
+      "icao": "KCOF",
+      "latitude": 28.2348995209,
+      "longitude": -80.6100997925,
+      "name": "Patrick Air Force Base",
+      "note": "Naval Air Station Banana River",
+      "reporting": true,
+      "runways": [
+        {
+          "length_ft": 9023,
+          "width_ft": 200,
+          "ident1": "03",
+          "ident2": "21"
+        },
+        {
+          "length_ft": 4000,
+          "width_ft": 200,
+          "ident1": "11",
+          "ident2": "29"
+        }
+      ],
+      "state": "FL",
+      "type": "medium_airport",
+      "website": "http://www.patrick.af.mil/",
+      "wiki": "http://en.wikipedia.org/wiki/Patrick_Air_Force_Base"
     },
-    {
-      "distance": 0.46432790636348775,
-      "station": {
-        "city": "Merritt Island",
-        "country": "US",
-        "elevation_ft": 6,
-        "elevation_m": 2,
-        "iata": "COI",
-        "icao": "KCOI",
-        "latitude": 28.341600418099997,
-        "longitude": -80.6855010986,
-        "name": "Merritt Island Airport",
-        "note": null,
-        "runways": [
-          {
-            "length_ft": 3601,
-            "width_ft": 75,
-            "ident1": "11",
-            "ident2": "29"
-          }
-        ],
-        "state": "FL",
-        "type": "small_airport",
-        "website": null,
-        "wiki": "http://en.wikipedia.org/wiki/Merritt_Island_Airport"
-      }
+    "coordinate_distance": 0.41257732917308576,
+    "nautical_miles": 22.16988896743564,
+    "miles": 25.51265258868881,
+    "kilometers": 41.05863436769081
+  },
+  {
+    "station": {
+      "city": "Orlando",
+      "country": "US",
+      "elevation_ft": 96,
+      "elevation_m": 29,
+      "iata": "MCO",
+      "icao": "KMCO",
+      "latitude": 28.429399490356445,
+      "longitude": -81.30899810791016,
+      "name": "Orlando International Airport",
+      "note": "Disney World,Epcot Center",
+      "reporting": true,
+      "runways": [
+        {
+          "length_ft": 12005,
+          "width_ft": 200,
+          "ident1": "18L",
+          "ident2": "36R"
+        },
+        {
+          "length_ft": 12004,
+          "width_ft": 200,
+          "ident1": "18R",
+          "ident2": "36L"
+        },
+        {
+          "length_ft": 10000,
+          "width_ft": 150,
+          "ident1": "17R",
+          "ident2": "35L"
+        },
+        {
+          "length_ft": 9000,
+          "width_ft": 150,
+          "ident1": "17L",
+          "ident2": "35R"
+        }
+      ],
+      "state": "FL",
+      "type": "large_airport",
+      "website": "http://www.orlandoairports.net/",
+      "wiki": "http://en.wikipedia.org/wiki/Orlando_International_Airport"
     },
-    {
-      "distance": 0.5244460726908575,
-      "station": {
-        "city": "Orlando",
-        "country": "US",
-        "elevation_ft": 82,
-        "elevation_m": 25,
-        "iata": "ISM",
-        "icao": "KISM",
-        "latitude": 28.2898006439,
-        "longitude": -81.4371032715,
-        "name": "Kissimmee Gateway Airport",
-        "note": null,
-        "runways": [
-          {
-            "length_ft": 6000,
-            "width_ft": 100,
-            "ident1": "15",
-            "ident2": "33"
-          },
-          {
-            "length_ft": 5000,
-            "width_ft": 150,
-            "ident1": "06",
-            "ident2": "24"
-          }
-        ],
-        "state": "FL",
-        "type": "medium_airport",
-        "website": "http://www.kissimmee.org/index.aspx?page=111",
-        "wiki": "http://en.wikipedia.org/wiki/Kissimmee_Gateway_Airport"
-      }
+    "coordinate_distance": 0.4516457183890284,
+    "nautical_miles": 25.654425899340257,
+    "miles": 29.522586075803655,
+    "kilometers": 47.51199676557816
+  },
+  {
+    "station": {
+      "city": "Orlando",
+      "country": "US",
+      "elevation_ft": 82,
+      "elevation_m": 25,
+      "iata": "ISM",
+      "icao": "KISM",
+      "latitude": 28.2898006439,
+      "longitude": -81.4371032715,
+      "name": "Kissimmee Gateway Airport",
+      "note": null,
+      "reporting": true,
+      "runways": [
+        {
+          "length_ft": 6000,
+          "width_ft": 100,
+          "ident1": "15",
+          "ident2": "33"
+        },
+        {
+          "length_ft": 5000,
+          "width_ft": 150,
+          "ident1": "06",
+          "ident2": "24"
+        }
+      ],
+      "state": "FL",
+      "type": "medium_airport",
+      "website": "http://www.kissimmee.org/index.aspx?page=111",
+      "wiki": "http://en.wikipedia.org/wiki/Kissimmee_Gateway_Airport"
     },
-    {
-      "distance": 0.5290215052438147,
-      "station": {
-        "city": "Orlando",
-        "country": "US",
-        "elevation_ft": 96,
-        "elevation_m": 29,
-        "iata": "MCO",
-        "icao": "KMCO",
-        "latitude": 28.429399490356445,
-        "longitude": -81.30899810791016,
-        "name": "Orlando International Airport",
-        "note": "Disney World,Epcot Center",
-        "runways": [
-          {
-            "length_ft": 12005,
-            "width_ft": 200,
-            "ident1": "18L",
-            "ident2": "36R"
-          },
-          {
-            "length_ft": 12004,
-            "width_ft": 200,
-            "ident1": "18R",
-            "ident2": "36L"
-          },
-          {
-            "length_ft": 10000,
-            "width_ft": 150,
-            "ident1": "17R",
-            "ident2": "35L"
-          },
-          {
-            "length_ft": 9000,
-            "width_ft": 150,
-            "ident1": "17L",
-            "ident2": "35R"
-          }
-        ],
-        "state": "FL",
-        "type": "large_airport",
-        "website": "http://www.orlandoairports.net/",
-        "wiki": "http://en.wikipedia.org/wiki/Orlando_International_Airport"
-      }
+    "coordinate_distance": 0.47653284711640115,
+    "nautical_miles": 25.784806371396872,
+    "miles": 29.672625243470016,
+    "kilometers": 47.75346139982701
+  },
+  {
+    "station": {
+      "city": "Titusville",
+      "country": "US",
+      "elevation_ft": 34,
+      "elevation_m": 10,
+      "iata": "TIX",
+      "icao": "KTIX",
+      "latitude": 28.514799118042,
+      "longitude": -80.799201965332,
+      "name": "Space Coast Regional Airport",
+      "note": null,
+      "reporting": true,
+      "runways": [
+        {
+          "length_ft": 7319,
+          "width_ft": 150,
+          "ident1": "18",
+          "ident2": "36"
+        },
+        {
+          "length_ft": 5000,
+          "width_ft": 100,
+          "ident1": "09",
+          "ident2": "27"
+        }
+      ],
+      "state": "FL",
+      "type": "medium_airport",
+      "website": null,
+      "wiki": "http://en.wikipedia.org/wiki/Space_Coast_Regional_Airport"
     },
-    {
-      "distance": 0.5525739612607081,
-      "station": {
-        "city": "Titusville",
-        "country": "US",
-        "elevation_ft": 34,
-        "elevation_m": 10,
-        "iata": "TIX",
-        "icao": "KTIX",
-        "latitude": 28.514799118042,
-        "longitude": -80.799201965332,
-        "name": "Space Coast Regional Airport",
-        "note": null,
-        "runways": [
-          {
-            "length_ft": 7319,
-            "width_ft": 150,
-            "ident1": "18",
-            "ident2": "36"
-          },
-          {
-            "length_ft": 5000,
-            "width_ft": 100,
-            "ident1": "09",
-            "ident2": "27"
-          }
-        ],
-        "state": "FL",
-        "type": "medium_airport",
-        "website": null,
-        "wiki": "http://en.wikipedia.org/wiki/Space_Coast_Regional_Airport"
-      }
+    "coordinate_distance": 0.4608450488558486,
+    "nautical_miles": 27.07231128297927,
+    "miles": 31.154259434948408,
+    "kilometers": 50.13792049607761
+  },
+  {
+    "station": {
+      "city": "Cocoa Beach",
+      "country": "US",
+      "elevation_ft": 10,
+      "elevation_m": 3,
+      "iata": null,
+      "icao": "KXMR",
+      "latitude": 28.4675998688,
+      "longitude": -80.56659698490002,
+      "name": "Cape Canaveral AFS Skid Strip",
+      "note": null,
+      "reporting": true,
+      "runways": [
+        {
+          "length_ft": 10000,
+          "width_ft": 200,
+          "ident1": "13",
+          "ident2": "31"
+        }
+      ],
+      "state": "FL",
+      "type": "medium_airport",
+      "website": null,
+      "wiki": "http://en.wikipedia.org/wiki/Cape_Canaveral_AFS_Skid_Strip"
     },
-    {
-      "distance": 0.6390565904526806,
-      "station": {
-        "city": "Orlando",
-        "country": "US",
-        "elevation_ft": 113,
-        "elevation_m": 34,
-        "iata": "ORL",
-        "icao": "KORL",
-        "latitude": 28.5455,
-        "longitude": -81.332901,
-        "name": "Orlando Executive Airport",
-        "note": null,
-        "runways": [
-          {
-            "length_ft": 6003,
-            "width_ft": 150,
-            "ident1": "07",
-            "ident2": "25"
-          },
-          {
-            "length_ft": 4638,
-            "width_ft": 100,
-            "ident1": "13",
-            "ident2": "31"
-          }
-        ],
-        "state": "FL",
-        "type": "small_airport",
-        "website": null,
-        "wiki": "http://en.wikipedia.org/wiki/Orlando_Executive_Airport"
-      }
+    "coordinate_distance": 0.5683025928495605,
+    "nautical_miles": 31.815405559322766,
+    "miles": 36.6125148482026,
+    "kilometers": 58.922131095865765
+  },
+  {
+    "station": {
+      "city": "Orlando",
+      "country": "US",
+      "elevation_ft": 113,
+      "elevation_m": 34,
+      "iata": "ORL",
+      "icao": "KORL",
+      "latitude": 28.5455,
+      "longitude": -81.332901,
+      "name": "Orlando Executive Airport",
+      "note": null,
+      "reporting": true,
+      "runways": [
+        {
+          "length_ft": 6003,
+          "width_ft": 150,
+          "ident1": "07",
+          "ident2": "25"
+        },
+        {
+          "length_ft": 4638,
+          "width_ft": 100,
+          "ident1": "13",
+          "ident2": "31"
+        }
+      ],
+      "state": "FL",
+      "type": "small_airport",
+      "website": null,
+      "wiki": "http://en.wikipedia.org/wiki/Orlando_Executive_Airport"
     },
-    {
-      "distance": 0.6424472998279024,
-      "station": {
-        "city": "Sebring",
-        "country": "US",
-        "elevation_ft": 62,
-        "elevation_m": 19,
-        "iata": "SEF",
-        "icao": "KSEF",
-        "latitude": 27.45639992,
-        "longitude": -81.3423996,
-        "name": "Sebring Regional Airport",
-        "note": null,
-        "runways": [
-          {
-            "length_ft": 5190,
-            "width_ft": 300,
-            "ident1": "14",
-            "ident2": "32"
-          },
-          {
-            "length_ft": 5190,
-            "width_ft": 150,
-            "ident1": "18",
-            "ident2": "36"
-          },
-          {
-            "length_ft": 5106,
-            "width_ft": 300,
-            "ident1": "04",
-            "ident2": "22"
-          },
-          {
-            "length_ft": 4928,
-            "width_ft": 300,
-            "ident1": "09",
-            "ident2": "27"
-          }
-        ],
-        "state": "FL",
-        "type": "small_airport",
-        "website": "http://www.sebring-airport.com/",
-        "wiki": "http://en.wikipedia.org/wiki/Sebring_Regional_Airport"
-      }
+    "coordinate_distance": 0.5561414620409125,
+    "nautical_miles": 32.01614609210829,
+    "miles": 36.84352292771747,
+    "kilometers": 59.293902562584556
+  },
+  {
+    "station": {
+      "city": "Titusville",
+      "country": "US",
+      "elevation_ft": 10,
+      "elevation_m": 3,
+      "iata": null,
+      "icao": "KTTS",
+      "latitude": 28.614999771118164,
+      "longitude": -80.69450378417969,
+      "name": "Nasa Shuttle Landing Facility Airport",
+      "note": null,
+      "reporting": true,
+      "runways": [
+        {
+          "length_ft": 15000,
+          "width_ft": 300,
+          "ident1": "15",
+          "ident2": "33"
+        }
+      ],
+      "state": "FL",
+      "type": "medium_airport",
+      "website": null,
+      "wiki": "http://en.wikipedia.org/wiki/Shuttle_Landing_Facility"
     },
-    {
-      "distance": 0.6676016628546547,
-      "station": {
-        "city": "Avon Park",
-        "country": "US",
-        "elevation_ft": 160,
-        "elevation_m": 49,
-        "iata": "AVO",
-        "icao": "KAVO",
-        "latitude": 27.59119987,
-        "longitude": -81.52780151,
-        "name": "Avon Park Executive Airport",
-        "note": null,
-        "runways": [
-          {
-            "length_ft": 5364,
-            "width_ft": 100,
-            "ident1": "04",
-            "ident2": "22"
-          },
-          {
-            "length_ft": 3825,
-            "width_ft": 75,
-            "ident1": "09",
-            "ident2": "27"
-          }
-        ],
-        "state": "FL",
-        "type": "small_airport",
-        "website": null,
-        "wiki": "http://en.wikipedia.org/wiki/Avon_Park_Executive_Airport"
-      }
+    "coordinate_distance": 0.5987927038068274,
+    "nautical_miles": 34.8802558553532,
+    "miles": 40.13948158014328,
+    "kilometers": 64.59823384411412
+  },
+  {
+    "station": {
+      "city": "Lake Wales",
+      "country": "US",
+      "elevation_ft": 127,
+      "elevation_m": 39,
+      "iata": null,
+      "icao": "KX07",
+      "latitude": 27.893800735473633,
+      "longitude": -81.62039947509766,
+      "name": "Lake Wales Municipal Airport",
+      "note": null,
+      "reporting": true,
+      "runways": [
+        {
+          "length_ft": 3999,
+          "width_ft": 100,
+          "ident1": "06",
+          "ident2": "24"
+        },
+        {
+          "length_ft": 3999,
+          "width_ft": 75,
+          "ident1": "17",
+          "ident2": "35"
+        }
+      ],
+      "state": "FL",
+      "type": "small_airport",
+      "website": null,
+      "wiki": null
     },
-    {
-      "distance": 0.6763509486952758,
-      "station": {
-        "city": "Vero Beach",
-        "country": "US",
-        "elevation_ft": 24,
-        "elevation_m": 7,
-        "iata": "VRB",
-        "icao": "KVRB",
-        "latitude": 27.6556,
-        "longitude": -80.417901,
-        "name": "Vero Beach Regional Airport",
-        "note": "Vero Beach Municipal",
-        "runways": [
-          {
-            "length_ft": 7314,
-            "width_ft": 100,
-            "ident1": "12R",
-            "ident2": "30L"
-          },
-          {
-            "length_ft": 4974,
-            "width_ft": 100,
-            "ident1": "04",
-            "ident2": "22"
-          },
-          {
-            "length_ft": 3504,
-            "width_ft": 75,
-            "ident1": "12L",
-            "ident2": "30R"
-          }
-        ],
-        "state": "FL",
-        "type": "medium_airport",
-        "website": "http://verobeachairport.org/",
-        "wiki": "http://en.wikipedia.org/wiki/Vero_Beach_Municipal_Airport"
-      }
-    }
-  ]
+    "coordinate_distance": 0.6537688011771919,
+    "nautical_miles": 35.1428184448168,
+    "miles": 40.44163321191784,
+    "kilometers": 65.0844997598007
+  },
+  {
+    "station": {
+      "city": "Orlando",
+      "country": "US",
+      "elevation_ft": 55,
+      "elevation_m": 17,
+      "iata": "SFB",
+      "icao": "KSFB",
+      "latitude": 28.777599334716797,
+      "longitude": -81.23750305175781,
+      "name": "Orlando Sanford International Airport",
+      "note": null,
+      "reporting": true,
+      "runways": [
+        {
+          "length_ft": 9600,
+          "width_ft": 150,
+          "ident1": "09L",
+          "ident2": "27R"
+        },
+        {
+          "length_ft": 6003,
+          "width_ft": 150,
+          "ident1": "18",
+          "ident2": "36"
+        },
+        {
+          "length_ft": 3578,
+          "width_ft": 75,
+          "ident1": "09C",
+          "ident2": "27C"
+        },
+        {
+          "length_ft": 3500,
+          "width_ft": 75,
+          "ident1": "09R",
+          "ident2": "27L"
+        }
+      ],
+      "state": "FL",
+      "type": "large_airport",
+      "website": null,
+      "wiki": "http://en.wikipedia.org/wiki/Orlando_Sanford_International_Airport"
+    },
+    "coordinate_distance": 0.7180171014696781,
+    "nautical_miles": 42.57188387005492,
+    "miles": 48.99084902130415,
+    "kilometers": 78.84312892734171
+  }
+]

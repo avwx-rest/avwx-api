@@ -5,6 +5,7 @@ avwx_api.cache - Class for communicating with the report cache
 
 # stdlib
 import asyncio as aio
+from copy import copy
 from datetime import datetime, timedelta
 
 # library
@@ -85,7 +86,7 @@ async def update(table: str, key: str, data: {str: object}):
 
     if mdb is None:
         return
-    data = replace_keys(data, "$", "_$")
+    data = replace_keys(copy(data), "$", "_$")
     data["timestamp"] = datetime.utcnow()
     op = mdb.cache[table.lower()].update_one({"_id": key}, {"$set": data}, upsert=True)
     await call(op)

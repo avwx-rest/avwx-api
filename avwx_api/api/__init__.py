@@ -19,16 +19,21 @@ from quart_openapi.cors import crossdomain
 from voluptuous import Invalid, MultipleInvalid
 
 # module
-from avwx_api import counter, handle, structs, token, validators
+from avwx_api import counter, handle, structs, validators
+from avwx_api.token import Token, PSQL_URI
 
 VALIDATION_ERROR_MESSAGES = {
-    401: 'You are missing the "Authorization" header.',
-    403: 'Your auth token could not be found, is inactive, or does not have permission to access this resource. Does the value look like "Token 12345abcde"?',
+    401: 'You are missing the "Authorization" header or "token" parameter.',
+    403: 'Your auth token could not be found, is inactive, or does not have permission to access this resource',
     429: "Your auth token has hit it's daily rate limit. Considder upgrading your plan.",
 }
 
 
-def check_params(func):
+def parse_params(func):
+    """
+    Collects and parses endpoint parameters
+    """
+
     @wraps(func)
     async def wrapper(self, *args, **kwargs):
         loc = {self.loc_param: kwargs.get(self.loc_param)}
@@ -40,14 +45,17 @@ def check_params(func):
     return wrapper
 
 
-def token_flag(func):
+def token_check(func):
+    """
+    Checks token presense and validity for the endpoint
+    """
+
     @wraps(func)
     async def wrapper(self, *args, **kwargs):
-        if self.example:
-            err_code = await self.validate_token()
-            if err_code:
-                data = self.make_example_response(err_code)
-                return self.make_response(data, code=err_code)
+        err_code = await self.validate_token()
+        if err_code:
+            data = self.make_example_response(err_code)
+            return self.make_response(data, code=err_code)
         return await func(self, *args, **kwargs)
 
     return wrapper
@@ -70,6 +78,10 @@ class Base(Resource):
     # This also tells the token_flag decorator to check for a token
     example: str = None
 
+    # Whitelist of token plan types to access this endpoint
+    # If None, all tokens are allowed
+    plan_types: (str,) = None
+
     # Replace the key's name in the final response
     _key_repl: dict = None
     # Remove the following keys from the final response
@@ -86,19 +98,27 @@ class Base(Resource):
 
         Returns None if valid or the error code if not valid
         """
-        if not token.PSQL_URI:
+        if not PSQL_URI:
             return
-        auth_token = request.headers.get("Authorization")
+        auth_token = request.headers.get("Authorization") or request.args.get("token")
         if not auth_token or len(auth_token) < 10:
+            # NOTE: Disable this on Nov 1st
+            if self.plan_types is None:
+                return
             return 401
         # Remove prefix from token value
         auth_token = auth_token.strip().split()[-1]
-        token_data = await token.get_token(auth_token)
-        if token_data is None or not token.is_paid(token_data):
-            return 403
+        auth_token = await Token.from_token(auth_token)
+        # NOTE: Disabled until Nov 1st
+        # if auth_token is None:
+        #     return 403
+        if self.plan_types:
+            if auth_token is None:
+                return 403
+            if not auth_token.valid_type(self.plan_types):
+                return 403
         # Returns True if exceeded rate limit
-        limit = token.LIMITS.get(token_data["name"], None)
-        if await token.increment_token(auth_token, limit):
+        if await auth_token.increment():
             return 429
         return
 
@@ -197,8 +217,8 @@ class Report(Base):
     struct = structs.ReportStationParams
 
     @crossdomain(origin="*")
-    @check_params
-    @token_flag
+    @parse_params
+    @token_check
     async def get(self, params: structs.Params) -> Response:
         """
         GET handler returning reports
@@ -220,7 +240,7 @@ class Parse(Base):
     struct = structs.ReportGivenParams
 
     @crossdomain(origin="*")
-    @token_flag
+    @token_check
     async def post(self) -> Response:
         """
         POST handler to parse given reports
@@ -245,10 +265,11 @@ class MultiReport(Base):
     validator = validators.report_stations
     struct = structs.ReportStationsParams
     loc_param = "stations"
+    plan_types = ("paid",)
 
     @crossdomain(origin="*")
-    @check_params
-    @token_flag
+    @parse_params
+    @token_check
     async def get(self, params: structs.Params) -> Response:
         """
         GET handler returning multiple reports

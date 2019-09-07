@@ -15,6 +15,7 @@ class Pirep(Report):
     report_type = "pirep"
     example = "pirep"
     loc_param = "location"
+    plan_types = ("paid",)
     struct = structs.ReportLocationParams
     validator = validators.report_location
 
@@ -28,6 +29,7 @@ class PirepParse(Parse):
 
     report_type = "pirep"
     example = "pirep"
+    plan_types = ("paid",)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
