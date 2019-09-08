@@ -24,7 +24,7 @@ from avwx_api.token import Token, PSQL_URI
 
 VALIDATION_ERROR_MESSAGES = {
     401: 'You are missing the "Authorization" header or "token" parameter.',
-    403: 'Your auth token could not be found, is inactive, or does not have permission to access this resource',
+    403: "Your auth token could not be found, is inactive, or does not have permission to access this resource",
     429: "Your auth token has hit it's daily rate limit. Considder upgrading your plan.",
 }
 

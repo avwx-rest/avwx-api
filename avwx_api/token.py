@@ -27,7 +27,7 @@ WHERE apitoken = '{}';
 """
 
 
-PSQL_CONN = None
+PSQL_POOL = None
 
 
 @app.before_first_request
@@ -37,11 +37,11 @@ async def init_conn():
     """
     if not PSQL_URI:
         return
-    global PSQL_CONN
+    global PSQL_POOL
     if "localhost" in PSQL_URI:
-        PSQL_CONN = await asyncpg.connect(PSQL_URI)
+        PSQL_POOL = await asyncpg.create_pool(PSQL_URI)
     else:
-        PSQL_CONN = await asyncpg.connect(PSQL_URI, ssl=SSLContext())
+        PSQL_POOL = await asyncpg.create_pool(PSQL_URI, ssl=SSLContext())
 
 
 @app.after_serving
@@ -49,8 +49,8 @@ async def close_conn():
     """
     Close connection to the account database
     """
-    if PSQL_CONN:
-        await PSQL_CONN.close()
+    if PSQL_POOL:
+        await PSQL_POOL.close()
 
 
 @dataclass
@@ -76,7 +76,8 @@ class Token:
             del data["_id"]
             del data["timestamp"]
         else:
-            result = await PSQL_CONN.fetch(TOKEN_QUERY.format(token))
+            async with PSQL_POOL.acquire() as conn:
+                result = await conn.fetch(TOKEN_QUERY.format(token))
             if not result:
                 return
             data = dict(result[0])
