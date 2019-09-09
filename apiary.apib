@@ -5,6 +5,21 @@ HOST: https://avwx.rest/api
 
 The AVWX REST API is a publically-available, open-source REST API for aviation weather.
 
+## Authentication
+
+AVWX uses bearer tokens for user authentication. Create an account at [account.avwx.rest](https://account.avwx.rest) to generate your token and include it in your requests.
+
+The API looks for tokens in two places:
+
+- `"Authorization"` header. The token value can have any prefix (`"TOKEN abcde"`, `"BEARER abcde"`, etc) or just the token value itself
+- `"?token=abcde"` URL parameter
+
+The header value will supercede the URL parameter is both are found.
+
+Some features require paid plans to be associated with the supplied token. Feature availability is listed on the [Account Page](https://account.avwx.rest).
+
+Tokens will be required for all endpoints starting November 1st, 2019 with daily rate limits put in place starting on January 1st, 2020. For more information, see this [post on the dev blog](https://blog.avwx.rest/2019/08-05/).
+
 ## Station [/station/{ident}{?format}]
 
 Returns station information for an airfield or other location by ICAO ident. This is the same information provided when incluing the `info` option with weather requests.
@@ -1450,7 +1465,6 @@ Parse a user-supplied TAF included as the plain text body of the request.
 
 A PIREP (Pilot Report) is an observation made by pilots inflight meant to aid controllers and pilots routing around adverse conditions and other conditions of note. They typically contain icing, turbulance, cloud types/bases/tops, and other info at a known distance and radial from a ground station. They are released as they come in.
 
-This endpoint requires a paid API token.
 
 Note: translate, summary, and speech options not yet available
 
@@ -1811,8 +1825,6 @@ Get PIREPs within 200 miles of a lat,lon coordinate pair.
 
 Parses a PIREP report supplied by the user.
 
-This endpoint requires a paid API token.
-
 Note: translate, summary, and speech options not yet available
 
 + Parameters
@@ -1885,7 +1897,7 @@ Parse a user-supplied TAF included as the plain text body of the request.
 
 ## Multi-Station Request [/multi/{report_type}/{locations}{?format,options,onfail}]
 
-This endpoint requires a paid API token and returns the results for multiple stations for a given report type ("metar", "taf"). It accepts the same request parameters as normal METAR and TAF requests, but accepts a comma-separated string of up to 10 stations in one call.
+This endpoint returns the results for multiple stations for a given report type ("metar", "taf"). It accepts the same request parameters as normal METAR and TAF requests, but accepts a comma-separated string of up to 10 stations in one call.
 
 ### Get METAR Reports [GET]
 
