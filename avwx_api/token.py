@@ -28,20 +28,22 @@ WHERE apitoken = '{}';
 
 
 PSQL_POOL = None
+MIN_SIZE = 3
+MAX_SIZE = 8
 
 
-@app.before_first_request
+@app.before_serving
 async def init_conn():
     """
     Create the connection to the account database
     """
     if not PSQL_URI:
         return
+    kwargs = {"min_size": MIN_SIZE, "max_size": MAX_SIZE}
+    if "localhost" not in PSQL_URI:
+        kwargs["ssl"] = SSLContext()
     global PSQL_POOL
-    if "localhost" in PSQL_URI:
-        PSQL_POOL = await asyncpg.create_pool(PSQL_URI)
-    else:
-        PSQL_POOL = await asyncpg.create_pool(PSQL_URI, ssl=SSLContext())
+    PSQL_POOL = await asyncpg.create_pool(PSQL_URI, **kwargs)
 
 
 @app.after_serving
@@ -77,7 +79,8 @@ class Token:
             del data["timestamp"]
         else:
             async with PSQL_POOL.acquire() as conn:
-                result = await conn.fetch(TOKEN_QUERY.format(token))
+                async with conn.transaction():
+                    result = await conn.fetch(TOKEN_QUERY.format(token))
             if not result:
                 return
             data = dict(result[0])

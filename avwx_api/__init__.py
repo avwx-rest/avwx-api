@@ -51,7 +51,7 @@ def init_rollbar():
 mdb = None
 
 
-@app.before_first_request
+@app.before_serving
 def init_clients():
     mongo_uri = environ.get("MONGO_URI")
     if mongo_uri:
