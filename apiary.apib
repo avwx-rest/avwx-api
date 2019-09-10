@@ -14,7 +14,7 @@ The API looks for tokens in two places:
 - `"Authorization"` header. The token value can have any prefix (`"TOKEN abcde"`, `"BEARER abcde"`, etc) or just the token value itself
 - `"?token=abcde"` URL parameter
 
-The header value will supercede the URL parameter is both are found.
+The header value will supercede the URL parameter if both are found. All examples in the documentation use the header method.
 
 Some features require paid plans to be associated with the supplied token. Feature availability is listed on the [Account Page](https://account.avwx.rest).
 
@@ -33,7 +33,14 @@ Returns station information for an airfield or other location by ICAO ident. Thi
 This example shows station information for JKF International in New York City.
 
 + Parameters
+
     + ident:`KJFK`
+
++ Request
+
+    + Headers
+    
+            Authorization: Token my_secret_api_token
 
 + Response 200 (application/json)
 
@@ -48,6 +55,7 @@ This example shows station information for JKF International in New York City.
             "longitude": -73.77890015,
             "name": "John F Kennedy International Airport",
             "note": "Manhattan, New York City, NYC, Idlewild",
+            "reporting": true,
             "runways": [
                 {
                     "length_ft": 14572,
@@ -80,13 +88,14 @@ This example shows station information for JKF International in New York City.
             "wiki": "http://en.wikipedia.org/wiki/John_F._Kennedy_International_Airport"
         }
 
-## Nearest Stations [/station/near/{coord}{?n,reporting,format}]
+## Nearest Stations [/station/near/{coord}{?n,airport,reporting,format}]
 
 Returns the nearest stations to a coordinate pair. By default, these are only reporting stations, but this can be disabled to return smaller airports with non-reporting AWOS/ASOS as well.
 
 + Parameters
     + coord (string) - Coordinate pair
     + n (number) - Number of stations to return (default=10)
+    + airport (boolean) - Only include airports (default=true)
     + reporting (boolean) - Only include reporting stations (default=true)
     + format (string) - Desired response format (default=json, xml, yaml)
 
@@ -95,14 +104,20 @@ Returns the nearest stations to a coordinate pair. By default, these are only re
 This example returns reporting stations around Melbourne Beach, FL
 
 + Parameters
+
     + coord: `28.1,-81`
     + n: 3
+
++ Request
+
+    + Headers
+    
+            Authorization: Token my_secret_api_token
 
 + Response 200 (application/json)
 
         [
             {
-                "distance": 0.35470923554481676,
                 "station": {
                     "city": "Melbourne",
                     "country": "US",
@@ -114,6 +129,7 @@ This example returns reporting stations around Melbourne Beach, FL
                     "longitude": -80.64530181884766,
                     "name": "Melbourne International Airport",
                     "note": null,
+                    "reporting": true,
                     "runways": [
                         {
                             "length_ft": 10181,
@@ -138,37 +154,13 @@ This example returns reporting stations around Melbourne Beach, FL
                     "type": "medium_airport",
                     "website": null,
                     "wiki": "http://en.wikipedia.org/wiki/Melbourne_International_Airport"
-                }
+                },
+                "coordinate_distance": 0.35470923554481676,
+                "nautical_miles": 18.786513433151878,
+                "miles": 21.619133558889384,
+                "kilometers": 34.79262287819728
             },
             {
-                "distance": 0.3965858305687431,
-                "station": {
-                    "city": "Merritt Island",
-                    "country": "US",
-                    "elevation_ft": 6,
-                    "elevation_m": 2,
-                    "iata": "COI",
-                    "icao": "KCOI",
-                    "latitude": 28.341600418099997,
-                    "longitude": -80.6855010986,
-                    "name": "Merritt Island Airport",
-                    "note": null,
-                    "runways": [
-                        {
-                            "length_ft": 3601,
-                            "width_ft": 75,
-                            "ident1": "11",
-                            "ident2": "29"
-                        }
-                    ],
-                    "state": "FL",
-                    "type": "small_airport",
-                    "website": null,
-                    "wiki": "http://en.wikipedia.org/wiki/Merritt_Island_Airport"
-                }
-            },
-            {
-                "distance": 0.41257732917308576,
                 "station": {
                     "city": "Cocoa Beach",
                     "country": "US",
@@ -180,6 +172,7 @@ This example returns reporting stations around Melbourne Beach, FL
                     "longitude": -80.6100997925,
                     "name": "Patrick Air Force Base",
                     "note": "Naval Air Station Banana River",
+                    "reporting": true,
                     "runways": [
                         {
                             "length_ft": 9023,
@@ -198,28 +191,88 @@ This example returns reporting stations around Melbourne Beach, FL
                     "type": "medium_airport",
                     "website": "http://www.patrick.af.mil/",
                     "wiki": "http://en.wikipedia.org/wiki/Patrick_Air_Force_Base"
-                }
+                },
+                "coordinate_distance": 0.41257732917308576,
+                "nautical_miles": 22.16988896743564,
+                "miles": 25.51265258868881,
+                "kilometers": 41.05863436769081
+            },
+            {
+                "station": {
+                    "city": "Orlando",
+                    "country": "US",
+                    "elevation_ft": 96,
+                    "elevation_m": 29,
+                    "iata": "MCO",
+                    "icao": "KMCO",
+                    "latitude": 28.429399490356445,
+                    "longitude": -81.30899810791016,
+                    "name": "Orlando International Airport",
+                    "note": "Disney World,Epcot Center",
+                    "reporting": true,
+                    "runways": [
+                        {
+                            "length_ft": 12005,
+                            "width_ft": 200,
+                            "ident1": "18L",
+                            "ident2": "36R"
+                        },
+                        {
+                            "length_ft": 12004,
+                            "width_ft": 200,
+                            "ident1": "18R",
+                            "ident2": "36L"
+                        },
+                        {
+                            "length_ft": 10000,
+                            "width_ft": 150,
+                            "ident1": "17R",
+                            "ident2": "35L"
+                        },
+                        {
+                            "length_ft": 9000,
+                            "width_ft": 150,
+                            "ident1": "17L",
+                            "ident2": "35R"
+                        }
+                    ],
+                    "state": "FL",
+                    "type": "large_airport",
+                    "website": "http://www.orlandoairports.net/",
+                    "wiki": "http://en.wikipedia.org/wiki/Orlando_International_Airport"
+                },
+                "coordinate_distance": 0.4516457183890284,
+                "nautical_miles": 25.654425899340257,
+                "miles": 29.522586075803655,
+                "kilometers": 47.51199676557816
             }
         ]
 
-## METAR [/metar/{location}{?format,options,onfail}]
+## METAR [/metar/{location}{?options,airport,reporting,format,onfail}]
 
 METAR reports are surface observations for a particular airfield or other station location. There are two standard formats: International and North American. The parser works with both, but it is up to the developer to do the correct interpretation of the data. Use the 'Units' key for labling and conversions.
 
 + Parameters
     + location (string) - ICAO station ident or coordinate pair
     + options (string) - Additional options to include (info, translate, summary, speech)
+    + airport (boolean) - Only include airports when performing a coordinate search (default=true)
+    + reporting (boolean) - Only include reporting stations when performing a coordinate search (default=true)
     + format (string) - Desired response format (default=json, xml, yaml)
-    + onfail (string) - Error or use out-of-date cache when unable to fetch report (default=error, cache)
+    + onfail (string) - Error or use out-of-date cache when unable to fetch report (default=cache, error)
 
 ### Get METAR Report for Station [GET]
 
 Get the METAR for a specific station by ICAO ident.
 
 + Parameters
+
     + location: `KJFK`
-    + format: `json`
-    + onfail: `cache`
+
++ Request
+
+    + Headers
+    
+            Authorization: Token my_secret_api_token
 
 + Response 200 (application/json)
 
@@ -304,9 +357,16 @@ Get the METAR for a specific station by ICAO ident.
 Get the METAR for a lat,lon coordinate pair. The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
 
 + Parameters
+
     + location: `51.47,-0.4`
     + options: `info,speech`
-    + format: `json`
+    + airport: `true`
+
++ Request
+
+    + Headers
+    
+            Authorization: Token my_secret_api_token
 
 + Response 200 (application/json)
 
@@ -396,7 +456,7 @@ Get the METAR for a lat,lon coordinate pair. The API will return the station nea
             ]
         }
 
-## Parse METAR [/parse/metar{?format,options}]
+## Parse METAR [/parse/metar{?options,format}]
 
 Parses a METAR report supplied by the user.
 
@@ -411,12 +471,17 @@ Parse a user-supplied METAR included as the plain text body of the request.
 
 + Parameters
 
-    + options: `translate` 
-    + format: `json`
+    + options: `translate`
 
 + Request (text/plain)
 
-        PHKO 181753Z 28004KT 6SM HZ SCT022 27/21 A3005 RMK AO2 SLP178 T02670206 10267 20239 53009
+    + Headers
+    
+            Authorization: Token my_secret_api_token
+
+    + Body
+
+            PHKO 181753Z 28004KT 6SM HZ SCT022 27/21 A3005 RMK AO2 SLP178 T02670206 10267 20239 53009
 
 + Response 200 (application/json)
 
@@ -508,13 +573,15 @@ Parse a user-supplied METAR included as the plain text body of the request.
             "wind_variable_direction": []
         }
 
-## TAF [/taf/{location}{?format,options,onfail}]
+## TAF [/taf/{location}{?options,airport,reporting,format,onfail}]
 
 TAF reports are atmospheric conditions for an area within five nautical miles of a particular airfield or other station location. Unlike METAR which only has two standard formats, TAF reports vary considderably more based on their geography. For example, Oceania TAF reports include two unique keys: Temp-List and Alt-List.
 
 + Parameters
     + location (string) - ICAO station ident or coordinate pair
     + options (string) - Additional options to include (info, translate, summary)
+    + airport (boolean) - Only include airports when performing a coordinate search (default=true)
+    + reporting (boolean) - Only include reporting stations when performing a coordinate search (default=true)
     + format (string) - Desired response format (default=json, xml, yaml)
     + onfail (string) - Error or use out-of-date cache when unable to fetch report (default=error, cache)
 
@@ -523,10 +590,15 @@ TAF reports are atmospheric conditions for an area within five nautical miles of
 Get the TAF for a specific station by ICAO ident.
 
 + Parameters
+
     + location:`KJFK`
     + options: `summary`
-    + format: `json`
-    + onfail: `cache`
+
++ Request
+
+    + Headers
+    
+            Authorization: Token my_secret_api_token
 
 + Response 200 (application/json)
 
@@ -948,9 +1020,16 @@ Get the TAF for a specific station by ICAO ident.
 Get the TAF for a lat,lon coordinate pair. The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
 
 + Parameters
+
     + location: `51.47,-0.4`
     + options: `info`
-    + format: `json`
+    + airport: `true`
+
++ Request
+
+    + Headers
+    
+            Authorization: Token my_secret_api_token
 
 + Response 200 (application/json)
 
@@ -1175,7 +1254,7 @@ Get the TAF for a lat,lon coordinate pair. The API will return the station neare
             }
         }
 
-## Parse TAF [/parse/taf{?format,options}]
+## Parse TAF [/parse/taf{?options,format}]
 
 Parses a TAF report supplied by the user.
 
@@ -1191,11 +1270,16 @@ Parse a user-supplied TAF included as the plain text body of the request.
 + Parameters
 
     + options: `translate`
-    + format: `json`
 
 + Request (text/plain)
 
-        PHKO 181735Z 1818/1918 VRB03KT P6SM FEW035 FM182000 20010KT P6SM FEW030 SCT060 FM190400 10007KT P6SM FEW030 BKN050 FM191200 VRB03KT P6SM SCT030
+    + Headers
+    
+            Authorization: Token my_secret_api_token
+
+    + Body
+
+            PHKO 181735Z 1818/1918 VRB03KT P6SM FEW035 FM182000 20010KT P6SM FEW030 SCT060 FM190400 10007KT P6SM FEW030 BKN050 FM191200 VRB03KT P6SM SCT030
 
 + Response 200 (application/json)
 
@@ -1461,7 +1545,7 @@ Parse a user-supplied TAF included as the plain text body of the request.
             }
         }
 
-## PIREP [/pirep/{location}{?format,options,onfail}]
+## PIREP [/pirep/{location}{?options,format,onfail}]
 
 A PIREP (Pilot Report) is an observation made by pilots inflight meant to aid controllers and pilots routing around adverse conditions and other conditions of note. They typically contain icing, turbulance, cloud types/bases/tops, and other info at a known distance and radial from a ground station. They are released as they come in.
 
@@ -1479,8 +1563,8 @@ Note: translate, summary, and speech options not yet available
 Get PIREPs within 200 miles of a specific station by ICAO ident.
 
 + Parameters
+
     + location:`KMCO`
-    + format: `json`
 
 + Request (text/plain)
 
@@ -1621,8 +1705,8 @@ Get PIREPs within 200 miles of a specific station by ICAO ident.
 Get PIREPs within 200 miles of a lat,lon coordinate pair.
 
 + Parameters
+
     + location:`21.32,-157.92`
-    + format: `json`
 
 + Request (text/plain)
 
@@ -1821,7 +1905,7 @@ Get PIREPs within 200 miles of a lat,lon coordinate pair.
             }
         }
 
-## Parse PIREP [/parse/pirep{?format,options}]
+## Parse PIREP [/parse/pirep{?options,format}]
 
 Parses a PIREP report supplied by the user.
 
@@ -1835,10 +1919,6 @@ Note: translate, summary, and speech options not yet available
 ### Parse a Given PIREP [POST]
 
 Parse a user-supplied TAF included as the plain text body of the request.
-
-+ Parameters
-
-    + format: `json`
 
 + Request (text/plain)
 
@@ -1895,7 +1975,7 @@ Parse a user-supplied TAF included as the plain text body of the request.
             }
         }
 
-## Multi-Station Request [/multi/{report_type}/{locations}{?format,options,onfail}]
+## Multi-Station Request [/multi/{report_type}/{locations}{?options,format,onfail}]
 
 This endpoint returns the results for multiple stations for a given report type ("metar", "taf"). It accepts the same request parameters as normal METAR and TAF requests, but accepts a comma-separated string of up to 10 stations in one call.
 
@@ -1908,6 +1988,7 @@ Shows a request for KJFK and KSFO in a single API call.
     + locations:`KJFK,KSFO`
 
 + Request
+
     + Headers
     
             Authorization: Token my_secret_api_token
