@@ -118,7 +118,7 @@ class Base(Resource):
             if not auth_token.valid_type(self.plan_types):
                 return 403
         # Returns True if exceeded rate limit
-        if await auth_token.increment():
+        if auth_token and await auth_token.increment():
             return 429
         return
 
