@@ -19,7 +19,7 @@ from avwx_api import app, cache
 
 PSQL_URI = environ.get("PSQL_URI", None)
 TOKEN_QUERY = """
-SELECT u.active_token AS active, p.limit, p.name, p.type
+SELECT u.id AS user, u.active_token AS active, p.limit, p.name, p.type
 FROM public.user u
 JOIN public.plan p 
 ON u.plan_id = p.id
@@ -66,6 +66,7 @@ class Token:
     name: str
     type: str
     value: str
+    user: int
 
     @classmethod
     async def from_token(cls, token: str) -> "Token":
@@ -112,12 +113,12 @@ class Token:
             return False
         key = datetime.utcnow().strftime(r"%Y-%m-%d")
         # Create or increment the date counter
-        ops = [UpdateOne({"_id": self.value}, {"$inc": {key: 1}}, upsert=True)]
+        ops = [UpdateOne({"_id": self.user}, {"$inc": {key: 1}}, upsert=True)]
         # Reset counter to max if at or exceeded max value
         if self.limit is not None:
             ops.append(
                 UpdateOne(
-                    {"_id": self.value, key: {"$gte": self.limit}},
+                    {"_id": self.user, key: {"$gte": self.limit}},
                     {"$set": {key: self.limit}},
                 )
             )

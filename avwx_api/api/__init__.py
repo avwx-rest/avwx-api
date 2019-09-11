@@ -69,7 +69,7 @@ class Base(Resource):
     validator: validators.Schema
     struct: structs.Params
     report_type: str = None
-    note: str = None
+    note: str = r"Tokens will be required starting on November 1st. See http://bit.ly/2lPXBMP for more info"
 
     # Name of parameter used for report location
     loc_param: str = "station"
