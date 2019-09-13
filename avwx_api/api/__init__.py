@@ -190,7 +190,7 @@ class Base(Resource):
         output = self.format_dict(output)
         if "error" in output and meta not in output:
             output["timestamp"] = datetime.utcnow()
-        if self.note:
+        if self.note and isinstance(output, dict):
             if meta not in output:
                 output[meta] = {}
             output[meta]["note"] = self.note

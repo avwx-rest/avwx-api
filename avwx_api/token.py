@@ -23,7 +23,7 @@ SELECT u.id AS user, u.active_token AS active, p.limit, p.name, p.type
 FROM public.user u
 JOIN public.plan p 
 ON u.plan_id = p.id
-WHERE apitoken = '{}';
+WHERE apitoken = $1;
 """
 
 
@@ -81,7 +81,7 @@ class Token:
         else:
             async with PSQL_POOL.acquire() as conn:
                 async with conn.transaction():
-                    result = await conn.fetch(TOKEN_QUERY.format(token))
+                    result = await conn.fetch(TOKEN_QUERY, token)
             if not result:
                 return
             data = dict(result[0])
