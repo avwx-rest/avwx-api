@@ -29,6 +29,9 @@ VALIDATION_ERROR_MESSAGES = {
 }
 
 
+HEADERS = ["Authorization"]
+
+
 def parse_params(func):
     """
     Collects and parses endpoint parameters
@@ -101,13 +104,13 @@ class Base(Resource):
         if not PSQL_URI:
             return
         auth_token = request.headers.get("Authorization") or request.args.get("token")
-        if not auth_token or len(auth_token) < 10:
+        try:
+            auth_token = validators.Token(auth_token)
+        except (Invalid, MultipleInvalid):
             # NOTE: Disable this on Nov 1st
             if self.plan_types is None:
                 return
             return 401
-        # Remove prefix from token value
-        auth_token = auth_token.strip().split()[-1]
         auth_token = await Token.from_token(auth_token)
         # NOTE: Disabled until Nov 1st
         # if auth_token is None:
@@ -127,12 +130,7 @@ class Base(Resource):
         Returns all validated request parameters or an error response dict
         """
         try:
-            params = {
-                "report_type": self.report_type,
-                **request.headers,
-                **request.args,
-                **kwargs,
-            }
+            params = {"report_type": self.report_type, **request.args, **kwargs}
             # Unpack param lists. Ex: options: ['info,speech'] -> options: 'info,speech'
             for k, v in params.items():
                 if isinstance(v, list):
@@ -216,7 +214,7 @@ class Report(Base):
     validator = validators.report_station
     struct = structs.ReportStationParams
 
-    @crossdomain(origin="*")
+    @crossdomain(origin="*", headers=HEADERS)
     @parse_params
     @token_check
     async def get(self, params: structs.Params) -> Response:
@@ -239,7 +237,7 @@ class Parse(Base):
     validator = validators.report_given
     struct = structs.ReportGivenParams
 
-    @crossdomain(origin="*")
+    @crossdomain(origin="*", headers=HEADERS)
     @token_check
     async def post(self) -> Response:
         """
@@ -267,7 +265,7 @@ class MultiReport(Base):
     loc_param = "stations"
     plan_types = ("paid",)
 
-    @crossdomain(origin="*")
+    @crossdomain(origin="*", headers=HEADERS)
     @parse_params
     @token_check
     async def get(self, params: structs.Params) -> Response:
