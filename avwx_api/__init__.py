@@ -60,3 +60,22 @@ def init_clients():
 
 
 from avwx_api import api, views
+
+
+@app.after_request
+def after_request(response):
+    """
+    Add missing CORS headers
+
+    Fixes CORS bug where headers are not included in OPTIONS
+    """
+    for key, value in (
+        ("Access-Control-Allow-Origin", "*"),
+        ("Access-Control-Allow-Headers", api.HEADERS),
+        ("Access-Control-Allow-Methods", list(response.allow)),
+    ):
+        if key not in response.headers:
+            if isinstance(value, list):
+                value = ",".join(value)
+            response.headers.add(key, value)
+    return response

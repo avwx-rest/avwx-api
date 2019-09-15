@@ -29,7 +29,7 @@ VALIDATION_ERROR_MESSAGES = {
 }
 
 
-HEADERS = ["Authorization"]
+HEADERS = ["Authorization", "Content-Type"]
 
 
 def parse_params(func):
