@@ -1,5 +1,5 @@
 asyncpg~=0.18
-avwx-engine[scipy]==1.3.1
+avwx-engine[scipy]==1.3.2
 dataclasses>=0.6;python_version<"3.7"
 dicttoxml~=1.7
 dnspython~=1.16
