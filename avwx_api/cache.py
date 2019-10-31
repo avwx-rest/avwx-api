@@ -19,9 +19,9 @@ DEFAULT_EXPIRES = 2
 
 def replace_keys(data: dict, key: str, by_key: str) -> dict:
     """
-    Replaces recurively the keys equal to 'key' by 'by_key'
+    Replaces recursively the keys equal to 'key' by 'by_key'
 
-    Some keys in the report data are '$' and this is not accepted by mongodb
+    Some keys in the report data are '$' and this is not accepted by MongoDB
     """
     if data is None:
         return
@@ -45,7 +45,7 @@ def has_expired(time: datetime, table: str) -> bool:
 
 async def call(op: "coroutine") -> object:
     """
-    Error handling around the Mongo client conection
+    Error handling around the Mongo client connection
     """
     for _ in range(5):
         try:
@@ -73,7 +73,7 @@ async def get(table: str, key: str, force: bool = False) -> {str: object}:
     data = replace_keys(data, "_$", "$")
     if force:
         return data
-    elif isinstance(data, dict) and not has_expired(data.get("timestamp"), table):
+    if isinstance(data, dict) and not has_expired(data.get("timestamp"), table):
         return data
     return
 

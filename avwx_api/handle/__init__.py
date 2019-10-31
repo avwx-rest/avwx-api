@@ -31,10 +31,10 @@ async def update_parser(
 
     Attempts to fetch five times before giving up
     """
-    rtype = parser.__class__.__name__.upper()
+    report_type = parser.__class__.__name__.upper()
     state_info = {
         "state": "fetch",
-        "type": rtype,
+        "type": report_type,
         "station": getattr(parser, "station", None),
         "source": parser.service,
     }
@@ -43,10 +43,10 @@ async def update_parser(
         for _ in range(3):
             try:
                 if not await parser.async_update(timeout=2, disable_post=True):
-                    ierr = 0 if isinstance(err_station, str) else 3
-                    return {"error": ERRORS[ierr].format(rtype, err_station)}, 400
+                    err = 0 if isinstance(err_station, str) else 3
+                    return {"error": ERRORS[err].format(report_type, err_station)}, 400
                 break
-            except aio.TimeoutError:
+            except TimeoutError:
                 pass
         else:
             # msg = f"Unable to call {parser.service.__class__.__name__}"
@@ -65,11 +65,11 @@ async def update_parser(
         return {"error": str(exc)}, int(str(exc)[-3:])
     except avwx.exceptions.InvalidRequest as exc:
         print("Invalid Request:", exc)
-        return {"error": ERRORS[0].format(rtype, err_station)}, 400
+        return {"error": ERRORS[0].format(report_type, err_station)}, 400
     except Exception as exc:
         print("Unknown Fetching Error", exc)
         rollbar.report_exc_info(extra_data=state_info)
-        return {"error": ERRORS[4].format(rtype)}, 500
+        return {"error": ERRORS[4].format(report_type)}, 500
     # Parse the fetched data
     try:
         parser._post_update()
@@ -81,7 +81,7 @@ async def update_parser(
         state_info["state"] = "parse"
         state_info["raw"] = parser.raw
         rollbar.report_exc_info(extra_data=state_info)
-        return {"error": ERRORS[1].format(rtype), "raw": parser.raw}, 500
+        return {"error": ERRORS[1].format(report_type), "raw": parser.raw}, 500
     return None, None
 
 

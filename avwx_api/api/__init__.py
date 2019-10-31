@@ -32,6 +32,9 @@ VALIDATION_ERROR_MESSAGES = {
 HEADERS = ["Authorization", "Content-Type"]
 
 
+EXAMPLE_PATH = Path(__file__).parent / "examples"
+
+
 def parse_params(func):
     """
     Collects and parses endpoint parameters
@@ -56,7 +59,7 @@ def token_check(func):
     @wraps(func)
     async def wrapper(self, *args, **kwargs):
         err_code = await self.validate_token()
-        if err_code:
+        if isinstance(err_code, int):
             data = self.make_example_response(err_code)
             return self.make_response(data, code=err_code)
         return await func(self, *args, **kwargs)
@@ -78,7 +81,7 @@ class Base(Resource):
     loc_param: str = "station"
 
     # Filename of the sample response when token validation fails
-    # This also tells the token_flag decorator to check for a token
+    # Only required if different than report_type
     example: str = None
 
     # Whitelist of token plan types to access this endpoint
@@ -95,11 +98,11 @@ class Base(Resource):
         self._key_repl = {}
         self._key_remv = []
 
-    async def validate_token(self) -> int:
+    async def validate_token(self) -> "str/int":
         """
         Validates thats an authorization token exists and is active
 
-        Returns None if valid or the error code if not valid
+        Returns the token if valid or the error code if not valid
         """
         if not PSQL_URI:
             return
@@ -120,10 +123,10 @@ class Base(Resource):
                 return 403
             if not auth_token.valid_type(self.plan_types):
                 return 403
-        # Returns True if exceeded rate limit
-        if auth_token and await auth_token.increment():
+        # Returns False if exceeded rate limit
+        if auth_token and not await auth_token.increment():
             return 429
-        return
+        return auth_token
 
     def validate_params(self, **kwargs) -> structs.Params:
         """
@@ -148,7 +151,7 @@ class Base(Resource):
         """
         Returns an example payload when validation fails
         """
-        path = Path(__file__).parent.joinpath("examples", f"{self.example}.json")
+        path = EXAMPLE_PATH / f"{self.example or self.report_type}.json"
         data = json.load(path.open())
         msg = VALIDATION_ERROR_MESSAGES[error_code]
         msg += " Here's an example response for testing purposes"
@@ -224,7 +227,7 @@ class Report(Base):
         nofail = params.onfail == "cache"
         loc = getattr(params, self.loc_param)
         handler = getattr(handle, self.report_type).handle_report
-        counter.from_params(params, self.report_type)
+        await counter.from_params(params, self.report_type)
         data, code = await handler(loc, params.options, nofail)
         return self.make_response(data, params.format, code)
 
@@ -250,8 +253,8 @@ class Parse(Base):
         handler = getattr(handle, self.report_type).parse_given
         data, code = handler(params.report, params.options)
         if "station" in data:
-            rtype = self.report_type + "-given"
-            counter.increment_station(data["station"], rtype)
+            report_type = self.report_type + "-given"
+            await counter.increment_station(data["station"], report_type)
         return self.make_response(data, params.format, code)
 
 
@@ -278,7 +281,7 @@ class MultiReport(Base):
         coros = []
         for loc in locs:
             coros.append(handler(loc, params.options, nofail))
-            counter.increment_station(loc.icao, self.report_type + "-multi")
+            await counter.increment_station(loc.icao, self.report_type + "-multi")
         results = await aio.gather(*coros)
         keys = [loc.icao if hasattr(loc, "icao") else loc for loc in locs]
         data = dict(zip(keys, [r[0] for r in results if r]))

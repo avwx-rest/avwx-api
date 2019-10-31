@@ -28,7 +28,7 @@ async def new_report(parser: avwx.Report, err_param: "stringable") -> (dict, int
 
 
 async def _handle_report(
-    rtype: str, loc: "Station/(float,)", opts: [str], nofail: bool = False
+    report_type: str, loc: "Station/(float,)", opts: [str], nofail: bool = False
 ) -> (dict, int):
     """
     Returns weather data for the given report type, station, and options
@@ -44,23 +44,27 @@ async def _handle_report(
         if not station.sends_reports:
             return {"error": f"{station.icao} does not publish reports"}, 200
         # Fetch an existing and up-to-date cache
-        cache_data, code = await cache.get(rtype, station.icao), 200
+        cache_data, code = await cache.get(report_type, station.icao), 200
         # If no cache, get new data
-        if cache_data is None or cache.has_expired(cache_data.get("timestamp"), rtype):
+        if cache_data is None or cache.has_expired(
+            cache_data.get("timestamp"), report_type
+        ):
             data, code = await new_report(
-                _HANDLE_MAP[rtype](station_ident=station.icao), station.icao
+                _HANDLE_MAP[report_type](station_ident=station.icao), station.icao
             )
             if code == 200:
-                await cache.update(rtype, station.icao, data)
+                await cache.update(report_type, station.icao, data)
         else:
             data = cache_data
     # Else coordinates. We don't cache coordinates
     else:
-        data, code = await new_report(_HANDLE_MAP[rtype](lat=loc[0], lon=loc[1]), loc)
+        data, code = await new_report(
+            _HANDLE_MAP[report_type](lat=loc[0], lon=loc[1]), loc
+        )
     resp = {"meta": {"timestamp": datetime.utcnow()}}
     if "timestamp" in data:
         resp["meta"]["cache-timestamp"] = data["timestamp"]
-    # Handle errors according to nofail arguement
+    # Handle errors according to nofail argument
     if code != 200 and nofail:
         if cache_data is None:
             resp["error"] = "No report or cache was found for the requested location"
@@ -79,20 +83,20 @@ async def _handle_report(
     return resp, code
 
 
-def _parse_given(rtype: str, report: str, opts: [str]) -> (dict, int):
+def _parse_given(report_type: str, report: str, opts: [str]) -> (dict, int):
     """
-    Attepts to parse a given report supplied by the user
+    Attempts to parse a given report supplied by the user
     """
     try:
-        ureport = _HANDLE_MAP[rtype]("KJFK")  # We ignore the station
-        ureport.update(report)
-        resp = asdict(ureport.data[0])
+        handler = _HANDLE_MAP[report_type]("KJFK")  # We ignore the station
+        handler.update(report)
+        resp = asdict(handler.data[0])
         resp["meta"] = {"timestamp": datetime.utcnow()}
         return resp, 200
     except Exception as exc:
         print("Unknown Parsing Error", exc)
         rollbar.report_exc_info(extra_data={"state": "given", "raw": report})
-        return {"error": ERRORS[1].format(rtype)}, 500
+        return {"error": ERRORS[1].format(report_type)}, 500
 
 
 async def handle_report(
@@ -104,6 +108,6 @@ async def handle_report(
 def parse_given(report: str, opts: [str]) -> (dict, int):
     if len(report) < 3 or "{" in report:
         return ({"error": "Could not find station at beginning of report"}, 400)
-    elif report and report[:3] in ("ARP", "ARS"):
+    if report and report[:3] in ("ARP", "ARS"):
         return ({"error": "The report looks like an AIREP. Use /api/airep/parse"}, 400)
     return _parse_given("pirep", report, opts)

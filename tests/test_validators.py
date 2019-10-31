@@ -11,7 +11,7 @@ from voluptuous import Invalid
 import avwx_api.validators as validators
 
 
-def test_splitin():
+def test_split_in():
     """
     Tests that SplitIn returns a split string only containing certain values
     """

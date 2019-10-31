@@ -85,8 +85,8 @@ def Coordinate(coord: str) -> (float, float):
     Converts a coordinate string into float tuple
     """
     try:
-        cstr = coord.split(",")
-        return Latitude(cstr[0]), Longitude(cstr[1])
+        split_coord = coord.split(",")
+        return Latitude(split_coord[0]), Longitude(split_coord[1])
     except:
         raise Invalid(f"{coord} is not a valid coordinate pair")
 

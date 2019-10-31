@@ -1,6 +1,6 @@
 """
 Michael duPont - michael@mdupont.com
-avwx_api.structs - Paramter dataclasses
+avwx_api.structs - Parameter dataclasses
 """
 
 from dataclasses import dataclass

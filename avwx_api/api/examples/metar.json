@@ -1,0 +1,88 @@
+{
+    "meta": {},
+    "altimeter": {
+        "repr": "3001",
+        "value": 30.01,
+        "spoken": "three zero point zero one"
+    },
+    "clouds": [
+        {
+            "repr": "SCT025",
+            "type": "SCT",
+            "altitude": 25,
+            "modifier": null,
+            "direction": null
+        },
+        {
+            "repr": "BKN047",
+            "type": "BKN",
+            "altitude": 47,
+            "modifier": null,
+            "direction": null
+        },
+        {
+            "repr": "BKN065",
+            "type": "BKN",
+            "altitude": 65,
+            "modifier": null,
+            "direction": null
+        }
+    ],
+    "flight_rules": "VFR",
+    "other": [],
+    "sanitized": "KMCO 252153Z 07006KT 10SM SCT025 BKN047 BKN065 27/23 A3001 RMK AO2 RAB00E09 SLP159 P0000 T02670228",
+    "visibility": {
+        "repr": "10",
+        "value": 10,
+        "spoken": "one zero"
+    },
+    "wind_direction": {
+        "repr": "070",
+        "value": 70,
+        "spoken": "zero seven zero"
+    },
+    "wind_gust": null,
+    "wind_speed": {
+        "repr": "06",
+        "value": 6,
+        "spoken": "six"
+    },
+    "raw": "KMCO 252153Z 07006KT 10SM SCT025 BKN047 BKN065 27/23 A3001 RMK AO2 RAB00E09 SLP159 P0000 T02670228",
+    "station": "KMCO",
+    "time": {
+        "repr": "252153Z",
+        "dt": "2019-10-25T21:53:00+00:00Z"
+    },
+    "remarks": "RMK AO2 RAB00E09 SLP159 P0000 T02670228",
+    "dewpoint": {
+        "repr": "23",
+        "value": 23,
+        "spoken": "two three"
+    },
+    "remarks_info": {
+        "dewpoint_decimal": {
+            "repr": "22.8",
+            "value": 22.8,
+            "spoken": "two two point eight"
+        },
+        "temperature_decimal": {
+            "repr": "26.7",
+            "value": 26.7,
+            "spoken": "two six point seven"
+        }
+    },
+    "runway_visibility": [],
+    "temperature": {
+        "repr": "27",
+        "value": 27,
+        "spoken": "two seven"
+    },
+    "wind_variable_direction": [],
+    "units": {
+        "altimeter": "inHg",
+        "altitude": "ft",
+        "temperature": "C",
+        "visibility": "sm",
+        "wind_speed": "kt"
+    }
+}

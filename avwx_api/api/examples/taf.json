@@ -1,0 +1,303 @@
+{
+    "meta": {},
+    "raw": "KMCO 252057Z 2521/2624 09008KT P6SM VCSH SCT025 SCT040 BKN080 TEMPO 2522/2601 3SM SHRA SCT010 BKN025 FM260100 07009KT P6SM SCT025 SCT120 FM260800 10005KT P6SM FEW020 SCT050 FM261400 13011KT P6SM VCSH FEW020 SCT040 SCT060",
+    "station": "KMCO",
+    "time": {
+        "repr": "252057Z",
+        "dt": "2019-10-25T20:57:00+00:00Z"
+    },
+    "remarks": "",
+    "forecast": [
+        {
+            "altimeter": "",
+            "clouds": [
+                {
+                    "repr": "SCT025",
+                    "type": "SCT",
+                    "altitude": 25,
+                    "modifier": null,
+                    "direction": null
+                },
+                {
+                    "repr": "SCT040",
+                    "type": "SCT",
+                    "altitude": 40,
+                    "modifier": null,
+                    "direction": null
+                },
+                {
+                    "repr": "BKN080",
+                    "type": "BKN",
+                    "altitude": 80,
+                    "modifier": null,
+                    "direction": null
+                }
+            ],
+            "flight_rules": "VFR",
+            "other": [
+                "VCSH"
+            ],
+            "sanitized": "2521/2624 09008KT P6SM VCSH SCT025 SCT040 BKN080",
+            "visibility": {
+                "repr": "P6",
+                "value": null,
+                "spoken": "greater than six"
+            },
+            "wind_direction": {
+                "repr": "090",
+                "value": 90,
+                "spoken": "zero nine zero"
+            },
+            "wind_gust": null,
+            "wind_speed": {
+                "repr": "08",
+                "value": 8,
+                "spoken": "eight"
+            },
+            "end_time": {
+                "repr": "2601",
+                "dt": "2019-10-26T01:00:00+00:00Z"
+            },
+            "icing": [],
+            "probability": null,
+            "raw": "2521/2624 09008KT P6SM VCSH SCT025 SCT040 BKN080",
+            "start_time": {
+                "repr": "2521",
+                "dt": "2019-10-25T21:00:00+00:00Z"
+            },
+            "turbulance": [],
+            "type": "FROM",
+            "wind_shear": null
+        },
+        {
+            "altimeter": "",
+            "clouds": [
+                {
+                    "repr": "SCT010",
+                    "type": "SCT",
+                    "altitude": 10,
+                    "modifier": null,
+                    "direction": null
+                },
+                {
+                    "repr": "BKN025",
+                    "type": "BKN",
+                    "altitude": 25,
+                    "modifier": null,
+                    "direction": null
+                }
+            ],
+            "flight_rules": "MVFR",
+            "other": [
+                "SHRA"
+            ],
+            "sanitized": "TEMPO 2522/2601 3SM SHRA SCT010 BKN025",
+            "visibility": {
+                "repr": "3",
+                "value": 3,
+                "spoken": "three"
+            },
+            "wind_direction": null,
+            "wind_gust": null,
+            "wind_speed": null,
+            "end_time": {
+                "repr": "2601",
+                "dt": "2019-10-26T01:00:00+00:00Z"
+            },
+            "icing": [],
+            "probability": null,
+            "raw": "TEMPO 2522/2601 3SM SHRA SCT010 BKN025",
+            "start_time": {
+                "repr": "2522",
+                "dt": "2019-10-25T22:00:00+00:00Z"
+            },
+            "turbulance": [],
+            "type": "TEMPO",
+            "wind_shear": null
+        },
+        {
+            "altimeter": "",
+            "clouds": [
+                {
+                    "repr": "SCT025",
+                    "type": "SCT",
+                    "altitude": 25,
+                    "modifier": null,
+                    "direction": null
+                },
+                {
+                    "repr": "SCT120",
+                    "type": "SCT",
+                    "altitude": 120,
+                    "modifier": null,
+                    "direction": null
+                }
+            ],
+            "flight_rules": "VFR",
+            "other": [],
+            "sanitized": "FM260100 07009KT P6SM SCT025 SCT120",
+            "visibility": {
+                "repr": "P6",
+                "value": null,
+                "spoken": "greater than six"
+            },
+            "wind_direction": {
+                "repr": "070",
+                "value": 70,
+                "spoken": "zero seven zero"
+            },
+            "wind_gust": null,
+            "wind_speed": {
+                "repr": "09",
+                "value": 9,
+                "spoken": "nine"
+            },
+            "end_time": {
+                "repr": "2608",
+                "dt": "2019-10-26T08:00:00+00:00Z"
+            },
+            "icing": [],
+            "probability": null,
+            "raw": "FM260100 07009KT P6SM SCT025 SCT120",
+            "start_time": {
+                "repr": "2601",
+                "dt": "2019-10-26T01:00:00+00:00Z"
+            },
+            "turbulance": [],
+            "type": "FROM",
+            "wind_shear": null
+        },
+        {
+            "altimeter": "",
+            "clouds": [
+                {
+                    "repr": "FEW020",
+                    "type": "FEW",
+                    "altitude": 20,
+                    "modifier": null,
+                    "direction": null
+                },
+                {
+                    "repr": "SCT050",
+                    "type": "SCT",
+                    "altitude": 50,
+                    "modifier": null,
+                    "direction": null
+                }
+            ],
+            "flight_rules": "VFR",
+            "other": [],
+            "sanitized": "FM260800 10005KT P6SM FEW020 SCT050",
+            "visibility": {
+                "repr": "P6",
+                "value": null,
+                "spoken": "greater than six"
+            },
+            "wind_direction": {
+                "repr": "100",
+                "value": 100,
+                "spoken": "one zero zero"
+            },
+            "wind_gust": null,
+            "wind_speed": {
+                "repr": "05",
+                "value": 5,
+                "spoken": "five"
+            },
+            "end_time": {
+                "repr": "2614",
+                "dt": "2019-10-26T14:00:00+00:00Z"
+            },
+            "icing": [],
+            "probability": null,
+            "raw": "FM260800 10005KT P6SM FEW020 SCT050",
+            "start_time": {
+                "repr": "2608",
+                "dt": "2019-10-26T08:00:00+00:00Z"
+            },
+            "turbulance": [],
+            "type": "FROM",
+            "wind_shear": null
+        },
+        {
+            "altimeter": "",
+            "clouds": [
+                {
+                    "repr": "FEW020",
+                    "type": "FEW",
+                    "altitude": 20,
+                    "modifier": null,
+                    "direction": null
+                },
+                {
+                    "repr": "SCT040",
+                    "type": "SCT",
+                    "altitude": 40,
+                    "modifier": null,
+                    "direction": null
+                },
+                {
+                    "repr": "SCT060",
+                    "type": "SCT",
+                    "altitude": 60,
+                    "modifier": null,
+                    "direction": null
+                }
+            ],
+            "flight_rules": "VFR",
+            "other": [
+                "VCSH"
+            ],
+            "sanitized": "FM261400 13011KT P6SM VCSH FEW020 SCT040 SCT060",
+            "visibility": {
+                "repr": "P6",
+                "value": null,
+                "spoken": "greater than six"
+            },
+            "wind_direction": {
+                "repr": "130",
+                "value": 130,
+                "spoken": "one three zero"
+            },
+            "wind_gust": null,
+            "wind_speed": {
+                "repr": "11",
+                "value": 11,
+                "spoken": "one one"
+            },
+            "end_time": {
+                "repr": "2624",
+                "dt": "2019-10-26T00:00:00+00:00Z"
+            },
+            "icing": [],
+            "probability": null,
+            "raw": "FM261400 13011KT P6SM VCSH FEW020 SCT040 SCT060",
+            "start_time": {
+                "repr": "2614",
+                "dt": "2019-10-26T14:00:00+00:00Z"
+            },
+            "turbulance": [],
+            "type": "FROM",
+            "wind_shear": null
+        }
+    ],
+    "start_time": {
+        "repr": "2521",
+        "dt": "2019-10-25T21:00:00+00:00Z"
+    },
+    "end_time": {
+        "repr": "2624",
+        "dt": "2019-10-26T00:00:00+00:00Z"
+    },
+    "max_temp": "",
+    "min_temp": "",
+    "alts": null,
+    "temps": null,
+    "units": {
+        "altimeter": "inHg",
+        "altitude": "ft",
+        "temperature": "C",
+        "visibility": "sm",
+        "wind_speed": "kt"
+    }
+}

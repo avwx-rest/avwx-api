@@ -38,12 +38,11 @@ async def worker():
 
     while True:
         icao, request_type, count = await queue.get()
-        if mdb is None:
-            continue
-        date = datetime.utcnow().strftime(r"%Y-%m-%d")
-        await mdb.counter.station.update_one(
-            {"_id": icao}, {"$inc": {f"{request_type}.{date}": count}}, upsert=True
-        )
+        if mdb:
+            date = datetime.utcnow().strftime(r"%Y-%m-%d")
+            await mdb.counter.station.update_one(
+                {"_id": icao}, {"$inc": {f"{request_type}.{date}": count}}, upsert=True
+            )
         queue.task_done()
 
 
@@ -61,6 +60,12 @@ class DelayedCounter:
         self._data = {}
         self.interval = interval
         self.update_at = time.time() + self.interval
+
+    async def _pre_add(self):
+        if time.time() > self.update_at:
+            self.update()
+        while self.locked:
+            await aio.sleep(0.000001)
 
     def gather_data(self) -> dict:
         """
@@ -86,10 +91,7 @@ class DelayedCounter:
         """
         Increment the counter for a station and type
         """
-        if time.time() > self.update_at:
-            self.update()
-        while self.locked:
-            await aio.sleep(0.000001)
+        await self._pre_add()
         key = f"{icao};{request_type}"
         try:
             self._data[key] += 1
@@ -123,7 +125,7 @@ async def from_params(params: "structs.Params", report_type: str):
 @app.after_serving
 async def clean_queue():
     """
-    Cancel workers gracefully before shutdown
+    Clear the cache and cancel workers gracefully before shutdown
     """
     if queue is None:
         return
@@ -131,7 +133,7 @@ async def clean_queue():
     _COUNTER.update()
     while not queue.empty():
         await aio.sleep(0.01)
-    for worker in workers:
-        worker.cancel()
+    for worker_thread in workers:
+        worker_thread.cancel()
     # Wait until all workers are cancelled
     await aio.gather(*workers, return_exceptions=True)

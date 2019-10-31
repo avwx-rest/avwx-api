@@ -28,11 +28,12 @@ class Station(Base):
 
     @crossdomain(origin="*", headers=HEADERS)
     @parse_params
+    @token_check
     async def get(self, params: structs.Params) -> Response:
         """
         Returns raw station info if available
         """
-        counter.increment_station(params.station.icao, "station")
+        await counter.increment_station(params.station.icao, "station")
         return self.make_response(asdict(params.station), params.format)
 
 

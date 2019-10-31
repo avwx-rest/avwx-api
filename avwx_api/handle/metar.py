@@ -20,12 +20,12 @@ from avwx_api.handle import update_parser, _HANDLE_MAP, ERRORS
 OPTION_KEYS = ("summary", "speech", "translate")
 
 
-async def new_report(rtype: str, station: avwx.Station) -> (dict, int):
+async def new_report(report_type: str, station: avwx.Station) -> (dict, int):
     """
     Fetch and parse report data for a given station
     """
     try:
-        parser = _HANDLE_MAP[rtype](station.icao)
+        parser = _HANDLE_MAP[report_type](station.icao)
     except avwx.exceptions.BadStation:
         return {"error": f"{station.icao} does not publish reports"}, 400
     error, code = await update_parser(parser, station)
@@ -40,18 +40,20 @@ async def new_report(rtype: str, station: avwx.Station) -> (dict, int):
     }
     data["data"]["units"] = asdict(parser.units)
     # Update the cache with the new report data
-    await cache.update(rtype, station.icao, data)
+    await cache.update(report_type, station.icao, data)
     return data, 200
 
 
-def format_report(rtype: str, data: {str: object}, options: [str]) -> {str: object}:
+def format_report(
+    report_type: str, data: {str: object}, options: [str]
+) -> {str: object}:
     """
     Formats the report/cache data into the expected response format
     """
     ret = data["data"]
     for opt in OPTION_KEYS:
         if opt in options:
-            if opt == "summary" and rtype == "taf":
+            if opt == "summary" and report_type == "taf":
                 for i in range(len(ret["forecast"])):
                     ret["forecast"][i]["summary"] = data["summary"][i]
             else:
@@ -60,7 +62,7 @@ def format_report(rtype: str, data: {str: object}, options: [str]) -> {str: obje
 
 
 async def _handle_report(
-    rtype: str, station: avwx.Station, opts: [str], nofail: bool = False
+    report_type: str, station: avwx.Station, opts: [str], nofail: bool = False
 ) -> (dict, int):
     """
     Returns weather data for the given report type, station, and options
@@ -72,15 +74,17 @@ async def _handle_report(
     if not station.sends_reports:
         return {"error": f"{station.icao} does not publish reports"}, 400
     # Fetch an existing and up-to-date cache or make a new report
-    cache_data, code = await cache.get(rtype, station.icao, force=True), 200
-    if cache_data is None or cache.has_expired(cache_data.get("timestamp"), rtype):
-        data, code = await new_report(rtype, station)
+    cache_data, code = await cache.get(report_type, station.icao, force=True), 200
+    if cache_data is None or cache.has_expired(
+        cache_data.get("timestamp"), report_type
+    ):
+        data, code = await new_report(report_type, station)
     else:
         data = cache_data
     resp = {"meta": {"timestamp": datetime.utcnow()}}
     if "timestamp" in data:
         resp["meta"]["cache-timestamp"] = data["timestamp"]
-    # Handle errors according to nofail arguement
+    # Handle errors according to nofail argument
     if code != 200:
         if nofail:
             if cache_data is None:
@@ -97,16 +101,16 @@ async def _handle_report(
             resp.update(data)
             return resp, code
     # Format the return data
-    resp.update(format_report(rtype, data, opts))
+    resp.update(format_report(report_type, data, opts))
     # Add station info if requested
     if "info" in opts:
         resp["info"] = asdict(station)
     return resp, code
 
 
-def _parse_given(rtype: str, report: str, opts: [str]) -> (dict, int):
+def _parse_given(report_type: str, report: str, opts: [str]) -> (dict, int):
     """
-    Attepts to parse a given report supplied by the user
+    Attempts to parse a given report supplied by the user
     """
     if len(report) < 4 or "{" in report or "[" in report:
         return ({"error": "Could not find station at beginning of report"}, 400)
@@ -115,19 +119,19 @@ def _parse_given(rtype: str, report: str, opts: [str]) -> (dict, int):
     except avwx.exceptions.BadStation as exc:
         return {"error": str(exc)}, 400
     try:
-        ureport = _HANDLE_MAP[rtype].from_report(report)
-        resp = asdict(ureport.data)
+        handler = _HANDLE_MAP[report_type].from_report(report)
+        resp = asdict(handler.data)
         resp["meta"] = {"timestamp": datetime.utcnow()}
         if "translate" in opts:
-            resp["translations"] = asdict(ureport.translations)
+            resp["translations"] = asdict(handler.translations)
         if "summary" in opts:
-            if rtype == "taf":
-                for i in range(len(ureport.translations["forecast"])):
-                    resp["forecast"][i]["summary"] = ureport.summary[i]
+            if report_type == "taf":
+                for i in range(len(handler.translations["forecast"])):
+                    resp["forecast"][i]["summary"] = handler.summary[i]
             else:
-                resp["summary"] = ureport.summary
+                resp["summary"] = handler.summary
         if "speech" in opts:
-            resp["speech"] = ureport.speech
+            resp["speech"] = handler.speech
         # Add station info if requested
         if "info" in opts:
             resp["info"] = asdict(station)
@@ -137,7 +141,7 @@ def _parse_given(rtype: str, report: str, opts: [str]) -> (dict, int):
     except Exception as exc:
         print("Unknown Parsing Error", exc)
         rollbar.report_exc_info(extra_data={"state": "given", "raw": report})
-        return {"error": ERRORS[1].format(rtype)}, 500
+        return {"error": ERRORS[1].format(report_type)}, 500
 
 
 async def handle_report(

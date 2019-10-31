@@ -13,7 +13,6 @@ _key_remv = ["direction"]
 class Pirep(Report):
 
     report_type = "pirep"
-    example = "pirep"
     loc_param = "location"
     plan_types = ("paid",)
     struct = structs.ReportLocationParams
@@ -28,7 +27,6 @@ class Pirep(Report):
 class PirepParse(Parse):
 
     report_type = "pirep"
-    example = "pirep"
     plan_types = ("paid",)
 
     def __init__(self, *args, **kwargs):
