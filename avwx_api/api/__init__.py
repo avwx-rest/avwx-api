@@ -24,7 +24,7 @@ from avwx_api.token import Token, PSQL_URI
 
 VALIDATION_ERROR_MESSAGES = {
     401: 'You are missing the "Authorization" header or "token" parameter.',
-    403: "Your auth token could not be found, is inactive, or does not have permission to access this resource",
+    403: "Your auth token could not be found, is inactive, or does not have permission to access this resource.",
     429: "Your auth token has hit it's daily rate limit. Considder upgrading your plan.",
 }
 
@@ -75,7 +75,7 @@ class Base(Resource):
     validator: validators.Schema
     struct: structs.Params
     report_type: str = None
-    note: str = r"Tokens will be required starting on November 1st. See http://bit.ly/2lPXBMP for more info"
+    note: str = None
 
     # Name of parameter used for report location
     loc_param: str = "station"
@@ -110,20 +110,14 @@ class Base(Resource):
         try:
             auth_token = validators.Token(auth_token)
         except (Invalid, MultipleInvalid):
-            # NOTE: Disable this on Nov 1st
-            if self.plan_types is None:
-                return
             return 401
         auth_token = await Token.from_token(auth_token)
-        # NOTE: Disabled until Nov 1st
-        # if auth_token is None:
-        #     return 403
+        if auth_token is None:
+            return 403
         if self.plan_types:
-            if auth_token is None:
-                return 403
             if not auth_token.valid_type(self.plan_types):
                 return 403
-        # Returns False if exceeded rate limit
+        # Increment returns False if rate limit exceeded
         if auth_token and not await auth_token.increment():
             return 429
         return auth_token
