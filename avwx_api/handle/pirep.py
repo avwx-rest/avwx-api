@@ -8,11 +8,11 @@ from dataclasses import asdict
 from datetime import datetime
 
 # library
-import avwx
 import rollbar
 
 # module
-from avwx_api import cache
+import avwx
+from avwx_api import app
 from avwx_api.handle import update_parser, _HANDLE_MAP, ERRORS
 
 
@@ -44,16 +44,16 @@ async def _handle_report(
         if not station.sends_reports:
             return {"error": f"{station.icao} does not publish reports"}, 200
         # Fetch an existing and up-to-date cache
-        cache_data, code = await cache.get(report_type, station.icao), 200
+        cache_data, code = await app.cache.get(report_type, station.icao), 200
         # If no cache, get new data
-        if cache_data is None or cache.has_expired(
+        if cache_data is None or app.cache.has_expired(
             cache_data.get("timestamp"), report_type
         ):
             data, code = await new_report(
                 _HANDLE_MAP[report_type](station_ident=station.icao), station.icao
             )
             if code == 200:
-                await cache.update(report_type, station.icao, data)
+                await app.cache.update(report_type, station.icao, data)
         else:
             data = cache_data
     # Else coordinates. We don't cache coordinates

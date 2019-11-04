@@ -3,6 +3,8 @@ Michael duPont - michael@mdupont.com
 avwx_api.structs - Parameter dataclasses
 """
 
+# pylint: disable=C0111
+
 from dataclasses import dataclass
 
 

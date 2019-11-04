@@ -10,11 +10,11 @@ from dataclasses import asdict
 from datetime import datetime
 
 # library
-import avwx
 import rollbar
 
 # module
-from avwx_api import cache
+import avwx
+from avwx_api import app
 from avwx_api.handle import update_parser, _HANDLE_MAP, ERRORS
 
 OPTION_KEYS = ("summary", "speech", "translate")
@@ -40,7 +40,7 @@ async def new_report(report_type: str, station: avwx.Station) -> (dict, int):
     }
     data["data"]["units"] = asdict(parser.units)
     # Update the cache with the new report data
-    await cache.update(report_type, station.icao, data)
+    await app.cache.update(report_type, station.icao, data)
     return data, 200
 
 
@@ -74,8 +74,8 @@ async def _handle_report(
     if not station.sends_reports:
         return {"error": f"{station.icao} does not publish reports"}, 400
     # Fetch an existing and up-to-date cache or make a new report
-    cache_data, code = await cache.get(report_type, station.icao, force=True), 200
-    if cache_data is None or cache.has_expired(
+    cache_data, code = await app.cache.get(report_type, station.icao, force=True), 200
+    if cache_data is None or app.cache.has_expired(
         cache_data.get("timestamp"), report_type
     ):
         data, code = await new_report(report_type, station)

@@ -6,27 +6,17 @@ avwx_api.api - Functional API endpoints separate from static views
 # stdlib
 import json
 import asyncio as aio
-from datetime import datetime
 from functools import wraps
 from pathlib import Path
 
 # library
-import yaml
-from dicttoxml import dicttoxml as fxml
-from quart import Response, abort, jsonify, request
-from quart_openapi import Resource
+from quart import Response, request
 from quart_openapi.cors import crossdomain
 from voluptuous import Invalid, MultipleInvalid
 
 # module
-from avwx_api import counter, handle, structs, validators
-from avwx_api.token import Token, PSQL_URI
-
-VALIDATION_ERROR_MESSAGES = {
-    401: 'You are missing the "Authorization" header or "token" parameter.',
-    403: "Your auth token could not be found, is inactive, or does not have permission to access this resource.",
-    429: "Your auth token has hit it's daily rate limit. Considder upgrading your plan.",
-}
+from avwx_api_core.views import AuthView, make_token_check
+from avwx_api import app, handle, structs, validate
 
 
 HEADERS = ["Authorization", "Content-Type"]
@@ -51,76 +41,20 @@ def parse_params(func):
     return wrapper
 
 
-def token_check(func):
-    """
-    Checks token presense and validity for the endpoint
-    """
-
-    @wraps(func)
-    async def wrapper(self, *args, **kwargs):
-        err_code = await self.validate_token()
-        if isinstance(err_code, int):
-            data = self.make_example_response(err_code)
-            return self.make_response(data, code=err_code)
-        return await func(self, *args, **kwargs)
-
-    return wrapper
+token_check = make_token_check(app)
 
 
-class Base(Resource):
+class Base(AuthView):
     """
     Base report endpoint
     """
 
-    validator: validators.Schema
+    validator: validate.Schema
     struct: structs.Params
     report_type: str = None
-    note: str = None
 
     # Name of parameter used for report location
     loc_param: str = "station"
-
-    # Filename of the sample response when token validation fails
-    # Only required if different than report_type
-    example: str = None
-
-    # Whitelist of token plan types to access this endpoint
-    # If None, all tokens are allowed
-    plan_types: (str,) = None
-
-    # Replace the key's name in the final response
-    _key_repl: dict = None
-    # Remove the following keys from the final response
-    _key_remv: [str] = None
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self._key_repl = {}
-        self._key_remv = []
-
-    async def validate_token(self) -> "str/int":
-        """
-        Validates thats an authorization token exists and is active
-
-        Returns the token if valid or the error code if not valid
-        """
-        if not PSQL_URI:
-            return
-        auth_token = request.headers.get("Authorization") or request.args.get("token")
-        try:
-            auth_token = validators.Token(auth_token)
-        except (Invalid, MultipleInvalid):
-            return 401
-        auth_token = await Token.from_token(auth_token)
-        if auth_token is None:
-            return 403
-        if self.plan_types:
-            if not auth_token.valid_type(self.plan_types):
-                return 403
-        # Increment returns False if rate limit exceeded
-        if auth_token and not await auth_token.increment():
-            return 429
-        return auth_token
 
     def validate_params(self, **kwargs) -> structs.Params:
         """
@@ -135,72 +69,14 @@ class Base(Resource):
             return self.struct(**self.validator(params))
         except (Invalid, MultipleInvalid) as exc:
             key = exc.path[0]
-            return {
-                "error": str(exc.msg),
-                "param": key,
-                "help": validators.HELP.get(key),
-            }
+            return {"error": str(exc.msg), "param": key, "help": validate.HELP.get(key)}
 
-    def make_example_response(self, error_code: int) -> dict:
+    def get_example_file(self) -> dict:
         """
-        Returns an example payload when validation fails
+        Load example payload from report type
         """
         path = EXAMPLE_PATH / f"{self.example or self.report_type}.json"
-        data = json.load(path.open())
-        msg = VALIDATION_ERROR_MESSAGES[error_code]
-        msg += " Here's an example response for testing purposes"
-        if isinstance(data, dict):
-            data["meta"] = {"validation_error": msg}
-        elif isinstance(data, list):
-            data.insert(0, {"validation_error": msg})
-        return data
-
-    def format_dict(self, output: dict) -> dict:
-        """
-        Formats a dict by recursively replacing and removing key
-
-        Returns the item as-is if not a dict
-        """
-        if not isinstance(output, dict):
-            return output
-        resp = {}
-        for k, v in output.items():
-            if k in self._key_remv:
-                continue
-            elif k in self._key_repl:
-                k = self._key_repl[k]
-            if isinstance(v, dict):
-                v = self.format_dict(v)
-            elif isinstance(v, list):
-                v = [self.format_dict(item) for item in v]
-            resp[k] = v
-        return resp
-
-    def make_response(
-        self, output: dict, format: str = "json", code: int = 200, meta: str = "meta"
-    ) -> Response:
-        """
-        Returns the output string based on format param
-        """
-        output = self.format_dict(output)
-        if "error" in output and meta not in output:
-            output["timestamp"] = datetime.utcnow()
-        if self.note and isinstance(output, dict):
-            if meta not in output:
-                output[meta] = {}
-            output[meta]["note"] = self.note
-        if format == "xml":
-            root = self.report_type.upper() if self.report_type else "AVWX"
-            resp = Response(fxml(output, custom_root=root), mimetype="text/xml")
-        elif format == "yaml":
-            resp = Response(
-                yaml.dump(output, default_flow_style=False), mimetype="text/x-yaml"
-            )
-        else:
-            resp = jsonify(output)
-        resp.status_code = code
-        resp.headers["X-Robots-Tag"] = "noindex"
-        return resp
+        return json.load(path.open())
 
 
 class Report(Base):
@@ -208,7 +84,7 @@ class Report(Base):
     Fetch Report Endpoint
     """
 
-    validator = validators.report_station
+    validator = validate.report_station
     struct = structs.ReportStationParams
 
     @crossdomain(origin="*", headers=HEADERS)
@@ -221,7 +97,7 @@ class Report(Base):
         nofail = params.onfail == "cache"
         loc = getattr(params, self.loc_param)
         handler = getattr(handle, self.report_type).handle_report
-        await counter.from_params(params, self.report_type)
+        await app.station.from_params(params, self.report_type)
         data, code = await handler(loc, params.options, nofail)
         return self.make_response(data, params.format, code)
 
@@ -231,7 +107,7 @@ class Parse(Base):
     Given report endpoint
     """
 
-    validator = validators.report_given
+    validator = validate.report_given
     struct = structs.ReportGivenParams
 
     @crossdomain(origin="*", headers=HEADERS)
@@ -248,7 +124,7 @@ class Parse(Base):
         data, code = handler(params.report, params.options)
         if "station" in data:
             report_type = self.report_type + "-given"
-            await counter.increment_station(data["station"], report_type)
+            await app.station.add(data["station"], report_type)
         return self.make_response(data, params.format, code)
 
 
@@ -257,7 +133,7 @@ class MultiReport(Base):
     Multiple METAR and TAF reports in one endpoint
     """
 
-    validator = validators.report_stations
+    validator = validate.report_stations
     struct = structs.ReportStationsParams
     loc_param = "stations"
     plan_types = ("paid",)
@@ -275,7 +151,7 @@ class MultiReport(Base):
         coros = []
         for loc in locs:
             coros.append(handler(loc, params.options, nofail))
-            await counter.increment_station(loc.icao, self.report_type + "-multi")
+            await app.station.add(loc.icao, self.report_type + "-multi")
         results = await aio.gather(*coros)
         keys = [loc.icao if hasattr(loc, "icao") else loc for loc in locs]
         data = dict(zip(keys, [r[0] for r in results if r]))

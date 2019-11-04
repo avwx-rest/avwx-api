@@ -7,12 +7,12 @@ avwx_api.api.station - Station API endpoints
 from dataclasses import asdict
 
 # library
-import avwx
 from quart import Response
 from quart_openapi.cors import crossdomain
 
 # module
-from avwx_api import app, counter, structs, validators
+import avwx
+from avwx_api import app, structs, validate
 from avwx_api.api import Base, HEADERS, parse_params, token_check
 
 
@@ -22,7 +22,7 @@ class Station(Base):
     Returns station details for ICAO and coordinates
     """
 
-    validator = validators.station
+    validator = validate.station
     struct = structs.StationParams
     report_type = "station"
 
@@ -33,7 +33,7 @@ class Station(Base):
         """
         Returns raw station info if available
         """
-        await counter.increment_station(params.station.icao, "station")
+        await app.station.add(params.station.icao, "station")
         return self.make_response(asdict(params.station), params.format)
 
 
@@ -43,7 +43,7 @@ class Near(Base):
     Returns stations near a coordinate pair
     """
 
-    validator = validators.coord_search
+    validator = validate.coord_search
     struct = structs.CoordSearchParams
     report_type = "station"
     loc_param = "coord"

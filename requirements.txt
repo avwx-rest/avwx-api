@@ -1,11 +1,8 @@
-asyncpg~=0.18
+git+git://github.com/avwx-rest/avwx-api-core.git@65e7923a6ef96eeb39d8cac84b0cb0d941bba615#egg=avwx_api_core
+
 avwx-engine[scipy]==1.3.7
 dataclasses>=0.6;python_version<"3.7"
-dicttoxml~=1.7
-dnspython~=1.16
-hypercorn~=0.7
-motor~=2.0
-pyyaml~=5.1
+hypercorn~=0.9
 quart~=0.9
 quart-openapi>=1.4
 rollbar>=0.14.7

@@ -8,18 +8,36 @@ from datetime import date
 from os import environ
 
 # library
-from motor.motor_asyncio import AsyncIOMotorClient
 from quart import got_request_exception
 from quart.json import JSONEncoder
-from quart_openapi import Pint
 import rollbar
 
 from rollbar.contrib.quart import report_exception
 
-app = Pint(__name__)
+# module
+from avwx_api_core.app import create_app
+from avwx_api_core.cache import CacheManager
+from avwx_api_core.token import TokenManager
+from avwx_api.station_counter import StationCounter
+
+app = create_app(__name__, environ.get("PSQL_URI"), environ.get("MONGO_URI"))
+
+
+@app.before_serving
+def init_helpers():
+    """
+    Init API helpers
+    """
+    app.cache = CacheManager(app)
+    app.token = TokenManager(app)
+    app.station = StationCounter(app)
 
 
 class CustomJSONEncoder(JSONEncoder):
+    """
+    Customize the JSON date format
+    """
+
     # pylint: disable=method-hidden
     def default(self, obj):
         try:
@@ -46,17 +64,6 @@ def init_rollbar():
         return
     rollbar.init(key, root="avwx_api", allow_logging_basic_config=False)
     got_request_exception.connect(report_exception, app, weak=False)
-
-
-mdb = None
-
-
-@app.before_serving
-def init_clients():
-    mongo_uri = environ.get("MONGO_URI")
-    if mongo_uri:
-        global mdb
-        mdb = AsyncIOMotorClient(mongo_uri)
 
 
 from avwx_api import api, views

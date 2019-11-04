@@ -3,7 +3,7 @@ Michael duPont - michael@mdupont.com
 avwx_api.api.pirep - PIREP API endpoints
 """
 
-from avwx_api import app, structs, validators
+from avwx_api import app, structs, validate
 from avwx_api.api import Report, Parse
 
 _key_remv = ["direction"]
@@ -16,7 +16,7 @@ class Pirep(Report):
     loc_param = "location"
     plan_types = ("paid",)
     struct = structs.ReportLocationParams
-    validator = validators.report_location
+    validator = validate.report_location
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

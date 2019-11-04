@@ -1,15 +1,16 @@
 """
 Michael duPont - michael@mdupont.com
-avwx_api.handling - Data handling between inputs, cache, and avwx
+avwx_api.handle - Data handling between inputs, cache, and avwx
 """
 
 # stdlib
 import asyncio as aio
-from dataclasses import asdict
 
 # library
-import avwx
 import rollbar
+
+# module
+import avwx
 
 ERRORS = [
     "Station Lookup Error: {} not found for {}. There might not be a current report in ADDS",
