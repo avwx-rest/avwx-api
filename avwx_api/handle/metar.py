@@ -41,6 +41,7 @@ async def new_report(report_type: str, station: avwx.Station) -> (dict, int):
     data["data"]["units"] = asdict(parser.units)
     # Update the cache with the new report data
     await app.cache.update(report_type, station.icao, data)
+    app.history.add(report_type, parser.data)
     return data, 200
 
 

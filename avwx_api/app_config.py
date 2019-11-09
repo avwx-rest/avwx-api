@@ -16,6 +16,7 @@ from rollbar.contrib.quart import report_exception
 from avwx_api_core.app import create_app
 from avwx_api_core.cache import CacheManager
 from avwx_api_core.token import TokenManager
+from avwx_api.history_queue import HistoryQueue
 from avwx_api.station_counter import StationCounter
 
 app = create_app(__name__, environ.get("PSQL_URI"), environ.get("MONGO_URI"))
@@ -28,6 +29,7 @@ def init_helpers():
     """
     app.cache = CacheManager(app)
     app.token = TokenManager(app)
+    app.history = HistoryQueue(app)
     app.station = StationCounter(app)
 
 
