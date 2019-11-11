@@ -76,7 +76,7 @@ class Base(AuthView):
         Load example payload from report type
         """
         path = EXAMPLE_PATH / f"{self.example or self.report_type}.json"
-        return json.load(path.open())
+        return {"sample": json.load(path.open())}
 
 
 class Report(Base):

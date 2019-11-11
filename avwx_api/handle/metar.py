@@ -6,6 +6,7 @@ avwx_api.handle.metar - Handle METAR requests
 # pylint: disable=E1101,W0703
 
 # stdlib
+import asyncio as aio
 from dataclasses import asdict
 from datetime import datetime
 
@@ -40,7 +41,10 @@ async def new_report(report_type: str, station: avwx.Station) -> (dict, int):
     }
     data["data"]["units"] = asdict(parser.units)
     # Update the cache with the new report data
-    await app.cache.update(report_type, station.icao, data)
+    await aio.gather(
+        app.cache.update(report_type, station.icao, data),
+        app.history.add(report_type, parser.data),
+    )
     app.history.add(report_type, parser.data)
     return data, 200
 
