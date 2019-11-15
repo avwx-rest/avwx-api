@@ -48,7 +48,7 @@ class Near(Base):
     report_type = "station"
     loc_param = "coord"
     example = "stations_near"
-    plan_types = ("paid",)
+    plan_types = ("pro", "enterprise")
 
     @crossdomain(origin="*", headers=HEADERS)
     @parse_params

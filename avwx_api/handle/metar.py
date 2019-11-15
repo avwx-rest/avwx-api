@@ -45,7 +45,6 @@ async def new_report(report_type: str, station: avwx.Station) -> (dict, int):
         app.cache.update(report_type, station.icao, data),
         app.history.add(report_type, parser.data),
     )
-    app.history.add(report_type, parser.data)
     return data, 200
 
 

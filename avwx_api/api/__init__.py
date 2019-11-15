@@ -136,7 +136,7 @@ class MultiReport(Base):
     validator = validate.report_stations
     struct = structs.ReportStationsParams
     loc_param = "stations"
-    plan_types = ("paid",)
+    plan_types = ("pro", "enterprise")
 
     @crossdomain(origin="*", headers=HEADERS)
     @parse_params

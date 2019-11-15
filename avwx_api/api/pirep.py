@@ -14,7 +14,7 @@ class Pirep(Report):
 
     report_type = "pirep"
     loc_param = "location"
-    plan_types = ("paid",)
+    plan_types = ("pro", "enterprise")
     struct = structs.ReportLocationParams
     validator = validate.report_location
 
@@ -27,7 +27,7 @@ class Pirep(Report):
 class PirepParse(Parse):
 
     report_type = "pirep"
-    plan_types = ("paid",)
+    plan_types = ("pro", "enterprise")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
