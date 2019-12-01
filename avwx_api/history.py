@@ -29,7 +29,7 @@ class History:
         """
         Add new report data to archive
         """
-        if self._app.mdb and data.time:
+        if self._app.mdb and data.time and data.time.dt:
             await self._app.mdb.history[report_type].update_one(
                 {"_id": data.station},
                 {"$set": {self.make_key(data): asdict(data)}},
