@@ -8,7 +8,7 @@ avwx_api.handle.metar - Handle METAR requests
 # stdlib
 import asyncio as aio
 from dataclasses import asdict
-from datetime import datetime
+from datetime import datetime, timezone
 
 # library
 import rollbar
@@ -85,7 +85,7 @@ async def _handle_report(
         data, code = await new_report(report_type, station)
     else:
         data = cache_data
-    resp = {"meta": {"timestamp": datetime.utcnow()}}
+    resp = {"meta": {"timestamp": datetime.now(tz=timezone.utc)}}
     if "timestamp" in data:
         resp["meta"]["cache-timestamp"] = data["timestamp"]
     # Handle errors according to nofail argument
@@ -125,7 +125,7 @@ def _parse_given(report_type: str, report: str, opts: [str]) -> (dict, int):
     try:
         handler = _HANDLE_MAP[report_type].from_report(report)
         resp = asdict(handler.data)
-        resp["meta"] = {"timestamp": datetime.utcnow()}
+        resp["meta"] = {"timestamp": datetime.now(tz=timezone.utc)}
         if "translate" in opts:
             resp["translations"] = asdict(handler.translations)
         if "summary" in opts:

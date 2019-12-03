@@ -5,7 +5,7 @@ avwx_api.handle.pirep - Handle PIREP requests
 
 # stdlib
 from dataclasses import asdict
-from datetime import datetime
+from datetime import datetime, timezone
 
 # library
 import rollbar
@@ -61,7 +61,7 @@ async def _handle_report(
         data, code = await new_report(
             _HANDLE_MAP[report_type](lat=loc[0], lon=loc[1]), loc
         )
-    resp = {"meta": {"timestamp": datetime.utcnow()}}
+    resp = {"meta": {"timestamp": datetime.now(tz=timezone.utc)}}
     if "timestamp" in data:
         resp["meta"]["cache-timestamp"] = data["timestamp"]
     # Handle errors according to nofail argument
@@ -91,7 +91,7 @@ def _parse_given(report_type: str, report: str, opts: [str]) -> (dict, int):
         handler = _HANDLE_MAP[report_type]("KJFK")  # We ignore the station
         handler.update(report)
         resp = asdict(handler.data[0])
-        resp["meta"] = {"timestamp": datetime.utcnow()}
+        resp["meta"] = {"timestamp": datetime.now(tz=timezone.utc)}
         return resp, 200
     except Exception as exc:
         print("Unknown Parsing Error", exc)

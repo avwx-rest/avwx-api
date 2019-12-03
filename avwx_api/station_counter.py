@@ -4,7 +4,7 @@ Manages station counts for usage metrics
 
 # stdlib
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 
 # module
 from avwx import Station
@@ -24,7 +24,7 @@ class StationCounter(DelayedCounter):
             async with self._queue.get() as value:
                 if self._app.mdb:
                     icao, request_type, count = value
-                    date = datetime.utcnow().strftime(r"%Y-%m-%d")
+                    date = datetime.now(tz=timezone.utc).strftime(r"%Y-%m-%d")
                     await self._app.mdb.counter.station.update_one(
                         {"_id": icao},
                         {"$inc": {f"{request_type}.{date}": count}},
