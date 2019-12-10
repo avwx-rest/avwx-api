@@ -22,12 +22,15 @@ from avwx_api.station_counter import StationCounter
 app = create_app(__name__, environ.get("PSQL_URI"), environ.get("MONGO_URI"))
 
 
+CACHE_EXPIRES = {"metar": 1, "taf": 1}
+
+
 @app.before_serving
 def init_helpers():
     """
     Init API helpers
     """
-    app.cache = CacheManager(app)
+    app.cache = CacheManager(app, expires=CACHE_EXPIRES)
     app.token = TokenManager(app)
     app.history = History(app)
     app.station = StationCounter(app)
