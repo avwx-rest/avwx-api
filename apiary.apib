@@ -25,16 +25,14 @@ Tokens will be required for all endpoints starting November 1st, 2019 with daily
 Returns station information for an airfield or other location by ICAO ident. This is the same information provided when incluing the `info` option with weather requests.
 
 + Parameters
-    + ident (string) - ICAO station ident
-    + format (string) - Desired response format (default=json, xml, yaml)
+    + ident: `KJFK` (string) - ICAO station ident
+    + format (string, optional) - Desired response format
+        + Supported: json, xml, yaml
+        + Default: `json`
 
 ### Get Station Information [GET]
 
 This example shows station information for JKF International in New York City.
-
-+ Parameters
-
-    + ident:`KJFK`
 
 + Request
 
@@ -93,20 +91,20 @@ This example shows station information for JKF International in New York City.
 Returns the nearest stations to a coordinate pair. By default, these are only reporting stations, but this can be disabled to return smaller airports with non-reporting AWOS/ASOS as well.
 
 + Parameters
-    + coord (string) - Coordinate pair
-    + n (number) - Number of stations to return (default=10)
-    + airport (boolean) - Only include airports (default=true)
-    + reporting (boolean) - Only include reporting stations (default=true)
-    + format (string) - Desired response format (default=json, xml, yaml)
+    + coord: `28.1,-81` (string) - Coordinate pair
+    + n: 3 (number, optional) - Number of stations to return
+        + Default: 10
+    + airport (boolean, optional) - Only include airports
+        + Default: true
+    + reporting (boolean, optional) - Only include reporting stations
+        + Default: true
+    + format (string, optional) - Desired response format
+        + Supported: json, xml, yaml
+        + Default: `json`
 
 ### Get Stations around a coordinate [GET]
 
 This example returns reporting stations around Melbourne Beach, FL
-
-+ Parameters
-
-    + coord: `28.1,-81`
-    + n: 3
 
 + Request
 
@@ -253,20 +251,25 @@ This example returns reporting stations around Melbourne Beach, FL
 METAR reports are surface observations for a particular airfield or other station location. There are two standard formats: International and North American. The parser works with both, but it is up to the developer to do the correct interpretation of the data. Use the 'Units' key for labling and conversions.
 
 + Parameters
-    + location (string) - ICAO station ident or coordinate pair
-    + options (string) - Additional options to include (info, translate, summary, speech)
-    + airport (boolean) - Only include airports when performing a coordinate search (default=true)
-    + reporting (boolean) - Only include reporting stations when performing a coordinate search (default=true)
-    + format (string) - Desired response format (default=json, xml, yaml)
-    + onfail (string) - Error or use out-of-date cache when unable to fetch report (default=cache, error)
+    + location: `KJFK` (string) - ICAO station ident or coordinate pair
+        + Examples: `EGLL`, `51.47,-0.4`
+    + options (string, optional) - Additional options to include as comma-separated string
+        + Supported: info, translate, summary, speech
+        + Example: `info,speech`
+    + airport (boolean, optional) - Only include airports when performing a coordinate search
+        + Default: true
+    + reporting (boolean, optional) - Only include reporting stations when performing a coordinate search
+        + Default: true
+    + format (string, optional) - Desired response format
+        + Supported: json, xml, yaml
+        + Default: `json`
+    + onfail (string, optional) - Error or use out-of-date cache when unable to fetch report
+        + Supported: cache, error
+        + Default: `cache`
 
-### Get METAR Report for Station [GET]
+### Get METAR Report [GET]
 
-Get the METAR for a specific station by ICAO ident.
-
-+ Parameters
-
-    + location: `KJFK`
+Get the METAR for a specific station by ICAO ident or a lat,lon coordinate pair. The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
 
 + Request
 
@@ -352,126 +355,22 @@ Get the METAR for a specific station by ICAO ident.
             "wind_variable_direction": []
         }
 
-### Get METAR Report for Coordinates [GET]
-
-Get the METAR for a lat,lon coordinate pair. The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
-
-+ Parameters
-
-    + location: `51.47,-0.4`
-    + options: `info,speech`
-    + airport: `true`
-
-+ Request
-
-    + Headers
-    
-            Authorization: Token my_secret_api_token
-
-+ Response 200 (application/json)
-
-        {
-            "altimeter": {
-                "repr": "1020",
-                "spoken": "one zero two zero",
-                "value": 1020
-            },
-            "clouds": [],
-            "dewpoint": {
-                "repr": "12",
-                "spoken": "one two",
-                "value": 12
-            },
-            "flight_rules": "VFR",
-            "info": {
-                "city": "London",
-                "country": "GBR",
-                "elevation": 24.4,
-                "iata": "LHR",
-                "icao": "EGLL",
-                "latitude": 51.47916667,
-                "longitude": -0.450555556,
-                "name": "Heathrow",
-                "priority": 6,
-                "state": "ENG"
-            },
-            "meta": {
-                "cache-timestamp": "Tue, 04 Sep 2018 01:10:21 GMT",
-                "timestamp": "Tue, 04 Sep 2018 01:11:47 GMT"
-            },
-            "other": [],
-            "raw": "EGLL 040050Z AUTO 35004KT 320V030 9999 NCD 15/12 Q1020 NOSIG",
-            "remarks": "NOSIG",
-            "remarks_info": {
-                "dewpoint_decimal": null,
-                "temperature_decimal": null
-            },
-            "runway_visibility": [],
-            "sanitized": "EGLL 040050Z AUTO 35004KT 320V030 9999 NCD 15/12 Q1020 NOSIG",
-            "speech": "Winds three five zero (variable three two zero to zero three zero) at 4kt. Visibility one zero kilometers. Temperature one five degrees Celsius. Dew point one two degrees Celsius. Altimeter one zero two zero. Sky clear",
-            "station": "EGLL",
-            "temperature": {
-                "repr": "15",
-                "spoken": "one five",
-                "value": 15
-            },
-            "time": {
-                "dt": "Tue, 04 Sep 2018 00:50:00 GMT",
-                "repr": "040050Z"
-            },
-            "units": {
-                "altimeter": "hPa",
-                "altitude": "ft",
-                "temperature": "C",
-                "visibility": "m",
-                "wind_speed": "kt"
-            },
-            "visibility": {
-                "repr": "9999",
-                "spoken": "nine nine nine nine",
-                "value": 9999
-            },
-            "wind_direction": {
-                "repr": "350",
-                "spoken": "three five zero",
-                "value": 350
-            },
-            "wind_gust": null,
-            "wind_speed": {
-                "repr": "04",
-                "spoken": "four",
-                "value": 4
-            },
-            "wind_variable_direction": [
-                {
-                    "repr": "320",
-                    "spoken": "three two zero",
-                    "value": 320
-                },
-                {
-                    "repr": "030",
-                    "spoken": "zero three zero",
-                    "value": 30
-                }
-            ]
-        }
-
 ## Parse METAR [/parse/metar{?options,format}]
 
 Parses a METAR report supplied by the user.
 
 + Parameters
 
-    + options (string) - Additional options to include (info, translate, summary, speech)
-    + format (string) - Desired response format (default=json, xml, yaml)
+    + options: `translate` (string, optional) - Additional options to include as comma-separated string
+        + Supported: info, translate, summary, speech
+        + Example: `info,speech`
+    + format (string, optional) - Desired response format
+        + Supported: json, xml, yaml
+        + Default: `json`
 
 ### Parse a Given METAR [POST]
 
 Parse a user-supplied METAR included as the plain text body of the request.
-
-+ Parameters
-
-    + options: `translate`
 
 + Request (text/plain)
 
@@ -578,21 +477,25 @@ Parse a user-supplied METAR included as the plain text body of the request.
 TAF reports are atmospheric conditions for an area within five nautical miles of a particular airfield or other station location. Unlike METAR which only has two standard formats, TAF reports vary considderably more based on their geography. For example, Oceania TAF reports include two unique keys: Temp-List and Alt-List.
 
 + Parameters
-    + location (string) - ICAO station ident or coordinate pair
-    + options (string) - Additional options to include (info, translate, summary)
-    + airport (boolean) - Only include airports when performing a coordinate search (default=true)
-    + reporting (boolean) - Only include reporting stations when performing a coordinate search (default=true)
-    + format (string) - Desired response format (default=json, xml, yaml)
-    + onfail (string) - Error or use out-of-date cache when unable to fetch report (default=error, cache)
+    + location: `KJFK` (string) - ICAO station ident or coordinate pair
+        + Examples: `EGLL`, `51.47,-0.4`
+    + options: `summary` (string, optional) - Additional options to include as comma-separated string
+        + Supported: info, translate, summary, speech
+        + Example: `info,speech`
+    + airport (boolean, optional) - Only include airports when performing a coordinate search
+        + Default: true
+    + reporting (boolean, optional) - Only include reporting stations when performing a coordinate search
+        + Default: true
+    + format (string, optional) - Desired response format
+        + supported: json, xml, yaml
+        + Default: `json`
+    + onfail (string, optional) - Error or use out-of-date cache when unable to fetch report
+        + Supported: cache, error
+        + Default: `cache`
 
-### Get TAF Report for Station [GET]
+### Get TAF Report [GET]
 
-Get the TAF for a specific station by ICAO ident.
-
-+ Parameters
-
-    + location:`KJFK`
-    + options: `summary`
+Get the TAF for a specific station by ICAO ident or a lat,lon coordinate pair. The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
 
 + Request
 
@@ -1015,261 +918,22 @@ Get the TAF for a specific station by ICAO ident.
             }
         }
 
-### Get TAF Report for Coordinates [GET]
-
-Get the TAF for a lat,lon coordinate pair. The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
-
-+ Parameters
-
-    + location: `51.47,-0.4`
-    + options: `info`
-    + airport: `true`
-
-+ Request
-
-    + Headers
-    
-            Authorization: Token my_secret_api_token
-
-+ Response 200 (application/json)
-
-        {
-            "alts": null,
-            "end_time": {
-                "dt": "Wed, 05 Sep 2018 06:00:00 GMT",
-                "repr": "0506"
-            },
-            "forecast": [
-                {
-                    "altimeter": "",
-                    "clouds": [
-                        {
-                            "altitude": 45,
-                            "modifier": null,
-                            "repr": "FEW045",
-                            "type": "FEW"
-                        }
-                    ],
-                    "end_time": {
-                        "dt": "Tue, 04 Sep 2018 02:00:00 GMT",
-                        "repr": "0402"
-                    },
-                    "flight_rules": "VFR",
-                    "icing": [],
-                    "other": [],
-                    "probability": null,
-                    "raw": "0400/0506 01004KT 9999 FEW045",
-                    "sanitized": "0400/0506 01004KT 9999 FEW045",
-                    "start_time": {
-                        "dt": "Tue, 04 Sep 2018 00:00:00 GMT",
-                        "repr": "0400"
-                    },
-                    "turbulance": [],
-                    "type": "FROM",
-                    "visibility": {
-                        "repr": "9999",
-                        "spoken": "nine nine nine nine",
-                        "value": 9999
-                    },
-                    "wind_direction": {
-                        "repr": "010",
-                        "spoken": "zero one zero",
-                        "value": 10
-                    },
-                    "wind_gust": null,
-                    "wind_shear": "",
-                    "wind_speed": {
-                        "repr": "04",
-                        "spoken": "four",
-                        "value": 4
-                    }
-                },
-                {
-                    "altimeter": "",
-                    "clouds": [],
-                    "end_time": {
-                        "dt": "Tue, 04 Sep 2018 05:00:00 GMT",
-                        "repr": "0405"
-                    },
-                    "flight_rules": "MVFR",
-                    "icing": [],
-                    "other": [],
-                    "probability": null,
-                    "raw": "BECMG 0402/0405 8000",
-                    "sanitized": "BECMG 0402/0405 8000",
-                    "start_time": {
-                        "dt": "Tue, 04 Sep 2018 02:00:00 GMT",
-                        "repr": "0402"
-                    },
-                    "turbulance": [],
-                    "type": "BECMG",
-                    "visibility": {
-                        "repr": "8000",
-                        "spoken": "eight zero zero zero",
-                        "value": 8000
-                    },
-                    "wind_direction": null,
-                    "wind_gust": null,
-                    "wind_shear": "",
-                    "wind_speed": null
-                },
-                {
-                    "altimeter": "",
-                    "clouds": [
-                        {
-                            "altitude": 6,
-                            "modifier": null,
-                            "repr": "BKN006",
-                            "type": "BKN"
-                        }
-                    ],
-                    "end_time": {
-                        "dt": "Tue, 04 Sep 2018 08:00:00 GMT",
-                        "repr": "0408"
-                    },
-                    "flight_rules": "IFR",
-                    "icing": [],
-                    "other": [],
-                    "probability": {
-                        "repr": "30",
-                        "spoken": "three zero",
-                        "value": 30
-                    },
-                    "raw": "PROB30 TEMPO 0404/0408 BKN006",
-                    "sanitized": "PROB30 TEMPO 0404/0408 BKN006",
-                    "start_time": {
-                        "dt": "Tue, 04 Sep 2018 04:00:00 GMT",
-                        "repr": "0404"
-                    },
-                    "turbulance": [],
-                    "type": "TEMPO",
-                    "visibility": null,
-                    "wind_direction": null,
-                    "wind_gust": null,
-                    "wind_shear": "",
-                    "wind_speed": null
-                },
-                {
-                    "altimeter": "",
-                    "clouds": [],
-                    "end_time": {
-                        "dt": "Wed, 05 Sep 2018 06:00:00 GMT",
-                        "repr": "0506"
-                    },
-                    "flight_rules": "VFR",
-                    "icing": [],
-                    "other": [],
-                    "probability": null,
-                    "raw": "BECMG 0406/0409 9999",
-                    "sanitized": "BECMG 0406/0409 9999",
-                    "start_time": {
-                        "dt": "Tue, 04 Sep 2018 06:00:00 GMT",
-                        "repr": "0406"
-                    },
-                    "turbulance": [],
-                    "type": "BECMG",
-                    "visibility": {
-                        "repr": "9999",
-                        "spoken": "nine nine nine nine",
-                        "value": 9999
-                    },
-                    "wind_direction": null,
-                    "wind_gust": null,
-                    "wind_shear": "",
-                    "wind_speed": null
-                },
-                {
-                    "altimeter": "",
-                    "clouds": [
-                        {
-                            "altitude": 12,
-                            "modifier": null,
-                            "repr": "BKN012",
-                            "type": "BKN"
-                        }
-                    ],
-                    "end_time": {
-                        "dt": "Wed, 05 Sep 2018 06:00:00 GMT",
-                        "repr": "0506"
-                    },
-                    "flight_rules": "IFR",
-                    "icing": [],
-                    "other": [],
-                    "probability": {
-                        "repr": "40",
-                        "spoken": "four zero",
-                        "value": 40
-                    },
-                    "raw": "PROB40 TEMPO 0503/0506 BKN012",
-                    "sanitized": "PROB40 TEMPO 0503/0506 BKN012",
-                    "start_time": {
-                        "dt": "Wed, 05 Sep 2018 03:00:00 GMT",
-                        "repr": "0503"
-                    },
-                    "turbulance": [],
-                    "type": "TEMPO",
-                    "visibility": null,
-                    "wind_direction": null,
-                    "wind_gust": null,
-                    "wind_shear": "",
-                    "wind_speed": null
-                }
-            ],
-            "info": {
-                "city": "London",
-                "country": "GBR",
-                "elevation": 24.4,
-                "iata": "LHR",
-                "icao": "EGLL",
-                "latitude": 51.47916667,
-                "longitude": -0.450555556,
-                "name": "Heathrow",
-                "priority": 6,
-                "state": "ENG"
-            },
-            "max_temp": "",
-            "meta": {
-                "cache-timestamp": "Tue, 04 Sep 2018 01:26:01 GMT",
-                "timestamp": "Tue, 04 Sep 2018 01:26:01 GMT"
-            },
-            "min_temp": "",
-            "raw": "EGLL 032253Z 0400/0506 01004KT 9999 FEW045 BECMG 0402/0405 8000 PROB30 TEMPO 0404/0408 BKN006 BECMG 0406/0409 9999 PROB40 TEMPO 0503/0506 BKN012",
-            "remarks": "",
-            "start_time": {
-                "dt": "Tue, 04 Sep 2018 00:00:00 GMT",
-                "repr": "0400"
-            },
-            "station": "EGLL",
-            "temps": null,
-            "time": {
-                "dt": "Mon, 03 Sep 2018 22:53:00 GMT",
-                "repr": "032253Z"
-            },
-            "units": {
-                "altimeter": "hPa",
-                "altitude": "ft",
-                "temperature": "C",
-                "visibility": "m",
-                "wind_speed": "kt"
-            }
-        }
-
 ## Parse TAF [/parse/taf{?options,format}]
 
 Parses a TAF report supplied by the user.
 
 + Parameters
 
-    + options (string) - Additional options to include (info, translate, summary, speech)
-    + format (string) - Desired response format (default=json, xml, yaml)
+    + options: `translate` (string, optional) - Additional options to include as comma-separated string
+        + Supported: info, translate, summary, speech
+        + Example: `info,speech`
+    + format (string, optional) - Desired response format
+        + Supported: json, xml, yaml
+        + Default: `json`
 
 ### Parse a Given TAF [POST]
 
 Parse a user-supplied TAF included as the plain text body of the request.
-
-+ Parameters
-
-    + options: `translate`
 
 + Request (text/plain)
 
@@ -1553,18 +1217,20 @@ A PIREP (Pilot Report) is an observation made by pilots inflight meant to aid co
 Note: translate, summary, and speech options not yet available
 
 + Parameters
-    + location (string) - ICAO station ident or coordinate pair
-    + options (string) - Additional options to include (info)
-    + format (string) - Desired response format (default=json, xml, yaml)
-    + onfail (string) - Error or use out-of-date cache when unable to fetch report (default=error, cache)
+    + location: `KMCO` (string) - ICAO station ident or coordinate pair
+        + Examples: `EGLL`, `51.47,-0.4`
+    + options: `info` (string, optional) - Additional options to include as comma-separated string
+        + Supported: info
+    + format (string, optional) - Desired response format
+        + Supported: json, xml, yaml
+        + Default: `json`
+    + onfail (string, optional) - Error or use out-of-date cache when unable to fetch report
+        + Supported: cache, error
+        + Default: `cache`
 
-### Get PIREP Report for Station [GET]
+### Get PIREP Report [GET]
 
-Get PIREPs within 200 miles of a specific station by ICAO ident.
-
-+ Parameters
-
-    + location:`KMCO`
+Get PIREPs within 200 miles of a specific station by ICAO ident or a lat,lon coordinate pair.
 
 + Request (text/plain)
 
@@ -1700,211 +1366,6 @@ Get PIREPs within 200 miles of a specific station by ICAO ident.
             "timestamp": "2019-05-27T21:46:55.201833Z"
         }
 
-### Get PIREP Report for Coords [GET]
-
-Get PIREPs within 200 miles of a lat,lon coordinate pair.
-
-+ Parameters
-
-    + location:`21.32,-157.92`
-
-+ Request (text/plain)
-
-    + Headers
-
-            Authorization: Token my_secret_api_token
-
-+ Response 200 (application/json)
-
-        {
-            "meta": {
-                "timestamp": "2019-05-27T22:09:08.227499Z"
-            },
-            "data": [
-                {
-                    "raw": "ITO UA /OV ITO320020/TM 2125/FL058/TP C208/SK SCT040",
-                    "station": "ITO",
-                    "time": {
-                        "repr": "2125",
-                        "dt": "2019-05-27T21:25:00Z"
-                    },
-                    "remarks": null,
-                    "aircraft": {
-                        "code": "C208",
-                        "type": "Cessna 208 Caravan"
-                    },
-                    "altitude": {
-                        "repr": "058",
-                        "value": 58,
-                        "spoken": "five eight"
-                    },
-                    "clouds": [
-                        {
-                            "repr": "SCT040",
-                            "type": "SCT",
-                            "base": 40,
-                            "top": null,
-                            "modifier": null
-                        }
-                    ],
-                    "flight_visibility": null,
-                    "icing": null,
-                    "location": {
-                        "repr": "ITO320020",
-                        "station": "ITO",
-                        "distance": {
-                            "repr": "020",
-                            "value": 20,
-                            "spoken": "two zero"
-                        }
-                    },
-                    "sanitized": "ITO UA /OV ITO320020/TM 2125/FL058/TP C208/SK SCT040",
-                    "temperature": null,
-                    "turbulance": null,
-                    "type": "UA",
-                    "wx": null
-                },
-                {
-                    "raw": "MKK UA /OV MKK/TM 2120/FL050/TP C208/SK BKN047-TOP065/WV 26010KT/TB NEG",
-                    "station": "MKK",
-                    "time": {
-                        "repr": "2120",
-                        "dt": "2019-05-27T21:20:00Z"
-                    },
-                    "remarks": null,
-                    "aircraft": {
-                        "code": "C208",
-                        "type": "Cessna 208 Caravan"
-                    },
-                    "altitude": {
-                        "repr": "050",
-                        "value": 50,
-                        "spoken": "five zero"
-                    },
-                    "clouds": [
-                        {
-                            "repr": "BKN047-TOP065",
-                            "type": "BKN",
-                            "base": 47,
-                            "top": 65,
-                            "modifier": null
-                        }
-                    ],
-                    "flight_visibility": null,
-                    "icing": null,
-                    "location": {
-                        "repr": "MKK",
-                        "station": "MKK",
-                        "distance": null
-                    },
-                    "sanitized": "MKK UA /OV MKK/TM 2120/FL050/TP C208/SK BKN047-TOP065/WV 26010KT/TB NEG",
-                    "temperature": null,
-                    "turbulance": {
-                        "severity": "NEG",
-                        "floor": null,
-                        "ceiling": null
-                    },
-                    "type": "UA",
-                    "wx": null
-                },
-                {
-                    "raw": "000 UAXX01 KAWN 272100 RRH LIH UA /OV LIH135010/TM 2106/FL042/TP C182/SK SCT025 SCT050/WX 10+",
-                    "station": "000",
-                    "time": {
-                        "repr": "2106",
-                        "dt": "2019-05-27T21:06:00Z"
-                    },
-                    "remarks": null,
-                    "aircraft": {
-                        "code": "C182",
-                        "type": "Cessna 182 Skylane"
-                    },
-                    "altitude": {
-                        "repr": "042",
-                        "value": 42,
-                        "spoken": "four two"
-                    },
-                    "clouds": [
-                        {
-                            "repr": "SCT025",
-                            "type": "SCT",
-                            "base": 25,
-                            "top": null,
-                            "modifier": null
-                        },
-                        {
-                            "repr": "SCT050",
-                            "type": "SCT",
-                            "base": 50,
-                            "top": null,
-                            "modifier": null
-                        }
-                    ],
-                    "flight_visibility": null,
-                    "icing": null,
-                    "location": {
-                        "repr": "LIH135010",
-                        "station": "LIH",
-                        "distance": {
-                            "repr": "010",
-                            "value": 10,
-                            "spoken": "one zero"
-                        }
-                    },
-                    "sanitized": "000 UAXX01 KAWN 272100 RRH LIH UA /OV LIH135010/TM 2106/FL042/TP C182/SK SCT025 SCT050/WX 10+",
-                    "temperature": null,
-                    "turbulance": null,
-                    "type": "UA",
-                    "wx": [
-                        "10+"
-                    ]
-                },
-                {
-                    "raw": "LIH UA /OV NAPUA/TM 2038/FL035/TP B717/SK CLR",
-                    "station": "LIH",
-                    "time": {
-                        "repr": "2038",
-                        "dt": "2019-05-27T20:38:00Z"
-                    },
-                    "remarks": null,
-                    "aircraft": "B717",
-                    "altitude": {
-                        "repr": "035",
-                        "value": 35,
-                        "spoken": "three five"
-                    },
-                    "clouds": [
-                        {
-                            "repr": "CLR",
-                            "type": null,
-                            "base": null,
-                            "top": null,
-                            "modifier": "CLR"
-                        }
-                    ],
-                    "flight_visibility": null,
-                    "icing": null,
-                    "location": {
-                        "repr": "NAPUA",
-                        "station": null,
-                        "distance": null
-                    },
-                    "sanitized": "LIH UA /OV NAPUA/TM 2038/FL035/TP B717/SK CLR",
-                    "temperature": null,
-                    "turbulance": null,
-                    "type": "UA",
-                    "wx": null
-                }
-            ],
-            "units": {
-                "altimeter": "inHg",
-                "altitude": "ft",
-                "temperature": "C",
-                "visibility": "sm",
-                "wind_speed": "kt"
-            }
-        }
-
 ## Parse PIREP [/parse/pirep{?options,format}]
 
 Parses a PIREP report supplied by the user.
@@ -1913,12 +1374,15 @@ Note: translate, summary, and speech options not yet available
 
 + Parameters
 
-    + options (string) - Additional options to include (info)
-    + format (string) - Desired response format (default=json, xml, yaml)
+    + options: `info` (string, optional) - Additional options to include as comma-separated string
+        + Supported: info
+    + format (string, optional) - Desired response format
+        + Supported: json, xml, yaml
+        + Default: `json`
 
 ### Parse a Given PIREP [POST]
 
-Parse a user-supplied TAF included as the plain text body of the request.
+Parse a user-supplied PIREP included as the plain text body of the request.
 
 + Request (text/plain)
 
@@ -1979,13 +1443,24 @@ Parse a user-supplied TAF included as the plain text body of the request.
 
 This endpoint returns the results for multiple stations for a given report type ("metar", "taf"). It accepts the same request parameters as normal METAR and TAF requests, but accepts a comma-separated string of up to 10 stations in one call.
 
++ Parameters
+
+    + report_type: `metar` (string) - Weather report type
+        + Supported: metar, taf
+    +locations: `KJFK,KSFO` (string) - Comma-separated string of up to 10 ICAO idents
+    + options: `speech` (string, optional) - Additional options to include as comma-separated string
+        + Supported: info, translate, summary, speech
+        + Example: `info,speech`
+    + format (string, optional) - Desired response format
+        + supported: json, xml, yaml
+        + Default: `json`
+    + onfail (string, optional) - Error or use out-of-date cache when unable to fetch report
+        + Supported: cache, error
+        + Default: `cache`
+
 ### Get METAR Reports [GET]
 
 Shows a request for KJFK and KSFO in a single API call.
-
-+ Parameters
-    + report_type:`metar`
-    + locations:`KJFK,KSFO`
 
 + Request
 
