@@ -28,7 +28,7 @@ async def new_report(report_type: str, station: avwx.Station) -> (dict, int):
     try:
         parser = _HANDLE_MAP[report_type](station.icao)
     except avwx.exceptions.BadStation:
-        return {"error": f"{station.icao} does not publish reports"}, 400
+        return {"error": f"{station.icao} does not publish reports"}, 204
     error, code = await update_parser(parser, station)
     if error:
         return error, code
@@ -76,7 +76,7 @@ async def _handle_report(
     If nofail and a new report can't be fetched, the cache will be returned with a warning
     """
     if not station.sends_reports:
-        return {"error": f"{station.icao} does not publish reports"}, 400
+        return {"error": f"{station.icao} does not publish reports"}, 204
     # Fetch an existing and up-to-date cache or make a new report
     cache_data, code = await app.cache.get(report_type, station.icao, force=True), 200
     if cache_data is None or app.cache.has_expired(
