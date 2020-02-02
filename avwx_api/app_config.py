@@ -19,7 +19,7 @@ from avwx_api_core.token import TokenManager
 from avwx_api.history import History
 from avwx_api.station_counter import StationCounter
 
-app = create_app(__name__, environ.get("PSQL_URI"), environ.get("MONGO_URI"))
+app = create_app(__name__, mongo_uri=environ.get("MONGO_URI"),)
 
 
 CACHE_EXPIRES = {"metar": 1, "taf": 1}
