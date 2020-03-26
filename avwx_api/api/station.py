@@ -13,7 +13,7 @@ from quart_openapi.cors import crossdomain
 # module
 import avwx
 from avwx_api import app, structs, validate
-from avwx_api.api import Base, HEADERS, parse_params, token_check
+from avwx_api.api.base import Base, HEADERS, parse_params, token_check
 
 
 @app.route("/api/station/<station>")
