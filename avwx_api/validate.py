@@ -26,7 +26,7 @@ from avwx import Station
 from avwx.exceptions import BadStation
 
 
-REPORT_TYPES = ("metar", "taf", "pirep")
+REPORT_TYPES = ("metar", "taf", "pirep", "mav", "mex")
 OPTIONS = ("info", "translate", "summary", "speech")
 FORMATS = ("json", "xml", "yaml")
 ONFAIL = ("error", "cache")
