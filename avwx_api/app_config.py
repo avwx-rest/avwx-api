@@ -26,9 +26,11 @@ CACHE_EXPIRES = {"metar": 1, "taf": 1}
 
 
 @app.before_serving
-def init_helpers():
+async def init_helpers():
     """
     Init API helpers
+
+    Need async to connect helpers to event loop
     """
     app.cache = CacheManager(app, expires=CACHE_EXPIRES)
     app.token = TokenManager(app)
