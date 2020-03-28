@@ -124,7 +124,7 @@ class Parse(Base):
         params = self.validate_params(report=data.decode() or None)
         if isinstance(params, dict):
             return self.make_response(params, code=400)
-        data, code = self.handler.fetch_report(params.report, params.options)
+        data, code = self.handler.parse_given(params.report, params.options)
         if "station" in data:
             report_type = self.report_type + "-given"
             await app.station.add(data["station"], report_type)
