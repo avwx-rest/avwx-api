@@ -269,6 +269,7 @@ class ReportHandler:
             station = avwx.Station.from_icao(report[:4])
         except avwx.exceptions.BadStation:
             return {"error": ERRORS[2].format(station)}, 400
+        report = report.replace("\\n", "\n")
         parser = self.parser.from_report(report)
         resp = asdict(parser.data)
         if "translate" in opts:
