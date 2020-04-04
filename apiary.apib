@@ -280,79 +280,104 @@ Get the METAR for a specific station by ICAO ident or a lat,lon coordinate pair.
 + Response 200 (application/json)
 
         {
+            "meta": {
+                "timestamp": "2020-04-03T16:50:17.558193+00:00Z"
+            },
             "altimeter": {
-                "repr": "3022",
-                "spoken": "three zero point two two",
-                "value": 30.22
+                "repr": "A2966",
+                "value": 29.66,
+                "spoken": "two nine point six six"
             },
             "clouds": [
                 {
-                    "altitude": 250,
+                    "repr": "FEW024",
+                    "type": "FEW",
+                    "altitude": 24,
                     "modifier": null,
-                    "repr": "FEW250",
-                    "type": "FEW"
+                    "direction": null
+                },
+                {
+                    "repr": "BKN036",
+                    "type": "BKN",
+                    "altitude": 36,
+                    "modifier": null,
+                    "direction": null
+                },
+                {
+                    "repr": "OVC046",
+                    "type": "OVC",
+                    "altitude": 46,
+                    "modifier": null,
+                    "direction": null
                 }
             ],
-            "dewpoint": {
-                "repr": "25",
-                "spoken": "two five",
-                "value": 25
-            },
             "flight_rules": "VFR",
-            "meta": {
-                "timestamp": "Tue, 04 Sep 2018 01:01:47 GMT"
-            },
             "other": [],
-            "raw": "KJFK 040051Z 20007KT 10SM FEW250 26/25 A3022 RMK AO2 SLP231 T02560250",
-            "remarks": "RMK AO2 SLP231 T02560250",
+            "sanitized": "KJFK 031551Z 35021G29KT 10SM -RA FEW024 BKN036 OVC046 10/07 A2966 RMK AO2 PK WND 36029/1550 RAB10 SLP042 P0000 T01000067",
+            "visibility": {
+                "repr": "10",
+                "value": 10,
+                "spoken": "one zero"
+            },
+            "wind_direction": {
+                "repr": "350",
+                "value": 350,
+                "spoken": "three five zero"
+            },
+            "wind_gust": {
+                "repr": "29",
+                "value": 29,
+                "spoken": "two nine"
+            },
+            "wind_speed": {
+                "repr": "21",
+                "value": 21,
+                "spoken": "two one"
+            },
+            "wx_codes": [
+                {
+                    "repr": "-RA",
+                    "value": "Light Rain"
+                }
+            ],
+            "raw": "KJFK 031551Z 35021G29KT 10SM -RA FEW024 BKN036 OVC046 10/07 A2966 RMK AO2 PK WND 36029/1550 RAB10 SLP042 P0000 T01000067",
+            "station": "KJFK",
+            "time": {
+                "repr": "031551Z",
+                "dt": "2020-04-03T15:51:00+00:00Z"
+            },
+            "remarks": "RMK AO2 PK WND 36029/1550 RAB10 SLP042 P0000 T01000067",
+            "dewpoint": {
+                "repr": "07",
+                "value": 7,
+                "spoken": "seven"
+            },
             "remarks_info": {
                 "dewpoint_decimal": {
-                    "repr": "25.0",
-                    "spoken": "two five point zero",
-                    "value": 25.0
+                    "repr": "6.7",
+                    "value": 6.7,
+                    "spoken": "six point seven"
                 },
                 "temperature_decimal": {
-                    "repr": "25.6",
-                    "spoken": "two five point six",
-                    "value": 25.6
+                    "repr": "10.0",
+                    "value": 10.0,
+                    "spoken": "one zero point zero"
                 }
             },
             "runway_visibility": [],
-            "sanitized": "KJFK 040051Z 20007KT 10SM FEW250 26/25 A3022 RMK AO2 SLP231 T02560250",
-            "station": "KJFK",
             "temperature": {
-                "repr": "26",
-                "spoken": "two six",
-                "value": 26
+                "repr": "10",
+                "value": 10,
+                "spoken": "one zero"
             },
-            "time": {
-                "dt": "Tue, 04 Sep 2018 00:51:00 GMT",
-                "repr": "040051Z"
-            },
+            "wind_variable_direction": [],
             "units": {
                 "altimeter": "inHg",
                 "altitude": "ft",
                 "temperature": "C",
                 "visibility": "sm",
                 "wind_speed": "kt"
-            },
-            "visibility": {
-                "repr": "10",
-                "spoken": "one zero",
-                "value": 10
-            },
-            "wind_direction": {
-                "repr": "200",
-                "spoken": "two zero zero",
-                "value": 200
-            },
-            "wind_gust": null,
-            "wind_speed": {
-                "repr": "07",
-                "spoken": "seven",
-                "value": 7
-            },
-            "wind_variable_direction": []
+            }
         }
 
 ## Parse METAR [/parse/metar{?options,format}]
@@ -370,7 +395,7 @@ Parses a METAR report supplied by the user.
 
 ### Parse a Given METAR [POST]
 
-Parse a user-supplied METAR included as the plain text body of the request.
+Parse a user-supplied METAR included as the plain text body of the request. Note that the parsed timestamp may differ from the actual release date of the given report depending on how old the report is. AVWX does it's best to provide a full timestamp even though METARs don't include the year and month.
 
 + Request (text/plain)
 
@@ -385,91 +410,96 @@ Parse a user-supplied METAR included as the plain text body of the request.
 + Response 200 (application/json)
 
         {
+            "meta": {
+                "timestamp": "2020-04-03T18:36:34.255787+00:00Z"
+            },
             "altimeter": {
-                "repr": "3005",
-                "spoken": "three zero point zero five",
-                "value": 30.05
+                "repr": "A3005",
+                "value": 30.05,
+                "spoken": "three zero point zero five"
             },
             "clouds": [
                 {
+                    "repr": "SCT022",
+                    "type": "SCT",
                     "altitude": 22,
                     "modifier": null,
-                    "repr": "SCT022",
-                    "type": "SCT"
+                    "direction": null
                 }
             ],
-            "dewpoint": {
-                "repr": "21",
-                "spoken": "two one",
-                "value": 21
-            },
             "flight_rules": "VFR",
-            "meta": {
-                "timestamp": "Tue, 04 Sep 2018 01:18:22 GMT"
-            },
-            "other": [
-                "HZ"
-            ],
-            "raw": "PHKO 181753Z 28004KT 6SM HZ SCT022 27/21 A3005 RMK AO2 SLP178 T02670206 10267 20239 53009",
-            "remarks": "RMK AO2 SLP178 T02670206 10267 20239 53009",
-            "remarks_info": {
-                "dewpoint_decimal": {
-                    "repr": "20.6",
-                    "spoken": "two zero point six",
-                    "value": 20.6
-                },
-                "temperature_decimal": {
-                    "repr": "26.7",
-                    "spoken": "two six point seven",
-                    "value": 26.7
-                }
-            },
-            "runway_visibility": [],
+            "other": [],
             "sanitized": "PHKO 181753Z 28004KT 6SM HZ SCT022 27/21 A3005 RMK AO2 SLP178 T02670206 10267 20239 53009",
-            "station": "PHKO",
-            "temperature": {
-                "repr": "27",
-                "spoken": "two seven",
-                "value": 27
-            },
-            "time": {
-                "dt": "Sat, 18 Aug 2018 17:53:00 GMT",
-                "repr": "181753Z"
-            },
-            "translations": {
-                "altimeter": "30.05 inHg (1018 hPa)",
-                "clouds": "Scattered clouds at 2200ft - Reported AGL",
-                "dewpoint": "21°C (70°F)",
-                "other": "Haze",
-                "remarks": {
-                    "10267": "6-hour maximum temperature 26.7°C",
-                    "20239": "6-hour minimum temperature 23.9°C",
-                    "53009": "3-hour pressure difference: +/- 0.9 mb - Decreasing or steady, then increasing",
-                    "AO2": "Automated with precipitation sensor",
-                    "SLP178": "Sea level pressure: 1017.8 hPa",
-                    "T02670206": "Temperature 26.7°C and dewpoint 20.6°C"
-                },
-                "temperature": "27°C (81°F)",
-                "visibility": "6sm (9.7km)",
-                "wind": "W-280 at 4kt"
-            },
             "visibility": {
                 "repr": "6",
-                "spoken": "six",
-                "value": 6
+                "value": 6,
+                "spoken": "six"
             },
             "wind_direction": {
                 "repr": "280",
-                "spoken": "two eight zero",
-                "value": 280
+                "value": 280,
+                "spoken": "two eight zero"
             },
             "wind_gust": null,
             "wind_speed": {
                 "repr": "04",
-                "spoken": "four",
-                "value": 4
+                "value": 4,
+                "spoken": "four"
             },
-            "wind_variable_direction": []
+            "wx_codes": [
+                {
+                    "repr": "HZ",
+                    "value": "Haze"
+                }
+            ],
+            "raw": "PHKO 181753Z 28004KT 6SM HZ SCT022 27/21 A3005 RMK AO2 SLP178 T02670206 10267 20239 53009",
+            "station": "PHKO",
+            "time": {
+                "repr": "181753Z",
+                "dt": "2020-03-18T17:53:00+00:00Z"
+            },
+            "remarks": "RMK AO2 SLP178 T02670206 10267 20239 53009",
+            "dewpoint": {
+                "repr": "21",
+                "value": 21,
+                "spoken": "two one"
+            },
+            "remarks_info": {
+                "dewpoint_decimal": {
+                    "repr": "20.6",
+                    "value": 20.6,
+                    "spoken": "two zero point six"
+                },
+                "temperature_decimal": {
+                    "repr": "26.7",
+                    "value": 26.7,
+                    "spoken": "two six point seven"
+                }
+            },
+            "runway_visibility": [],
+            "temperature": {
+                "repr": "27",
+                "value": 27,
+                "spoken": "two seven"
+            },
+            "wind_variable_direction": [],
+            "translations": {
+                "altimeter": "30.05 inHg (1018 hPa)",
+                "clouds": "Scattered clouds at 2200ft - Reported AGL",
+                "wx_codes": "Haze",
+                "visibility": "6sm (9.7km)",
+                "dewpoint": "21°C (70°F)",
+                "remarks": {
+                    "AO2": "Automated with precipitation sensor",
+                    "SLP178": "Sea level pressure: 1017.8 hPa",
+                    "T02670206": "Temperature 26.7°C and dewpoint 20.6°C",
+                    "10267": "6-hour maximum temperature 26.7°C",
+                    "20239": "6-hour minimum temperature 23.9°C",
+                    "53009": "3-hour pressure difference: +/- 0.9 mb - Decreasing or steady, then increasing"
+                },
+                "temperature": "27°C (81°F)",
+                "wind": "W-280 at 4kt"
+            }
         }
 
 ## TAF [/taf/{location}{?options,airport,reporting,format,onfail}]
@@ -506,409 +536,376 @@ Get the TAF for a specific station by ICAO ident or a lat,lon coordinate pair. T
 + Response 200 (application/json)
 
         {
-            "alts": null,
-            "end_time": {
-                "dt": "Wed, 05 Sep 2018 06:00:00 GMT",
-                "repr": "0506"
+            "meta": {
+                "timestamp": "2020-04-03T18:52:16.840897+00:00Z"
             },
+            "raw": "KJFK 031720Z 0318/0424 34017G26KT P6SM -RA OVC025 FM032100 35016G25KT P6SM OVC025 FM040000 01014G19KT P6SM OVC025 FM041500 03011KT P6SM BKN035 FM041900 05007KT P6SM BKN035 FM042000 08006KT P6SM BKN035 FM042200 11006KT P6SM BKN035",
+            "station": "KJFK",
+            "time": {
+                "repr": "031720Z",
+                "dt": "2020-04-03T17:20:00+00:00Z"
+            },
+            "remarks": "",
             "forecast": [
                 {
                     "altimeter": "",
                     "clouds": [
                         {
-                            "altitude": 40,
+                            "repr": "OVC025",
+                            "type": "OVC",
+                            "altitude": 25,
                             "modifier": null,
-                            "repr": "FEW040",
-                            "type": "FEW"
+                            "direction": null
+                        }
+                    ],
+                    "flight_rules": "MVFR",
+                    "other": [],
+                    "sanitized": "0318/0424 34017G26KT P6SM -RA OVC025",
+                    "visibility": {
+                        "repr": "P6",
+                        "value": null,
+                        "spoken": "greater than six"
+                    },
+                    "wind_direction": {
+                        "repr": "340",
+                        "value": 340,
+                        "spoken": "three four zero"
+                    },
+                    "wind_gust": {
+                        "repr": "26",
+                        "value": 26,
+                        "spoken": "two six"
+                    },
+                    "wind_speed": {
+                        "repr": "17",
+                        "value": 17,
+                        "spoken": "one seven"
+                    },
+                    "wx_codes": [
+                        {
+                            "repr": "-RA",
+                            "value": "Light Rain"
                         }
                     ],
                     "end_time": {
-                        "dt": "Tue, 04 Sep 2018 01:00:00 GMT",
-                        "repr": "0401"
+                        "repr": "0321",
+                        "dt": "2020-04-03T21:00:00+00:00Z"
                     },
-                    "flight_rules": "VFR",
                     "icing": [],
-                    "other": [],
                     "probability": null,
-                    "raw": "0400/0506 18011KT P6SM FEW040",
-                    "sanitized": "0400/0506 18011KT P6SM FEW040",
+                    "raw": "0318/0424 34017G26KT P6SM -RA OVC025",
                     "start_time": {
-                        "dt": "Tue, 04 Sep 2018 00:00:00 GMT",
-                        "repr": "0400"
+                        "repr": "0318",
+                        "dt": "2020-04-03T18:00:00+00:00Z"
                     },
-                    "summary": "Winds S-180 at 11kt, Vis greater than 6sm, Few clouds at 4000ft",
-                    "turbulance": [],
+                    "turbulence": [],
                     "type": "FROM",
+                    "wind_shear": null,
+                    "summary": "Winds NNW-340 at 17kt gusting to 26kt, Vis greater than 6sm, Light Rain, Overcast layer at 2500ft"
+                },
+                {
+                    "altimeter": "",
+                    "clouds": [
+                        {
+                            "repr": "OVC025",
+                            "type": "OVC",
+                            "altitude": 25,
+                            "modifier": null,
+                            "direction": null
+                        }
+                    ],
+                    "flight_rules": "MVFR",
+                    "other": [],
+                    "sanitized": "FM032100 35016G25KT P6SM OVC025",
                     "visibility": {
                         "repr": "P6",
-                        "spoken": "greater than six",
-                        "value": null
+                        "value": null,
+                        "spoken": "greater than six"
                     },
                     "wind_direction": {
-                        "repr": "180",
-                        "spoken": "one eight zero",
-                        "value": 180
+                        "repr": "350",
+                        "value": 350,
+                        "spoken": "three five zero"
+                    },
+                    "wind_gust": {
+                        "repr": "25",
+                        "value": 25,
+                        "spoken": "two five"
+                    },
+                    "wind_speed": {
+                        "repr": "16",
+                        "value": 16,
+                        "spoken": "one six"
+                    },
+                    "wx_codes": [],
+                    "end_time": {
+                        "repr": "0400",
+                        "dt": "2020-04-04T00:00:00+00:00Z"
+                    },
+                    "icing": [],
+                    "probability": null,
+                    "raw": "FM032100 35016G25KT P6SM OVC025",
+                    "start_time": {
+                        "repr": "0321",
+                        "dt": "2020-04-03T21:00:00+00:00Z"
+                    },
+                    "turbulence": [],
+                    "type": "FROM",
+                    "wind_shear": null,
+                    "summary": "Winds N-350 at 16kt gusting to 25kt, Vis greater than 6sm, Overcast layer at 2500ft"
+                },
+                {
+                    "altimeter": "",
+                    "clouds": [
+                        {
+                            "repr": "OVC025",
+                            "type": "OVC",
+                            "altitude": 25,
+                            "modifier": null,
+                            "direction": null
+                        }
+                    ],
+                    "flight_rules": "MVFR",
+                    "other": [],
+                    "sanitized": "FM040000 01014G19KT P6SM OVC025",
+                    "visibility": {
+                        "repr": "P6",
+                        "value": null,
+                        "spoken": "greater than six"
+                    },
+                    "wind_direction": {
+                        "repr": "010",
+                        "value": 10,
+                        "spoken": "zero one zero"
+                    },
+                    "wind_gust": {
+                        "repr": "19",
+                        "value": 19,
+                        "spoken": "one nine"
+                    },
+                    "wind_speed": {
+                        "repr": "14",
+                        "value": 14,
+                        "spoken": "one four"
+                    },
+                    "wx_codes": [],
+                    "end_time": {
+                        "repr": "0415",
+                        "dt": "2020-04-04T15:00:00+00:00Z"
+                    },
+                    "icing": [],
+                    "probability": null,
+                    "raw": "FM040000 01014G19KT P6SM OVC025",
+                    "start_time": {
+                        "repr": "0400",
+                        "dt": "2020-04-04T00:00:00+00:00Z"
+                    },
+                    "turbulence": [],
+                    "type": "FROM",
+                    "wind_shear": null,
+                    "summary": "Winds N-010 at 14kt gusting to 19kt, Vis greater than 6sm, Overcast layer at 2500ft"
+                },
+                {
+                    "altimeter": "",
+                    "clouds": [
+                        {
+                            "repr": "BKN035",
+                            "type": "BKN",
+                            "altitude": 35,
+                            "modifier": null,
+                            "direction": null
+                        }
+                    ],
+                    "flight_rules": "VFR",
+                    "other": [],
+                    "sanitized": "FM041500 03011KT P6SM BKN035",
+                    "visibility": {
+                        "repr": "P6",
+                        "value": null,
+                        "spoken": "greater than six"
+                    },
+                    "wind_direction": {
+                        "repr": "030",
+                        "value": 30,
+                        "spoken": "zero three zero"
                     },
                     "wind_gust": null,
-                    "wind_shear": "",
                     "wind_speed": {
                         "repr": "11",
-                        "spoken": "one one",
-                        "value": 11
-                    }
+                        "value": 11,
+                        "spoken": "one one"
+                    },
+                    "wx_codes": [],
+                    "end_time": {
+                        "repr": "0419",
+                        "dt": "2020-04-04T19:00:00+00:00Z"
+                    },
+                    "icing": [],
+                    "probability": null,
+                    "raw": "FM041500 03011KT P6SM BKN035",
+                    "start_time": {
+                        "repr": "0415",
+                        "dt": "2020-04-04T15:00:00+00:00Z"
+                    },
+                    "turbulence": [],
+                    "type": "FROM",
+                    "wind_shear": null,
+                    "summary": "Winds NNE-030 at 11kt, Vis greater than 6sm, Broken layer at 3500ft"
                 },
                 {
                     "altimeter": "",
                     "clouds": [
                         {
-                            "altitude": 50,
+                            "repr": "BKN035",
+                            "type": "BKN",
+                            "altitude": 35,
                             "modifier": null,
-                            "repr": "SCT050",
-                            "type": "SCT"
+                            "direction": null
                         }
                     ],
-                    "end_time": {
-                        "dt": "Tue, 04 Sep 2018 03:00:00 GMT",
-                        "repr": "0403"
-                    },
                     "flight_rules": "VFR",
-                    "icing": [],
                     "other": [],
-                    "probability": null,
-                    "raw": "FM040100 21006KT P6SM SCT050",
-                    "sanitized": "FM040100 21006KT P6SM SCT050",
-                    "start_time": {
-                        "dt": "Tue, 04 Sep 2018 01:00:00 GMT",
-                        "repr": "0401"
-                    },
-                    "summary": "Winds SSW-210 at 6kt, Vis greater than 6sm, Scattered clouds at 5000ft",
-                    "turbulance": [],
-                    "type": "FROM",
+                    "sanitized": "FM041900 05007KT P6SM BKN035",
                     "visibility": {
                         "repr": "P6",
-                        "spoken": "greater than six",
-                        "value": null
+                        "value": null,
+                        "spoken": "greater than six"
                     },
                     "wind_direction": {
-                        "repr": "210",
-                        "spoken": "two one zero",
-                        "value": 210
+                        "repr": "050",
+                        "value": 50,
+                        "spoken": "zero five zero"
                     },
                     "wind_gust": null,
-                    "wind_shear": "",
+                    "wind_speed": {
+                        "repr": "07",
+                        "value": 7,
+                        "spoken": "seven"
+                    },
+                    "wx_codes": [],
+                    "end_time": {
+                        "repr": "0420",
+                        "dt": "2020-04-04T20:00:00+00:00Z"
+                    },
+                    "icing": [],
+                    "probability": null,
+                    "raw": "FM041900 05007KT P6SM BKN035",
+                    "start_time": {
+                        "repr": "0419",
+                        "dt": "2020-04-04T19:00:00+00:00Z"
+                    },
+                    "turbulence": [],
+                    "type": "FROM",
+                    "wind_shear": null,
+                    "summary": "Winds NE-050 at 7kt, Vis greater than 6sm, Broken layer at 3500ft"
+                },
+                {
+                    "altimeter": "",
+                    "clouds": [
+                        {
+                            "repr": "BKN035",
+                            "type": "BKN",
+                            "altitude": 35,
+                            "modifier": null,
+                            "direction": null
+                        }
+                    ],
+                    "flight_rules": "VFR",
+                    "other": [],
+                    "sanitized": "FM042000 08006KT P6SM BKN035",
+                    "visibility": {
+                        "repr": "P6",
+                        "value": null,
+                        "spoken": "greater than six"
+                    },
+                    "wind_direction": {
+                        "repr": "080",
+                        "value": 80,
+                        "spoken": "zero eight zero"
+                    },
+                    "wind_gust": null,
                     "wind_speed": {
                         "repr": "06",
-                        "spoken": "six",
-                        "value": 6
-                    }
+                        "value": 6,
+                        "spoken": "six"
+                    },
+                    "wx_codes": [],
+                    "end_time": {
+                        "repr": "0422",
+                        "dt": "2020-04-04T22:00:00+00:00Z"
+                    },
+                    "icing": [],
+                    "probability": null,
+                    "raw": "FM042000 08006KT P6SM BKN035",
+                    "start_time": {
+                        "repr": "0420",
+                        "dt": "2020-04-04T20:00:00+00:00Z"
+                    },
+                    "turbulence": [],
+                    "type": "FROM",
+                    "wind_shear": null,
+                    "summary": "Winds E-080 at 6kt, Vis greater than 6sm, Broken layer at 3500ft"
                 },
                 {
                     "altimeter": "",
                     "clouds": [
                         {
-                            "altitude": 250,
+                            "repr": "BKN035",
+                            "type": "BKN",
+                            "altitude": 35,
                             "modifier": null,
-                            "repr": "SCT250",
-                            "type": "SCT"
+                            "direction": null
                         }
                     ],
-                    "end_time": {
-                        "dt": "Tue, 04 Sep 2018 13:00:00 GMT",
-                        "repr": "0413"
-                    },
                     "flight_rules": "VFR",
-                    "icing": [],
                     "other": [],
-                    "probability": null,
-                    "raw": "FM040300 VRB05KT P6SM SCT250",
-                    "sanitized": "FM040300 VRB05KT P6SM SCT250",
-                    "start_time": {
-                        "dt": "Tue, 04 Sep 2018 03:00:00 GMT",
-                        "repr": "0403"
-                    },
-                    "summary": "Winds Variable at 5kt, Vis greater than 6sm, Scattered clouds at 25000ft",
-                    "turbulance": [],
-                    "type": "FROM",
+                    "sanitized": "FM042200 11006KT P6SM BKN035",
                     "visibility": {
                         "repr": "P6",
-                        "spoken": "greater than six",
-                        "value": null
+                        "value": null,
+                        "spoken": "greater than six"
                     },
                     "wind_direction": {
-                        "repr": "VRB",
-                        "spoken": "variable",
-                        "value": null
+                        "repr": "110",
+                        "value": 110,
+                        "spoken": "one one zero"
                     },
                     "wind_gust": null,
-                    "wind_shear": "",
-                    "wind_speed": {
-                        "repr": "05",
-                        "spoken": "five",
-                        "value": 5
-                    }
-                },
-                {
-                    "altimeter": "",
-                    "clouds": [
-                        {
-                            "altitude": 250,
-                            "modifier": null,
-                            "repr": "FEW250",
-                            "type": "FEW"
-                        }
-                    ],
-                    "end_time": {
-                        "dt": "Tue, 04 Sep 2018 16:00:00 GMT",
-                        "repr": "0416"
-                    },
-                    "flight_rules": "VFR",
-                    "icing": [],
-                    "other": [],
-                    "probability": null,
-                    "raw": "FM041300 33006KT P6SM FEW250",
-                    "sanitized": "FM041300 33006KT P6SM FEW250",
-                    "start_time": {
-                        "dt": "Tue, 04 Sep 2018 13:00:00 GMT",
-                        "repr": "0413"
-                    },
-                    "summary": "Winds NNW-330 at 6kt, Vis greater than 6sm, Few clouds at 25000ft",
-                    "turbulance": [],
-                    "type": "FROM",
-                    "visibility": {
-                        "repr": "P6",
-                        "spoken": "greater than six",
-                        "value": null
-                    },
-                    "wind_direction": {
-                        "repr": "330",
-                        "spoken": "three three zero",
-                        "value": 330
-                    },
-                    "wind_gust": null,
-                    "wind_shear": "",
                     "wind_speed": {
                         "repr": "06",
-                        "spoken": "six",
-                        "value": 6
-                    }
-                },
-                {
-                    "altimeter": "",
-                    "clouds": [
-                        {
-                            "altitude": 40,
-                            "modifier": null,
-                            "repr": "FEW040",
-                            "type": "FEW"
-                        },
-                        {
-                            "altitude": 250,
-                            "modifier": null,
-                            "repr": "SCT250",
-                            "type": "SCT"
-                        }
-                    ],
+                        "value": 6,
+                        "spoken": "six"
+                    },
+                    "wx_codes": [],
                     "end_time": {
-                        "dt": "Tue, 04 Sep 2018 18:00:00 GMT",
-                        "repr": "0418"
+                        "repr": "0424",
+                        "dt": "2020-04-04T00:00:00+00:00Z"
                     },
-                    "flight_rules": "VFR",
                     "icing": [],
-                    "other": [],
                     "probability": null,
-                    "raw": "FM041600 VRB04KT P6SM FEW040 SCT250",
-                    "sanitized": "FM041600 VRB04KT P6SM FEW040 SCT250",
+                    "raw": "FM042200 11006KT P6SM BKN035",
                     "start_time": {
-                        "dt": "Tue, 04 Sep 2018 16:00:00 GMT",
-                        "repr": "0416"
+                        "repr": "0422",
+                        "dt": "2020-04-04T22:00:00+00:00Z"
                     },
-                    "summary": "Winds Variable at 4kt, Vis greater than 6sm, Few clouds at 4000ft, Scattered clouds at 25000ft",
-                    "turbulance": [],
+                    "turbulence": [],
                     "type": "FROM",
-                    "visibility": {
-                        "repr": "P6",
-                        "spoken": "greater than six",
-                        "value": null
-                    },
-                    "wind_direction": {
-                        "repr": "VRB",
-                        "spoken": "variable",
-                        "value": null
-                    },
-                    "wind_gust": null,
-                    "wind_shear": "",
-                    "wind_speed": {
-                        "repr": "04",
-                        "spoken": "four",
-                        "value": 4
-                    }
-                },
-                {
-                    "altimeter": "",
-                    "clouds": [
-                        {
-                            "altitude": 50,
-                            "modifier": null,
-                            "repr": "SCT050",
-                            "type": "SCT"
-                        },
-                        {
-                            "altitude": 250,
-                            "modifier": null,
-                            "repr": "SCT250",
-                            "type": "SCT"
-                        }
-                    ],
-                    "end_time": {
-                        "dt": "Tue, 04 Sep 2018 23:00:00 GMT",
-                        "repr": "0423"
-                    },
-                    "flight_rules": "VFR",
-                    "icing": [],
-                    "other": [],
-                    "probability": null,
-                    "raw": "FM041800 19008KT P6SM SCT050 SCT250",
-                    "sanitized": "FM041800 19008KT P6SM SCT050 SCT250",
-                    "start_time": {
-                        "dt": "Tue, 04 Sep 2018 18:00:00 GMT",
-                        "repr": "0418"
-                    },
-                    "summary": "Winds S-190 at 8kt, Vis greater than 6sm, Scattered clouds at 5000ft, Scattered clouds at 25000ft",
-                    "turbulance": [],
-                    "type": "FROM",
-                    "visibility": {
-                        "repr": "P6",
-                        "spoken": "greater than six",
-                        "value": null
-                    },
-                    "wind_direction": {
-                        "repr": "190",
-                        "spoken": "one nine zero",
-                        "value": 190
-                    },
-                    "wind_gust": null,
-                    "wind_shear": "",
-                    "wind_speed": {
-                        "repr": "08",
-                        "spoken": "eight",
-                        "value": 8
-                    }
-                },
-                {
-                    "altimeter": "",
-                    "clouds": [
-                        {
-                            "altitude": 50,
-                            "modifier": null,
-                            "repr": "FEW050",
-                            "type": "FEW"
-                        },
-                        {
-                            "altitude": 250,
-                            "modifier": null,
-                            "repr": "SCT250",
-                            "type": "SCT"
-                        }
-                    ],
-                    "end_time": {
-                        "dt": "Wed, 05 Sep 2018 03:00:00 GMT",
-                        "repr": "0503"
-                    },
-                    "flight_rules": "VFR",
-                    "icing": [],
-                    "other": [],
-                    "probability": null,
-                    "raw": "FM042300 16005KT P6SM FEW050 SCT250",
-                    "sanitized": "FM042300 16005KT P6SM FEW050 SCT250",
-                    "start_time": {
-                        "dt": "Tue, 04 Sep 2018 23:00:00 GMT",
-                        "repr": "0423"
-                    },
-                    "summary": "Winds SSE-160 at 5kt, Vis greater than 6sm, Few clouds at 5000ft, Scattered clouds at 25000ft",
-                    "turbulance": [],
-                    "type": "FROM",
-                    "visibility": {
-                        "repr": "P6",
-                        "spoken": "greater than six",
-                        "value": null
-                    },
-                    "wind_direction": {
-                        "repr": "160",
-                        "spoken": "one six zero",
-                        "value": 160
-                    },
-                    "wind_gust": null,
-                    "wind_shear": "",
-                    "wind_speed": {
-                        "repr": "05",
-                        "spoken": "five",
-                        "value": 5
-                    }
-                },
-                {
-                    "altimeter": "",
-                    "clouds": [
-                        {
-                            "altitude": 250,
-                            "modifier": null,
-                            "repr": "SCT250",
-                            "type": "SCT"
-                        }
-                    ],
-                    "end_time": {
-                        "dt": "Wed, 05 Sep 2018 06:00:00 GMT",
-                        "repr": "0506"
-                    },
-                    "flight_rules": "VFR",
-                    "icing": [],
-                    "other": [],
-                    "probability": null,
-                    "raw": "FM050300 13004KT P6SM SCT250",
-                    "sanitized": "FM050300 13004KT P6SM SCT250",
-                    "start_time": {
-                        "dt": "Wed, 05 Sep 2018 03:00:00 GMT",
-                        "repr": "0503"
-                    },
-                    "summary": "Winds SE-130 at 4kt, Vis greater than 6sm, Scattered clouds at 25000ft",
-                    "turbulance": [],
-                    "type": "FROM",
-                    "visibility": {
-                        "repr": "P6",
-                        "spoken": "greater than six",
-                        "value": null
-                    },
-                    "wind_direction": {
-                        "repr": "130",
-                        "spoken": "one three zero",
-                        "value": 130
-                    },
-                    "wind_gust": null,
-                    "wind_shear": "",
-                    "wind_speed": {
-                        "repr": "04",
-                        "spoken": "four",
-                        "value": 4
-                    }
+                    "wind_shear": null,
+                    "summary": "Winds ESE-110 at 6kt, Vis greater than 6sm, Broken layer at 3500ft"
                 }
             ],
-            "max_temp": "",
-            "meta": {
-                "cache-timestamp": "Tue, 04 Sep 2018 01:22:37 GMT",
-                "timestamp": "Tue, 04 Sep 2018 01:24:30 GMT"
-            },
-            "min_temp": "",
-            "raw": "KJFK 032323Z 0400/0506 18011KT P6SM FEW040 FM040100 21006KT P6SM SCT050 FM040300 VRB05KT P6SM SCT250 FM041300 33006KT P6SM FEW250 FM041600 VRB04KT P6SM FEW040 SCT250 FM041800 19008KT P6SM SCT050 SCT250 FM042300 16005KT P6SM FEW050 SCT250 FM050300 13004KT P6SM SCT250",
-            "remarks": "",
             "start_time": {
-                "dt": "Tue, 04 Sep 2018 00:00:00 GMT",
-                "repr": "0400"
+                "repr": "0318",
+                "dt": "2020-04-03T18:00:00+00:00Z"
             },
-            "station": "KJFK",
+            "end_time": {
+                "repr": "0424",
+                "dt": "2020-04-04T00:00:00+00:00Z"
+            },
+            "max_temp": "",
+            "min_temp": "",
+            "alts": null,
             "temps": null,
-            "time": {
-                "dt": "Mon, 03 Sep 2018 23:23:00 GMT",
-                "repr": "032323Z"
-            },
             "units": {
                 "altimeter": "inHg",
                 "altitude": "ft",
@@ -933,7 +930,7 @@ Parses a TAF report supplied by the user.
 
 ### Parse a Given TAF [POST]
 
-Parse a user-supplied TAF included as the plain text body of the request.
+Parse a user-supplied TAF included as the plain text body of the request. Note that the parsed timestamp may differ from the actual release date of the given report depending on how old the report is. AVWX does it's best to provide a full timestamp even though TAFs don't include the year and month.
 
 + Request (text/plain)
 
@@ -948,257 +945,267 @@ Parse a user-supplied TAF included as the plain text body of the request.
 + Response 200 (application/json)
 
         {
-            "alts": null,
-            "end_time": {
-                "dt": "Sun, 19 Aug 2018 18:00:00 GMT",
-                "repr": "1918"
+            "meta": {
+                "timestamp": "2020-04-03T19:08:08.406217+00:00Z"
             },
+            "raw": "PHKO 181735Z 1818/1918 VRB03KT P6SM FEW035 FM182000 20010KT P6SM FEW030 SCT060 FM190400 10007KT P6SM FEW030 BKN050 FM191200 VRB03KT P6SM SCT030",
+            "station": "PHKO",
+            "time": {
+                "repr": "181735Z",
+                "dt": "2020-03-18T17:35:00+00:00Z"
+            },
+            "remarks": "",
             "forecast": [
                 {
                     "altimeter": "",
                     "clouds": [
                         {
+                            "repr": "FEW035",
+                            "type": "FEW",
                             "altitude": 35,
                             "modifier": null,
-                            "repr": "FEW035",
-                            "type": "FEW"
+                            "direction": null
                         }
                     ],
-                    "end_time": {
-                        "dt": "Sat, 18 Aug 2018 20:00:00 GMT",
-                        "repr": "1820"
-                    },
                     "flight_rules": "VFR",
-                    "icing": [],
                     "other": [],
-                    "probability": null,
-                    "raw": "1818/1918 VRB03KT P6SM FEW035",
                     "sanitized": "1818/1918 VRB03KT P6SM FEW035",
-                    "start_time": {
-                        "dt": "Sat, 18 Aug 2018 18:00:00 GMT",
-                        "repr": "1818"
-                    },
-                    "turbulance": [],
-                    "type": "FROM",
                     "visibility": {
                         "repr": "P6",
-                        "spoken": "greater than six",
-                        "value": null
+                        "value": null,
+                        "spoken": "greater than six"
                     },
                     "wind_direction": {
                         "repr": "VRB",
-                        "spoken": "variable",
-                        "value": null
+                        "value": null,
+                        "spoken": "variable"
                     },
                     "wind_gust": null,
-                    "wind_shear": "",
                     "wind_speed": {
                         "repr": "03",
-                        "spoken": "three",
-                        "value": 3
-                    }
+                        "value": 3,
+                        "spoken": "three"
+                    },
+                    "wx_codes": [],
+                    "end_time": {
+                        "repr": "1820",
+                        "dt": "2020-03-18T20:00:00+00:00Z"
+                    },
+                    "icing": [],
+                    "probability": null,
+                    "raw": "1818/1918 VRB03KT P6SM FEW035",
+                    "start_time": {
+                        "repr": "1818",
+                        "dt": "2020-03-18T18:00:00+00:00Z"
+                    },
+                    "turbulence": [],
+                    "type": "FROM",
+                    "wind_shear": null
                 },
                 {
                     "altimeter": "",
                     "clouds": [
                         {
+                            "repr": "FEW030",
+                            "type": "FEW",
                             "altitude": 30,
                             "modifier": null,
-                            "repr": "FEW030",
-                            "type": "FEW"
+                            "direction": null
                         },
                         {
+                            "repr": "SCT060",
+                            "type": "SCT",
                             "altitude": 60,
                             "modifier": null,
-                            "repr": "SCT060",
-                            "type": "SCT"
+                            "direction": null
                         }
                     ],
-                    "end_time": {
-                        "dt": "Sun, 19 Aug 2018 04:00:00 GMT",
-                        "repr": "1904"
-                    },
                     "flight_rules": "VFR",
-                    "icing": [],
                     "other": [],
-                    "probability": null,
-                    "raw": "FM182000 20010KT P6SM FEW030 SCT060",
                     "sanitized": "FM182000 20010KT P6SM FEW030 SCT060",
-                    "start_time": {
-                        "dt": "Sat, 18 Aug 2018 20:00:00 GMT",
-                        "repr": "1820"
-                    },
-                    "turbulance": [],
-                    "type": "FROM",
                     "visibility": {
                         "repr": "P6",
-                        "spoken": "greater than six",
-                        "value": null
+                        "value": null,
+                        "spoken": "greater than six"
                     },
                     "wind_direction": {
                         "repr": "200",
-                        "spoken": "two zero zero",
-                        "value": 200
+                        "value": 200,
+                        "spoken": "two zero zero"
                     },
                     "wind_gust": null,
-                    "wind_shear": "",
                     "wind_speed": {
                         "repr": "10",
-                        "spoken": "one zero",
-                        "value": 10
-                    }
+                        "value": 10,
+                        "spoken": "one zero"
+                    },
+                    "wx_codes": [],
+                    "end_time": {
+                        "repr": "1904",
+                        "dt": "2020-03-19T04:00:00+00:00Z"
+                    },
+                    "icing": [],
+                    "probability": null,
+                    "raw": "FM182000 20010KT P6SM FEW030 SCT060",
+                    "start_time": {
+                        "repr": "1820",
+                        "dt": "2020-03-18T20:00:00+00:00Z"
+                    },
+                    "turbulence": [],
+                    "type": "FROM",
+                    "wind_shear": null
                 },
                 {
                     "altimeter": "",
                     "clouds": [
                         {
+                            "repr": "FEW030",
+                            "type": "FEW",
                             "altitude": 30,
                             "modifier": null,
-                            "repr": "FEW030",
-                            "type": "FEW"
+                            "direction": null
                         },
                         {
+                            "repr": "BKN050",
+                            "type": "BKN",
                             "altitude": 50,
                             "modifier": null,
-                            "repr": "BKN050",
-                            "type": "BKN"
+                            "direction": null
                         }
                     ],
-                    "end_time": {
-                        "dt": "Sun, 19 Aug 2018 12:00:00 GMT",
-                        "repr": "1912"
-                    },
                     "flight_rules": "VFR",
-                    "icing": [],
                     "other": [],
-                    "probability": null,
-                    "raw": "FM190400 10007KT P6SM FEW030 BKN050",
                     "sanitized": "FM190400 10007KT P6SM FEW030 BKN050",
-                    "start_time": {
-                        "dt": "Sun, 19 Aug 2018 04:00:00 GMT",
-                        "repr": "1904"
-                    },
-                    "turbulance": [],
-                    "type": "FROM",
                     "visibility": {
                         "repr": "P6",
-                        "spoken": "greater than six",
-                        "value": null
+                        "value": null,
+                        "spoken": "greater than six"
                     },
                     "wind_direction": {
                         "repr": "100",
-                        "spoken": "one zero zero",
-                        "value": 100
+                        "value": 100,
+                        "spoken": "one zero zero"
                     },
                     "wind_gust": null,
-                    "wind_shear": "",
                     "wind_speed": {
                         "repr": "07",
-                        "spoken": "seven",
-                        "value": 7
-                    }
+                        "value": 7,
+                        "spoken": "seven"
+                    },
+                    "wx_codes": [],
+                    "end_time": {
+                        "repr": "1912",
+                        "dt": "2020-03-19T12:00:00+00:00Z"
+                    },
+                    "icing": [],
+                    "probability": null,
+                    "raw": "FM190400 10007KT P6SM FEW030 BKN050",
+                    "start_time": {
+                        "repr": "1904",
+                        "dt": "2020-03-19T04:00:00+00:00Z"
+                    },
+                    "turbulence": [],
+                    "type": "FROM",
+                    "wind_shear": null
                 },
                 {
                     "altimeter": "",
                     "clouds": [
                         {
+                            "repr": "SCT030",
+                            "type": "SCT",
                             "altitude": 30,
                             "modifier": null,
-                            "repr": "SCT030",
-                            "type": "SCT"
+                            "direction": null
                         }
                     ],
-                    "end_time": {
-                        "dt": "Sun, 19 Aug 2018 18:00:00 GMT",
-                        "repr": "1918"
-                    },
                     "flight_rules": "VFR",
-                    "icing": [],
                     "other": [],
-                    "probability": null,
-                    "raw": "FM191200 VRB03KT P6SM SCT030",
                     "sanitized": "FM191200 VRB03KT P6SM SCT030",
-                    "start_time": {
-                        "dt": "Sun, 19 Aug 2018 12:00:00 GMT",
-                        "repr": "1912"
-                    },
-                    "turbulance": [],
-                    "type": "FROM",
                     "visibility": {
                         "repr": "P6",
-                        "spoken": "greater than six",
-                        "value": null
+                        "value": null,
+                        "spoken": "greater than six"
                     },
                     "wind_direction": {
                         "repr": "VRB",
-                        "spoken": "variable",
-                        "value": null
+                        "value": null,
+                        "spoken": "variable"
                     },
                     "wind_gust": null,
-                    "wind_shear": "",
                     "wind_speed": {
                         "repr": "03",
-                        "spoken": "three",
-                        "value": 3
-                    }
+                        "value": 3,
+                        "spoken": "three"
+                    },
+                    "wx_codes": [],
+                    "end_time": {
+                        "repr": "1918",
+                        "dt": "2020-03-19T18:00:00+00:00Z"
+                    },
+                    "icing": [],
+                    "probability": null,
+                    "raw": "FM191200 VRB03KT P6SM SCT030",
+                    "start_time": {
+                        "repr": "1912",
+                        "dt": "2020-03-19T12:00:00+00:00Z"
+                    },
+                    "turbulence": [],
+                    "type": "FROM",
+                    "wind_shear": null
                 }
             ],
-            "max_temp": "",
-            "meta": {
-                "timestamp": "Tue, 04 Sep 2018 01:27:49 GMT"
-            },
-            "min_temp": "",
-            "raw": "PHKO 181735Z 1818/1918 VRB03KT P6SM FEW035 FM182000 20010KT P6SM FEW030 SCT060 FM190400 10007KT P6SM FEW030 BKN050 FM191200 VRB03KT P6SM SCT030",
-            "remarks": "",
             "start_time": {
-                "dt": "Sat, 18 Aug 2018 18:00:00 GMT",
-                "repr": "1818"
+                "repr": "1818",
+                "dt": "2020-03-18T18:00:00+00:00Z"
             },
-            "station": "PHKO",
+            "end_time": {
+                "repr": "1918",
+                "dt": "2020-03-19T18:00:00+00:00Z"
+            },
+            "max_temp": "",
+            "min_temp": "",
+            "alts": null,
             "temps": null,
-            "time": {
-                "dt": "Sat, 18 Aug 2018 17:35:00 GMT",
-                "repr": "181735Z"
-            },
             "translations": {
                 "forecast": [
                     {
                         "altimeter": "",
                         "clouds": "Few clouds at 3500ft - Reported AGL",
-                        "icing": "",
-                        "other": "",
-                        "turbulance": "",
+                        "wx_codes": "",
                         "visibility": "Greater than 6sm ( >10km )",
+                        "icing": "",
+                        "turbulence": "",
                         "wind": "Variable at 3kt",
                         "wind_shear": ""
                     },
                     {
                         "altimeter": "",
                         "clouds": "Few clouds at 3000ft, Scattered clouds at 6000ft - Reported AGL",
-                        "icing": "",
-                        "other": "",
-                        "turbulance": "",
+                        "wx_codes": "",
                         "visibility": "Greater than 6sm ( >10km )",
+                        "icing": "",
+                        "turbulence": "",
                         "wind": "SSW-200 at 10kt",
                         "wind_shear": ""
                     },
                     {
                         "altimeter": "",
                         "clouds": "Few clouds at 3000ft, Broken layer at 5000ft - Reported AGL",
-                        "icing": "",
-                        "other": "",
-                        "turbulance": "",
+                        "wx_codes": "",
                         "visibility": "Greater than 6sm ( >10km )",
+                        "icing": "",
+                        "turbulence": "",
                         "wind": "E-100 at 7kt",
                         "wind_shear": ""
                     },
                     {
                         "altimeter": "",
                         "clouds": "Scattered clouds at 3000ft - Reported AGL",
-                        "icing": "",
-                        "other": "",
-                        "turbulance": "",
+                        "wx_codes": "",
                         "visibility": "Greater than 6sm ( >10km )",
+                        "icing": "",
+                        "turbulence": "",
                         "wind": "Variable at 3kt",
                         "wind_shear": ""
                     }
@@ -1439,9 +1446,895 @@ Parse a user-supplied PIREP included as the plain text body of the request.
             }
         }
 
+## GFS [/gfs/{report}/{location}{?options,airport,reporting,format,onfail}]
+
+The [Global Forecast System](https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/global-forcast-system-gfs) is a weather forecast model provided by NOAA. AVWX currently supports these forecast types that pertain to atmospheric conditions:
+
+- [MOS MAV](https://www.nws.noaa.gov/mdl/synop/mavcard.php) - Atmospheric forecast from 6 to 72 hours in advance updated every 6 hours
+- [MOS MEX](https://www.nws.noaa.gov/mdl/synop/mexcard.php) - Extended MAV forecast from 12 to 192 hours in advance updated every 12 hours
+
+These reports are available for primary reporting stations. It is recommended to request reports by ICAO station ID, but coordinate searches are accepted as well.
+
++ Parameters
+    + report: `mav` (string) - GFS report type
+        + Supported: `mav`, `mex`
+    + location: `KJFK` (string) - ICAO station ident or coordinate pair
+        + Examples: `EGLL`, `51.47,-0.4`
+    + options: (string, optional) - Additional options to include as comma-separated string
+        + Supported: info
+    + airport (boolean, optional) - Only include airports when performing a coordinate search
+        + Default: true
+    + reporting (boolean, optional) - Only include reporting stations when performing a coordinate search
+        + Default: true
+    + format (string, optional) - Desired response format
+        + Supported: json, xml, yaml
+        + Default: `json`
+    + onfail (string, optional) - Error or use out-of-date cache when unable to fetch report
+        + Supported: cache, error
+        + Default: `cache`
+
+### Get GFS MAV Report [GET]
+
+Get the GFS MAV report for a specific station by ICAO ident or a lat,lon coordinate pair. The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
+
+Note: the documented output is truncated.
+
++ Request (text/plain)
+
+    + Headers
+
+            Authorization: Token my_secret_api_token
+
++ Response 200 (application/json)
+
+        {
+            "meta": {
+                "timestamp": "2020-04-03T20:27:56.408487+00:00Z"
+            },
+            "raw": "KJFK   GFS MOS GUIDANCE    4/03/2020  1200 UTC                      \nDT /APR   3/APR   4                /APR   5                /APR   6 \nHR   18 21 00 03 06 09 12 15 18 21 00 03 06 09 12 15 18 21 00 06 12 \nN/X                    44          55          46          56    45 \nTMP  52 53 52 49 46 44 45 52 53 52 48 48 48 47 49 53 54 53 50 49 49 \nDPT  40 39 36 35 34 34 35 37 37 37 39 39 39 39 39 38 40 41 42 40 36 \nCLD  OV OV OV OV OV OV OV OV BK OV OV OV OV OV OV OV BK BK BK CL FW \nWDR  34 34 34 35 36 36 01 02 02 15 12 14 17 17 19 19 18 18 18 33 35 \nWSP  18 19 16 14 13 12 12 12 09 09 06 05 05 04 05 06 09 09 09 06 07 \nP06        68    43    22    12     8     3    21    25    14  2  4 \nP12                    43          13          21          25     4 \nQ06         1     1     0     0     0     0     0     0     0  0  0 \nQ12                     1           0           0           0     0 \nT06      1/ 0  1/ 0  0/ 0  1/ 0  0/ 0  0/ 0  0/ 0  1/ 0  0/ 0  0/ 0 \nT12            1/ 0        1/ 0        0/ 0        1/ 0     1/ 0    \nPOZ   0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0 \nPOS   0  0  0  1  2  9  1  1  0  1 10  0  0  5  0  0  0  0  0  0  0 \nTYP   R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R \nSNW                     0                       0                 0 \nCIG   5  5  6  6  6  6  5  5  6  6  6  6  6  6  5  5  6  7  7  8  8 \nVIS   6  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7 \nOBV   N  N  N  N  N  N  N  N  N  N  N  N  N  N  N  N  N  N  N  N  N",
+            "station": "KJFK",
+            "time": {
+                "repr": "4/03/2020  1200",
+                "dt": "2020-04-03T12:00:00+00:00Z"
+            },
+            "remarks": null,
+            "forecast": [
+                {
+                    "time": {
+                        "repr": "18",
+                        "dt": "2020-04-03T18:00:00+00:00Z"
+                    },
+                    "temperature": {
+                        "repr": "52",
+                        "value": 52,
+                        "spoken": "five two"
+                    },
+                    "dewpoint": {
+                        "repr": "40",
+                        "value": 40,
+                        "spoken": "four zero"
+                    },
+                    "cloud": {
+                        "repr": "OV",
+                        "value": "overcast"
+                    },
+                    "precip_chance_12": null,
+                    "precip_amount_12": null,
+                    "thunder_storm_12": null,
+                    "severe_storm_12": null,
+                    "freezing_precip": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "precip_type": {
+                        "repr": "R",
+                        "value": "pure rain/drizzle"
+                    },
+                    "snow": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "wind_direction": {
+                        "repr": "34",
+                        "value": 340,
+                        "spoken": "three four zero"
+                    },
+                    "wind_speed": {
+                        "repr": "18",
+                        "value": 18,
+                        "spoken": "one eight"
+                    },
+                    "precip_chance_6": null,
+                    "precip_amount_6": null,
+                    "thunder_storm_6": null,
+                    "severe_storm_6": null,
+                    "ceiling": {
+                        "repr": "5",
+                        "value": "2000 - 3000 feet"
+                    },
+                    "visibility": {
+                        "repr": "6",
+                        "value": "6 miles"
+                    },
+                    "vis_obstruction": {
+                        "repr": "N",
+                        "value": "none"
+                    }
+                },
+                {
+                    "time": {
+                        "repr": "21",
+                        "dt": "2020-04-03T21:00:00+00:00Z"
+                    },
+                    "temperature": {
+                        "repr": "53",
+                        "value": 53,
+                        "spoken": "five three"
+                    },
+                    "dewpoint": {
+                        "repr": "39",
+                        "value": 39,
+                        "spoken": "three nine"
+                    },
+                    "cloud": {
+                        "repr": "OV",
+                        "value": "overcast"
+                    },
+                    "precip_chance_12": null,
+                    "precip_amount_12": null,
+                    "thunder_storm_12": null,
+                    "severe_storm_12": null,
+                    "freezing_precip": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "precip_type": {
+                        "repr": "R",
+                        "value": "pure rain/drizzle"
+                    },
+                    "snow": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "wind_direction": {
+                        "repr": "34",
+                        "value": 340,
+                        "spoken": "three four zero"
+                    },
+                    "wind_speed": {
+                        "repr": "19",
+                        "value": 19,
+                        "spoken": "one nine"
+                    },
+                    "precip_chance_6": null,
+                    "precip_amount_6": null,
+                    "thunder_storm_6": null,
+                    "severe_storm_6": null,
+                    "ceiling": {
+                        "repr": "5",
+                        "value": "2000 - 3000 feet"
+                    },
+                    "visibility": {
+                        "repr": "7",
+                        "value": "> 6 miles"
+                    },
+                    "vis_obstruction": {
+                        "repr": "N",
+                        "value": "none"
+                    }
+                },
+                {
+                    "time": {
+                        "repr": "00",
+                        "dt": "2020-04-04T00:00:00+00:00Z"
+                    },
+                    "temperature": {
+                        "repr": "52",
+                        "value": 52,
+                        "spoken": "five two"
+                    },
+                    "dewpoint": {
+                        "repr": "36",
+                        "value": 36,
+                        "spoken": "three six"
+                    },
+                    "cloud": {
+                        "repr": "OV",
+                        "value": "overcast"
+                    },
+                    "precip_chance_12": null,
+                    "precip_amount_12": null,
+                    "thunder_storm_12": null,
+                    "severe_storm_12": null,
+                    "freezing_precip": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "precip_type": {
+                        "repr": "R",
+                        "value": "pure rain/drizzle"
+                    },
+                    "snow": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "wind_direction": {
+                        "repr": "34",
+                        "value": 340,
+                        "spoken": "three four zero"
+                    },
+                    "wind_speed": {
+                        "repr": "16",
+                        "value": 16,
+                        "spoken": "one six"
+                    },
+                    "precip_chance_6": {
+                        "repr": "68",
+                        "value": 68,
+                        "spoken": "six eight"
+                    },
+                    "precip_amount_6": {
+                        "repr": "1",
+                        "value": "0.01 to 0.09 inches"
+                    },
+                    "thunder_storm_6": {
+                        "repr": "1",
+                        "value": 1,
+                        "spoken": "one"
+                    },
+                    "severe_storm_6": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "ceiling": {
+                        "repr": "6",
+                        "value": "3100 - 6500 feet"
+                    },
+                    "visibility": {
+                        "repr": "7",
+                        "value": "> 6 miles"
+                    },
+                    "vis_obstruction": {
+                        "repr": "N",
+                        "value": "none"
+                    }
+                },
+                {
+                    "time": {
+                        "repr": "03",
+                        "dt": "2020-04-04T03:00:00+00:00Z"
+                    },
+                    "temperature": {
+                        "repr": "49",
+                        "value": 49,
+                        "spoken": "four nine"
+                    },
+                    "dewpoint": {
+                        "repr": "35",
+                        "value": 35,
+                        "spoken": "three five"
+                    },
+                    "cloud": {
+                        "repr": "OV",
+                        "value": "overcast"
+                    },
+                    "precip_chance_12": null,
+                    "precip_amount_12": null,
+                    "thunder_storm_12": null,
+                    "severe_storm_12": null,
+                    "freezing_precip": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "precip_type": {
+                        "repr": "R",
+                        "value": "pure rain/drizzle"
+                    },
+                    "snow": {
+                        "repr": "1",
+                        "value": 1,
+                        "spoken": "one"
+                    },
+                    "wind_direction": {
+                        "repr": "35",
+                        "value": 350,
+                        "spoken": "three five zero"
+                    },
+                    "wind_speed": {
+                        "repr": "14",
+                        "value": 14,
+                        "spoken": "one four"
+                    },
+                    "precip_chance_6": null,
+                    "precip_amount_6": null,
+                    "thunder_storm_6": null,
+                    "severe_storm_6": null,
+                    "ceiling": {
+                        "repr": "6",
+                        "value": "3100 - 6500 feet"
+                    },
+                    "visibility": {
+                        "repr": "7",
+                        "value": "> 6 miles"
+                    },
+                    "vis_obstruction": {
+                        "repr": "N",
+                        "value": "none"
+                    }
+                },
+                ...
+            ],
+            "units": {
+                "altimeter": "inHg",
+                "altitude": "ft",
+                "temperature": "F",
+                "visibility": "sm",
+                "wind_speed": "kt"
+            },
+            "info": {
+                "city": "New York",
+                "country": "US",
+                "elevation_ft": 13,
+                "elevation_m": 4,
+                "iata": "JFK",
+                "icao": "KJFK",
+                "latitude": 40.63980103,
+                "longitude": -73.77890015,
+                "name": "John F Kennedy International Airport",
+                "note": "Manhattan, New York City, NYC, Idlewild",
+                "reporting": true,
+                "runways": [
+                    {
+                        "length_ft": 14572,
+                        "width_ft": 150,
+                        "ident1": "13R",
+                        "ident2": "31L"
+                    },
+                    {
+                        "length_ft": 11351,
+                        "width_ft": 150,
+                        "ident1": "04L",
+                        "ident2": "22R"
+                    },
+                    {
+                        "length_ft": 10000,
+                        "width_ft": 150,
+                        "ident1": "13L",
+                        "ident2": "31R"
+                    },
+                    {
+                        "length_ft": 8400,
+                        "width_ft": 200,
+                        "ident1": "04R",
+                        "ident2": "22L"
+                    }
+                ],
+                "state": "NY",
+                "type": "large_airport",
+                "website": "http://www.panynj.gov/CommutingTravel/airports/html/kennedy.html",
+                "wiki": "https://en.wikipedia.org/wiki/John_F._Kennedy_International_Airport"
+            }
+        }
+
+### Get GFS MEX Report [GET]
+
+Get the GFS MEX report for a specific station by ICAO ident or a lat,lon coordinate pair. The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
+
+Note: the documented output is truncated.
+
++ Request (text/plain)
+
+    + Parameters
+    
+        + report: `mex` (string) - GFS report type
+
+    + Headers
+
+            Authorization: Token my_secret_api_token
+
++ Response 200 (application/json)
+
+        {
+            "meta": {
+                "timestamp": "2020-04-03T21:30:42.401110+00:00Z"
+            },
+            "raw": "KJFK   GFSX MOS GUIDANCE   4/03/2020  1200 UTC                       \nFHR  24  36| 48  60| 72  84| 96 108|120 132|144 156|168 180|192      \n     SAT 04| SUN 05| MON 06| TUE 07| WED 08| THU 09| FRI 10|SAT CLIMO\nN/X  44  55| 46  56| 45  65| 48  59| 47  57| 49  63| 45  60| 41 40 57\nTMP  45  48| 49  50| 49  56| 52  53| 49  52| 52  53| 48  53| 46      \nDPT  35  39| 39  42| 36  36| 40  43| 41  44| 45  35| 34  27| 29      \nCLD  OV  OV| OV  OV| PC  PC| OV  OV| OV  OV| OV  PC| OV  OV| CL      \nWND  16  12|  6   9|  9  10|  8  10| 10  14|  9  20| 23  23| 23      \nP12  43  13| 21  25|  4   0| 22  15| 19  47| 33  21| 32  22| 17 22 22\nP24      43|     25|      7|     22|     51|     33|     40|       34\nQ12   1   0|  0   0|  0   0|  0   0|  0   2|  1   0|       |         \nQ24       0|      0|      0|      0|      1|      0|       |         \nT12   1   1|  0   1|  1   0|  0   2|  1   5|  2   2|  7   2|  3      \nT24        |  1    |  1    |  1    |  2    |  5    |  7    |  9      \nPZP   0   0|  0   1|  0   0|  0   0|  0   0|  0   0|  2   0|  1      \nPSN   0   0|  0   2|  0   2|  2   1|  1   2|  1   0|  0   0|  7      \nPRS   0   0|  2   3|  1   0|  1   1|  2   1|  2   2|  2   9| 16      \nTYP   R   R|  R   R|  R   R|  R   R|  R   R|  R   R|  R   R|  R      \nSNW       0|      0|      0|      0|      0|      0|       |",
+            "station": "KJFK",
+            "time": {
+                "repr": "4/03/2020  1200",
+                "dt": "2020-04-03T12:00:00+00:00Z"
+            },
+            "remarks": null,
+            "forecast": [
+                {
+                    "time": {
+                        "repr": "24",
+                        "dt": "2020-04-04T00:00:00+00:00Z"
+                    },
+                    "temperature": {
+                        "repr": "45",
+                        "value": 45,
+                        "spoken": "four five"
+                    },
+                    "dewpoint": {
+                        "repr": "35",
+                        "value": 35,
+                        "spoken": "three five"
+                    },
+                    "cloud": {
+                        "repr": "OV",
+                        "value": "overcast"
+                    },
+                    "precip_chance_12": {
+                        "repr": "43",
+                        "value": 43,
+                        "spoken": "four three"
+                    },
+                    "precip_amount_12": {
+                        "repr": "1",
+                        "value": "0.01 to 0.09 inches"
+                    },
+                    "thunder_storm_12": {
+                        "repr": "1",
+                        "value": 1,
+                        "spoken": "one"
+                    },
+                    "severe_storm_12": null,
+                    "freezing_precip": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "precip_type": {
+                        "repr": "R",
+                        "value": "pure rain/drizzle"
+                    },
+                    "snow": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "precip_chance_24": null,
+                    "precip_amount_24": null,
+                    "thunder_storm_24": null,
+                    "severe_storm_24": null,
+                    "rain_snow_mix": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "snow_amount_24": null
+                },
+                {
+                    "time": {
+                        "repr": "36",
+                        "dt": "2020-04-04T12:00:00+00:00Z"
+                    },
+                    "temperature": {
+                        "repr": "48",
+                        "value": 48,
+                        "spoken": "four eight"
+                    },
+                    "dewpoint": {
+                        "repr": "39",
+                        "value": 39,
+                        "spoken": "three nine"
+                    },
+                    "cloud": {
+                        "repr": "OV",
+                        "value": "overcast"
+                    },
+                    "precip_chance_12": {
+                        "repr": "13",
+                        "value": 13,
+                        "spoken": "one three"
+                    },
+                    "precip_amount_12": {
+                        "repr": "0",
+                        "value": "no precipitation"
+                    },
+                    "thunder_storm_12": {
+                        "repr": "1",
+                        "value": 1,
+                        "spoken": "one"
+                    },
+                    "severe_storm_12": null,
+                    "freezing_precip": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "precip_type": {
+                        "repr": "R",
+                        "value": "pure rain/drizzle"
+                    },
+                    "snow": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "precip_chance_24": {
+                        "repr": "43",
+                        "value": 43,
+                        "spoken": "four three"
+                    },
+                    "precip_amount_24": {
+                        "repr": "0",
+                        "value": "no precipitation"
+                    },
+                    "thunder_storm_24": null,
+                    "severe_storm_24": null,
+                    "rain_snow_mix": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "snow_amount_24": {
+                        "repr": "0",
+                        "value": "no snow or a trace expected"
+                    }
+                },
+                {
+                    "time": {
+                        "repr": "48",
+                        "dt": "2020-04-05T00:00:00+00:00Z"
+                    },
+                    "temperature": {
+                        "repr": "49",
+                        "value": 49,
+                        "spoken": "four nine"
+                    },
+                    "dewpoint": {
+                        "repr": "39",
+                        "value": 39,
+                        "spoken": "three nine"
+                    },
+                    "cloud": {
+                        "repr": "OV",
+                        "value": "overcast"
+                    },
+                    "precip_chance_12": {
+                        "repr": "21",
+                        "value": 21,
+                        "spoken": "two one"
+                    },
+                    "precip_amount_12": {
+                        "repr": "0",
+                        "value": "no precipitation"
+                    },
+                    "thunder_storm_12": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "severe_storm_12": null,
+                    "freezing_precip": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "precip_type": {
+                        "repr": "R",
+                        "value": "pure rain/drizzle"
+                    },
+                    "snow": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "precip_chance_24": null,
+                    "precip_amount_24": null,
+                    "thunder_storm_24": {
+                        "repr": "1",
+                        "value": 1,
+                        "spoken": "one"
+                    },
+                    "severe_storm_24": null,
+                    "rain_snow_mix": {
+                        "repr": "2",
+                        "value": 2,
+                        "spoken": "two"
+                    },
+                    "snow_amount_24": null
+                },
+                ...
+            ],
+            "units": {
+                "altimeter": "inHg",
+                "altitude": "ft",
+                "temperature": "F",
+                "visibility": "sm",
+                "wind_speed": "kt"
+            }
+        }
+
+## Parse GFS [/parse/gfs/{report}{?options,format}]
+
+Parses a GFS report supplied by the user.
+
++ Parameters
+    + report: `mav` (string) - GFS report type
+        + Supported: `mav`, `mex`
+    + options: (string, optional) - Additional options to include as comma-separated string
+        + Supported: info
+    + format (string, optional) - Desired response format
+        + Supported: json, xml, yaml
+        + Default: `json`
+
+### Parse a Given MAV Report [POST]
+
+Parse a user-supplied GFS report included as the plain text body of the request. The request body can be multiline or use `\n` on a single line.
+
+Note: the documented output is truncated.
+
++ Request (text/plain)
+
+    + Headers
+
+            Authorization: Token my_secret_api_token
+
+    + Body
+
+            KJFK   GFS MOS GUIDANCE    4/03/2020  1200 UTC                      
+            DT /APR   3/APR   4                /APR   5                /APR   6 
+            HR   18 21 00 03 06 09 12 15 18 21 00 03 06 09 12 15 18 21 00 06 12 
+            N/X                    44          55          46          56    45 
+            TMP  52 53 52 49 46 44 45 52 53 52 48 48 48 47 49 53 54 53 50 49 49 
+            DPT  40 39 36 35 34 34 35 37 37 37 39 39 39 39 39 38 40 41 42 40 36 
+            CLD  OV OV OV OV OV OV OV OV BK OV OV OV OV OV OV OV BK BK BK CL FW 
+            WDR  34 34 34 35 36 36 01 02 02 15 12 14 17 17 19 19 18 18 18 33 35 
+            WSP  18 19 16 14 13 12 12 12 09 09 06 05 05 04 05 06 09 09 09 06 07 
+            P06        68    43    22    12     8     3    21    25    14  2  4 
+            P12                    43          13          21          25     4 
+            Q06         1     1     0     0     0     0     0     0     0  0  0 
+            Q12                     1           0           0           0     0 
+            T06      1/ 0  1/ 0  0/ 0  1/ 0  0/ 0  0/ 0  0/ 0  1/ 0  0/ 0  0/ 0 
+            T12            1/ 0        1/ 0        0/ 0        1/ 0     1/ 0    
+            POZ   0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0 
+            POS   0  0  0  1  2  9  1  1  0  1 10  0  0  5  0  0  0  0  0  0  0 
+            TYP   R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R 
+            SNW                     0                       0                 0 
+            CIG   5  5  6  6  6  6  5  5  6  6  6  6  6  6  5  5  6  7  7  8  8 
+            VIS   6  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7 
+            OBV   N  N  N  N  N  N  N  N  N  N  N  N  N  N  N  N  N  N  N  N  N
+
++ Response 200 (application/json)
+
+        {
+            "meta": {
+                "timestamp": "2020-04-04T21:13:36.988518+00:00Z"
+            },
+            "raw": "KJFK   GFS MOS GUIDANCE    4/03/2020  1200 UTC                      \nDT /APR   3/APR   4                /APR   5                /APR   6 \nHR   18 21 00 03 06 09 12 15 18 21 00 03 06 09 12 15 18 21 00 06 12 \nN/X                    44          55          46          56    45 \nTMP  52 53 52 49 46 44 45 52 53 52 48 48 48 47 49 53 54 53 50 49 49 \nDPT  40 39 36 35 34 34 35 37 37 37 39 39 39 39 39 38 40 41 42 40 36 \nCLD  OV OV OV OV OV OV OV OV BK OV OV OV OV OV OV OV BK BK BK CL FW \nWDR  34 34 34 35 36 36 01 02 02 15 12 14 17 17 19 19 18 18 18 33 35 \nWSP  18 19 16 14 13 12 12 12 09 09 06 05 05 04 05 06 09 09 09 06 07 \nP06        68    43    22    12     8     3    21    25    14  2  4 \nP12                    43          13          21          25     4 \nQ06         1     1     0     0     0     0     0     0     0  0  0 \nQ12                     1           0           0           0     0 \nT06      1/ 0  1/ 0  0/ 0  1/ 0  0/ 0  0/ 0  0/ 0  1/ 0  0/ 0  0/ 0 \nT12            1/ 0        1/ 0        0/ 0        1/ 0     1/ 0    \nPOZ   0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0 \nPOS   0  0  0  1  2  9  1  1  0  1 10  0  0  5  0  0  0  0  0  0  0 \nTYP   R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R  R \nSNW                     0                       0                 0 \nCIG   5  5  6  6  6  6  5  5  6  6  6  6  6  6  5  5  6  7  7  8  8 \nVIS   6  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7 \nOBV   N  N  N  N  N  N  N  N  N  N  N  N  N  N  N  N  N  N  N  N  N",
+            "station": "KJFK",
+            "time": {
+                "repr": "4/03/2020  1200",
+                "dt": "2020-04-03T12:00:00+00:00Z"
+            },
+            "remarks": null,
+            "forecast": [
+                {
+                    "time": {
+                        "repr": "18",
+                        "dt": "2020-04-03T18:00:00+00:00Z"
+                    },
+                    "temperature": {
+                        "repr": "52",
+                        "value": 52,
+                        "spoken": "five two"
+                    },
+                    "dewpoint": {
+                        "repr": "40",
+                        "value": 40,
+                        "spoken": "four zero"
+                    },
+                    "cloud": {
+                        "repr": "OV",
+                        "value": "overcast"
+                    },
+                    "precip_chance_12": null,
+                    "precip_amount_12": null,
+                    "thunder_storm_12": null,
+                    "severe_storm_12": null,
+                    "freezing_precip": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "precip_type": {
+                        "repr": "R",
+                        "value": "pure rain/drizzle"
+                    },
+                    "snow": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "wind_direction": {
+                        "repr": "34",
+                        "value": 340,
+                        "spoken": "three four zero"
+                    },
+                    "wind_speed": {
+                        "repr": "18",
+                        "value": 18,
+                        "spoken": "one eight"
+                    },
+                    "precip_chance_6": null,
+                    "precip_amount_6": null,
+                    "thunder_storm_6": null,
+                    "severe_storm_6": null,
+                    "ceiling": {
+                        "repr": "5",
+                        "value": "2000 - 3000 feet"
+                    },
+                    "visibility": {
+                        "repr": "6",
+                        "value": "6 miles"
+                    },
+                    "vis_obstruction": {
+                        "repr": "N",
+                        "value": "none"
+                    }
+                },
+                {
+                    "time": {
+                        "repr": "21",
+                        "dt": "2020-04-03T21:00:00+00:00Z"
+                    },
+                    "temperature": {
+                        "repr": "53",
+                        "value": 53,
+                        "spoken": "five three"
+                    },
+                    "dewpoint": {
+                        "repr": "39",
+                        "value": 39,
+                        "spoken": "three nine"
+                    },
+                    "cloud": {
+                        "repr": "OV",
+                        "value": "overcast"
+                    },
+                    "precip_chance_12": null,
+                    "precip_amount_12": null,
+                    "thunder_storm_12": null,
+                    "severe_storm_12": null,
+                    "freezing_precip": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "precip_type": {
+                        "repr": "R",
+                        "value": "pure rain/drizzle"
+                    },
+                    "snow": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "wind_direction": {
+                        "repr": "34",
+                        "value": 340,
+                        "spoken": "three four zero"
+                    },
+                    "wind_speed": {
+                        "repr": "19",
+                        "value": 19,
+                        "spoken": "one nine"
+                    },
+                    "precip_chance_6": null,
+                    "precip_amount_6": null,
+                    "thunder_storm_6": null,
+                    "severe_storm_6": null,
+                    "ceiling": {
+                        "repr": "5",
+                        "value": "2000 - 3000 feet"
+                    },
+                    "visibility": {
+                        "repr": "7",
+                        "value": "> 6 miles"
+                    },
+                    "vis_obstruction": {
+                        "repr": "N",
+                        "value": "none"
+                    }
+                },
+                {
+                    "time": {
+                        "repr": "00",
+                        "dt": "2020-04-04T00:00:00+00:00Z"
+                    },
+                    "temperature": {
+                        "repr": "52",
+                        "value": 52,
+                        "spoken": "five two"
+                    },
+                    "dewpoint": {
+                        "repr": "36",
+                        "value": 36,
+                        "spoken": "three six"
+                    },
+                    "cloud": {
+                        "repr": "OV",
+                        "value": "overcast"
+                    },
+                    "precip_chance_12": null,
+                    "precip_amount_12": null,
+                    "thunder_storm_12": null,
+                    "severe_storm_12": null,
+                    "freezing_precip": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "precip_type": {
+                        "repr": "R",
+                        "value": "pure rain/drizzle"
+                    },
+                    "snow": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "wind_direction": {
+                        "repr": "34",
+                        "value": 340,
+                        "spoken": "three four zero"
+                    },
+                    "wind_speed": {
+                        "repr": "16",
+                        "value": 16,
+                        "spoken": "one six"
+                    },
+                    "precip_chance_6": {
+                        "repr": "68",
+                        "value": 68,
+                        "spoken": "six eight"
+                    },
+                    "precip_amount_6": {
+                        "repr": "1",
+                        "value": "0.01 to 0.09 inches"
+                    },
+                    "thunder_storm_6": {
+                        "repr": "1",
+                        "value": 1,
+                        "spoken": "one"
+                    },
+                    "severe_storm_6": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "ceiling": {
+                        "repr": "6",
+                        "value": "3100 - 6500 feet"
+                    },
+                    "visibility": {
+                        "repr": "7",
+                        "value": "> 6 miles"
+                    },
+                    "vis_obstruction": {
+                        "repr": "N",
+                        "value": "none"
+                    }
+                },
+                ...
+            ]
+        }
+
+
 ## Multi-Station Request [/multi/{report_type}/{locations}{?options,format,onfail}]
 
-This endpoint returns the results for multiple stations for a given report type ("metar", "taf"). It accepts the same request parameters as normal METAR and TAF requests, but accepts a comma-separated string of up to 10 stations in one call.
+This endpoint returns the results for multiple stations for a given report type (`metar`, `taf`). It accepts the same request parameters as normal METAR and TAF requests, but accepts a comma-separated string of up to 10 stations in one call.
 
 + Parameters
 
@@ -1471,118 +2364,43 @@ Shows a request for KJFK and KSFO in a single API call.
 + Response 200 (application/json)
 
         {
-            "KJFK": {
+            "KMCO": {
                 "meta": {
-                    "timestamp": "Tue, 22 Jan 2019 05:16:57 GMT",
-                    "cache-timestamp": "Tue, 22 Jan 2019 05:15:20 GMT"
+                    "timestamp": "2020-04-03T19:36:59.397204+00:00Z"
                 },
                 "altimeter": {
-                    "repr": "3041",
-                    "value": 30.41,
-                    "spoken": "three zero point four one"
+                    "repr": "A2995",
+                    "value": 29.95,
+                    "spoken": "two nine point nine five"
                 },
                 "clouds": [
                     {
-                        "repr": "FEW045",
+                        "repr": "FEW050",
                         "type": "FEW",
-                        "altitude": 45,
+                        "altitude": 50,
                         "modifier": null,
                         "direction": null
-                    }
-                ],
-                "flight_rules": "VFR",
-                "other": [],
-                "sanitized": "KJFK 220451Z 30023G29KT 10SM FEW045 M10/M18 A3041 RMK AO2 PK WND 29029/0446 SLP296 T11001178 410941150",
-                "visibility": {
-                    "repr": "10",
-                    "value": 10,
-                    "spoken": "one zero"
-                },
-                "wind_direction": {
-                    "repr": "300",
-                    "value": 300,
-                    "spoken": "three zero zero"
-                },
-                "wind_gust": {
-                    "repr": "29",
-                    "value": 29,
-                    "spoken": "two nine"
-                },
-                "wind_speed": {
-                    "repr": "23",
-                    "value": 23,
-                    "spoken": "two three"
-                },
-                "raw": "KJFK 220451Z 30023G29KT 10SM FEW045 M10/M18 A3041 RMK AO2 PK WND 29029/0446 SLP296 T11001178 410941150",
-                "remarks": "RMK AO2 PK WND 29029/0446 SLP296 T11001178 410941150",
-                "station": "KJFK",
-                "time": {
-                    "repr": "220451Z",
-                    "dt": "Tue, 22 Jan 2019 04:51:00 GMT"
-                },
-                "dewpoint": {
-                    "repr": "M18",
-                    "value": -18,
-                    "spoken": "minus one eight"
-                },
-                "remarks_info": {
-                    "dewpoint_decimal": {
-                        "repr": "-17.8",
-                        "value": -17.8,
-                        "spoken": "minus one seven point eight"
                     },
-                    "temperature_decimal": {
-                        "repr": "-10.0",
-                        "value": -10.0,
-                        "spoken": "minus one zero point zero"
-                    }
-                },
-                "runway_visibility": [],
-                "temperature": {
-                    "repr": "M10",
-                    "value": -10,
-                    "spoken": "minus one zero"
-                },
-                "wind_variable_direction": [],
-                "units": {
-                    "altimeter": "inHg",
-                    "altitude": "ft",
-                    "temperature": "C",
-                    "visibility": "sm",
-                    "wind_speed": "kt"
-                }
-            },
-            "KSFO": {
-                "meta": {
-                    "timestamp": "Tue, 22 Jan 2019 05:16:57 GMT",
-                    "cache-timestamp": "Tue, 22 Jan 2019 05:15:32 GMT"
-                },
-                "altimeter": {
-                    "repr": "3030",
-                    "value": 30.3,
-                    "spoken": "three zero point three"
-                },
-                "clouds": [
                     {
-                        "repr": "FEW028",
-                        "type": "FEW",
-                        "altitude": 28,
+                        "repr": "SCT300",
+                        "type": "SCT",
+                        "altitude": 300,
                         "modifier": null,
                         "direction": null
                     }
                 ],
                 "flight_rules": "VFR",
                 "other": [],
-                "sanitized": "KSFO 220456Z 30007KT 10SM FEW028 12/06 A3030 RMK AO2 SLP262 T01220061 $",
+                "sanitized": "KMCO 031853Z 03007KT 020V080 10SM FEW050 SCT300 28/09 A2995 RMK AO2 SLP139 T02780094",
                 "visibility": {
                     "repr": "10",
                     "value": 10,
                     "spoken": "one zero"
                 },
                 "wind_direction": {
-                    "repr": "300",
-                    "value": 300,
-                    "spoken": "three zero zero"
+                    "repr": "030",
+                    "value": 30,
+                    "spoken": "zero three zero"
                 },
                 "wind_gust": null,
                 "wind_speed": {
@@ -1590,35 +2408,117 @@ Shows a request for KJFK and KSFO in a single API call.
                     "value": 7,
                     "spoken": "seven"
                 },
-                "raw": "KSFO 220456Z 30007KT 10SM FEW028 12/06 A3030 RMK AO2 SLP262 T01220061 $",
-                "remarks": "RMK AO2 SLP262 T01220061 $",
-                "station": "KSFO",
+                "wx_codes": [],
+                "raw": "KMCO 031853Z 03007KT 020V080 10SM FEW050 SCT300 28/09 A2995 RMK AO2 SLP139 T02780094",
+                "station": "KMCO",
                 "time": {
-                    "repr": "220456Z",
-                    "dt": "Tue, 22 Jan 2019 04:56:00 GMT"
+                    "repr": "031853Z",
+                    "dt": "2020-04-03T18:53:00+00:00Z"
                 },
+                "remarks": "RMK AO2 SLP139 T02780094",
                 "dewpoint": {
-                    "repr": "06",
-                    "value": 6,
-                    "spoken": "six"
+                    "repr": "09",
+                    "value": 9,
+                    "spoken": "nine"
                 },
                 "remarks_info": {
                     "dewpoint_decimal": {
-                        "repr": "6.1",
-                        "value": 6.1,
-                        "spoken": "six point one"
+                        "repr": "9.4",
+                        "value": 9.4,
+                        "spoken": "nine point four"
                     },
                     "temperature_decimal": {
-                        "repr": "12.2",
-                        "value": 12.2,
-                        "spoken": "one two point two"
+                        "repr": "27.8",
+                        "value": 27.8,
+                        "spoken": "two seven point eight"
                     }
                 },
                 "runway_visibility": [],
                 "temperature": {
-                    "repr": "12",
-                    "value": 12,
-                    "spoken": "one two"
+                    "repr": "28",
+                    "value": 28,
+                    "spoken": "two eight"
+                },
+                "wind_variable_direction": [
+                    {
+                        "repr": "020",
+                        "value": 20,
+                        "spoken": "zero two zero"
+                    },
+                    {
+                        "repr": "080",
+                        "value": 80,
+                        "spoken": "zero eight zero"
+                    }
+                ],
+                "units": {
+                    "altimeter": "inHg",
+                    "altitude": "ft",
+                    "temperature": "C",
+                    "visibility": "sm",
+                    "wind_speed": "kt"
+                },
+                "speech": "Winds zero three zero (variable zero two zero to zero eight zero) at 7kt. Visibility one zero miles. Temperature two eight degrees Celsius. Dew point nine degrees Celsius. Altimeter two nine point nine five. Few clouds at 5000ft. Scattered clouds at 30000ft"
+            },
+            "KLEX": {
+                "meta": {
+                    "timestamp": "2020-04-03T19:36:59.397156+00:00Z"
+                },
+                "altimeter": {
+                    "repr": "A3006",
+                    "value": 30.06,
+                    "spoken": "three zero point zero six"
+                },
+                "clouds": [],
+                "flight_rules": "VFR",
+                "other": [],
+                "sanitized": "KLEX 031854Z 35004KT 9SM 18/04 A3006 RMK AO2 SLP179 T01780039",
+                "visibility": {
+                    "repr": "9",
+                    "value": 9,
+                    "spoken": "nine"
+                },
+                "wind_direction": {
+                    "repr": "350",
+                    "value": 350,
+                    "spoken": "three five zero"
+                },
+                "wind_gust": null,
+                "wind_speed": {
+                    "repr": "04",
+                    "value": 4,
+                    "spoken": "four"
+                },
+                "wx_codes": [],
+                "raw": "KLEX 031854Z 35004KT 9SM CLR 18/04 A3006 RMK AO2 SLP179 T01780039",
+                "station": "KLEX",
+                "time": {
+                    "repr": "031854Z",
+                    "dt": "2020-04-03T18:54:00+00:00Z"
+                },
+                "remarks": "RMK AO2 SLP179 T01780039",
+                "dewpoint": {
+                    "repr": "04",
+                    "value": 4,
+                    "spoken": "four"
+                },
+                "remarks_info": {
+                    "dewpoint_decimal": {
+                        "repr": "3.9",
+                        "value": 3.9,
+                        "spoken": "three point nine"
+                    },
+                    "temperature_decimal": {
+                        "repr": "17.8",
+                        "value": 17.8,
+                        "spoken": "one seven point eight"
+                    }
+                },
+                "runway_visibility": [],
+                "temperature": {
+                    "repr": "18",
+                    "value": 18,
+                    "spoken": "one eight"
                 },
                 "wind_variable_direction": [],
                 "units": {
@@ -1627,6 +2527,7 @@ Shows a request for KJFK and KSFO in a single API call.
                     "temperature": "C",
                     "visibility": "sm",
                     "wind_speed": "kt"
-                }
+                },
+                "speech": "Winds three five zero at 4kt. Visibility nine miles. Temperature one eight degrees Celsius. Dew point four degrees Celsius. Altimeter three zero point zero six. Sky clear"
             }
         }
