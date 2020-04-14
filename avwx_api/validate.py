@@ -101,21 +101,21 @@ def Location(
     return validator
 
 
-def MultiStation(stations: str) -> [Station]:
+def MultiStation(values: str) -> [Station]:
     """
     Validates a comma-separated list of station idents
     """
-    stations = stations.upper().split(",")
-    if not stations:
+    values = values.upper().split(",")
+    if not values:
         raise Invalid("Could not find any stations in the request")
-    if len(stations) > 10:
+    if len(values) > 10:
         raise Invalid("Multi requests are limited to 10 stations or less")
     ret = []
-    for stn in stations:
+    for icao in values:
         try:
-            ret.append(Station.from_icao(stn))
+            ret.append(Station.from_icao(icao))
         except BadStation:
-            raise Invalid(f"{stn} is not a valid ICAO station ident")
+            raise Invalid(f"{icao} is not a valid ICAO station ident")
     return ret
 
 
@@ -183,6 +183,7 @@ report_stations = Schema(
 )
 
 station = Schema({**_required, Required("station"): Location()}, extra=REMOVE_EXTRA)
+stations = Schema({**_required, Required("stations"): MultiStation}, extra=REMOVE_EXTRA)
 
 coord_search = Schema(
     {

@@ -48,6 +48,11 @@ class StationParams(Params):
 
 
 @dataclass
+class StationsParams(Params):
+    stations: ["avwx.Station"]
+
+
+@dataclass
 class CoordSearchParams:
     coord: (float, float)
     n: int

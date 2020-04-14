@@ -2,9 +2,6 @@
 Manages report archive population
 """
 
-# stdlib
-from dataclasses import asdict
-
 
 class History:
     """
