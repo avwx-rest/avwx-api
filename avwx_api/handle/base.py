@@ -46,6 +46,16 @@ class ReportHandler:
         if self.option_keys is None:
             self.option_keys = tuple()
 
+    @staticmethod
+    def _make_meta() -> dict:
+        """
+        Create base metadata dict
+        """
+        return {
+            "timestamp": datetime.now(tz=timezone.utc),
+            "stations_updated": avwx.station.__LAST_UPDATED__,
+        }
+
     def _make_data(self, parser: avwx.base.AVWXBase) -> dict:
         """
         Create the cached data representation from an updated parser
@@ -231,7 +241,7 @@ class ReportHandler:
         """
         Performs post parser update operations
         """
-        resp = {"meta": {"timestamp": datetime.now(tz=timezone.utc)}}
+        resp = {"meta": self._make_meta()}
         if "timestamp" in data:
             resp["meta"]["cache-timestamp"] = data["timestamp"]
         # Handle errors according to nofail argument
@@ -293,7 +303,7 @@ class ReportHandler:
         """
         try:
             data, code = self._parse_given(report, opts)
-            data["meta"] = {"timestamp": datetime.now(tz=timezone.utc)}
+            data["meta"] = self._make_meta()
         except Exception as exc:
             print("Unknown Parsing Error", exc)
             rollbar.report_exc_info(extra_data={"state": "given", "raw": report})

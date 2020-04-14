@@ -24,10 +24,11 @@ class StationCounter(DelayedCounter):
             async with self._queue.get() as value:
                 if self._app.mdb:
                     icao, request_type, count = value
-                    date = datetime.now(tz=timezone.utc).strftime(r"%Y-%m-%d")
+                    date = datetime.now(tz=timezone.utc)
+                    date = date.replace(hour=0, minute=0, second=0, microsecond=0)
                     await self._app.mdb.counter.station.update_one(
-                        {"_id": icao},
-                        {"$inc": {f"{request_type}.{date}": count}},
+                        {"icao": icao, "date": date},
+                        {"$inc": {request_type: count}},
                         upsert=True,
                     )
 
