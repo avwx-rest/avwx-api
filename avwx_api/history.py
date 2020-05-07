@@ -20,7 +20,7 @@ class History:
         if self._app.mdb and data.time and data.time.dt:
             date = data.time.dt.replace(hour=0, minute=0, second=0, microsecond=0)
             key = {"icao": data.station, "date": date}
-            update = {"$set": {"raw": {data.time.repr.rstrip("Z"): data.raw}}}
+            update = {"$set": {"raw." + data.time.repr.rstrip("Z"): data.raw}}
             await self._app.mdb.history[report_type].update_one(
                 key, update, upsert=True
             )
