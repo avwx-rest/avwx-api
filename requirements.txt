@@ -1,9 +1,9 @@
-git+git://github.com/avwx-rest/avwx-api-core.git@779cffd4826e43d12c0bf1e0fb43dca5d43c361a#egg=avwx_api_core
+git+git://github.com/avwx-rest/avwx-api-core.git@316fee2f119a0a9a3e958684cd6988b45f1d9167#egg=avwx_api_core
 
-avwx-engine[scipy]==1.4.4
+avwx-engine[scipy]==1.4.5
 dataclasses>=0.7;python_version<"3.7"
 hypercorn~=0.9
-quart~=0.11
+quart<0.12
 quart-openapi>=1.5
 rollbar>=0.14.7
 voluptuous~=0.11
