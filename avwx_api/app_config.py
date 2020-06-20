@@ -7,22 +7,27 @@ avwx_api.__init__ - High-level Quart application
 from os import environ
 
 # library
-from quart import got_request_exception
 import rollbar
-
+from motor.motor_asyncio import AsyncIOMotorClient
+from quart import got_request_exception
+from quart_openapi import Pint
 from rollbar.contrib.quart import report_exception
 
 # module
-from avwx_api_core.app import create_app
+from avwx_api_core.app import add_cors, CustomJSONEncoder
 from avwx_api_core.cache import CacheManager
 from avwx_api_core.token import TokenManager
 from avwx_api.history import History
 from avwx_api.station_counter import StationCounter
 
-app = create_app(__name__, mongo_uri=environ.get("MONGO_URI"),)
-
 
 CACHE_EXPIRES = {"metar": 1, "taf": 1}
+MONGO_URI = environ.get("MONGO_URI")
+
+
+app = Pint(__name__)
+app.json_encoder = CustomJSONEncoder
+app.after_request(add_cors)
 
 
 @app.before_serving
@@ -32,6 +37,7 @@ async def init_helpers():
 
     Need async to connect helpers to event loop
     """
+    app.mdb = AsyncIOMotorClient(MONGO_URI) if MONGO_URI else None
     app.cache = CacheManager(app, expires=CACHE_EXPIRES)
     app.token = TokenManager(app)
     app.history = History(app)

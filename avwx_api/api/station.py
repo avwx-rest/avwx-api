@@ -97,3 +97,24 @@ class Near(Base):
         for i, stn in enumerate(stations):
             stations[i]["station"] = asdict(stn["station"])
         return self.make_response(stations, params.format)
+
+
+@app.route("/api/station/list")
+class StationList(Base):
+    """
+    Returns the current list of reporting stations
+    """
+
+    @crossdomain(origin="*", headers=HEADERS)
+    @token_check
+    async def get(self) -> Response:
+        """
+        Returns raw station info if available
+        """
+        stations = []
+        if not avwx.station._STATIONS.data:
+            avwx.station._STATIONS._load()
+        for icao, station in avwx.station._STATIONS.data.items():
+            if station["reporting"]:
+                stations.append(icao)
+        return self.make_response(stations)
