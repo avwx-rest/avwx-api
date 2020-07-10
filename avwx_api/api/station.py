@@ -111,10 +111,4 @@ class StationList(Base):
         """
         Returns raw station info if available
         """
-        stations = []
-        if not avwx.station._STATIONS.data:
-            avwx.station._STATIONS._load()
-        for icao, station in avwx.station._STATIONS.data.items():
-            if station["reporting"]:
-                stations.append(icao)
-        return self.make_response(stations)
+        return self.make_response(avwx.station.station_list())
