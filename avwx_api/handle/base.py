@@ -162,8 +162,8 @@ class ReportHandler:
         coros = []
         if cache:
             coros.append(app.cache.update(self.report_type, location_key, data))
-        if history:
-            coros.append(app.history.add(self.report_type, parser.data))
+        # if history:
+        #     coros.append(app.history.add(self.report_type, parser.data))
         if coros:
             await aio.gather(*coros)
         return data, 200
