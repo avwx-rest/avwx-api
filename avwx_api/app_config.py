@@ -17,7 +17,6 @@ from rollbar.contrib.quart import report_exception
 from avwx_api_core.app import add_cors, CustomJSONEncoder
 from avwx_api_core.cache import CacheManager
 from avwx_api_core.token import TokenManager
-from avwx_api.history import History
 from avwx_api.station_counter import StationCounter
 
 
@@ -40,7 +39,6 @@ async def init_helpers():
     app.mdb = AsyncIOMotorClient(MONGO_URI) if MONGO_URI else None
     app.cache = CacheManager(app, expires=CACHE_EXPIRES)
     app.token = TokenManager(app)
-    app.history = History(app)
     app.station = StationCounter(app)
 
 

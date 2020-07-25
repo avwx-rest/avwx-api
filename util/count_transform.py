@@ -5,12 +5,13 @@ Expand station counts into date documents
 # stdlib
 from datetime import datetime
 from os import environ
+from typing import Dict
 
 # library
 from pymongo import MongoClient, UpdateOne
 
 
-def make_update(icao: str, date: datetime, reports: {str: dict}) -> UpdateOne:
+def make_update(icao: str, date: datetime, reports: Dict[str, dict]) -> UpdateOne:
     """
     Returns an UpdateOne operation for counts on a day
     """

@@ -2,6 +2,8 @@
 Current report API endpoints
 """
 
+# pylint: disable=missing-class-docstring,too-many-ancestors
+
 import avwx_api.handle.current as handle
 from avwx_api import app, structs, validate
 from avwx_api.api.base import Report, Parse, MultiReport

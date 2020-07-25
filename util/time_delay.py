@@ -9,10 +9,10 @@ from time import sleep
 # library
 import httpx
 from avwx import Metar
-from avwx.service import NOAA_ADDS, NOAA_FTP, NOAA_Scrape
+from avwx.service.scrape import NOAA_ADDS, NOAA_FTP, NOAA_Scrape, Service
 
 
-def from_service(service: "Service", icao: str) -> str:
+def from_service(service: Service, icao: str) -> str:
     """
     Returns the timestamp fetched from an AVWX Service object
     """

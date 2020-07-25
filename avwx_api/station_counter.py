@@ -2,13 +2,16 @@
 Manages station counts for usage metrics
 """
 
+# pylint: disable=arguments-differ
+
 # stdlib
 import time
 from datetime import datetime, timezone
 
 # module
-from avwx import Station
 from avwx_api_core.counter.base import DelayedCounter
+from avwx import Station
+from avwx_api.structs import Params
 
 
 class StationCounter(DelayedCounter):
@@ -53,7 +56,7 @@ class StationCounter(DelayedCounter):
         except KeyError:
             self._data[key] = 1
 
-    async def from_params(self, params: "structs.Params", report_type: str):
+    async def from_params(self, params: Params, report_type: str):
         """
         Counts station based on param values
         """

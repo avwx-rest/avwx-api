@@ -5,7 +5,12 @@ avwx_api.structs - Parameter dataclasses
 
 # pylint: disable=C0111
 
+# stdlib
 from dataclasses import dataclass
+from typing import List, Tuple, Union
+
+# module
+from avwx import Station
 
 
 @dataclass
@@ -15,25 +20,25 @@ class Params:
 
 @dataclass
 class ReportParams(Params):
-    options: [str]
+    options: List[str]
     report_type: str
 
 
 @dataclass
 class ReportStationParams(ReportParams):
     onfail: str
-    station: "avwx.Station"
+    station: Station
 
 
 @dataclass
 class ReportStationsParams(ReportParams):
     onfail: str
-    stations: ["avwx.Station"]
+    stations: List[Station]
 
 
 @dataclass
 class ReportLocationParams(ReportParams):
-    location: "avwx.Station/(float, float)"
+    location: Union[Station, Tuple[float, float]]
     onfail: str
 
 
@@ -44,17 +49,18 @@ class ReportGivenParams(ReportParams):
 
 @dataclass
 class StationParams(Params):
-    station: "avwx.Station"
+    station: Station
 
 
 @dataclass
 class StationsParams(Params):
-    stations: ["avwx.Station"]
+    stations: List[Station]
 
 
 @dataclass
 class CoordSearchParams:
-    coord: (float, float)
+    coord: Tuple[float, float]
+    # pylint: disable=invalid-name
     n: int
     airport: bool
     reporting: bool

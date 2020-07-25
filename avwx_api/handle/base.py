@@ -8,6 +8,7 @@ Data handling between inputs, cache, and avwx core
 import asyncio as aio
 from dataclasses import asdict
 from datetime import datetime, timezone
+from typing import Any, Dict, List, Tuple
 
 # library
 import rollbar
@@ -32,10 +33,10 @@ class ReportHandler:
     Handles AVWX report parsers and data formatting
     """
 
-    report_type: str
     parser: avwx.base.AVWXBase
 
-    option_keys: [str] = None
+    report_type: str = None
+    option_keys: List[str] = None
 
     # Report data is a list
     listed_data: bool = False
@@ -43,6 +44,8 @@ class ReportHandler:
     history: bool = False
 
     def __init__(self):
+        if not self.report_type:
+            self.report_type = self.parser.__name__.lower()
         if self.option_keys is None:
             self.option_keys = tuple()
 
@@ -75,18 +78,18 @@ class ReportHandler:
             data["speech"] = parser.speech
         return data
 
+    # pylint: disable=too-many-return-statements
     async def _update_parser(
-        self, parser: avwx.base.AVWXBase, err_station: "stringable" = None
-    ) -> (dict, int):
+        self, parser: avwx.base.AVWXBase, err_station: Any = None
+    ) -> Tuple[dict, int]:
         """
         Updates the data of a given parser and returns any errors
 
         Attempts to fetch five times before giving up
         """
-        report_type = parser.__class__.__name__.upper()
         state_info = {
             "state": "fetch",
-            "type": report_type,
+            "type": self.report_type,
             "station": getattr(parser, "station", None),
             "source": parser.service,
         }
@@ -97,7 +100,11 @@ class ReportHandler:
                     if not await parser.async_update(timeout=2, disable_post=True):
                         err = 0 if isinstance(err_station, str) else 3
                         return (
-                            {"error": ERRORS[err].format(report_type, err_station)},
+                            {
+                                "error": ERRORS[err].format(
+                                    self.report_type, err_station
+                                )
+                            },
                             400,
                         )
                     break
@@ -123,11 +130,11 @@ class ReportHandler:
             return {"error": str(exc)}, int(str(exc)[-3:])
         except avwx.exceptions.InvalidRequest as exc:
             print("Invalid Request:", exc)
-            return {"error": ERRORS[0].format(report_type, err_station)}, 400
+            return {"error": ERRORS[0].format(self.report_type, err_station)}, 400
         except Exception as exc:
             print("Unknown Fetching Error", exc)
             rollbar.report_exc_info(extra_data=state_info)
-            return {"error": ERRORS[4].format(report_type)}, 500
+            return {"error": ERRORS[4].format(self.report_type)}, 500
         # Parse the fetched data
         try:
             parser._post_update()  # pylint: disable=protected-access
@@ -139,12 +146,12 @@ class ReportHandler:
             state_info["state"] = "parse"
             state_info["raw"] = parser.raw
             rollbar.report_exc_info(extra_data=state_info)
-            return {"error": ERRORS[1].format(report_type), "raw": parser.raw}, 500
+            return {"error": ERRORS[1].format(self.report_type), "raw": parser.raw}, 500
         return None, None
 
     async def _new_report(
         self, parser: avwx.base.AVWXBase, cache: bool = None, history: bool = None
-    ) -> (dict, int):
+    ) -> Tuple[dict, int]:
         """
         Fetch and parse report data for a given station
         """
@@ -162,8 +169,6 @@ class ReportHandler:
         coros = []
         if cache:
             coros.append(app.cache.update(self.report_type, location_key, data))
-        # if history:
-        #     coros.append(app.history.add(self.report_type, parser.data))
         if coros:
             await aio.gather(*coros)
         return data, 200
@@ -190,7 +195,9 @@ class ReportHandler:
             data = cache
         return data, cache, code
 
-    def _format_report(self, data: {str: object}, options: [str]) -> {str: object}:
+    def _format_report(
+        self, data: Dict[str, object], options: List[str]
+    ) -> Dict[str, object]:
         """
         Formats the report/cache data into the expected response format
         """
@@ -207,8 +214,8 @@ class ReportHandler:
         return ret
 
     async def fetch_report(
-        self, station: avwx.Station, opts: [str], nofail: bool = False
-    ) -> (dict, int):
+        self, station: avwx.Station, opts: List[str], nofail: bool = False
+    ) -> Tuple[dict, int]:
         """
         Returns weather data for the given report type, station, and options
         Also returns the appropriate HTTP response code
@@ -229,15 +236,16 @@ class ReportHandler:
             rollbar.report_exc_info(extra_data={"state": "outer fetch"})
             return {"error": ERRORS[1].format(self.report_type)}, 500
 
+    # pylint: disable=too-many-arguments
     def _post_handle(
         self,
         data: dict,
         code: int,
         cache: dict,
         station: avwx.Station,
-        opts: [str],
+        opts: List[str],
         nofail: bool,
-    ) -> (dict, int):
+    ) -> Tuple[dict, int]:
         """
         Performs post parser update operations
         """
@@ -269,7 +277,7 @@ class ReportHandler:
             resp["info"] = asdict(station)
         return resp, code
 
-    def _parse_given(self, report: str, opts: [str]) -> (dict, int):
+    def _parse_given(self, report: str, opts: List[str]) -> Tuple[dict, int]:
         """
         Attempts to parse a given report supplied by the user
         """
@@ -278,7 +286,7 @@ class ReportHandler:
         try:
             station = avwx.Station.from_icao(report[:4])
         except avwx.exceptions.BadStation:
-            return {"error": ERRORS[2].format(station)}, 400
+            return {"error": ERRORS[2].format(report[:4])}, 400
         report = report.replace("\\n", "\n")
         parser = self.parser.from_report(report)
         resp = asdict(parser.data)
@@ -297,7 +305,7 @@ class ReportHandler:
             resp["info"] = asdict(station)
         return resp, 200
 
-    def parse_given(self, report: str, opts: [str]) -> (dict, int):
+    def parse_given(self, report: str, opts: List[str]) -> Tuple[dict, int]:
         """
         Attempts to parse a given report supplied by the user
         """

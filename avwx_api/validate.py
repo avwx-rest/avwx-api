@@ -6,7 +6,7 @@ avwx_api.validators - Parameter validators
 # pylint: disable=C0103
 
 # stdlib
-from typing import Callable
+from typing import Callable, List, Tuple
 
 # library
 from voluptuous import (
@@ -26,18 +26,18 @@ from avwx import Station
 from avwx.exceptions import BadStation
 
 
-REPORT_TYPES = ("metar", "taf", "pirep", "mav", "mex")
+REPORT_TYPES = ("metar", "taf", "pirep", "mav", "mex", "nbs")
 OPTIONS = ("info", "translate", "summary", "speech")
 FORMATS = ("json", "xml", "yaml")
 ONFAIL = ("error", "cache")
 
 
 HELP = {
-    "format": "Accepted response formats (json, xml, yaml)",
-    "onfail": "Desired behavior when report fetch fails (error, cache)",
-    "options": 'Response content and parsing options. Ex: "info,summary"',
+    "format": f"Accepted response formats {FORMATS}",
+    "onfail": f"Desired behavior when report fetch fails {ONFAIL}",
+    "options": f'Response content and parsing options. Ex: "info,summary" in {OPTIONS}',
     "report": "Raw report string to be parsed. Given in the POST body as plain text",
-    "report_type": "Weather report type (metar, taf, pirep)",
+    "report_type": f"Weather report type {REPORT_TYPES}",
     "station": 'ICAO station ID or coord pair. Ex: KJFK or "12.34,-12.34"',
     "location": 'ICAO station ID or coord pair. Ex: KJFK or "12.34,-12.34"',
     "stations": 'ICAO station IDs. Ex: "KMCO,KLEX,KJFK"',
@@ -57,7 +57,7 @@ Latitude = All(Coerce(float), Range(-90, 90))
 Longitude = All(Coerce(float), Range(-180, 180))
 
 
-def Coordinate(coord: str) -> (float, float):
+def Coordinate(coord: str) -> Tuple[float, float]:
     """
     Converts a coordinate string into float tuple
     """
@@ -101,7 +101,7 @@ def Location(
     return validator
 
 
-def MultiStation(values: str) -> [Station]:
+def MultiStation(values: str) -> List[Station]:
     """
     Validates a comma-separated list of station idents
     """
@@ -119,7 +119,7 @@ def MultiStation(values: str) -> [Station]:
     return ret
 
 
-def SplitIn(values: (str,)) -> Callable:
+def SplitIn(values: Tuple[str]) -> Callable:
     """
     Returns a validator to check for given values in a comma-separated string
     """

@@ -2,8 +2,11 @@
 Handle current report requests
 """
 
+# pylint: disable=arguments-differ,missing-class-docstring
+
 # stdlib
 from dataclasses import asdict
+from typing import List, Tuple, Union
 
 # module
 import avwx
@@ -14,29 +17,29 @@ OPTIONS = ("summary", "speech", "translate")
 
 
 class MetarHandler(ReportHandler):
-    report_type = "metar"
     parser = avwx.Metar
     option_keys = OPTIONS
     history = True
 
 
 class TafHandler(ReportHandler):
-    report_type = "taf"
     parser = avwx.Taf
     option_keys = OPTIONS
     history = True
 
 
 class PirepHandler(ReportHandler):
-
-    report_type: str = "pirep"
     parser: avwx.Pireps = avwx.Pireps
-    option_keys: [str] = tuple()
+    report_type = "pirep"
+    option_keys: Tuple[str] = tuple()
     listed_data: bool = True
 
     async def fetch_report(
-        self, loc: "Station/(float,)", opts: [str], nofail: bool = False
-    ) -> (dict, int):
+        self,
+        loc: Union[avwx.Station, Tuple[float, float]],
+        opts: List[str],
+        nofail: bool = False,
+    ) -> Tuple[dict, int]:
         """
         Returns weather data for the given report type, station, and options
         Also returns the appropriate HTTP response code
@@ -58,7 +61,7 @@ class PirepHandler(ReportHandler):
             raise Exception(f"loc is not a valid value: {loc}")
         return self._post_handle(data, code, cache, station, opts, nofail)
 
-    def _parse_given(self, report: str, opts: [str]) -> (dict, int):
+    def _parse_given(self, report: str, opts: List[str]) -> Tuple[dict, int]:
         """
         Attempts to parse a given report supplied by the user
         """

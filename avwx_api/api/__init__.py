@@ -1,1 +1,5 @@
-from . import current, station
+"""
+Client-facing API endpoints
+"""
+
+from . import current, forecast, station

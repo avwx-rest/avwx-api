@@ -41,13 +41,3 @@ async def no_station() -> Response:
     Returns no station msg
     """
     return jsonify({"error": "No station given"}), 400
-
-
-@app.route("/sys/info")
-async def sys_info() -> Response:
-    """
-    Returns system info
-    """
-    from multiprocessing import cpu_count
-
-    return jsonify({"cpu": cpu_count()}), 200
