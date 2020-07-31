@@ -15,3 +15,15 @@ class MavHandler(ReportHandler):
 
 class MexHandler(ReportHandler):
     parser = avwx.Mex
+
+
+class NbhHandler(ReportHandler):
+    parser = avwx.Nbh
+
+
+class NbsHandler(ReportHandler):
+    parser = avwx.Nbs
+
+
+class NbeHandler(ReportHandler):
+    parser = avwx.Nbe
