@@ -27,7 +27,7 @@ Returns station information for an airfield or other location by ICAO ident. Thi
 + Parameters
     + ident: `KJFK` (string) - ICAO station ident
     + format (string, optional) - Desired response format
-        + Supported: json, xml, yaml
+        + Supported: `json`, `xml`, `yaml`
         + Default: `json`
 
 ### Get Station Information [GET]
@@ -99,7 +99,7 @@ Returns the nearest stations to a coordinate pair. By default, these are only re
     + reporting (boolean, optional) - Only include reporting stations
         + Default: true
     + format (string, optional) - Desired response format
-        + Supported: json, xml, yaml
+        + Supported: `json`, `xml`, `yaml`
         + Default: `json`
 
 ### Get Stations around a coordinate [GET]
@@ -254,17 +254,17 @@ METAR reports are surface observations for a particular airfield or other statio
     + location: `KJFK` (string) - ICAO station ident or coordinate pair
         + Examples: `EGLL`, `51.47,-0.4`
     + options (string, optional) - Additional options to include as comma-separated string
-        + Supported: info, translate, summary, speech
+        + Supported: `info`, `translate`, `summary`, `speech`
         + Example: `info,speech`
     + airport (boolean, optional) - Only include airports when performing a coordinate search
         + Default: true
     + reporting (boolean, optional) - Only include reporting stations when performing a coordinate search
         + Default: true
     + format (string, optional) - Desired response format
-        + Supported: json, xml, yaml
+        + Supported: `json`, `xml`, `yaml`
         + Default: `json`
     + onfail (string, optional) - Error or use out-of-date cache when unable to fetch report
-        + Supported: cache, error
+        + Supported: `cache`, `error`
         + Default: `cache`
 
 ### Get METAR Report [GET]
@@ -387,10 +387,10 @@ Parses a METAR report supplied by the user.
 + Parameters
 
     + options: `translate` (string, optional) - Additional options to include as comma-separated string
-        + Supported: info, translate, summary, speech
+        + Supported: `info`, `translate`, `summary`, `speech`
         + Example: `info,speech`
     + format (string, optional) - Desired response format
-        + Supported: json, xml, yaml
+        + Supported: `json`, `xml`, `yaml`
         + Default: `json`
 
 ### Parse a Given METAR [POST]
@@ -510,17 +510,17 @@ TAF reports are atmospheric conditions for an area within five nautical miles of
     + location: `KJFK` (string) - ICAO station ident or coordinate pair
         + Examples: `EGLL`, `51.47,-0.4`
     + options: `summary` (string, optional) - Additional options to include as comma-separated string
-        + Supported: info, translate, summary, speech
+        + Supported: `info`, `translate`, `summary`, `speech`
         + Example: `info,speech`
     + airport (boolean, optional) - Only include airports when performing a coordinate search
         + Default: true
     + reporting (boolean, optional) - Only include reporting stations when performing a coordinate search
         + Default: true
     + format (string, optional) - Desired response format
-        + supported: json, xml, yaml
+        + supported: `json`, `xml`, `yaml`
         + Default: `json`
     + onfail (string, optional) - Error or use out-of-date cache when unable to fetch report
-        + Supported: cache, error
+        + Supported: `cache`, `error`
         + Default: `cache`
 
 ### Get TAF Report [GET]
@@ -922,10 +922,10 @@ Parses a TAF report supplied by the user.
 + Parameters
 
     + options: `translate` (string, optional) - Additional options to include as comma-separated string
-        + Supported: info, translate, summary, speech
+        + Supported: `info`, `translate`, `summary`, `speech`
         + Example: `info,speech`
     + format (string, optional) - Desired response format
-        + Supported: json, xml, yaml
+        + Supported: `json`, `xml`, `yaml`
         + Default: `json`
 
 ### Parse a Given TAF [POST]
@@ -1227,12 +1227,12 @@ Note: translate, summary, and speech options not yet available
     + location: `KMCO` (string) - ICAO station ident or coordinate pair
         + Examples: `EGLL`, `51.47,-0.4`
     + options: `info` (string, optional) - Additional options to include as comma-separated string
-        + Supported: info
+        + Supported: `info`
     + format (string, optional) - Desired response format
-        + Supported: json, xml, yaml
+        + Supported: `json`, `xml`, `yaml`
         + Default: `json`
     + onfail (string, optional) - Error or use out-of-date cache when unable to fetch report
-        + Supported: cache, error
+        + Supported: `cache`, `error`
         + Default: `cache`
 
 ### Get PIREP Report [GET]
@@ -1382,9 +1382,9 @@ Note: translate, summary, and speech options not yet available
 + Parameters
 
     + options: `info` (string, optional) - Additional options to include as comma-separated string
-        + Supported: info
+        + Supported: `info`
     + format (string, optional) - Desired response format
-        + Supported: json, xml, yaml
+        + Supported: `json`, `xml`, `yaml`
         + Default: `json`
 
 ### Parse a Given PIREP [POST]
@@ -1446,6 +1446,860 @@ Parse a user-supplied PIREP included as the plain text body of the request.
             }
         }
 
+## NBM [/nbm/{report}/{location}{?options,airport,reporting,format,onfail}]
+
+The [National Blend of Models](https://www.weather.gov/mdl/nbm_home) is a weather forecast model for North America provided by NOAA. AVWX currently supports these forecast types that pertain to atmospheric conditions:
+
+- [NBH](https://www.weather.gov/mdl/nbm_textcard_v32#nbh) - Hourly forecast for the next 25 hours
+- [NBS](https://www.weather.gov/mdl/nbm_textcard_v32#nbs) - Short-term forecast from 6 to 72 hours with 3-hour time intervals starting at 00
+- [NBE](https://www.weather.gov/mdl/nbm_textcard_v32#nbe) - Extended forecast from 24 to 192 hours with 12-hours time intervals at 00 and 12
+
+While these reports officially support ICAO stations in the United States and Puerto Rico, Guam, and US Virgin Islands, some other stations in North America will also work. It is recommended to request reports by ICAO station ID, but coordinate searches are accepted as well.
+
++ Parameters
+    + report: `nbs` (string) - NBM report type
+        + Supported: `nbh`, `nbs`, `nbe`
+    + location: `KJFK` (string) - ICAO station ident or coordinate pair
+        + Examples: `EGLL`, `51.47,-0.4`
+    + options: (string, optional) - Additional options to include as comma-separated string
+        + Supported: `info`
+    + airport (boolean, optional) - Only include airports when performing a coordinate search
+        + Default: true
+    + reporting (boolean, optional) - Only include reporting stations when performing a coordinate search
+        + Default: true
+    + format (string, optional) - Desired response format
+        + Supported: `json`, `xml`, `yaml`
+        + Default: `json`
+    + onfail (string, optional) - Error or use out-of-date cache when unable to fetch report
+        + Supported: `cache`, `error`
+        + Default: `cache`
+
+### Get NBM NBS Report [GET]
+
+Get the NBM NBS report for a specific station by ICAO ident or a lat,lon coordinate pair. The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
+
+Note: The forecast list is truncated to the first few time periods.
+
++ Request (text/plain)
+
+    + Headers
+
+            Authorization: Token my_secret_api_token
+
++ Response 200 (application/json)
+
+                {
+            "meta": {
+                "timestamp": "2020-08-02T17:36:00.207461Z",
+                "stations_updated": "2020-07-30"
+            },
+            "raw": "KJFK    NBM V3.2 NBS GUIDANCE    8/02/2020  1600 UTC\nDT      /AUG   3                /AUG   4                /AUG   5\nUTC  21 00 03 06 09 12 15 18 21 00 03 06 09 12 15 18 21 00 03 06 09 12 15\nFHR  05 08 11 14 17 20 23 26 29 32 35 38 41 44 47 50 53 56 59 62 65 68 71\nN/X                 76          89          75          82          72\nTMP  83 81 81 80 77 79 83 87 85 81 79 77 76 78 79 80 78 76 76 75 73 76 80\nDPT  76 75 74 72 69 68 67 67 71 72 71 71 72 73 72 73 72 71 70 69 69 69 68\nSKY  35 46 42 28 25 15 15  6 10 65 82 89 93 98 95 92 87 77 53 43 47 31 36\nWDR  18 20 21 23 25 25 25 22 18 20 20 20 18 18 16 16 16 18 19 23 23 25 26\nWSP  13 12 10  8  7  8  8  8  9  9  6  5  5  6  8 11 13 13 11 10  9  7  8\nGST  20 21 17 14 14 14 12 16 16 17 11 10 10 13 13 19 23 22 22 21 18 13 13\nP06     31     8     3     4    24    54    75    89    91    69    40\nP12                  8          24          75          91          69\nQ06      5     0     0     0     0     8    36    57   101    73    39\nQ12                  0           0          44         158         112\nDUR                  0           0           9          12          12\nT03  17 17 13  9  5  2  0  1  5 12 15 10 10 12 10 10 14 16 21 14 15  9  4\nT12                 21          15          29          33          39\nPZR   0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0\nPSN   0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0\nPPL   0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0\nPRA 100100100100100100100100100100100100100100100100100100100100100100100\nS06      0     0     0     0     0     0     0     0     0     0     0\nSLV 129124124132132131130124125121119116118119124131131132131125129120113\nI06      0     0     0     0     0     0     0     0     0     0     0\nCIG 888888888888888888888888888140 90 90 90 18 20 16110 18888888888888999\nVIS 110110110110120130130150120110120100130120110 80 90 70110110110100150\nLCB  80150110 70 80100120120120 70120 23 29  7 14 13 18 27120 90 50 42 42\nMHT  14  7  6  7  9 20 34 42 17  7  7 13 10 16 19 19 19 19 13 13 13 17 36\nTWD  18 19 20 24 26 26 26 25 19 19 19 21 19 20 18 15 12 15 12 12 17 24 22\nTWS  20 18 16 14 14 16 14 16 11 15 11 14 11 14 12 25 25 29 17 20 27 18 17\nHID      4     4     3     5     4     4     4     3     3     4     4\nSOL 520 90  0  0  0300730840560120  0  0  0 20 80170280 60  0  0  0270550",
+            "station": "KJFK",
+            "time": {
+                "repr": "8/02/2020  1600",
+                "dt": "2020-08-02T16:00:00Z"
+            },
+            "remarks": null,
+            "forecast": [
+                {
+                    "time": {
+                        "repr": "21",
+                        "dt": "2020-08-02T21:00:00Z"
+                    },
+                    "temperature": {
+                        "repr": "83",
+                        "value": 83,
+                        "spoken": "eight three"
+                    },
+                    "dewpoint": {
+                        "repr": "76",
+                        "value": 76,
+                        "spoken": "seven six"
+                    },
+                    "sky_cover": {
+                        "repr": "35",
+                        "value": 35,
+                        "spoken": "three five"
+                    },
+                    "wind_direction": {
+                        "repr": "18",
+                        "value": 180,
+                        "spoken": "one eight zero"
+                    },
+                    "wind_speed": {
+                        "repr": "13",
+                        "value": 13,
+                        "spoken": "one three"
+                    },
+                    "wind_gust": {
+                        "repr": "20",
+                        "value": 20,
+                        "spoken": "two zero"
+                    },
+                    "snow_level": {
+                        "repr": "129",
+                        "value": 12900,
+                        "spoken": "one two nine hundred"
+                    },
+                    "precip_duration": null,
+                    "freezing_precip": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "snow": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "sleet": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "rain": {
+                        "repr": "100",
+                        "value": 100,
+                        "spoken": "one hundred"
+                    },
+                    "solar_radiation": {
+                        "repr": "520",
+                        "value": 520,
+                        "spoken": "five two zero"
+                    },
+                    "wave_height": null,
+                    "ceiling": {
+                        "repr": "888",
+                        "value": null,
+                        "spoken": "unlimited"
+                    },
+                    "visibility": {
+                        "repr": "110",
+                        "value": 11.0,
+                        "spoken": "one one point zero"
+                    },
+                    "cloud_base": {
+                        "repr": "80",
+                        "value": 8000,
+                        "spoken": "eight thousand"
+                    },
+                    "mixing_height": {
+                        "repr": "14",
+                        "value": 1400,
+                        "spoken": "one four hundred"
+                    },
+                    "transport_wind_direction": {
+                        "repr": "18",
+                        "value": 180,
+                        "spoken": "one eight zero"
+                    },
+                    "transport_wind_speed": {
+                        "repr": "20",
+                        "value": 20,
+                        "spoken": "two zero"
+                    },
+                    "haines": null,
+                    "precip_chance_6": null,
+                    "precip_chance_12": null,
+                    "precip_amount_6": null,
+                    "precip_amount_12": null,
+                    "thunderstorm_3": {
+                        "repr": "17",
+                        "value": 17,
+                        "spoken": "one seven"
+                    },
+                    "thunderstorm_12": null,
+                    "snow_amount_6": null,
+                    "icing_amount_6": null
+                },
+                {
+                    "time": {
+                        "repr": "00",
+                        "dt": "2020-08-03T00:00:00Z"
+                    },
+                    "temperature": {
+                        "repr": "81",
+                        "value": 81,
+                        "spoken": "eight one"
+                    },
+                    "dewpoint": {
+                        "repr": "75",
+                        "value": 75,
+                        "spoken": "seven five"
+                    },
+                    "sky_cover": {
+                        "repr": "46",
+                        "value": 46,
+                        "spoken": "four six"
+                    },
+                    "wind_direction": {
+                        "repr": "20",
+                        "value": 200,
+                        "spoken": "two zero zero"
+                    },
+                    "wind_speed": {
+                        "repr": "12",
+                        "value": 12,
+                        "spoken": "one two"
+                    },
+                    "wind_gust": {
+                        "repr": "21",
+                        "value": 21,
+                        "spoken": "two one"
+                    },
+                    "snow_level": {
+                        "repr": "124",
+                        "value": 12400,
+                        "spoken": "one two four hundred"
+                    },
+                    "precip_duration": null,
+                    "freezing_precip": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "snow": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "sleet": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "rain": {
+                        "repr": "100",
+                        "value": 100,
+                        "spoken": "one hundred"
+                    },
+                    "solar_radiation": {
+                        "repr": "90",
+                        "value": 90,
+                        "spoken": "nine zero"
+                    },
+                    "wave_height": null,
+                    "ceiling": {
+                        "repr": "888",
+                        "value": null,
+                        "spoken": "unlimited"
+                    },
+                    "visibility": {
+                        "repr": "110",
+                        "value": 11.0,
+                        "spoken": "one one point zero"
+                    },
+                    "cloud_base": {
+                        "repr": "150",
+                        "value": 15000,
+                        "spoken": "one five thousand"
+                    },
+                    "mixing_height": {
+                        "repr": "7",
+                        "value": 700,
+                        "spoken": "seven hundred"
+                    },
+                    "transport_wind_direction": {
+                        "repr": "19",
+                        "value": 190,
+                        "spoken": "one nine zero"
+                    },
+                    "transport_wind_speed": {
+                        "repr": "18",
+                        "value": 18,
+                        "spoken": "one eight"
+                    },
+                    "haines": {
+                        "repr": "4",
+                        "value": 4,
+                        "spoken": "four"
+                    },
+                    "precip_chance_6": {
+                        "repr": "31",
+                        "value": 31,
+                        "spoken": "three one"
+                    },
+                    "precip_chance_12": null,
+                    "precip_amount_6": {
+                        "repr": "5",
+                        "value": 0.05,
+                        "spoken": "zero point zero five"
+                    },
+                    "precip_amount_12": null,
+                    "thunderstorm_3": {
+                        "repr": "17",
+                        "value": 17,
+                        "spoken": "one seven"
+                    },
+                    "thunderstorm_12": null,
+                    "snow_amount_6": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "icing_amount_6": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    }
+                },
+                {
+                    "time": {
+                        "repr": "03",
+                        "dt": "2020-08-03T03:00:00Z"
+                    },
+                    "temperature": {
+                        "repr": "81",
+                        "value": 81,
+                        "spoken": "eight one"
+                    },
+                    "dewpoint": {
+                        "repr": "74",
+                        "value": 74,
+                        "spoken": "seven four"
+                    },
+                    "sky_cover": {
+                        "repr": "42",
+                        "value": 42,
+                        "spoken": "four two"
+                    },
+                    "wind_direction": {
+                        "repr": "21",
+                        "value": 210,
+                        "spoken": "two one zero"
+                    },
+                    "wind_speed": {
+                        "repr": "10",
+                        "value": 10,
+                        "spoken": "one zero"
+                    },
+                    "wind_gust": {
+                        "repr": "17",
+                        "value": 17,
+                        "spoken": "one seven"
+                    },
+                    "snow_level": {
+                        "repr": "124",
+                        "value": 12400,
+                        "spoken": "one two four hundred"
+                    },
+                    "precip_duration": null,
+                    "freezing_precip": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "snow": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "sleet": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "rain": {
+                        "repr": "100",
+                        "value": 100,
+                        "spoken": "one hundred"
+                    },
+                    "solar_radiation": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "wave_height": null,
+                    "ceiling": {
+                        "repr": "888",
+                        "value": null,
+                        "spoken": "unlimited"
+                    },
+                    "visibility": {
+                        "repr": "110",
+                        "value": 11.0,
+                        "spoken": "one one point zero"
+                    },
+                    "cloud_base": {
+                        "repr": "110",
+                        "value": 11000,
+                        "spoken": "one one thousand"
+                    },
+                    "mixing_height": {
+                        "repr": "6",
+                        "value": 600,
+                        "spoken": "six hundred"
+                    },
+                    "transport_wind_direction": {
+                        "repr": "20",
+                        "value": 200,
+                        "spoken": "two zero zero"
+                    },
+                    "transport_wind_speed": {
+                        "repr": "16",
+                        "value": 16,
+                        "spoken": "one six"
+                    },
+                    "haines": null,
+                    "precip_chance_6": null,
+                    "precip_chance_12": null,
+                    "precip_amount_6": null,
+                    "precip_amount_12": null,
+                    "thunderstorm_3": {
+                        "repr": "13",
+                        "value": 13,
+                        "spoken": "one three"
+                    },
+                    "thunderstorm_12": null,
+                    "snow_amount_6": null,
+                    "icing_amount_6": null
+                }
+            ],
+            "units": {
+                "altimeter": "inHg",
+                "altitude": "ft",
+                "temperature": "F",
+                "visibility": "sm",
+                "wind_speed": "kt",
+                "accumulation": "in",
+                "duration": "hour",
+                "solar_radiation": "W/m2",
+                "wave_height": "ft"
+            }
+        }
+
+## Parse NBM [/parse/nbm/{report}{?options,format}]
+
+Parses an NBM report supplied by the user.
+
++ Parameters
+    + report: `nbs` (string) - GFS report type
+        + Supported: `nbh`, `nbs`, `nbe`
+    + options: (string, optional) - Additional options to include as comma-separated string
+        + Supported: `info`
+    + format (string, optional) - Desired response format
+        + Supported: `json`, `xml`, `yaml`
+        + Default: `json`
+
+### Parse a Given NBM Report [POST]
+
+Parse a user-supplied NBM report included as the plain text body of the request. The request body can be multiline or use `\n` on a single line.
+
+Note: The forecast list is truncated to the first few time periods.
+
++ Request (text/plain)
+
+    + Headers
+
+            Authorization: Token my_secret_api_token
+
+    + Body
+
+            KMCO    NBM V3.2 NBS GUIDANCE    7/25/2020  0300 UTC
+            DT /JULY 25         /JULY 26                /JULY 27                /
+            UTC  09 12 15 18 21 00 03 06 09 12 15 18 21 00 03 06 09 12 15 18 21 00 03
+            FHR  06 09 12 15 18 21 24 27 30 33 36 39 42 45 48 51 54 57 60 63 66 69 72
+            X/N                 90          75          90          74          90
+            TMP  76 78 86 86 85 81 78 77 76 78 85 85 83 78 76 76 75 77 85 86 84 80 78
+            DPT  74 76 75 74 74 74 74 75 74 76 76 75 76 75 74 74 74 76 77 75 76 76 75
+            SKY  61 64 60 50 36 29 31 12 17 35 49 64 82 71 67 53 45 41 48 76 80 69 69
+            WDR   8  7  9  9 10 10 10  9 10 10 14 13 12 19 17 00 00 16 17 19 20 22 20
+            WSP   1  2  6  8  8  5  3  2  2  3  4  4  4  3  1  0  0  1  3  2  2  2  1
+            GST   5  5 12 15 14 12  7  6  5  7 10 12 12 11  5  2  2  3  7 10  9  8  4
+            P06      1    21    62    20     9    36    92    17     2    28    80
+            P12                 62          20          92          17          80
+            Q06      0     0     2     1     0     0    63     5     0     0    36
+            Q12                  2           1          63           5          36
+            DUR                  1           1           6           3           6
+            T03   1  1  4 21 39 34 12  4  4  6 10 34 63 56 23  7  3  3  9 33 64 52 19
+            T12                 50          21          80          29          83
+            PZR   0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+            PSN   0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+            PPL   0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+            PRA 100100100100100100100100100100100100100100100100100100100100100100100
+            S06      0     0     0     0     0     0     0     0     0     0     0
+            SLV 118117114115115119124129130130135135137139139138136135135136137137138
+            I06      0     0     0     0     0     0     0     0     0     0     0
+            CIG 250340290888888888888888888888888 70 50 70  4888888888888 49 60 90999
+            VIS 110110120120130110110110110110110110110110120120110120100100 90 90150
+            LCB 200190 48 60 60110140 50130110 43 24 27 23 43 90 90 39 60 50 70 70 80
+            MHT   5  7 38 47 43 16  7  4  4  8 41 62 29  7  7  4  4  7 36 50 45  4  4
+            TWD  10  8 10 10 10 10 10  9 12 12 15 16 13 14 18 20 17 16 16 19 19 35 18
+            TWS   6  5 11 13 14 12  7  7  6  7  8  9 10 10  9  3  3  4  8  9  9  7  4
+            HID      4     4     3     3     3     4     4     3     3     4     4
+            SOL   0180560780540170  0  0  0160440790390150  1  0  0170500660680350  0
+
++ Response 200 (application/json)
+
+        {
+            "meta": {
+                "timestamp": "2020-08-02T20:49:36.815272Z",
+                "stations_updated": "2020-07-30"
+            },
+            "raw": "KMCO    NBM V3.2 NBS GUIDANCE    7/25/2020  0300 UTC\nDT /JULY 25         /JULY 26                /JULY 27                /\nUTC  09 12 15 18 21 00 03 06 09 12 15 18 21 00 03 06 09 12 15 18 21 00 03\nFHR  06 09 12 15 18 21 24 27 30 33 36 39 42 45 48 51 54 57 60 63 66 69 72\nX/N                 90          75          90          74          90\nTMP  76 78 86 86 85 81 78 77 76 78 85 85 83 78 76 76 75 77 85 86 84 80 78\nDPT  74 76 75 74 74 74 74 75 74 76 76 75 76 75 74 74 74 76 77 75 76 76 75\nSKY  61 64 60 50 36 29 31 12 17 35 49 64 82 71 67 53 45 41 48 76 80 69 69\nWDR   8  7  9  9 10 10 10  9 10 10 14 13 12 19 17 00 00 16 17 19 20 22 20\nWSP   1  2  6  8  8  5  3  2  2  3  4  4  4  3  1  0  0  1  3  2  2  2  1\nGST   5  5 12 15 14 12  7  6  5  7 10 12 12 11  5  2  2  3  7 10  9  8  4\nP06      1    21    62    20     9    36    92    17     2    28    80\nP12                 62          20          92          17          80\nQ06      0     0     2     1     0     0    63     5     0     0    36\nQ12                  2           1          63           5          36\nDUR                  1           1           6           3           6\nT03   1  1  4 21 39 34 12  4  4  6 10 34 63 56 23  7  3  3  9 33 64 52 19\nT12                 50          21          80          29          83\nPZR   0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0\nPSN   0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0\nPPL   0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0\nPRA 100100100100100100100100100100100100100100100100100100100100100100100\nS06      0     0     0     0     0     0     0     0     0     0     0\nSLV 118117114115115119124129130130135135137139139138136135135136137137138\nI06      0     0     0     0     0     0     0     0     0     0     0\nCIG 250340290888888888888888888888888 70 50 70  4888888888888 49 60 90999\nVIS 110110120120130110110110110110110110110110120120110120100100 90 90150\nLCB 200190 48 60 60110140 50130110 43 24 27 23 43 90 90 39 60 50 70 70 80\nMHT   5  7 38 47 43 16  7  4  4  8 41 62 29  7  7  4  4  7 36 50 45  4  4\nTWD  10  8 10 10 10 10 10  9 12 12 15 16 13 14 18 20 17 16 16 19 19 35 18\nTWS   6  5 11 13 14 12  7  7  6  7  8  9 10 10  9  3  3  4  8  9  9  7  4\nHID      4     4     3     3     3     4     4     3     3     4     4\nSOL   0180560780540170  0  0  0160440790390150  1  0  0170500660680350  0",
+            "station": "KMCO",
+            "time": {
+                "repr": "7/25/2020  0300",
+                "dt": "2020-07-25T03:00:00Z"
+            },
+            "remarks": null,
+            "forecast":             [
+                {
+                    "time": {
+                        "repr": "09",
+                        "dt": "2020-07-25T09:00:00Z"
+                    },
+                    "temperature": {
+                        "repr": "76",
+                        "value": 76,
+                        "spoken": "seven six"
+                    },
+                    "dewpoint": {
+                        "repr": "74",
+                        "value": 74,
+                        "spoken": "seven four"
+                    },
+                    "sky_cover": {
+                        "repr": "61",
+                        "value": 61,
+                        "spoken": "six one"
+                    },
+                    "wind_direction": {
+                        "repr": "8",
+                        "value": 80,
+                        "spoken": "eight zero"
+                    },
+                    "wind_speed": {
+                        "repr": "1",
+                        "value": 1,
+                        "spoken": "one"
+                    },
+                    "wind_gust": {
+                        "repr": "5",
+                        "value": 5,
+                        "spoken": "five"
+                    },
+                    "snow_level": {
+                        "repr": "118",
+                        "value": 11800,
+                        "spoken": "one one eight hundred"
+                    },
+                    "precip_duration": null,
+                    "freezing_precip": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "snow": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "sleet": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "rain": {
+                        "repr": "100",
+                        "value": 100,
+                        "spoken": "one hundred"
+                    },
+                    "solar_radiation": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "wave_height": null,
+                    "ceiling": {
+                        "repr": "250",
+                        "value": 25000,
+                        "spoken": "two five thousand"
+                    },
+                    "visibility": {
+                        "repr": "110",
+                        "value": 11.0,
+                        "spoken": "one one point zero"
+                    },
+                    "cloud_base": {
+                        "repr": "200",
+                        "value": 20000,
+                        "spoken": "two zero thousand"
+                    },
+                    "mixing_height": {
+                        "repr": "5",
+                        "value": 500,
+                        "spoken": "five hundred"
+                    },
+                    "transport_wind_direction": {
+                        "repr": "10",
+                        "value": 100,
+                        "spoken": "one zero zero"
+                    },
+                    "transport_wind_speed": {
+                        "repr": "6",
+                        "value": 6,
+                        "spoken": "six"
+                    },
+                    "haines": null,
+                    "precip_chance_6": null,
+                    "precip_chance_12": null,
+                    "precip_amount_6": null,
+                    "precip_amount_12": null,
+                    "thunderstorm_3": {
+                        "repr": "1",
+                        "value": 1,
+                        "spoken": "one"
+                    },
+                    "thunderstorm_12": null,
+                    "snow_amount_6": null,
+                    "icing_amount_6": null
+                },
+                {
+                    "time": {
+                        "repr": "12",
+                        "dt": "2020-07-25T12:00:00Z"
+                    },
+                    "temperature": {
+                        "repr": "78",
+                        "value": 78,
+                        "spoken": "seven eight"
+                    },
+                    "dewpoint": {
+                        "repr": "76",
+                        "value": 76,
+                        "spoken": "seven six"
+                    },
+                    "sky_cover": {
+                        "repr": "64",
+                        "value": 64,
+                        "spoken": "six four"
+                    },
+                    "wind_direction": {
+                        "repr": "7",
+                        "value": 70,
+                        "spoken": "seven zero"
+                    },
+                    "wind_speed": {
+                        "repr": "2",
+                        "value": 2,
+                        "spoken": "two"
+                    },
+                    "wind_gust": {
+                        "repr": "5",
+                        "value": 5,
+                        "spoken": "five"
+                    },
+                    "snow_level": {
+                        "repr": "117",
+                        "value": 11700,
+                        "spoken": "one one seven hundred"
+                    },
+                    "precip_duration": null,
+                    "freezing_precip": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "snow": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "sleet": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "rain": {
+                        "repr": "100",
+                        "value": 100,
+                        "spoken": "one hundred"
+                    },
+                    "solar_radiation": {
+                        "repr": "180",
+                        "value": 180,
+                        "spoken": "one eight zero"
+                    },
+                    "wave_height": null,
+                    "ceiling": {
+                        "repr": "340",
+                        "value": 34000,
+                        "spoken": "three four thousand"
+                    },
+                    "visibility": {
+                        "repr": "110",
+                        "value": 11.0,
+                        "spoken": "one one point zero"
+                    },
+                    "cloud_base": {
+                        "repr": "190",
+                        "value": 19000,
+                        "spoken": "one nine thousand"
+                    },
+                    "mixing_height": {
+                        "repr": "7",
+                        "value": 700,
+                        "spoken": "seven hundred"
+                    },
+                    "transport_wind_direction": {
+                        "repr": "8",
+                        "value": 80,
+                        "spoken": "eight zero"
+                    },
+                    "transport_wind_speed": {
+                        "repr": "5",
+                        "value": 5,
+                        "spoken": "five"
+                    },
+                    "haines": {
+                        "repr": "4",
+                        "value": 4,
+                        "spoken": "four"
+                    },
+                    "precip_chance_6": {
+                        "repr": "1",
+                        "value": 1,
+                        "spoken": "one"
+                    },
+                    "precip_chance_12": null,
+                    "precip_amount_6": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "precip_amount_12": null,
+                    "thunderstorm_3": {
+                        "repr": "1",
+                        "value": 1,
+                        "spoken": "one"
+                    },
+                    "thunderstorm_12": null,
+                    "snow_amount_6": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "icing_amount_6": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    }
+                },
+                {
+                    "time": {
+                        "repr": "15",
+                        "dt": "2020-07-25T15:00:00Z"
+                    },
+                    "temperature": {
+                        "repr": "86",
+                        "value": 86,
+                        "spoken": "eight six"
+                    },
+                    "dewpoint": {
+                        "repr": "75",
+                        "value": 75,
+                        "spoken": "seven five"
+                    },
+                    "sky_cover": {
+                        "repr": "60",
+                        "value": 60,
+                        "spoken": "six zero"
+                    },
+                    "wind_direction": {
+                        "repr": "9",
+                        "value": 90,
+                        "spoken": "nine zero"
+                    },
+                    "wind_speed": {
+                        "repr": "6",
+                        "value": 6,
+                        "spoken": "six"
+                    },
+                    "wind_gust": {
+                        "repr": "12",
+                        "value": 12,
+                        "spoken": "one two"
+                    },
+                    "snow_level": {
+                        "repr": "114",
+                        "value": 11400,
+                        "spoken": "one one four hundred"
+                    },
+                    "precip_duration": null,
+                    "freezing_precip": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "snow": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "sleet": {
+                        "repr": "0",
+                        "value": 0,
+                        "spoken": "zero"
+                    },
+                    "rain": {
+                        "repr": "100",
+                        "value": 100,
+                        "spoken": "one hundred"
+                    },
+                    "solar_radiation": {
+                        "repr": "560",
+                        "value": 560,
+                        "spoken": "five six zero"
+                    },
+                    "wave_height": null,
+                    "ceiling": {
+                        "repr": "290",
+                        "value": 29000,
+                        "spoken": "two nine thousand"
+                    },
+                    "visibility": {
+                        "repr": "120",
+                        "value": 12.0,
+                        "spoken": "one two point zero"
+                    },
+                    "cloud_base": {
+                        "repr": "48",
+                        "value": 4800,
+                        "spoken": "four eight hundred"
+                    },
+                    "mixing_height": {
+                        "repr": "38",
+                        "value": 3800,
+                        "spoken": "three eight hundred"
+                    },
+                    "transport_wind_direction": {
+                        "repr": "10",
+                        "value": 100,
+                        "spoken": "one zero zero"
+                    },
+                    "transport_wind_speed": {
+                        "repr": "11",
+                        "value": 11,
+                        "spoken": "one one"
+                    },
+                    "haines": null,
+                    "precip_chance_6": null,
+                    "precip_chance_12": null,
+                    "precip_amount_6": null,
+                    "precip_amount_12": null,
+                    "thunderstorm_3": {
+                        "repr": "4",
+                        "value": 4,
+                        "spoken": "four"
+                    },
+                    "thunderstorm_12": null,
+                    "snow_amount_6": null,
+                    "icing_amount_6": null
+                }
+            ]
+        }
+
 ## GFS [/gfs/{report}/{location}{?options,airport,reporting,format,onfail}]
 
 The [Global Forecast System](https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/global-forcast-system-gfs) is a weather forecast model provided by NOAA. AVWX currently supports these forecast types that pertain to atmospheric conditions:
@@ -1453,7 +2307,9 @@ The [Global Forecast System](https://www.ncdc.noaa.gov/data-access/model-data/mo
 - [MOS MAV](https://www.nws.noaa.gov/mdl/synop/mavcard.php) - Atmospheric forecast from 6 to 72 hours in advance updated every 6 hours
 - [MOS MEX](https://www.nws.noaa.gov/mdl/synop/mexcard.php) - Extended MAV forecast from 12 to 192 hours in advance updated every 12 hours
 
-These reports are available for primary reporting stations. It is recommended to request reports by ICAO station ID, but coordinate searches are accepted as well.
+While these reports officially support ICAO stations in the United States and Puerto Rico, and US Virgin Islands, some other stations in North America will also work. It is recommended to request reports by ICAO station ID, but coordinate searches are accepted as well.
+
+NOAA is retiring all GFS reports over the next few years and recommends everyone migrate to NBM. AVWX will support these GFS endpoints until NOAA retires the service, but it is highly recommended to use the NBM endpoints if you don't need GFS products specifically.
 
 + Parameters
     + report: `mav` (string) - GFS report type
@@ -1461,23 +2317,23 @@ These reports are available for primary reporting stations. It is recommended to
     + location: `KJFK` (string) - ICAO station ident or coordinate pair
         + Examples: `EGLL`, `51.47,-0.4`
     + options: (string, optional) - Additional options to include as comma-separated string
-        + Supported: info
+        + Supported: `info`
     + airport (boolean, optional) - Only include airports when performing a coordinate search
         + Default: true
     + reporting (boolean, optional) - Only include reporting stations when performing a coordinate search
         + Default: true
     + format (string, optional) - Desired response format
-        + Supported: json, xml, yaml
+        + Supported: `json`, `xml`, `yaml`
         + Default: `json`
     + onfail (string, optional) - Error or use out-of-date cache when unable to fetch report
-        + Supported: cache, error
+        + Supported: `cache`, `error`
         + Default: `cache`
 
 ### Get GFS MAV Report [GET]
 
 Get the GFS MAV report for a specific station by ICAO ident or a lat,lon coordinate pair. The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
 
-Note: the documented output is truncated.
+Note: The forecast list is truncated to the first few time periods.
 
 + Request (text/plain)
 
@@ -1769,8 +2625,7 @@ Note: the documented output is truncated.
                         "repr": "N",
                         "value": "none"
                     }
-                },
-                ...
+                }
             ],
             "units": {
                 "altimeter": "inHg",
@@ -1824,238 +2679,6 @@ Note: the documented output is truncated.
             }
         }
 
-### Get GFS MEX Report [GET]
-
-Get the GFS MEX report for a specific station by ICAO ident or a lat,lon coordinate pair. The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
-
-Note: the documented output is truncated.
-
-+ Request (text/plain)
-
-    + Parameters
-    
-        + report: `mex` (string) - GFS report type
-
-    + Headers
-
-            Authorization: Token my_secret_api_token
-
-+ Response 200 (application/json)
-
-        {
-            "meta": {
-                "timestamp": "2020-04-03T21:30:42.401110+00:00Z"
-            },
-            "raw": "KJFK   GFSX MOS GUIDANCE   4/03/2020  1200 UTC                       \nFHR  24  36| 48  60| 72  84| 96 108|120 132|144 156|168 180|192      \n     SAT 04| SUN 05| MON 06| TUE 07| WED 08| THU 09| FRI 10|SAT CLIMO\nN/X  44  55| 46  56| 45  65| 48  59| 47  57| 49  63| 45  60| 41 40 57\nTMP  45  48| 49  50| 49  56| 52  53| 49  52| 52  53| 48  53| 46      \nDPT  35  39| 39  42| 36  36| 40  43| 41  44| 45  35| 34  27| 29      \nCLD  OV  OV| OV  OV| PC  PC| OV  OV| OV  OV| OV  PC| OV  OV| CL      \nWND  16  12|  6   9|  9  10|  8  10| 10  14|  9  20| 23  23| 23      \nP12  43  13| 21  25|  4   0| 22  15| 19  47| 33  21| 32  22| 17 22 22\nP24      43|     25|      7|     22|     51|     33|     40|       34\nQ12   1   0|  0   0|  0   0|  0   0|  0   2|  1   0|       |         \nQ24       0|      0|      0|      0|      1|      0|       |         \nT12   1   1|  0   1|  1   0|  0   2|  1   5|  2   2|  7   2|  3      \nT24        |  1    |  1    |  1    |  2    |  5    |  7    |  9      \nPZP   0   0|  0   1|  0   0|  0   0|  0   0|  0   0|  2   0|  1      \nPSN   0   0|  0   2|  0   2|  2   1|  1   2|  1   0|  0   0|  7      \nPRS   0   0|  2   3|  1   0|  1   1|  2   1|  2   2|  2   9| 16      \nTYP   R   R|  R   R|  R   R|  R   R|  R   R|  R   R|  R   R|  R      \nSNW       0|      0|      0|      0|      0|      0|       |",
-            "station": "KJFK",
-            "time": {
-                "repr": "4/03/2020  1200",
-                "dt": "2020-04-03T12:00:00+00:00Z"
-            },
-            "remarks": null,
-            "forecast": [
-                {
-                    "time": {
-                        "repr": "24",
-                        "dt": "2020-04-04T00:00:00+00:00Z"
-                    },
-                    "temperature": {
-                        "repr": "45",
-                        "value": 45,
-                        "spoken": "four five"
-                    },
-                    "dewpoint": {
-                        "repr": "35",
-                        "value": 35,
-                        "spoken": "three five"
-                    },
-                    "cloud": {
-                        "repr": "OV",
-                        "value": "overcast"
-                    },
-                    "precip_chance_12": {
-                        "repr": "43",
-                        "value": 43,
-                        "spoken": "four three"
-                    },
-                    "precip_amount_12": {
-                        "repr": "1",
-                        "value": "0.01 to 0.09 inches"
-                    },
-                    "thunder_storm_12": {
-                        "repr": "1",
-                        "value": 1,
-                        "spoken": "one"
-                    },
-                    "severe_storm_12": null,
-                    "freezing_precip": {
-                        "repr": "0",
-                        "value": 0,
-                        "spoken": "zero"
-                    },
-                    "precip_type": {
-                        "repr": "R",
-                        "value": "pure rain/drizzle"
-                    },
-                    "snow": {
-                        "repr": "0",
-                        "value": 0,
-                        "spoken": "zero"
-                    },
-                    "precip_chance_24": null,
-                    "precip_amount_24": null,
-                    "thunder_storm_24": null,
-                    "severe_storm_24": null,
-                    "rain_snow_mix": {
-                        "repr": "0",
-                        "value": 0,
-                        "spoken": "zero"
-                    },
-                    "snow_amount_24": null
-                },
-                {
-                    "time": {
-                        "repr": "36",
-                        "dt": "2020-04-04T12:00:00+00:00Z"
-                    },
-                    "temperature": {
-                        "repr": "48",
-                        "value": 48,
-                        "spoken": "four eight"
-                    },
-                    "dewpoint": {
-                        "repr": "39",
-                        "value": 39,
-                        "spoken": "three nine"
-                    },
-                    "cloud": {
-                        "repr": "OV",
-                        "value": "overcast"
-                    },
-                    "precip_chance_12": {
-                        "repr": "13",
-                        "value": 13,
-                        "spoken": "one three"
-                    },
-                    "precip_amount_12": {
-                        "repr": "0",
-                        "value": "no precipitation"
-                    },
-                    "thunder_storm_12": {
-                        "repr": "1",
-                        "value": 1,
-                        "spoken": "one"
-                    },
-                    "severe_storm_12": null,
-                    "freezing_precip": {
-                        "repr": "0",
-                        "value": 0,
-                        "spoken": "zero"
-                    },
-                    "precip_type": {
-                        "repr": "R",
-                        "value": "pure rain/drizzle"
-                    },
-                    "snow": {
-                        "repr": "0",
-                        "value": 0,
-                        "spoken": "zero"
-                    },
-                    "precip_chance_24": {
-                        "repr": "43",
-                        "value": 43,
-                        "spoken": "four three"
-                    },
-                    "precip_amount_24": {
-                        "repr": "0",
-                        "value": "no precipitation"
-                    },
-                    "thunder_storm_24": null,
-                    "severe_storm_24": null,
-                    "rain_snow_mix": {
-                        "repr": "0",
-                        "value": 0,
-                        "spoken": "zero"
-                    },
-                    "snow_amount_24": {
-                        "repr": "0",
-                        "value": "no snow or a trace expected"
-                    }
-                },
-                {
-                    "time": {
-                        "repr": "48",
-                        "dt": "2020-04-05T00:00:00+00:00Z"
-                    },
-                    "temperature": {
-                        "repr": "49",
-                        "value": 49,
-                        "spoken": "four nine"
-                    },
-                    "dewpoint": {
-                        "repr": "39",
-                        "value": 39,
-                        "spoken": "three nine"
-                    },
-                    "cloud": {
-                        "repr": "OV",
-                        "value": "overcast"
-                    },
-                    "precip_chance_12": {
-                        "repr": "21",
-                        "value": 21,
-                        "spoken": "two one"
-                    },
-                    "precip_amount_12": {
-                        "repr": "0",
-                        "value": "no precipitation"
-                    },
-                    "thunder_storm_12": {
-                        "repr": "0",
-                        "value": 0,
-                        "spoken": "zero"
-                    },
-                    "severe_storm_12": null,
-                    "freezing_precip": {
-                        "repr": "0",
-                        "value": 0,
-                        "spoken": "zero"
-                    },
-                    "precip_type": {
-                        "repr": "R",
-                        "value": "pure rain/drizzle"
-                    },
-                    "snow": {
-                        "repr": "0",
-                        "value": 0,
-                        "spoken": "zero"
-                    },
-                    "precip_chance_24": null,
-                    "precip_amount_24": null,
-                    "thunder_storm_24": {
-                        "repr": "1",
-                        "value": 1,
-                        "spoken": "one"
-                    },
-                    "severe_storm_24": null,
-                    "rain_snow_mix": {
-                        "repr": "2",
-                        "value": 2,
-                        "spoken": "two"
-                    },
-                    "snow_amount_24": null
-                },
-                ...
-            ],
-            "units": {
-                "altimeter": "inHg",
-                "altitude": "ft",
-                "temperature": "F",
-                "visibility": "sm",
-                "wind_speed": "kt"
-            }
-        }
-
 ## Parse GFS [/parse/gfs/{report}{?options,format}]
 
 Parses a GFS report supplied by the user.
@@ -2064,9 +2687,9 @@ Parses a GFS report supplied by the user.
     + report: `mav` (string) - GFS report type
         + Supported: `mav`, `mex`
     + options: (string, optional) - Additional options to include as comma-separated string
-        + Supported: info
+        + Supported: `info`
     + format (string, optional) - Desired response format
-        + Supported: json, xml, yaml
+        + Supported: `json`, `xml`, `yaml`
         + Default: `json`
 
 ### Parse a Given MAV Report [POST]
@@ -2339,16 +2962,16 @@ This endpoint returns the results for multiple stations for a given report type 
 + Parameters
 
     + report_type: `metar` (string) - Weather report type
-        + Supported: metar, taf
+        + Supported: `metar`, `taf`
     +locations: `KJFK,KSFO` (string) - Comma-separated string of up to 10 ICAO idents
     + options: `speech` (string, optional) - Additional options to include as comma-separated string
-        + Supported: info, translate, summary, speech
+        + Supported: `info`, `translate`, `summary`, `speech`
         + Example: `info,speech`
     + format (string, optional) - Desired response format
-        + supported: json, xml, yaml
+        + supported: `json`, `xml`, `yaml`
         + Default: `json`
     + onfail (string, optional) - Error or use out-of-date cache when unable to fetch report
-        + Supported: cache, error
+        + Supported: `cache`, `error`
         + Default: `cache`
 
 ### Get METAR Reports [GET]
