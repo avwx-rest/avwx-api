@@ -89,7 +89,10 @@ class Base(AuthView):
         Load example payload from report type
         """
         path = EXAMPLE_PATH / f"{self.example or report_type}.json"
-        return {"sample": json.load(path.open())}
+        try:
+            return {"sample": json.load(path.open())}
+        except FileNotFoundError:
+            return {}
 
 
 class Report(Base):

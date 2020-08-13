@@ -108,7 +108,7 @@ class ReportHandler:
                             400,
                         )
                     break
-                except TimeoutError:
+                except (TimeoutError, avwx.exceptions.SourceError):
                     pass
             else:
                 # msg = f"Unable to call {parser.service.__class__.__name__}"
@@ -122,12 +122,12 @@ class ReportHandler:
             return {"error": "Server rebooting. Try again"}, 503
         except ConnectionError as exc:
             print("Connection Error:", exc)
-            rollbar.report_exc_info(extra_data=state_info)
+            # rollbar.report_exc_info(extra_data=state_info)
             return {"error": str(exc)}, 502
-        except avwx.exceptions.SourceError as exc:
-            print("Source Error:", exc)
-            rollbar.report_exc_info(extra_data=state_info)
-            return {"error": str(exc)}, int(str(exc)[-3:])
+        # except avwx.exceptions.SourceError as exc:
+        #     print("Source Error:", exc)
+        #     rollbar.report_exc_info(extra_data=state_info)
+        #     return {"error": str(exc)}, int(str(exc)[-3:])
         except avwx.exceptions.InvalidRequest as exc:
             print("Invalid Request:", exc)
             return {"error": ERRORS[0].format(self.report_type, err_station)}, 400
