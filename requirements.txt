@@ -1,6 +1,6 @@
-git+git://github.com/avwx-rest/avwx-api-core.git@5530661090c66d6bc5a5d0679aababe1f00dffcf#egg=avwx_api_core
+git+git://github.com/avwx-rest/avwx-api-core.git@1a32cbd3847e7784a6b1feaf953e352030949a78#egg=avwx_api_core
 
-avwx-engine[scipy]==1.5.1
+avwx-engine[scipy]==1.5.2
 hypercorn~=0.10
 quart>=0.13
 quart-openapi>=1.6
