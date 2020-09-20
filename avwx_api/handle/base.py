@@ -6,6 +6,7 @@ Data handling between inputs, cache, and avwx core
 
 # stdlib
 import asyncio as aio
+from contextlib import suppress
 from dataclasses import asdict
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Tuple
@@ -96,7 +97,7 @@ class ReportHandler:
         # Update the parser's raw data
         try:
             for _ in range(3):
-                try:
+                with suppress(TimeoutError, avwx.exceptions.SourceError):
                     if not await parser.async_update(timeout=2, disable_post=True):
                         err = 0 if isinstance(err_station, str) else 3
                         return (
@@ -108,8 +109,6 @@ class ReportHandler:
                             400,
                         )
                     break
-                except (TimeoutError, avwx.exceptions.SourceError):
-                    pass
             else:
                 # msg = f"Unable to call {parser.service.__class__.__name__}"
                 # rollbar.report_message(msg, extra_data=state_info)

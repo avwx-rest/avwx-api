@@ -3,6 +3,7 @@ Tests update delays from different NOAA sources and the API
 """
 
 # stdlib
+from contextlib import suppress
 from datetime import datetime
 from time import sleep
 
@@ -61,7 +62,5 @@ def main():
 
 
 if __name__ == "__main__":
-    try:
+    with suppress(KeyboardInterrupt):
         main()
-    except KeyboardInterrupt:
-        pass
