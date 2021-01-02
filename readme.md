@@ -15,11 +15,7 @@ For more information, go to the hosted version at [avwx.rest](https://avwx.rest)
 
 ## Quickstart
 
-The easiest way to get the app running is to create and run it in Docker. First, copy the example Dockerfile.
-
-```bash
-cp Dockerfile.example Dockerfile
-```
+The easiest way to get the app running is to create and run it in Docker.
 
 It should be able to run as is, but it won't have the database-backed features enabled like token authentication, report caching, and metric counting. These features are geared for the production environment, so they won't be an issue for local development. If you want to add them, you'll need a MongoDB connection URI in the environment:
 
