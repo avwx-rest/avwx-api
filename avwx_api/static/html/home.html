@@ -27,47 +27,39 @@
     <meta name="theme-color" content="#ff9933">
 
     <!--LINK-->
-    <link rel="stylesheet" href="/static/css/bootstrap/bootstrap.min.css" />
-    <!-- <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" /> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <link href="/static/css/style.css" rel="stylesheet" />
 
     <!--SCRIPT-->
-    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="/static/js/bootstrap.min.js"></script>
-    <script src="/static/js/scripts.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/51107b8707.js" crossorigin="anonymous"></script>
     <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-38396433-2', 'auto');ga('send', 'pageview');</script>
 </head>
 
 <body>
 
-<nav class="navbar navbar-trans navbar-fixed-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapsible">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">AVWX</a>
-        </div>
-        <div class="navbar-collapse collapse" id="navbar-collapsible">
-            <ul class="nav navbar-nav navbar-left">
-                <li><a href="https://avwx.docs.apiary.io">Docs</a></li>
-                <li><a href="https://account.avwx.rest">Pricing</a></li>
-                <li><a href="https://account.avwx.rest/manage">Account</a></li>
-                <li><a href="https://blog.avwx.rest">Blog</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </div>
+<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">AVWX</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a class="nav-link" href="https://docs.avwx.rest">Docs</a></li>
+            <li class="nav-item"><a class="nav-link" href="https://account.avwx.rest">Pricing</a></li>
+            <li class="nav-item"><a class="nav-link" href="https://account.avwx.rest/manage">Account</a></li>
+            <li class="nav-item"><a class="nav-link" href="https://support.avwx.rest">Support</a></li>
+            <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
     </div>
 </nav>
 
-<section class="container-fluid sec-full sec-clear">
-	<br></br>
+<section class="container-fluid bubble-full bubble-clear">
+	<br/>
   	<h1 class="text-center v-center">Aviation Weather REST API</h1>
-	<br></br>
+	<br/>
   	<div class="container">
         <div class="row">
             <div class="col-sm-4 text-center">
@@ -84,15 +76,15 @@
             </div>
         </div>
         <div class="row">
-            <!-- <div class="col-sm-4 text-center">
-                <h3>GFS MAV & MEX</h3>
-                <p>Atmospheric forecasts up to eight days in advance from NOAA's Global Forecast System</p>
-            </div> -->
-            <div class="col-sm-4 col-sm-offset-1 text-center">
+            <div class="col-sm-4 text-center">
+                <h3>NBM</h3>
+                <p>Atmospheric forecasts up to eight days in advance from NOAA's National Blend of Models</p>
+            </div>
+            <div class="col-sm-4 text-center">
                 <h3>Station Info</h3>
                 <p>Station data includes name, idents, coordinates, runways, and other useful fields</p>
             </div>
-            <div class="col-sm-4 col-sm-offset-2 text-center">
+            <div class="col-sm-4 text-center">
                 <h3>Coordinate Search</h3>
                 <p>Reports and stations can be returned nearest a coordinate pair</p>
             </div>
@@ -100,7 +92,7 @@
     </div>
 </section>
 
-<section class="container-fluid sec-grey">
+<section class="container-fluid bubble-grey">
     <!-- <div class="container">
         <div class="row">
             <div class="col">
@@ -134,15 +126,15 @@
 <section class="container">
     <div class="row text-center">
         <div class="col-md-6">
-            <div class="well" id="sec-git">
+            <div class="bubble bubble-git">
                 <h1><i class="fas fa-book fa-5x"></i></h1>
                 <h1>Documentation</h1>
                 <p class="lead">API docs are available on <a href="https://avwx.docs.apiary.io" target="_blank">Apiary</a></p>
-                <br></br>
+                <br/>
             </div>
         </div>
         <div class="col-md-6">
-            <div class="well" id="sec-git">
+            <div class="bubble bubble-git">
                 <h1><i class="fab fa-github fa-5x"></i></h1>
                 <h1>Open-Source</h1>
                 <p class="lead">All parsing and server code is available on <a href="https://github.com/avwx-rest" target="_blank">GitHub</a> for security audits. Pull requests are welcome</p>
@@ -152,16 +144,16 @@
     </div>
 </section>
 
-<section class="container-fluid sec-grey" id="support">
+<section class="container-fluid bubble-grey" id="support">
     <div class="row text-center">
         <div class="col-sm-6">
-            <div class="well">
+            <div class="bubble">
                 <h2>About</h2>
                 <p>The AVWX REST API is a publicly-available REST API for aviation weather. The service organizes METAR, TAF, PIREP, and other report types into their individual elements and returns them in JSON, XML, or YAML format. It does a considerable amount of error correction so that your report is as clean and thorough as possible. It has additional services like providing station information, translating the report into English, and creating summary strings meant to be read or spoken. For more details, check out the <a href="https://avwx.docs.apiary.io">documentation</a>.</p>
             </div>
         </div>
         <div class="col-sm-6">
-            <div class="well">
+            <div class="bubble">
                 <h2>Pricing</h2>
                 <p>AVWX offers three pricing tiers: <b>hobby</b>, <b>professional</b>, and <b>enterprise</b>. The basic METAR and TAF parsing services are free, but other features require token authentication associated with monthly or yearly paid plans. Check out the <a href="https://account.avwx.rest">pricing guide</a> for more information.</p>
                 <p>Additionally, the developer will gladly accept donations if a monthly plan is not an option. Thank you in advance!</p>
@@ -174,7 +166,7 @@
 <section class="container" id="contact">
     <div class="row text-center">
         <div class="col-sm-4">
-            <div class="well">
+            <div class="bubble">
                 <h2>Mailing List</h2>
                 <p>Join the AVWX mailing list to get notified of new features. You won't get more than a few a year</p>
                 <p>
@@ -192,13 +184,13 @@
             </div>
         </div>
         <div class="col-sm-4">
-            <div class="well">
+            <div class="bubble">
                 <h2>About Me</h2>
                 <p>Hi, I'm Michael. I'm a pilot, software developer, and tech meetup organizer based in Orlando, FL. You can find more of my projects at <a href="http://mdupont.com">mdupont.com</a>.</p>
             </div>
         </div>
         <div class="col-sm-4">
-            <div class="well">
+            <div class="bubble">
                 <h2>Contact</h2>
                 <p>Bugs? Comments? Feature Requests? Are you using the API and want your project to be featured? Email me at <a href="mailto:avwx@dupont.dev">avwx@dupont.dev</a>.</p>
             </div>
@@ -206,32 +198,45 @@
     </div>
 </section>
 
-<section class="container-fluid sec-grey">
+<section class="container-fluid bubble-grey">
     <div class="container">
         <div class="row">
             <h2>Who uses AVWX?</h2>
             <p>The parser itself has been field-tested and in use since September 2014. It was originally made for a <a href="https://github.com/flyinactor91/METAR-RasPi">Raspberry Pi IoT project</a>, but was eventually made available as a public API. I've been contacted by flight schools, research institutions, and many mobile and desktop application developers. Here are a few of my favorite projects using AVWX.</p>
             <div class="container">
-                <div class="row text-center">
-                    <div class="col-sm-3">
-                        <h4><a href="https://duck.co/ia/view/metar">AVWX on Duck Duck Go</a></h4>
-                        <p>Example mobile card</p>
-                        <a href="https://duck.co/ia/view/metar"><img src="/static/img/ddgavwx.png" class="img-responsive" alt="Example card displaying METAR data on DuckDuckGo"/></a>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="card" style="width: 18rem;">
+                            <a href="https://aerolink.club/">
+                                <img src="/static/img/aerolink.png" class="card-img-top" alt="Aero Link logo with iOS screenshots">
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title">AeroLink</h5>
+                                <p class="card-text">Flight bag app for South America.</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm-3">
-                        <h4><a href="https://aerolink.club/">AeroLink</a></h4>
-                        <p>Flight bag app for South America</p>
-                        <a href="https://aerolink.club/"><img src="/static/img/aerolink.png" class="img-responsive" alt="Aero Link logo with iOS screenshots"/></a>
+                    <div class="col-4">
+                        <div class="card" style="width: 18rem;">
+                            <a href="https://sndaviation.com/">
+                                <img src="/static/img/fleetcaptain.png" class="card-img-top" alt="Fleet Captain plane logo">
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title">FleetCaptain</h5>
+                                <p class="card-text">Flight school fleet management</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm-3">
-                        <h4><a href="https://sndaviation.com/">FleetCaptain</a></h4>
-                        <p>Flight school fleet management</p>
-                        <a href="https://sndaviation.com/"><img src="/static/img/fleetcaptain.png" class="img-responsive" alt="Fleet Captain plane logo"/></a>
-                    </div>
-                    <div class="col-sm-3">
-                        <h4><a href="https://top.gg/bot/494888240617095168">AvBot</a></h4>
-                        <p>Discord bot for flight sims</p>
-                        <a href="https://top.gg/bot/494888240617095168"><img src="https://i.postimg.cc/RFSGH8FQ/logo.png" class="img-responsive" alt="AvBot logo of blue plane"/></a>
+                    <div class="col-4">
+                        <div class="card" style="width: 18rem;">
+                            <a href="https://top.gg/bot/494888240617095168">
+                                <img src="https://i.postimg.cc/RFSGH8FQ/logo.png" class="card-img-top" alt="AvBot logo of blue plane">
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title">AvBot</h5>
+                                <p class="card-text">Discord bot for flight sims</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -240,7 +245,7 @@
 </section>
 
 <footer>
-    Copyright © 2020 duPont Technologies LLC
+    Copyright © 2021 duPont Technologies LLC
 </footer>
 
 </body>
