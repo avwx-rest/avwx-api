@@ -2,7 +2,7 @@
 
 ![](https://avwx.rest/static/favicons/apple-icon-76x76.png)
 
-[![Requirements Status](https://requires.io/github/avwx-rest/AVWX-API/requirements.svg?branch=master)](https://requires.io/github/avwx-rest/AVWX-API/requirements/?branch=master)
+[![Requirements Status](https://requires.io/github/avwx-rest/avwx-api/requirements.svg?branch=master)](https://requires.io/github/avwx-rest/avwx-api/requirements/?branch=master)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## About
@@ -15,25 +15,17 @@ For more information, go to the hosted version at [avwx.rest](https://avwx.rest)
 
 ## Quickstart
 
-The easiest way to get the app running is to create and run it in Docker. First, copy to example Dockerfile.
+The easiest way to get the app running is to create and run it in Docker. First, copy the example Dockerfile.
 
 ```bash
 cp Dockerfile.example Dockerfile
 ```
 
-Now we need to comment out three ENV vars in the Dockerfile. These are grouped together:
+It should be able to run as is, but it won't have the database-backed features enabled like token authentication, report caching, and metric counting. These features are geared for the production environment, so they won't be an issue for local development. If you want to add them, you'll need a MongoDB connection URI in the environment:
 
-```docker
-ENV MONGO_URI='...'
-ENV PSQL_URI='...'
-ENV GN_USER='...'
+```bash
+export MONGO_URI="mongodb://db:password==@loc.test.com:12345"
 ```
-
-A quick explanation of what these do:
-
-- `MONGO_URI`: This connects the app to the request caching database. Commenting out disables caching
-- `PSQL_URI`: This connects the app to the account database for things like token authentication. Commenting out opens all endpoints
-- `GN_USER`: This is the GeoNames user name for coordinate lookup calls. Commenting out causes coord requests to fail. You can supply your own for testing
 
 Now you should be able to build and run the Docker container:
 
@@ -51,10 +43,10 @@ First we should install the app requirements and copy the env file. I recommend 
 ```bash
 pip install -r requirements.txt
 pip install python-dotenv
-cp .env.sample .env
+cp sample.env .env
 ```
 
-For an explaination of the variables in `.env`, see the quickstart. Feel free to comment or replace these as you see fit.
+For an explanation of the variables in `.env`, see the quickstart. Feel free to comment or replace these as you see fit.
 
 Before we can run the app, we need to tell Quart where the app is.
 
