@@ -62,29 +62,27 @@
 	<br/>
   	<div class="container">
         <div class="row">
-            <div class="col-sm-4 text-center">
+            <div class="col-md-4 col-sm-6 text-center">
                 <h3>METAR</h3>
                 <p>Current surface conditions at an airport or other reporting location that updates every hour or earlier</p>
             </div>
-            <div class="col-sm-4 text-center">
+            <div class="col-md-4 col-sm-6 text-center">
                 <h3>TAF</h3>
                 <p>Inflight 24-hour forecast for an area within 5nm of an airport or other reporting station that updates every six hours</p>
             </div>
-            <div class="col-sm-4 text-center">
+            <div class="col-md-4 col-sm-6 text-center">
                 <h3>PIREP</h3>
                 <p>Inflight observations meant to aid controllers and pilots routing around adverse conditions and others of note</p>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-4 text-center">
+            <div class="col-md-4 col-sm-6 text-center">
                 <h3>NBM</h3>
                 <p>Atmospheric forecasts up to eight days in advance from NOAA's National Blend of Models</p>
             </div>
-            <div class="col-sm-4 text-center">
+            <div class="col-md-4 col-sm-6 text-center">
                 <h3>Station Info</h3>
                 <p>Station data includes name, idents, coordinates, runways, and other useful fields</p>
             </div>
-            <div class="col-sm-4 text-center">
+            <div class="col-md-4 col-sm-6 text-center">
                 <h3>Coordinate Search</h3>
                 <p>Reports and stations can be returned nearest a coordinate pair</p>
             </div>
@@ -104,17 +102,17 @@
     </div> -->
     <div class="container text-center">
         <div class="row">
-            <div class="col-sm-4">
+            <div class="col-lg-4">
 		        <h1><i class="fas fa-cloud fa-4x"></i></h1>
                 <h3>Reliable Sources</h3>
-                <p>Most reports are pulled from <a href="http://aviationweather.gov" target="_blank">aviationweather.gov</a>, the official source for aviation weather for pilots in the US, but support exists for additional sources on a regional basis. Station information is compiled from <a href="http://ourairports.com" target="_blank">OurAirports</a></p>
+                <p>Most reports are pulled from <a href="http://aviationweather.gov" target="_blank">NOAA ADDS</a>, the official source for aviation weather for pilots in the US with world-wide, but support exists for additional sources on a regional basis. Station information is compiled from <a href="http://ourairports.com" target="_blank">OurAirports</a></p>
             </div>
-            <div class="col-sm-4">
+            <div class="col-lg-4">
 		        <h1><i class="fas fa-chart-area fa-4x"></i></h1>
                 <h3>Data Analysis</h3>
                 <p>Reports are sanitized eliminating common errors with manual entry. Flight rules are calculated for each time period in the report. Additional features like value interpretation, translation, and text-to-speech are available per element and for the report as a whole</p>
             </div>
-            <div class="col-sm-4">
+            <div class="col-lg-4">
                 <h1><i class="fas fa-code fa-4x"></i></h1>
 		        <h3>Cross-Platform</h3>
                 <p>Parsed reports are returned in JSON, XML, or YAML format, which can be imported into any language on any platform. Great for battery-conscientious mobile and IoT applications</p>
@@ -165,31 +163,13 @@
 
 <section class="container" id="contact">
     <div class="row text-center">
-        <div class="col-sm-4">
-            <div class="bubble">
-                <h2>Mailing List</h2>
-                <p>Join the AVWX mailing list to get notified of new features. You won't get more than a few a year</p>
-                <p>
-                    <div id="mc_embed_signup">
-                    <form action="https://rest.us17.list-manage.com/subscribe/post?u=547dadfe45ae821d56d2a5e52&amp;id=92e69d7b0f" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
-                        <div id="mc_embed_signup_scroll">
-                        <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" required>
-                        <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
-                        <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_547dadfe45ae821d56d2a5e52_92e69d7b0f" tabindex="-1" value=""></div>
-                        <div class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
-                        </div>
-                    </form>
-                    </div>
-                </p>
-            </div>
-        </div>
-        <div class="col-sm-4">
+        <div class="col-sm-6">
             <div class="bubble">
                 <h2>About Me</h2>
                 <p>Hi, I'm Michael. I'm a pilot, software developer, and tech meetup organizer based in Orlando, FL. You can find more of my projects at <a href="http://mdupont.com">mdupont.com</a>.</p>
             </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-6">
             <div class="bubble">
                 <h2>Contact</h2>
                 <p>Bugs? Comments? Feature Requests? Are you using the API and want your project to be featured? Email me at <a href="mailto:avwx@dupont.dev">avwx@dupont.dev</a>.</p>
@@ -205,8 +185,8 @@
             <p>The parser itself has been field-tested and in use since September 2014. It was originally made for a <a href="https://github.com/flyinactor91/METAR-RasPi">Raspberry Pi IoT project</a>, but was eventually made available as a public API. I've been contacted by flight schools, research institutions, and many mobile and desktop application developers. Here are a few of my favorite projects using AVWX.</p>
             <div class="container">
                 <div class="row">
-                    <div class="col-4">
-                        <div class="card" style="width: 18rem;">
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="card">
                             <a href="https://aerolink.club/">
                                 <img src="/static/img/aerolink.png" class="card-img-top" alt="Aero Link logo with iOS screenshots">
                             </a>
@@ -216,8 +196,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-4">
-                        <div class="card" style="width: 18rem;">
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="card">
                             <a href="https://sndaviation.com/">
                                 <img src="/static/img/fleetcaptain.png" class="card-img-top" alt="Fleet Captain plane logo">
                             </a>
@@ -227,14 +207,25 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-4">
-                        <div class="card" style="width: 18rem;">
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="card">
                             <a href="https://top.gg/bot/494888240617095168">
                                 <img src="https://i.postimg.cc/RFSGH8FQ/logo.png" class="card-img-top" alt="AvBot logo of blue plane">
                             </a>
                             <div class="card-body">
                                 <h5 class="card-title">AvBot</h5>
                                 <p class="card-text">Discord bot for flight sims</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="card">
+                            <a href="https://unrealweather.blogspot.com">
+                                <img src="/static/img/unrealwx.png" class="card-img-top" alt="Screenshot of plane and weather from Microsoft Flight Simulator 2020">
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title">Unreal Weather</h5>
+                                <p class="card-text">Tracking weather updates for MSFS 2020</p>
                             </div>
                         </div>
                     </div>

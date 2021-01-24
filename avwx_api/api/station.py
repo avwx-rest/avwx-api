@@ -16,7 +16,7 @@ from avwx_api import app, structs, validate
 from avwx_api.api.base import Base, HEADERS, parse_params, token_check
 
 
-async def get_station(station: "Station") -> dict:
+async def get_station(station: avwx.Station) -> dict:
     """
     Log and returns station data as dict
     """

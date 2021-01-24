@@ -46,6 +46,10 @@ section {
 	color: #333;
 }
 
+.card {
+	margin: 4px;
+}
+
 footer {
     right: 0;
     bottom: 0;
