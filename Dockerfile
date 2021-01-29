@@ -17,7 +17,7 @@ RUN chmod +x /tini
 ENTRYPOINT ["/tini", "--"]
 
 # Install the require Python packages
-COPY requirements.txt ./
+COPY requirements.txt .
 RUN pip install -U pip
 RUN pip install -Ur requirements.txt --no-cache-dir --compile
 
