@@ -26,9 +26,7 @@ EXAMPLE_PATH = Path(__file__).parent / "examples"
 
 
 def parse_params(func):
-    """
-    Collects and parses endpoint parameters
-    """
+    """Collects and parses endpoint parameters"""
 
     @wraps(func)
     async def wrapper(self, **kwargs):
@@ -46,9 +44,7 @@ token_check = make_token_check(app)
 
 
 class Base(AuthView):
-    """
-    Base report endpoint
-    """
+    """Base report endpoint"""
 
     validator: validate.Schema
     struct: structs.Params
@@ -68,9 +64,7 @@ class Base(AuthView):
             self.handlers = {k: v() for k, v in self.handlers.items()}
 
     def validate_params(self, **kwargs) -> structs.Params:
-        """
-        Returns all validated request parameters or an error response dict
-        """
+        """Returns all validated request parameters or an error response dict"""
         try:
             params = {**request.args, **kwargs}
             if not params.get("report_type"):
@@ -85,9 +79,7 @@ class Base(AuthView):
             return {"error": str(exc.msg), "param": key, "help": validate.HELP.get(key)}
 
     def get_example_file(self, report_type: str) -> dict:
-        """
-        Load example payload from report type
-        """
+        """Load example payload from report type"""
         path = EXAMPLE_PATH / f"{self.example or report_type}.json"
         try:
             return {"sample": json.load(path.open())}
@@ -96,9 +88,7 @@ class Base(AuthView):
 
 
 class Report(Base):
-    """
-    Fetch Report Endpoint
-    """
+    """Fetch Report Endpoint"""
 
     validator = validate.report_station
     struct = structs.ReportStationParams
@@ -107,9 +97,7 @@ class Report(Base):
     @parse_params
     @token_check
     async def get(self, params: structs.Params) -> Response:
-        """
-        GET handler returning reports
-        """
+        """GET handler returning reports"""
         nofail = params.onfail == "cache"
         loc = getattr(params, self.loc_param)
         await app.station.from_params(params, params.report_type)
@@ -119,9 +107,7 @@ class Report(Base):
 
 
 class Parse(Base):
-    """
-    Given report endpoint
-    """
+    """Given report endpoint"""
 
     validator = validate.report_given
     struct = structs.ReportGivenParams
@@ -129,9 +115,7 @@ class Parse(Base):
     @crossdomain(origin="*", headers=HEADERS)
     @token_check
     async def post(self, **kwargs) -> Response:
-        """
-        POST handler to parse given reports
-        """
+        """POST handler to parse given reports"""
         data = await request.data
         params = self.validate_params(report=data.decode() or None, **kwargs)
         if isinstance(params, dict):
@@ -145,9 +129,7 @@ class Parse(Base):
 
 
 class MultiReport(Base):
-    """
-    Multiple METAR and TAF reports in one endpoint
-    """
+    """Multiple METAR and TAF reports in one endpoint"""
 
     validator = validate.report_stations
     struct = structs.ReportStationsParams
@@ -158,9 +140,7 @@ class MultiReport(Base):
     @parse_params
     @token_check
     async def get(self, params: structs.Params) -> Response:
-        """
-        GET handler returning multiple reports
-        """
+        """GET handler returning multiple reports"""
         locs = getattr(params, self.loc_param)
         nofail = params.onfail == "cache"
         handler = self.handler or self.handlers.get(params.report_type)

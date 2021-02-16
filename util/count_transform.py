@@ -12,16 +12,12 @@ from pymongo import MongoClient, UpdateOne
 
 
 def make_update(icao: str, date: datetime, reports: Dict[str, dict]) -> UpdateOne:
-    """
-    Returns an UpdateOne operation for counts on a day
-    """
+    """Returns an UpdateOne operation for counts on a day"""
     return UpdateOne({"icao": icao, "date": date}, {"$inc": reports}, upsert=True,)
 
 
 def main() -> int:
-    """
-    Expand station counts into date documents
-    """
+    """Expand station counts into date documents"""
     coll = MongoClient(environ["MONGO_URI"]).counter.station
     while item := coll.find_one({"date": {"$exists": False}}):
         icao = item.pop("_id")

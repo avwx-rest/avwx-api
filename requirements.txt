@@ -1,4 +1,4 @@
-git+git://github.com/avwx-rest/avwx-api-core.git@e7aa5ea3c781017845b9c631e4d43c8addb84a3f#egg=avwx_api_core
+git+git://github.com/avwx-rest/avwx-api-core.git@729faf4180b6642115aa54512dee7bf78b265f25#egg=avwx_api_core
 
 avwx-engine[scipy]==1.5.10
 hypercorn>=0.11

@@ -15,14 +15,10 @@ from avwx_api.structs import Params
 
 
 class StationCounter(DelayedCounter):
-    """
-    Aggregates station and method counts
-    """
+    """Aggregates station and method counts"""
 
     async def _worker(self):
-        """
-        Task worker increments ident counters
-        """
+        """Task worker increments ident counters"""
         while True:
             async with self._queue.get() as value:
                 if self._app.mdb:
@@ -36,9 +32,7 @@ class StationCounter(DelayedCounter):
                     )
 
     def update(self):
-        """
-        Sends station counts to worker queue
-        """
+        """Sends station counts to worker queue"""
         to_update = self.gather_data()
         for key, count in to_update.items():
             icao, request_type = key.split(";")
@@ -46,9 +40,7 @@ class StationCounter(DelayedCounter):
         self.update_at = time.time() + self.interval
 
     async def add(self, icao: str, request_type: str):
-        """
-        Increment the counter for a station and type
-        """
+        """Increment the counter for a station and type"""
         await self._pre_add()
         key = f"{icao};{request_type}"
         try:
@@ -57,9 +49,7 @@ class StationCounter(DelayedCounter):
             self._data[key] = 1
 
     async def from_params(self, params: Params, report_type: str):
-        """
-        Counts station based on param values
-        """
+        """Counts station based on param values"""
         if hasattr(params, "station"):
             icao = params.station.icao
         elif hasattr(params, "location") and isinstance(params.location, Station):

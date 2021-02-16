@@ -40,8 +40,7 @@ class PirepHandler(ReportHandler):
         opts: List[str],
         nofail: bool = False,
     ) -> Tuple[dict, int]:
-        """
-        Returns weather data for the given report type, station, and options
+        """Returns weather data for the given report type, station, and options
         Also returns the appropriate HTTP response code
 
         Uses a cache to store recent report hashes which are (at most) two minutes old
@@ -62,9 +61,7 @@ class PirepHandler(ReportHandler):
         return self._post_handle(data, code, cache, station, opts, nofail)
 
     def _parse_given(self, report: str, opts: List[str]) -> Tuple[dict, int]:
-        """
-        Attempts to parse a given report supplied by the user
-        """
+        """Attempts to parse a given report supplied by the user"""
         if len(report) < 3 or "{" in report:
             return ({"error": "Could not find station at beginning of report"}, 400)
         if report and report[:3] in ("ARP", "ARS"):

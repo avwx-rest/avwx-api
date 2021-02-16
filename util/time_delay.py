@@ -14,27 +14,21 @@ from avwx.service.scrape import NOAA_ADDS, NOAA_FTP, NOAA_Scrape, Service
 
 
 def from_service(service: Service, icao: str) -> str:
-    """
-    Returns the timestamp fetched from an AVWX Service object
-    """
+    """Returns the timestamp fetched from an AVWX Service object"""
     metar = Metar(icao)
     metar.update(service("metar").fetch(icao))
     return metar.data.time.repr
 
 
 def from_api(icao: str) -> str:
-    """
-    Returns the timestamp fetched from the API
-    """
+    """Returns the timestamp fetched from the API"""
     # NOTE: Disable token auth with prod cache
     data = httpx.get("http://localhost:8000/api/metar/" + icao).json()
     return data["time"]["repr"]
 
 
 def get_times(icao: str) -> dict:
-    """
-    Returns a dictionary of current report timestamps from different services
-    """
+    """Returns a dictionary of current report timestamps from different services"""
     return {
         "api": from_api(icao),
         "adds": from_service(NOAA_ADDS, icao),
@@ -44,9 +38,7 @@ def get_times(icao: str) -> dict:
 
 
 def main():
-    """
-    Prints when there is a timestamp discrepency
-    """
+    """Prints when there is a timestamp discrepency"""
     icao = "KJFK"
     counter = 0
     while True:

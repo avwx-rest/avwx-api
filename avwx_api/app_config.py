@@ -31,8 +31,7 @@ app.after_request(add_cors)
 
 @app.before_serving
 async def init_helpers():
-    """
-    Init API helpers
+    """Init API helpers
 
     Need async to connect helpers to event loop
     """
@@ -44,9 +43,7 @@ async def init_helpers():
 
 @app.before_first_request
 def init_rollbar():
-    """
-    Initialize Rollbar exception logging
-    """
+    """Initialize Rollbar exception logging"""
     key = environ.get("LOG_KEY")
     if not (key and app.env == "production"):
         return

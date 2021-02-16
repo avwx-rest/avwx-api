@@ -17,9 +17,7 @@ from avwx_api import app
 @app.route("/")
 @app.route("/home")
 async def home() -> Response:
-    """
-    Returns static home page
-    """
+    """Returns static home page"""
     return await app.send_static_file("html/home.html")
 
 
@@ -28,16 +26,12 @@ async def home() -> Response:
 
 @app.route("/api")
 async def no_report() -> Response:
-    """
-    Returns no report msg
-    """
+    """Returns no report msg"""
     return jsonify({"error": "No report type given"}), 400
 
 
 @app.route("/api/metar")
 @app.route("/api/taf")
 async def no_station() -> Response:
-    """
-    Returns no station msg
-    """
+    """Returns no station msg"""
     return jsonify({"error": "No station given"}), 400

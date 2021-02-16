@@ -30,9 +30,7 @@ ERRORS = [
 
 
 class ReportHandler:
-    """
-    Handles AVWX report parsers and data formatting
-    """
+    """Handles AVWX report parsers and data formatting"""
 
     parser: avwx.base.AVWXBase
 
@@ -52,18 +50,14 @@ class ReportHandler:
 
     @staticmethod
     def _make_meta() -> dict:
-        """
-        Create base metadata dict
-        """
+        """Create base metadata dict"""
         return {
             "timestamp": datetime.now(tz=timezone.utc),
             "stations_updated": avwx.station.__LAST_UPDATED__,
         }
 
     def _make_data(self, parser: avwx.base.AVWXBase) -> dict:
-        """
-        Create the cached data representation from an updated parser
-        """
+        """Create the cached data representation from an updated parser"""
         data = {}
         if self.listed_data:
             data["data"] = [asdict(r) for r in parser.data]
@@ -83,8 +77,7 @@ class ReportHandler:
     async def _update_parser(
         self, parser: avwx.base.AVWXBase, err_station: Any = None
     ) -> Tuple[dict, int]:
-        """
-        Updates the data of a given parser and returns any errors
+        """Updates the data of a given parser and returns any errors
 
         Attempts to fetch five times before giving up
         """
@@ -151,9 +144,7 @@ class ReportHandler:
     async def _new_report(
         self, parser: avwx.base.AVWXBase, cache: bool = None, history: bool = None
     ) -> Tuple[dict, int]:
-        """
-        Fetch and parse report data for a given station
-        """
+        """Fetch and parse report data for a given station"""
         # Conditional defaults
         cache = self.cache if cache is None else cache
         history = self.history if history is None else history
@@ -179,9 +170,7 @@ class ReportHandler:
         use_cache: bool = None,
         add_history: bool = None,
     ):
-        """
-        For a station, fetch data from the cache or return a new report
-        """
+        """For a station, fetch data from the cache or return a new report"""
         data, code = None, 200
         cache = await app.cache.get(self.report_type, station.icao, force=force_cache)
         if cache is None or app.cache.has_expired(
@@ -197,9 +186,7 @@ class ReportHandler:
     def _format_report(
         self, data: Dict[str, object], options: List[str]
     ) -> Dict[str, object]:
-        """
-        Formats the report/cache data into the expected response format
-        """
+        """Formats the report/cache data into the expected response format"""
         ret = data.get("data", data)
         if isinstance(ret, list):
             return {"data": [self._format_report(item, options) for item in ret]}
@@ -215,8 +202,7 @@ class ReportHandler:
     async def fetch_report(
         self, station: avwx.Station, opts: List[str], nofail: bool = False
     ) -> Tuple[dict, int]:
-        """
-        Returns weather data for the given report type, station, and options
+        """Returns weather data for the given report type, station, and options
         Also returns the appropriate HTTP response code
 
         Uses a cache to store recent report hashes which are (at most) two minutes old
@@ -245,9 +231,7 @@ class ReportHandler:
         opts: List[str],
         nofail: bool,
     ) -> Tuple[dict, int]:
-        """
-        Performs post parser update operations
-        """
+        """Performs post parser update operations"""
         resp = {"meta": self._make_meta()}
         if "timestamp" in data:
             resp["meta"]["cache-timestamp"] = data["timestamp"]
@@ -277,9 +261,7 @@ class ReportHandler:
         return resp, code
 
     def _parse_given(self, report: str, opts: List[str]) -> Tuple[dict, int]:
-        """
-        Attempts to parse a given report supplied by the user
-        """
+        """Attempts to parse a given report supplied by the user"""
         if len(report) < 4 or "{" in report or "[" in report:
             return ({"error": "Could not find station at beginning of report"}, 400)
         try:
@@ -305,9 +287,7 @@ class ReportHandler:
         return resp, 200
 
     def parse_given(self, report: str, opts: List[str]) -> Tuple[dict, int]:
-        """
-        Attempts to parse a given report supplied by the user
-        """
+        """Attempts to parse a given report supplied by the user"""
         try:
             data, code = self._parse_given(report, opts)
             data["meta"] = self._make_meta()

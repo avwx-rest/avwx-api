@@ -58,22 +58,18 @@ Longitude = All(Coerce(float), Range(-180, 180))
 
 
 def Coordinate(coord: str) -> Tuple[float, float]:
-    """
-    Converts a coordinate string into float tuple
-    """
+    """Converts a coordinate string into float tuple"""
     try:
         split_coord = coord.split(",")
         return Latitude(split_coord[0]), Longitude(split_coord[1])
-    except:
-        raise Invalid(f"{coord} is not a valid coordinate pair")
+    except Exception as exc:
+        raise Invalid(f"{coord} is not a valid coordinate pair") from exc
 
 
 def Location(
     coerce_station: bool = True, airport: bool = False, reporting: bool = True
 ) -> Callable:
-    """
-    Converts a station ident or coordinate pair string into a Station
-    """
+    """Converts a station ident or coordinate pair string into a Station"""
 
     def validator(loc: str) -> Station:
         loc = loc.upper().split(",")
@@ -81,10 +77,10 @@ def Location(
             icao = loc[0]
             try:
                 return Station.from_icao(icao)
-            except BadStation:
+            except BadStation as exc:
                 # if icao in ICAO_WHITELIST:
                 #     return Station(*([None] * 4), "DNE", icao, *([None] * 9))
-                raise Invalid(f"{icao} is not a valid ICAO station ident")
+                raise Invalid(f"{icao} is not a valid ICAO station ident") from exc
         elif len(loc) == 2:
             try:
                 lat, lon = Latitude(loc[0]), Longitude(loc[1])
@@ -93,8 +89,8 @@ def Location(
                         lat, lon, is_airport=airport, sends_reports=reporting
                     )[0]
                 return lat, lon
-            except:
-                raise Invalid(f"{loc} is not a valid coordinate pair")
+            except Exception as exc:
+                raise Invalid(f"{loc} is not a valid coordinate pair") from exc
         else:
             raise Invalid(f"{loc} is not a valid station/coordinate pair")
 
@@ -102,9 +98,7 @@ def Location(
 
 
 def MultiStation(values: str) -> List[Station]:
-    """
-    Validates a comma-separated list of station idents
-    """
+    """Validates a comma-separated list of station idents"""
     values = values.upper().split(",")
     if not values:
         raise Invalid("Could not find any stations in the request")
@@ -114,15 +108,13 @@ def MultiStation(values: str) -> List[Station]:
     for icao in values:
         try:
             ret.append(Station.from_icao(icao))
-        except BadStation:
-            raise Invalid(f"{icao} is not a valid ICAO station ident")
+        except BadStation as exc:
+            raise Invalid(f"{icao} is not a valid ICAO station ident") from exc
     return ret
 
 
 def SplitIn(values: Tuple[str]) -> Callable:
-    """
-    Returns a validator to check for given values in a comma-separated string
-    """
+    """Returns a validator to check for given values in a comma-separated string"""
 
     def validator(csv: str) -> str:
         if not csv:
@@ -149,9 +141,7 @@ _station_search = {
 
 
 def _coord_search_validator(param_name: str, coerce_station: bool) -> Callable:
-    """
-    Returns a validator the pre-validates nearest station parameters
-    """
+    """Returns a validator the pre-validates nearest station parameters"""
 
     # NOTE: API class is passing self param to this function
     def validator(_, params: dict) -> dict:
