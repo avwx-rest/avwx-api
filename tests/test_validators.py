@@ -19,7 +19,7 @@ def test_split_in():
     good_strings = ("test,values,here", "here", "values,test")
     for string in good_strings:
         assert string.split(",") == validator(string)
-    bad_strings = ("testvalues", "test,stuff", "crazy,nulls", "what?" "really,")
+    bad_strings = ("testvalues", "test,stuff", "crazy,nulls", "what?", "really,")
     for string in bad_strings:
         with pytest.raises(Invalid):
             validator(string)

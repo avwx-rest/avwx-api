@@ -15,6 +15,7 @@ from voluptuous import (
     Coerce,
     In,
     Invalid,
+    Length,
     Range,
     Required,
     Schema,
@@ -46,6 +47,7 @@ HELP = {
     "airport": "Limit results to airports",
     "reporting": "Limit results to reporting stations",
     "maxdist": "Max coordinate distance",
+    "text": "Station search string. Ex: orlando%20kmco",
 }
 
 
@@ -130,6 +132,7 @@ def SplitIn(values: Tuple[str]) -> Callable:
 
 _required = {Required("format", default="json"): In(FORMATS)}
 _report_shared = {
+    **_required,
     Required("options", default=""): SplitIn(OPTIONS),
     Required("report_type"): In(REPORT_TYPES),
 }
@@ -140,20 +143,22 @@ _station_search = {
 }
 
 
+def _schema(schema: dict) -> Schema:
+    return Schema(schema, extra=REMOVE_EXTRA)
+
+
 def _coord_search_validator(param_name: str, coerce_station: bool) -> Callable:
     """Returns a validator the pre-validates nearest station parameters"""
 
     # NOTE: API class is passing self param to this function
     def validator(_, params: dict) -> dict:
-        search_params = Schema(_station_search, extra=REMOVE_EXTRA)(params)
-        return Schema(
+        search_params = _schema(_station_search)(params)
+        return _schema(
             {
-                **_required,
                 **_report_shared,
                 **_uses_cache,
                 Required(param_name): Location(coerce_station, **search_params),
-            },
-            extra=REMOVE_EXTRA,
+            }
         )(params)
 
     return validator
@@ -163,25 +168,30 @@ report_station = _coord_search_validator("station", True)
 report_location = _coord_search_validator("location", False)
 
 
-report_given = Schema(
-    {**_required, **_report_shared, Required("report"): str}, extra=REMOVE_EXTRA
+report_given = _schema({**_report_shared, Required("report"): str})
+
+report_stations = _schema(
+    {**_report_shared, **_uses_cache, Required("stations"): MultiStation}
 )
 
-report_stations = Schema(
-    {**_required, **_report_shared, **_uses_cache, Required("stations"): MultiStation},
-    extra=REMOVE_EXTRA,
-)
+station = _schema({**_required, Required("station"): Location()})
+stations = _schema({**_required, Required("stations"): MultiStation})
 
-station = Schema({**_required, Required("station"): Location()}, extra=REMOVE_EXTRA)
-stations = Schema({**_required, Required("stations"): MultiStation}, extra=REMOVE_EXTRA)
-
-coord_search = Schema(
+coord_search = _schema(
     {
         **_required,
         **_station_search,
         Required("coord"): Coordinate,
         Required("n", default=10): All(Coerce(int), Range(min=1, max=200)),
         Required("maxdist", default=10): All(Coerce(float), Range(min=0, max=360)),
-    },
-    extra=REMOVE_EXTRA,
+    }
+)
+
+text_search = _schema(
+    {
+        **_required,
+        **_station_search,
+        Required("text"): Length(min=3, max=200),
+        Required("n", default=10): All(Coerce(int), Range(min=1, max=200)),
+    }
 )

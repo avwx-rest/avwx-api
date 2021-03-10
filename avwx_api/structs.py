@@ -3,7 +3,7 @@ Michael duPont - michael@mdupont.com
 avwx_api.structs - Parameter dataclasses
 """
 
-# pylint: disable=C0111
+# pylint: disable=missing-class-docstring,invalid-name
 
 # stdlib
 from dataclasses import dataclass
@@ -58,12 +58,18 @@ class StationsParams(Params):
 
 
 @dataclass
-class CoordSearchParams:
-    coord: Tuple[float, float]
-    # pylint: disable=invalid-name
+class StationSearch(Params):
     n: int
     airport: bool
     reporting: bool
-    airport: bool
+
+
+@dataclass
+class CoordSearchParams(StationSearch):
+    coord: Tuple[float, float]
     maxdist: float
-    format: str
+
+
+@dataclass
+class TextSearchParams(StationSearch):
+    text: str
