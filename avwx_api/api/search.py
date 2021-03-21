@@ -61,9 +61,10 @@ class Near(Base):
     loc_param = "coord"
     example = "stations_near"
 
-    def validate_token_parameters(self, token: Token, **kwargs) -> Optional[dict]:
+    def validate_token_parameters(self, token: Token, *args) -> Optional[dict]:
         """Returns an error payload if parameter validation doesn't match plan level"""
-        return check_count_limit(kwargs["params"].n, token, PAID_PLANS)
+        params = arg_matching(self.struct, args)  # pylint: disable=no-member
+        return check_count_limit(params.n, token, PAID_PLANS)
 
     @crossdomain(origin="*", headers=HEADERS)
     @parse_params
@@ -88,9 +89,10 @@ class TextSearch(Base):
     struct = structs.TextSearchParams
     example = "station_search"
 
-    def validate_token_parameters(self, token: Token, **kwargs) -> Optional[dict]:
+    def validate_token_parameters(self, token: Token, *args) -> Optional[dict]:
         """Returns an error payload if parameter validation doesn't match plan level"""
-        return check_count_limit(kwargs["params"].n, token, PAID_PLANS)
+        params = arg_matching(self.struct, args)  # pylint: disable=no-member
+        return check_count_limit(params.n, token, PAID_PLANS)
 
     @crossdomain(origin="*", headers=HEADERS)
     @parse_params
