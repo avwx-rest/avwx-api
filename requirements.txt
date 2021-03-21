@@ -1,6 +1,6 @@
-git+git://github.com/avwx-rest/avwx-api-core.git@729faf4180b6642115aa54512dee7bf78b265f25#egg=avwx_api_core
+git+git://github.com/avwx-rest/avwx-api-core.git@5431f7e41ffc695be266e53668288c1372cf4046#egg=avwx_api_core
 
-avwx-engine[scipy]==1.6.1
+avwx-engine[scipy]==1.6.2
 hypercorn>=0.11
 rollbar>=0.15
 voluptuous~=0.12

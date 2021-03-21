@@ -142,6 +142,19 @@ _station_search = {
     Required("reporting", default=True): Boolean(None),
 }
 
+_report_parse = {Required("report"): str}
+
+_single_station = {Required("station"): Location()}
+_multi_station = {Required("stations"): MultiStation}
+
+_search_counter = {Required("n", default=10): All(Coerce(int), Range(min=1, max=200))}
+_search_base = _required | _station_search | _search_counter
+_coord_search = {
+    Required("coord"): Coordinate,
+    Required("maxdist", default=10): All(Coerce(float), Range(min=0, max=360)),
+}
+_text_search = {Required("text"): Length(min=3, max=200)}
+
 
 def _schema(schema: dict) -> Schema:
     return Schema(schema, extra=REMOVE_EXTRA)
@@ -152,14 +165,10 @@ def _coord_search_validator(param_name: str, coerce_station: bool) -> Callable:
 
     # NOTE: API class is passing self param to this function
     def validator(_, params: dict) -> dict:
+        schema = _report_shared | _uses_cache
         search_params = _schema(_station_search)(params)
-        return _schema(
-            {
-                **_report_shared,
-                **_uses_cache,
-                Required(param_name): Location(coerce_station, **search_params),
-            }
-        )(params)
+        schema[Required(param_name)] = Location(coerce_station, **search_params)
+        return _schema(schema)(params)
 
     return validator
 
@@ -167,31 +176,15 @@ def _coord_search_validator(param_name: str, coerce_station: bool) -> Callable:
 report_station = _coord_search_validator("station", True)
 report_location = _coord_search_validator("location", False)
 
+report_given = _schema(_report_shared | _report_parse)
+report_stations = _schema(_report_shared | _uses_cache | _multi_station)
 
-report_given = _schema({**_report_shared, Required("report"): str})
+station = _schema(_required | _single_station)
+stations = _schema(_required | _multi_station)
 
-report_stations = _schema(
-    {**_report_shared, **_uses_cache, Required("stations"): MultiStation}
+coord_search = _schema(_search_base | _coord_search)
+text_search = _schema(_search_base | _text_search)
+report_coord_search = _schema(
+    _search_base | _report_shared | _uses_cache | _coord_search
 )
-
-station = _schema({**_required, Required("station"): Location()})
-stations = _schema({**_required, Required("stations"): MultiStation})
-
-coord_search = _schema(
-    {
-        **_required,
-        **_station_search,
-        Required("coord"): Coordinate,
-        Required("n", default=10): All(Coerce(int), Range(min=1, max=200)),
-        Required("maxdist", default=10): All(Coerce(float), Range(min=0, max=360)),
-    }
-)
-
-text_search = _schema(
-    {
-        **_required,
-        **_station_search,
-        Required("text"): Length(min=3, max=200),
-        Required("n", default=10): All(Coerce(int), Range(min=1, max=200)),
-    }
-)
+report_text_search = _schema(_search_base | _report_shared | _uses_cache | _text_search)

@@ -25,21 +25,23 @@ class ReportParams(Params):
 
 
 @dataclass
-class ReportStationParams(ReportParams):
+class CachedReportParams(ReportParams):
     onfail: str
+
+
+@dataclass
+class ReportStationParams(CachedReportParams):
     station: Station
 
 
 @dataclass
-class ReportStationsParams(ReportParams):
-    onfail: str
+class ReportStationsParams(CachedReportParams):
     stations: List[Station]
 
 
 @dataclass
-class ReportLocationParams(ReportParams):
+class ReportLocationParams(CachedReportParams):
     location: Union[Station, Tuple[float, float]]
-    onfail: str
 
 
 @dataclass
@@ -73,3 +75,13 @@ class CoordSearchParams(StationSearch):
 @dataclass
 class TextSearchParams(StationSearch):
     text: str
+
+
+@dataclass
+class ReportCoordSearchParams(CachedReportParams, CoordSearchParams):
+    pass
+
+
+@dataclass
+class ReportTextSearchParams(CachedReportParams, TextSearchParams):
+    pass

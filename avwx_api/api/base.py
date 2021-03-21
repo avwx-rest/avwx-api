@@ -7,7 +7,7 @@ import json
 import asyncio as aio
 from functools import wraps
 from pathlib import Path
-from typing import Dict
+from typing import Union
 
 # library
 from quart import Response, request
@@ -15,6 +15,7 @@ from quart_openapi.cors import crossdomain
 from voluptuous import Invalid, MultipleInvalid
 
 # module
+import avwx
 from avwx_api_core.views import AuthView, make_token_check
 from avwx_api import app, handle, structs, validate
 
@@ -50,7 +51,7 @@ class Base(AuthView):
     struct: structs.Params
     report_type: str = None
     handler: handle.base.ReportHandler = None
-    handlers: Dict[str, handle.base.ReportHandler] = None
+    handlers: dict[str, handle.base.ReportHandler] = None
 
     # Name of parameter used for report location
     loc_param: str = "station"
@@ -136,19 +137,52 @@ class MultiReport(Base):
     loc_param = "stations"
     plan_types = ("pro", "enterprise")
 
+    # If True, returns a dict with ICAO idents. Otherwise a list based on location order
+    keyed: bool = True
+
+    def get_locations(self, params: structs.Params) -> list[Union[avwx.Station, dict]]:
+        """Returns the list of locations to pass to each handler"""
+        return getattr(params, self.loc_param)
+
+    @staticmethod
+    def split_distances(data: list[Union[avwx.Station, dict]]) -> tuple[list, dict]:
+        """Splits any distances from the location data"""
+        locations, distances = [], {}
+        for item in data:
+            if isinstance(item, dict):
+                station = item.pop("station")
+                locations.append(station)
+                distances[station.icao] = item
+            else:
+                locations.append(item)
+        return locations, distances
+
     @crossdomain(origin="*", headers=HEADERS)
     @parse_params
     @token_check
     async def get(self, params: structs.Params) -> Response:
         """GET handler returning multiple reports"""
-        locs = getattr(params, self.loc_param)
+        locations, distances = self.split_distances(self.get_locations(params))
         nofail = params.onfail == "cache"
         handler = self.handler or self.handlers.get(params.report_type)
+
         coros = []
-        for loc in locs:
+        for loc in locations:
             coros.append(handler.fetch_report(loc, params.options, nofail))
             await app.station.add(loc.icao, params.report_type + "-multi")
-        results = await aio.gather(*coros)
-        keys = [loc.icao if hasattr(loc, "icao") else loc for loc in locs]
-        data = dict(zip(keys, [r[0] for r in results if r]))
+        data = [r[0] for r in await aio.gather(*coros)]
+
+        # Expand to keyed dict when supplied specific keys
+        if self.keyed:
+            keys = [loc.icao if hasattr(loc, "icao") else loc for loc in locations]
+            data = dict(zip(keys, data))
+        # Remove non-existing responses for list results
+        else:
+            data = [d for d in data if "error" not in d]
+
+        # Add distances if included from locations
+        if distances:
+            for i, item in enumerate(data):
+                data[i]["distance"] = distances.get(item.get("station"), {})
+
         return self.make_response(data, params.format)
