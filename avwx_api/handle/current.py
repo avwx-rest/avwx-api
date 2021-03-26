@@ -6,11 +6,12 @@ Handle current report requests
 
 # stdlib
 from dataclasses import asdict
-from typing import List, Tuple, Union
+from typing import Union
 
 # module
 import avwx
 from avwx_api.handle.base import ReportHandler, ERRORS
+from avwx_api.structs import Coord, DataStatus
 
 
 OPTIONS = ("summary", "speech", "translate")
@@ -31,15 +32,15 @@ class TafHandler(ReportHandler):
 class PirepHandler(ReportHandler):
     parser: avwx.Pireps = avwx.Pireps
     report_type = "pirep"
-    option_keys: Tuple[str] = tuple()
+    option_keys: tuple[str] = tuple()
     listed_data: bool = True
 
     async def fetch_report(
         self,
-        loc: Union[avwx.Station, Tuple[float, float]],
-        opts: List[str],
+        loc: Union[avwx.Station, Coord],
+        opts: list[str],
         nofail: bool = False,
-    ) -> Tuple[dict, int]:
+    ) -> DataStatus:
         """Returns weather data for the given report type, station, and options
         Also returns the appropriate HTTP response code
 
@@ -60,7 +61,7 @@ class PirepHandler(ReportHandler):
             raise Exception(f"loc is not a valid value: {loc}")
         return self._post_handle(data, code, cache, station, opts, nofail)
 
-    def _parse_given(self, report: str, opts: List[str]) -> Tuple[dict, int]:
+    def _parse_given(self, report: str, opts: list[str]) -> DataStatus:
         """Attempts to parse a given report supplied by the user"""
         if len(report) < 3 or "{" in report:
             return ({"error": "Could not find station at beginning of report"}, 400)

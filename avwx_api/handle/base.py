@@ -9,7 +9,7 @@ import asyncio as aio
 from contextlib import suppress
 from dataclasses import asdict
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 # library
 import rollbar
@@ -17,6 +17,7 @@ import rollbar
 # module
 import avwx
 from avwx_api import app
+from avwx_api.structs import DataStatus
 
 ERRORS = [
     "Station Lookup Error: {} not found for {}. There might not be a current report in ADDS",
@@ -35,7 +36,7 @@ class ReportHandler:
     parser: avwx.base.AVWXBase
 
     report_type: str = None
-    option_keys: List[str] = None
+    option_keys: list[str] = None
 
     # Report data is a list
     listed_data: bool = False
@@ -76,7 +77,7 @@ class ReportHandler:
     # pylint: disable=too-many-return-statements
     async def _update_parser(
         self, parser: avwx.base.AVWXBase, err_station: Any = None
-    ) -> Tuple[dict, int]:
+    ) -> DataStatus:
         """Updates the data of a given parser and returns any errors
 
         Attempts to fetch five times before giving up
@@ -143,7 +144,7 @@ class ReportHandler:
 
     async def _new_report(
         self, parser: avwx.base.AVWXBase, cache: bool = None, history: bool = None
-    ) -> Tuple[dict, int]:
+    ) -> DataStatus:
         """Fetch and parse report data for a given station"""
         # Conditional defaults
         cache = self.cache if cache is None else cache
@@ -184,8 +185,8 @@ class ReportHandler:
         return data, cache, code
 
     def _format_report(
-        self, data: Dict[str, object], options: List[str]
-    ) -> Dict[str, object]:
+        self, data: dict[str, Any], options: list[str]
+    ) -> dict[str, Any]:
         """Formats the report/cache data into the expected response format"""
         ret = data.get("data", data)
         if isinstance(ret, list):
@@ -200,8 +201,8 @@ class ReportHandler:
         return ret
 
     async def fetch_report(
-        self, station: avwx.Station, opts: List[str], nofail: bool = False
-    ) -> Tuple[dict, int]:
+        self, station: avwx.Station, opts: list[str], nofail: bool = False
+    ) -> DataStatus:
         """Returns weather data for the given report type, station, and options
         Also returns the appropriate HTTP response code
 
@@ -228,9 +229,9 @@ class ReportHandler:
         code: int,
         cache: dict,
         station: avwx.Station,
-        opts: List[str],
+        opts: list[str],
         nofail: bool,
-    ) -> Tuple[dict, int]:
+    ) -> DataStatus:
         """Performs post parser update operations"""
         resp = {"meta": self._make_meta()}
         if "timestamp" in data:
@@ -260,7 +261,7 @@ class ReportHandler:
             resp["info"] = asdict(station)
         return resp, code
 
-    def _parse_given(self, report: str, opts: List[str]) -> Tuple[dict, int]:
+    def _parse_given(self, report: str, opts: list[str]) -> DataStatus:
         """Attempts to parse a given report supplied by the user"""
         if len(report) < 4 or "{" in report or "[" in report:
             return ({"error": "Could not find station at beginning of report"}, 400)
@@ -286,11 +287,14 @@ class ReportHandler:
             resp["info"] = asdict(station)
         return resp, 200
 
-    def parse_given(self, report: str, opts: List[str]) -> Tuple[dict, int]:
+    def parse_given(
+        self, report: str, opts: list[str], add_meta: bool = True
+    ) -> DataStatus:
         """Attempts to parse a given report supplied by the user"""
         try:
             data, code = self._parse_given(report, opts)
-            data["meta"] = self._make_meta()
+            if add_meta:
+                data["meta"] = self._make_meta()
         except Exception as exc:
             print("Unknown Parsing Error", exc)
             rollbar.report_exc_info(extra_data={"state": "given", "raw": report})

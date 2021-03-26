@@ -37,7 +37,7 @@ class Station(Base):
     """Returns station details for ICAO and coordinates"""
 
     validator = validate.station
-    struct = structs.StationParams
+    struct = structs.Station
     report_type = "station"
 
     @crossdomain(origin="*", headers=HEADERS)
@@ -54,7 +54,7 @@ class MultiStation(Base):
     """Returns station details for multiple ICAO idents"""
 
     validator = validate.stations
-    struct = structs.StationsParams
+    struct = structs.Stations
     report_type = "station"
     example = "multi_station"
     loc_param = "stations"

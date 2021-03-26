@@ -92,7 +92,7 @@ class Report(Base):
     """Fetch Report Endpoint"""
 
     validator = validate.report_station
-    struct = structs.ReportStationParams
+    struct = structs.ReportStation
 
     @crossdomain(origin="*", headers=HEADERS)
     @parse_params
@@ -111,7 +111,7 @@ class Parse(Base):
     """Given report endpoint"""
 
     validator = validate.report_given
-    struct = structs.ReportGivenParams
+    struct = structs.ReportGiven
 
     @crossdomain(origin="*", headers=HEADERS)
     @token_check
@@ -133,12 +133,14 @@ class MultiReport(Base):
     """Multiple METAR and TAF reports in one endpoint"""
 
     validator = validate.report_stations
-    struct = structs.ReportStationsParams
+    struct = structs.ReportStations
     loc_param = "stations"
     plan_types = ("pro", "enterprise")
 
     # If True, returns a dict with ICAO idents. Otherwise a list based on location order
     keyed: bool = True
+
+    log_postfix = "multi"
 
     def get_locations(self, params: structs.Params) -> list[Union[avwx.Station, dict]]:
         """Returns the list of locations to pass to each handler"""
@@ -169,7 +171,7 @@ class MultiReport(Base):
         coros = []
         for loc in locations:
             coros.append(handler.fetch_report(loc, params.options, nofail))
-            await app.station.add(loc.icao, params.report_type + "-multi")
+            await app.station.add(loc.icao, params.report_type + "-" + self.log_postfix)
         data = [r[0] for r in await aio.gather(*coros)]
 
         # Expand to keyed dict when supplied specific keys

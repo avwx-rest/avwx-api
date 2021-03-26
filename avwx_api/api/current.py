@@ -73,7 +73,7 @@ class PirepFetch(Report):
     report_type = "pirep"
     loc_param = "location"
     plan_types = ("pro", "enterprise")
-    struct = structs.ReportLocationParams
+    struct = structs.ReportLocation
     validator = validate.report_location
     handler = handle.PirepHandler
     _key_remv = ("direction",)
@@ -84,7 +84,7 @@ class PirepParse(Parse):
     report_type = "pirep"
     loc_param = "location"
     plan_types = ("pro", "enterprise")
-    struct = structs.ReportLocationParams
+    struct = structs.ReportLocation
     validator = validate.report_location
     handler = handle.PirepHandler
     _key_remv = ("direction",)

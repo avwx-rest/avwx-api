@@ -57,7 +57,7 @@ class Near(Base):
     """Returns stations near a coordinate pair"""
 
     validator = validate.coord_search
-    struct = structs.CoordSearchParams
+    struct = structs.CoordSearch
     loc_param = "coord"
     example = "stations_near"
 
@@ -86,7 +86,7 @@ class TextSearch(Base):
     """Returns stations from a text-based search"""
 
     validator = validate.text_search
-    struct = structs.TextSearchParams
+    struct = structs.TextSearch
     example = "station_search"
 
     def validate_token_parameters(self, token: Token, *args) -> Optional[dict]:
@@ -111,11 +111,12 @@ class ReportCoordSearch(MultiReport):
     """Returns reports nearest to a coordinate"""
 
     validator = validate.report_coord_search
-    struct = structs.ReportCoordSearchParams
+    struct = structs.ReportCoordSearch
     handlers = SEARCH_HANDLERS
     plan_types = PAID_PLANS
     loc_param = "coord"
     keyed = False
+    log_postfix = "coord"
 
     def validate_token_parameters(self, token: Token, *args) -> Optional[dict]:
         """Returns an error payload if parameter validation doesn't match plan level"""
@@ -136,10 +137,11 @@ class ReportTextSearch(MultiReport):
     """Returns reports from a text-based search"""
 
     validator = validate.report_text_search
-    struct = structs.ReportTextSearchParams
+    struct = structs.ReportTextSearch
     handlers = SEARCH_HANDLERS
     plan_types = PAID_PLANS
     keyed = False
+    log_postfix = "search"
 
     def validate_token_parameters(self, token: Token, *args) -> Optional[dict]:
         """Returns an error payload if parameter validation doesn't match plan level"""

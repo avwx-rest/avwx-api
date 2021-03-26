@@ -7,10 +7,14 @@ avwx_api.structs - Parameter dataclasses
 
 # stdlib
 from dataclasses import dataclass
-from typing import List, Tuple, Union
+from typing import Union
 
 # module
-from avwx import Station
+import avwx
+
+
+Coord = tuple[float, float]
+DataStatus = tuple[dict, int]
 
 
 @dataclass
@@ -19,44 +23,44 @@ class Params:
 
 
 @dataclass
-class ReportParams(Params):
-    options: List[str]
+class Report(Params):
+    options: list[str]
     report_type: str
 
 
 @dataclass
-class CachedReportParams(ReportParams):
+class CachedReport(Report):
     onfail: str
 
 
 @dataclass
-class ReportStationParams(CachedReportParams):
-    station: Station
+class ReportStation(CachedReport):
+    station: avwx.Station
 
 
 @dataclass
-class ReportStationsParams(CachedReportParams):
-    stations: List[Station]
+class ReportStations(CachedReport):
+    stations: list[avwx.Station]
 
 
 @dataclass
-class ReportLocationParams(CachedReportParams):
-    location: Union[Station, Tuple[float, float]]
+class ReportLocation(CachedReport):
+    location: Union[avwx.Station, Coord]
 
 
 @dataclass
-class ReportGivenParams(ReportParams):
+class ReportGiven(Report):
     report: str
 
 
 @dataclass
-class StationParams(Params):
-    station: Station
+class Station(Params):
+    station: avwx.Station
 
 
 @dataclass
-class StationsParams(Params):
-    stations: List[Station]
+class Stations(Params):
+    stations: list[Station]
 
 
 @dataclass
@@ -67,21 +71,21 @@ class StationSearch(Params):
 
 
 @dataclass
-class CoordSearchParams(StationSearch):
-    coord: Tuple[float, float]
+class CoordSearch(StationSearch):
+    coord: Coord
     maxdist: float
 
 
 @dataclass
-class TextSearchParams(StationSearch):
+class TextSearch(StationSearch):
     text: str
 
 
 @dataclass
-class ReportCoordSearchParams(CachedReportParams, CoordSearchParams):
+class ReportCoordSearch(CachedReport, CoordSearch):
     pass
 
 
 @dataclass
-class ReportTextSearchParams(CachedReportParams, TextSearchParams):
+class ReportTextSearch(CachedReport, TextSearch):
     pass
