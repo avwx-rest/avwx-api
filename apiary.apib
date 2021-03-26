@@ -246,6 +246,184 @@ This example returns reporting stations around Melbourne Beach, FL
             }
         ]
 
+## Station Search [/search/station{?text,n,airport,reporting,format}]
+
+Text search for stations by ICAO, IATA, name, city, and state. By default, these are only reporting stations, but this can be disabled to return smaller airports with non-reporting AWOS/ASOS as well.
+
++ Parameters
+    + text: `lihue%20hi` (string) - Search text
+    + n: 2 (number, optional) - Max results to return. Smaller numbers are more likely to not reach max
+        + Default: 10
+    + airport (boolean, optional) - Only include airports
+        + Default: true
+    + reporting (boolean, optional) - Only include reporting stations
+        + Default: true
+    + format (string, optional) - Desired response format
+        + Supported: `json`, `xml`, `yaml`
+        + Default: `json`
+
+### Get stations via text search [GET]
+
+This example returns reporting stations for "lihue hi"
+
++ Request
+
+    + Headers
+    
+            Authorization: Token my_secret_api_token
+
++ Response 200 (application/json)
+
+        [
+            {
+                "city": "Lihue",
+                "country": "US",
+                "elevation_ft": 153,
+                "elevation_m": 47,
+                "iata": "LIH",
+                "icao": "PHLI",
+                "latitude": 21.97599983215332,
+                "longitude": -159.33900451660156,
+                "name": "Lihue Airport",
+                "note": null,
+                "reporting": true,
+                "runways": [
+                    {
+                        "length_ft": 6500,
+                        "width_ft": 150,
+                        "surface": "asphalt",
+                        "lights": true,
+                        "ident1": "03",
+                        "ident2": "21",
+                        "bearing1": 45.0,
+                        "bearing2": 225.0
+                    },
+                    {
+                        "length_ft": 6500,
+                        "width_ft": 150,
+                        "surface": "asphalt",
+                        "lights": true,
+                        "ident1": "17",
+                        "ident2": "35",
+                        "bearing1": 180.0,
+                        "bearing2": 360.0
+                    }
+                ],
+                "state": "HI",
+                "type": "medium_airport",
+                "website": null,
+                "wiki": "https://en.wikipedia.org/wiki/Lihu'e_Airport"
+            },
+            {
+                "city": "Honolulu",
+                "country": "US",
+                "elevation_ft": 13,
+                "elevation_m": 4,
+                "iata": "HNL",
+                "icao": "PHNL",
+                "latitude": 21.32062,
+                "longitude": -157.924228,
+                "name": "Daniel K Inouye International Airport",
+                "note": "Hickam Air Force Base, HIK, PHIK, KHNL, Honolulu International",
+                "reporting": true,
+                "runways": [
+                    {
+                        "length_ft": 12300,
+                        "width_ft": 150,
+                        "surface": "asphalt",
+                        "lights": false,
+                        "ident1": "08L",
+                        "ident2": "26R",
+                        "bearing1": 90.0,
+                        "bearing2": 270.0
+                    },
+                    {
+                        "length_ft": 12000,
+                        "width_ft": 200,
+                        "surface": "asphalt",
+                        "lights": false,
+                        "ident1": "08R",
+                        "ident2": "26L",
+                        "bearing1": 90.0,
+                        "bearing2": 270.0
+                    },
+                    {
+                        "length_ft": 9000,
+                        "width_ft": 150,
+                        "surface": "asphalt",
+                        "lights": false,
+                        "ident1": "04R",
+                        "ident2": "22L",
+                        "bearing1": 53.0,
+                        "bearing2": 233.0
+                    },
+                    {
+                        "length_ft": 6952,
+                        "width_ft": 150,
+                        "surface": "asphalt",
+                        "lights": false,
+                        "ident1": "04L",
+                        "ident2": "22R",
+                        "bearing1": 53.0,
+                        "bearing2": 233.0
+                    },
+                    {
+                        "length_ft": 5000,
+                        "width_ft": 300,
+                        "surface": "water",
+                        "lights": false,
+                        "ident1": "08W",
+                        "ident2": "26W",
+                        "bearing1": 91.0,
+                        "bearing2": 271.0
+                    },
+                    {
+                        "length_ft": 3000,
+                        "width_ft": 150,
+                        "surface": "water",
+                        "lights": false,
+                        "ident1": "04W",
+                        "ident2": "22W",
+                        "bearing1": 51.0,
+                        "bearing2": 231.0
+                    }
+                ],
+                "state": "HI",
+                "type": "large_airport",
+                "website": "http://airports.hawaii.gov/hnl/",
+                "wiki": "https://en.wikipedia.org/wiki/Daniel_K._Inouye_International_Airport"
+            },
+            {
+                "city": "Kekaha",
+                "country": "US",
+                "elevation_ft": 23,
+                "elevation_m": 7,
+                "iata": "BKH",
+                "icao": "PHBK",
+                "latitude": 22.022800445599998,
+                "longitude": -159.785003662,
+                "name": "Barking Sands Airport",
+                "note": "Pacific Missle Range Facility Barking Sands, Kauai",
+                "reporting": true,
+                "runways": [
+                    {
+                        "length_ft": 6006,
+                        "width_ft": 146,
+                        "surface": "asphalt",
+                        "lights": true,
+                        "ident1": "16",
+                        "ident2": "34",
+                        "bearing1": 170.0,
+                        "bearing2": 350.0
+                    }
+                ],
+                "state": "HI",
+                "type": "medium_airport",
+                "website": null,
+                "wiki": "https://en.wikipedia.org/wiki/Pacific_Missile_Range_Facility"
+            }
+        ]
+
 ## METAR [/metar/{location}{?options,airport,reporting,format,onfail}]
 
 METAR reports are surface observations for a particular airfield or other station location. There are two standard formats: International and North American. The parser works with both, but it is up to the developer to do the correct interpretation of the data. Use the 'Units' key for labling and conversions.
@@ -2955,7 +3133,7 @@ Note: the documented output is truncated.
         }
 
 
-## Multi-Station Request [/multi/{report_type}/{locations}{?options,format,onfail}]
+## Multiple Reports [/multi/{report_type}/{locations}{?options,format,onfail}]
 
 This endpoint returns the results for multiple stations for a given report type (`metar`, `taf`). It accepts the same request parameters as normal METAR and TAF requests, but accepts a comma-separated string of up to 10 stations in one call.
 
@@ -3154,3 +3332,330 @@ Shows a request for KJFK and KSFO in a single API call.
                 "speech": "Winds three five zero at 4kt. Visibility nine miles. Temperature one eight degrees Celsius. Dew point four degrees Celsius. Altimeter three zero point zero six. Sky clear"
             }
         }
+
+## Nearest Reports [/{report_type}/near/{coord}{?n,options,airport,reporting,format,onfail}]
+
+Returns the nearest weather reports to a coordinate pair. By default, these are only reporting stations, but this can be disabled to return smaller airports with non-reporting AWOS/ASOS as well. This endpoint is limited to paid plans, and the `n` parameter is limitted to 10 while enterprise plans can go up to 200.
+
++ Parameters
+    + report_type: `metar` (string) - Weather report type
+        + Supported: `metar`, `taf`
+    + coord: `28.1,-81` (string) - Coordinate pair
+    + n: 2 (number, optional) - Number of stations to return
+        + Default: 10
+    + options (string, optional) - Additional options to include as comma-separated string
+        + Supported: `info`, `translate`, `summary`, `speech`
+        + Example: `info,speech`
+    + airport (boolean, optional) - Only include airports
+        + Default: true
+    + reporting (boolean, optional) - Only include reporting stations
+        + Default: true
+    + format (string, optional) - Desired response format
+        + Supported: `json`, `xml`, `yaml`
+        + Default: `json`
+    + onfail (string, optional) - Error or use out-of-date cache when unable to fetch report
+        + Supported: `cache`, `error`
+        + Default: `cache`
+
+### Get METARs around a coordinate [GET]
+
+This example returns METARs around Melbourne Beach, FL
+
++ Request
+
+    + Headers
+    
+            Authorization: Token my_secret_api_token
+
++ Response 200 (application/json)
+
+        [
+            {
+                "meta": {
+                    "timestamp": "2021-03-21T20:27:18.552801Z",
+                    "stations_updated": "2021-03-07"
+                },
+                "altimeter": {
+                    "repr": "A2998",
+                    "value": 29.98,
+                    "spoken": "two nine point nine eight"
+                },
+                "clouds": [
+                    {
+                        "repr": "BKN028",
+                        "type": "BKN",
+                        "base": 28,
+                        "top": null,
+                        "modifier": null,
+                        "direction": null
+                    }
+                ],
+                "flight_rules": "MVFR",
+                "other": [],
+                "sanitized": "KMLB 212008Z 30012KT 10SM BKN028 20/12 A2998 RMK AO2 T02000117",
+                "visibility": {
+                    "repr": "10",
+                    "value": 10,
+                    "spoken": "one zero"
+                },
+                "wind_direction": {
+                    "repr": "300",
+                    "value": 300,
+                    "spoken": "three zero zero"
+                },
+                "wind_gust": null,
+                "wind_speed": {
+                    "repr": "12",
+                    "value": 12,
+                    "spoken": "one two"
+                },
+                "wx_codes": [],
+                "raw": "KMLB 212008Z 30012KT 10SM BKN028 20/12 A2998 RMK AO2 T02000117",
+                "station": "KMLB",
+                "time": {
+                    "repr": "212008Z",
+                    "dt": "2021-03-21T20:08:00Z"
+                },
+                "remarks": "RMK AO2 T02000117",
+                "dewpoint": {
+                    "repr": "12",
+                    "value": 12,
+                    "spoken": "one two"
+                },
+                "remarks_info": {
+                    "dewpoint_decimal": {
+                        "repr": "11.7",
+                        "value": 11.7,
+                        "spoken": "one one point seven"
+                    },
+                    "temperature_decimal": {
+                        "repr": "20.0",
+                        "value": 20.0,
+                        "spoken": "two zero point zero"
+                    }
+                },
+                "runway_visibility": [],
+                "temperature": {
+                    "repr": "20",
+                    "value": 20,
+                    "spoken": "two zero"
+                },
+                "wind_variable_direction": [],
+                "units": {
+                    "altimeter": "inHg",
+                    "altitude": "ft",
+                    "temperature": "C",
+                    "visibility": "sm",
+                    "wind_speed": "kt"
+                },
+                "distance": {
+                    "coordinate_distance": 0.35470923554481676,
+                    "nautical_miles": 18.78651343315188,
+                    "miles": 21.619133558889388,
+                    "kilometers": 34.792622878197285
+                }
+            },
+            {
+                "meta": {
+                    "timestamp": "2021-03-21T20:27:18.533417Z",
+                    "stations_updated": "2021-03-07"
+                },
+                "altimeter": {
+                    "repr": "A2998",
+                    "value": 29.98,
+                    "spoken": "two nine point nine eight"
+                },
+                "clouds": [],
+                "flight_rules": "VFR",
+                "other": [],
+                "sanitized": "KCOF 211956Z 28012KT 10SM 21/10 A2998 RMK AO2 SLP157 T02140102 $",
+                "visibility": {
+                    "repr": "10",
+                    "value": 10,
+                    "spoken": "one zero"
+                },
+                "wind_direction": {
+                    "repr": "280",
+                    "value": 280,
+                    "spoken": "two eight zero"
+                },
+                "wind_gust": null,
+                "wind_speed": {
+                    "repr": "12",
+                    "value": 12,
+                    "spoken": "one two"
+                },
+                "wx_codes": [],
+                "raw": "KCOF 211956Z AUTO 28012KT 10SM CLR 21/10 A2998 RMK AO2 SLP157 T02140102 $",
+                "station": "KCOF",
+                "time": {
+                    "repr": "211956Z",
+                    "dt": "2021-03-21T19:56:00Z"
+                },
+                "remarks": "RMK AO2 SLP157 T02140102 $",
+                "dewpoint": {
+                    "repr": "10",
+                    "value": 10,
+                    "spoken": "one zero"
+                },
+                "remarks_info": {
+                    "dewpoint_decimal": {
+                        "repr": "10.2",
+                        "value": 10.2,
+                        "spoken": "one zero point two"
+                    },
+                    "temperature_decimal": {
+                        "repr": "21.4",
+                        "value": 21.4,
+                        "spoken": "two one point four"
+                    }
+                },
+                "runway_visibility": [],
+                "temperature": {
+                    "repr": "21",
+                    "value": 21,
+                    "spoken": "two one"
+                },
+                "wind_variable_direction": [],
+                "units": {
+                    "altimeter": "inHg",
+                    "altitude": "ft",
+                    "temperature": "C",
+                    "visibility": "sm",
+                    "wind_speed": "kt"
+                },
+                "distance": {
+                    "coordinate_distance": 0.41257732917308576,
+                    "nautical_miles": 22.169888967435707,
+                    "miles": 25.512652588688884,
+                    "kilometers": 41.05863436769093
+                }
+            }
+        ]
+
+## Report Search [/search/{report_type}{?text,n,options,airport,reporting,format,onfail}]
+
+Returns weather reports by searching for stations by ICAO, IATA, name, city, and state. By default, these are only reporting stations, but this can be disabled to return smaller airports with non-reporting AWOS/ASOS as well. This endpoint is limited to paid plans, and the `n` parameter is limitted to 10 while enterprise plans can go up to 200.
+
++ Parameters
+    + report_type: `metar` (string) - Weather report type
+        + Supported: `metar`, `taf`
+    + text: `lihue%20hi` (string) - Search text
+    + n: 2 (number, optional) - Max results to return. Smaller numbers are more likely to not reach max
+        + Default: 10
+    + options (string, optional) - Additional options to include as comma-separated string
+        + Supported: `info`, `translate`, `summary`, `speech`
+        + Example: `info,speech`
+    + airport (boolean, optional) - Only include airports
+        + Default: true
+    + reporting (boolean, optional) - Only include reporting stations
+        + Default: true
+    + format (string, optional) - Desired response format
+        + Supported: `json`, `xml`, `yaml`
+        + Default: `json`
+    + onfail (string, optional) - Error or use out-of-date cache when unable to fetch report
+        + Supported: `cache`, `error`
+        + Default: `cache`
+
+### Get METARs via text search [GET]
+
+This example returns METARs for "lihue hi"
+
++ Request
+
+    + Headers
+    
+            Authorization: Token my_secret_api_token
+
++ Response 200 (application/json)
+
+        [
+            {
+                "meta": {
+                    "timestamp": "2021-03-21T20:33:52.788895Z",
+                    "stations_updated": "2021-03-07",
+                    "cache-timestamp": "2021-03-21T20:33:37.128000Z"
+                },
+                "altimeter": {
+                    "repr": "A3026",
+                    "value": 30.26,
+                    "spoken": "three zero point two six"
+                },
+                "clouds": [
+                    {
+                        "repr": "FEW032",
+                        "type": "FEW",
+                        "base": 32,
+                        "top": null,
+                        "modifier": null,
+                        "direction": null
+                    },
+                    {
+                        "repr": "SCT055",
+                        "type": "SCT",
+                        "base": 55,
+                        "top": null,
+                        "modifier": null,
+                        "direction": null
+                    }
+                ],
+                "flight_rules": "VFR",
+                "other": [],
+                "sanitized": "PHLI 211953Z 06017KT 10SM FEW032 SCT055 23/16 A3026 RMK AO2 SLP243 T02330161 $",
+                "visibility": {
+                    "repr": "10",
+                    "value": 10,
+                    "spoken": "one zero"
+                },
+                "wind_direction": {
+                    "repr": "060",
+                    "value": 60,
+                    "spoken": "zero six zero"
+                },
+                "wind_gust": null,
+                "wind_speed": {
+                    "repr": "17",
+                    "value": 17,
+                    "spoken": "one seven"
+                },
+                "wx_codes": [],
+                "raw": "PHLI 211953Z 06017KT 10SM FEW032 SCT055 23/16 A3026 RMK AO2 SLP243 T02330161 $",
+                "station": "PHLI",
+                "time": {
+                    "repr": "211953Z",
+                    "dt": "2021-03-21T19:53:00Z"
+                },
+                "remarks": "RMK AO2 SLP243 T02330161 $",
+                "dewpoint": {
+                    "repr": "16",
+                    "value": 16,
+                    "spoken": "one six"
+                },
+                "remarks_info": {
+                    "dewpoint_decimal": {
+                        "repr": "16.1",
+                        "value": 16.1,
+                        "spoken": "one six point one"
+                    },
+                    "temperature_decimal": {
+                        "repr": "23.3",
+                        "value": 23.3,
+                        "spoken": "two three point three"
+                    }
+                },
+                "runway_visibility": [],
+                "temperature": {
+                    "repr": "23",
+                    "value": 23,
+                    "spoken": "two three"
+                },
+                "wind_variable_direction": [],
+                "units": {
+                    "altimeter": "inHg",
+                    "altitude": "ft",
+                    "temperature": "C",
+                    "visibility": "sm",
+                    "wind_speed": "kt"
+                }
+            }
+        ]
