@@ -2,4 +2,4 @@
 Client-facing API endpoints
 """
 
-from . import current, forecast, search, station
+from . import current, forecast, router, search, station

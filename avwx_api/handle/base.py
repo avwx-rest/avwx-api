@@ -50,7 +50,7 @@ class ReportHandler:
             self.option_keys = tuple()
 
     @staticmethod
-    def _make_meta() -> dict:
+    def make_meta() -> dict:
         """Create base metadata dict"""
         return {
             "timestamp": datetime.now(tz=timezone.utc),
@@ -233,7 +233,7 @@ class ReportHandler:
         nofail: bool,
     ) -> DataStatus:
         """Performs post parser update operations"""
-        resp = {"meta": self._make_meta()}
+        resp = {"meta": self.make_meta()}
         if "timestamp" in data:
             resp["meta"]["cache-timestamp"] = data["timestamp"]
         # Handle errors according to nofail argument
@@ -287,14 +287,11 @@ class ReportHandler:
             resp["info"] = asdict(station)
         return resp, 200
 
-    def parse_given(
-        self, report: str, opts: list[str], add_meta: bool = True
-    ) -> DataStatus:
+    def parse_given(self, report: str, opts: list[str]) -> DataStatus:
         """Attempts to parse a given report supplied by the user"""
         try:
             data, code = self._parse_given(report, opts)
-            if add_meta:
-                data["meta"] = self._make_meta()
+            data["meta"] = self.make_meta()
         except Exception as exc:
             print("Unknown Parsing Error", exc)
             rollbar.report_exc_info(extra_data={"state": "given", "raw": report})

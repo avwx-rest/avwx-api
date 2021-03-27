@@ -39,14 +39,23 @@ class StationCounter(DelayedCounter):
             self._queue.add((icao, request_type, count))
         self.update_at = time.time() + self.interval
 
-    async def add(self, icao: str, request_type: str):
-        """Increment the counter for a station and type"""
-        await self._pre_add()
+    def _increment(self, icao: str, request_type: str):
         key = f"{icao};{request_type}"
         try:
             self._data[key] += 1
         except KeyError:
             self._data[key] = 1
+
+    async def add(self, icao: str, request_type: str):
+        """Increment the counter for a station and type"""
+        await self._pre_add()
+        self._increment(icao, request_type)
+
+    async def add_many(self, icaos: list[str], request_type: str):
+        """Increment the counts for a list of stations"""
+        await self._pre_add()
+        for icao in icaos:
+            self._increment(icao, request_type)
 
     async def from_params(self, params: Params, report_type: str):
         """Counts station based on param values"""

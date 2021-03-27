@@ -6,7 +6,7 @@ avwx_api.validators - Parameter validators
 # pylint: disable=C0103
 
 # stdlib
-from typing import Callable, List, Tuple
+from typing import Callable
 
 # library
 from voluptuous import (
@@ -25,6 +25,7 @@ from voluptuous import (
 # module
 from avwx import Station
 from avwx.exceptions import BadStation
+from avwx_api.structs import Coord
 
 
 REPORT_TYPES = ("metar", "taf", "pirep", "mav", "mex", "nbh", "nbs", "nbe")
@@ -59,7 +60,7 @@ Latitude = All(Coerce(float), Range(-90, 90))
 Longitude = All(Coerce(float), Range(-180, 180))
 
 
-def Coordinate(coord: str) -> Tuple[float, float]:
+def Coordinate(coord: str) -> Coord:
     """Converts a coordinate string into float tuple"""
     try:
         split_coord = coord.split(",")
@@ -99,7 +100,7 @@ def Location(
     return validator
 
 
-def MultiStation(values: str) -> List[Station]:
+def MultiStation(values: str) -> list[Station]:
     """Validates a comma-separated list of station idents"""
     values = values.upper().split(",")
     if not values:
@@ -115,7 +116,7 @@ def MultiStation(values: str) -> List[Station]:
     return ret
 
 
-def SplitIn(values: Tuple[str]) -> Callable:
+def SplitIn(values: tuple[str]) -> Callable:
     """Returns a validator to check for given values in a comma-separated string"""
 
     def validator(csv: str) -> str:
@@ -128,6 +129,25 @@ def SplitIn(values: Tuple[str]) -> Callable:
         return split
 
     return validator
+
+
+def FlightRoute(values: str) -> list[Coord]:
+    """Validates a semicolon-separated string of coordinates or navigation markers"""
+    values = values.upper().split(";")
+    if not values:
+        raise Invalid("Could not find any route components in the request")
+    ret = []
+    for val in values:
+        if "," in val:
+            loc = val.split(",")
+            ret.append((Latitude(loc[0]), Longitude(loc[1])))
+        else:
+            try:
+                s = Station.from_icao(val)
+                ret.append((s.latitude, s.longitude))
+            except BadStation as exc:
+                raise Invalid(f"{val} is not a valid ICAO station ident") from exc
+    return ret
 
 
 _required = {Required("format", default="json"): In(FORMATS)}
@@ -143,6 +163,10 @@ _station_search = {
 }
 
 _report_parse = {Required("report"): str}
+_report_along = {
+    Required("distance"): All(Coerce(float), Range(min=0, max=100)),
+    Required("route"): FlightRoute,
+}
 
 _single_station = {Required("station"): Location()}
 _multi_station = {Required("stations"): MultiStation}
@@ -177,6 +201,7 @@ report_station = _coord_search_validator("station", True)
 report_location = _coord_search_validator("location", False)
 
 report_given = _schema(_report_shared | _report_parse)
+report_along = _schema(_report_shared | _report_along)
 report_stations = _schema(_report_shared | _uses_cache | _multi_station)
 
 station = _schema(_required | _single_station)
