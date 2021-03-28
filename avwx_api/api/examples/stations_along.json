@@ -1,0 +1,1241 @@
+{
+    "results": [
+      {
+        "city": "Plant City",
+        "country": "US",
+        "elevation_ft": 153,
+        "elevation_m": 47,
+        "iata": null,
+        "icao": "KPCM",
+        "latitude": 28.00020027,
+        "longitude": -82.16419983,
+        "name": "Plant City Municipal Airport",
+        "note": null,
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 3950,
+            "width_ft": 75,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "10",
+            "ident2": "28",
+            "bearing1": 94.0,
+            "bearing2": 274.0
+          }
+        ],
+        "state": "FL",
+        "type": "small_airport",
+        "website": null,
+        "wiki": null
+      },
+      {
+        "city": "Plant City",
+        "country": "US",
+        "elevation_ft": 153,
+        "elevation_m": 47,
+        "iata": null,
+        "icao": "KPCM",
+        "latitude": 28.00020027,
+        "longitude": -82.16419983,
+        "name": "Plant City Municipal Airport",
+        "note": null,
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 3950,
+            "width_ft": 75,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "10",
+            "ident2": "28",
+            "bearing1": 94.0,
+            "bearing2": 274.0
+          }
+        ],
+        "state": "FL",
+        "type": "small_airport",
+        "website": null,
+        "wiki": null
+      },
+      {
+        "city": "Plant City",
+        "country": "US",
+        "elevation_ft": 153,
+        "elevation_m": 47,
+        "iata": null,
+        "icao": "KPCM",
+        "latitude": 28.00020027,
+        "longitude": -82.16419983,
+        "name": "Plant City Municipal Airport",
+        "note": null,
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 3950,
+            "width_ft": 75,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "10",
+            "ident2": "28",
+            "bearing1": 94.0,
+            "bearing2": 274.0
+          }
+        ],
+        "state": "FL",
+        "type": "small_airport",
+        "website": null,
+        "wiki": null
+      },
+      {
+        "city": "Lakeland",
+        "country": "US",
+        "elevation_ft": 142,
+        "elevation_m": 43,
+        "iata": "LAL",
+        "icao": "KLAL",
+        "latitude": 27.988899,
+        "longitude": -82.018602,
+        "name": "Lakeland Linder International Airport",
+        "note": null,
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 8500,
+            "width_ft": 150,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "09",
+            "ident2": "27",
+            "bearing1": 90.0,
+            "bearing2": 270.0
+          }
+        ],
+        "state": "FL",
+        "type": "medium_airport",
+        "website": null,
+        "wiki": "https://en.wikipedia.org/wiki/Lakeland_Linder_Regional_Airport"
+      },
+      {
+        "city": "Lakeland",
+        "country": "US",
+        "elevation_ft": 142,
+        "elevation_m": 43,
+        "iata": "LAL",
+        "icao": "KLAL",
+        "latitude": 27.988899,
+        "longitude": -82.018602,
+        "name": "Lakeland Linder International Airport",
+        "note": null,
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 8500,
+            "width_ft": 150,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "09",
+            "ident2": "27",
+            "bearing1": 90.0,
+            "bearing2": 270.0
+          }
+        ],
+        "state": "FL",
+        "type": "medium_airport",
+        "website": null,
+        "wiki": "https://en.wikipedia.org/wiki/Lakeland_Linder_Regional_Airport"
+      },
+      {
+        "city": "Lakeland",
+        "country": "US",
+        "elevation_ft": 142,
+        "elevation_m": 43,
+        "iata": "LAL",
+        "icao": "KLAL",
+        "latitude": 27.988899,
+        "longitude": -82.018602,
+        "name": "Lakeland Linder International Airport",
+        "note": null,
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 8500,
+            "width_ft": 150,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "09",
+            "ident2": "27",
+            "bearing1": 90.0,
+            "bearing2": 270.0
+          }
+        ],
+        "state": "FL",
+        "type": "medium_airport",
+        "website": null,
+        "wiki": "https://en.wikipedia.org/wiki/Lakeland_Linder_Regional_Airport"
+      },
+      {
+        "city": "Bartow",
+        "country": "US",
+        "elevation_ft": 125,
+        "elevation_m": 38,
+        "iata": "BOW",
+        "icao": "KBOW",
+        "latitude": 27.943399,
+        "longitude": -81.783401,
+        "name": "Bartow Executive Airport",
+        "note": "Bartow Municipal",
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 5001,
+            "width_ft": 150,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "09L",
+            "ident2": "27R",
+            "bearing1": 87.0,
+            "bearing2": 267.0
+          },
+          {
+            "length_ft": 5000,
+            "width_ft": 100,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "05",
+            "ident2": "23",
+            "bearing1": 46.0,
+            "bearing2": 226.0
+          },
+          {
+            "length_ft": 4400,
+            "width_ft": 150,
+            "surface": "asphalt",
+            "lights": false,
+            "ident1": "09R",
+            "ident2": "27L",
+            "bearing1": 87.0,
+            "bearing2": 267.0
+          }
+        ],
+        "state": "FL",
+        "type": "small_airport",
+        "website": "http://www.bartow-airport.com/",
+        "wiki": "https://en.wikipedia.org/wiki/Bartow_Municipal_Airport"
+      },
+      {
+        "city": "Bartow",
+        "country": "US",
+        "elevation_ft": 125,
+        "elevation_m": 38,
+        "iata": "BOW",
+        "icao": "KBOW",
+        "latitude": 27.943399,
+        "longitude": -81.783401,
+        "name": "Bartow Executive Airport",
+        "note": "Bartow Municipal",
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 5001,
+            "width_ft": 150,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "09L",
+            "ident2": "27R",
+            "bearing1": 87.0,
+            "bearing2": 267.0
+          },
+          {
+            "length_ft": 5000,
+            "width_ft": 100,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "05",
+            "ident2": "23",
+            "bearing1": 46.0,
+            "bearing2": 226.0
+          },
+          {
+            "length_ft": 4400,
+            "width_ft": 150,
+            "surface": "asphalt",
+            "lights": false,
+            "ident1": "09R",
+            "ident2": "27L",
+            "bearing1": 87.0,
+            "bearing2": 267.0
+          }
+        ],
+        "state": "FL",
+        "type": "small_airport",
+        "website": "http://www.bartow-airport.com/",
+        "wiki": "https://en.wikipedia.org/wiki/Bartow_Municipal_Airport"
+      },
+      {
+        "city": "Bartow",
+        "country": "US",
+        "elevation_ft": 125,
+        "elevation_m": 38,
+        "iata": "BOW",
+        "icao": "KBOW",
+        "latitude": 27.943399,
+        "longitude": -81.783401,
+        "name": "Bartow Executive Airport",
+        "note": "Bartow Municipal",
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 5001,
+            "width_ft": 150,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "09L",
+            "ident2": "27R",
+            "bearing1": 87.0,
+            "bearing2": 267.0
+          },
+          {
+            "length_ft": 5000,
+            "width_ft": 100,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "05",
+            "ident2": "23",
+            "bearing1": 46.0,
+            "bearing2": 226.0
+          },
+          {
+            "length_ft": 4400,
+            "width_ft": 150,
+            "surface": "asphalt",
+            "lights": false,
+            "ident1": "09R",
+            "ident2": "27L",
+            "bearing1": 87.0,
+            "bearing2": 267.0
+          }
+        ],
+        "state": "FL",
+        "type": "small_airport",
+        "website": "http://www.bartow-airport.com/",
+        "wiki": "https://en.wikipedia.org/wiki/Bartow_Municipal_Airport"
+      },
+      {
+        "city": "Lake Wales",
+        "country": "US",
+        "elevation_ft": 127,
+        "elevation_m": 39,
+        "iata": null,
+        "icao": "KX07",
+        "latitude": 27.893800735473633,
+        "longitude": -81.62039947509766,
+        "name": "Lake Wales Municipal Airport",
+        "note": null,
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 3999,
+            "width_ft": 100,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "06",
+            "ident2": "24",
+            "bearing1": 59.0,
+            "bearing2": 239.0
+          },
+          {
+            "length_ft": 3999,
+            "width_ft": 75,
+            "surface": "asphalt",
+            "lights": false,
+            "ident1": "17",
+            "ident2": "35",
+            "bearing1": 167.0,
+            "bearing2": 347.0
+          }
+        ],
+        "state": "FL",
+        "type": "small_airport",
+        "website": null,
+        "wiki": null
+      },
+      {
+        "city": "Lake Wales",
+        "country": "US",
+        "elevation_ft": 127,
+        "elevation_m": 39,
+        "iata": null,
+        "icao": "KX07",
+        "latitude": 27.893800735473633,
+        "longitude": -81.62039947509766,
+        "name": "Lake Wales Municipal Airport",
+        "note": null,
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 3999,
+            "width_ft": 100,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "06",
+            "ident2": "24",
+            "bearing1": 59.0,
+            "bearing2": 239.0
+          },
+          {
+            "length_ft": 3999,
+            "width_ft": 75,
+            "surface": "asphalt",
+            "lights": false,
+            "ident1": "17",
+            "ident2": "35",
+            "bearing1": 167.0,
+            "bearing2": 347.0
+          }
+        ],
+        "state": "FL",
+        "type": "small_airport",
+        "website": null,
+        "wiki": null
+      },
+      {
+        "city": "Lake Wales",
+        "country": "US",
+        "elevation_ft": 127,
+        "elevation_m": 39,
+        "iata": null,
+        "icao": "KX07",
+        "latitude": 27.893800735473633,
+        "longitude": -81.62039947509766,
+        "name": "Lake Wales Municipal Airport",
+        "note": null,
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 3999,
+            "width_ft": 100,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "06",
+            "ident2": "24",
+            "bearing1": 59.0,
+            "bearing2": 239.0
+          },
+          {
+            "length_ft": 3999,
+            "width_ft": 75,
+            "surface": "asphalt",
+            "lights": false,
+            "ident1": "17",
+            "ident2": "35",
+            "bearing1": 167.0,
+            "bearing2": 347.0
+          }
+        ],
+        "state": "FL",
+        "type": "small_airport",
+        "website": null,
+        "wiki": null
+      },
+      {
+        "city": "Winter Haven",
+        "country": "US",
+        "elevation_ft": 145,
+        "elevation_m": 44,
+        "iata": "GIF",
+        "icao": "KGIF",
+        "latitude": 28.062901,
+        "longitude": -81.753304,
+        "name": "Winter Haven Regional Airport - Gilbert Field",
+        "note": null,
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 5006,
+            "width_ft": 100,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "5",
+            "ident2": "23",
+            "bearing1": 45.0,
+            "bearing2": 225.0
+          },
+          {
+            "length_ft": 4001,
+            "width_ft": 100,
+            "surface": "asphalt",
+            "lights": false,
+            "ident1": "11",
+            "ident2": "29",
+            "bearing1": 103.0,
+            "bearing2": 283.0
+          }
+        ],
+        "state": "FL",
+        "type": "small_airport",
+        "website": "http://kgif.mywinterhaven.com/",
+        "wiki": "https://en.wikipedia.org/wiki/Winter_Haven's_Gilbert_Airport"
+      },
+      {
+        "city": "Zephyrhills",
+        "country": "US",
+        "elevation_ft": 90,
+        "elevation_m": 27,
+        "iata": "ZPH",
+        "icao": "KZPH",
+        "latitude": 28.2282009125,
+        "longitude": -82.15589904790001,
+        "name": "Zephyrhills Municipal Airport",
+        "note": null,
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 5072,
+            "width_ft": 100,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "19",
+            "ident2": "1",
+            "bearing1": 180.0,
+            "bearing2": 360.0
+          },
+          {
+            "length_ft": 5001,
+            "width_ft": 100,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "5",
+            "ident2": "23",
+            "bearing1": 43.0,
+            "bearing2": 223.0
+          }
+        ],
+        "state": "FL",
+        "type": "small_airport",
+        "website": null,
+        "wiki": "https://en.wikipedia.org/wiki/Zephyrhills_Municipal_Airport"
+      },
+      {
+        "city": "Zephyrhills",
+        "country": "US",
+        "elevation_ft": 90,
+        "elevation_m": 27,
+        "iata": "ZPH",
+        "icao": "KZPH",
+        "latitude": 28.2282009125,
+        "longitude": -82.15589904790001,
+        "name": "Zephyrhills Municipal Airport",
+        "note": null,
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 5072,
+            "width_ft": 100,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "19",
+            "ident2": "1",
+            "bearing1": 180.0,
+            "bearing2": 360.0
+          },
+          {
+            "length_ft": 5001,
+            "width_ft": 100,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "5",
+            "ident2": "23",
+            "bearing1": 43.0,
+            "bearing2": 223.0
+          }
+        ],
+        "state": "FL",
+        "type": "small_airport",
+        "website": null,
+        "wiki": "https://en.wikipedia.org/wiki/Zephyrhills_Municipal_Airport"
+      },
+      {
+        "city": "Orlando",
+        "country": "US",
+        "elevation_ft": 82,
+        "elevation_m": 25,
+        "iata": "ISM",
+        "icao": "KISM",
+        "latitude": 28.2898006439,
+        "longitude": -81.4371032715,
+        "name": "Kissimmee Gateway Airport",
+        "note": null,
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 6000,
+            "width_ft": 100,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "15",
+            "ident2": "33",
+            "bearing1": 148.0,
+            "bearing2": 328.0
+          },
+          {
+            "length_ft": 5000,
+            "width_ft": 150,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "06",
+            "ident2": "24",
+            "bearing1": 58.0,
+            "bearing2": 238.0
+          }
+        ],
+        "state": "FL",
+        "type": "medium_airport",
+        "website": "http://www.kissimmee.org/index.aspx?page=111",
+        "wiki": "https://en.wikipedia.org/wiki/Kissimmee_Gateway_Airport"
+      },
+      {
+        "city": "Melbourne",
+        "country": "US",
+        "elevation_ft": 33,
+        "elevation_m": 10,
+        "iata": "MLB",
+        "icao": "KMLB",
+        "latitude": 28.102800369262695,
+        "longitude": -80.64530181884766,
+        "name": "Melbourne International Airport",
+        "note": null,
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 10181,
+            "width_ft": 150,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "09R",
+            "ident2": "27L",
+            "bearing1": 87.0,
+            "bearing2": 267.0
+          },
+          {
+            "length_ft": 6000,
+            "width_ft": 150,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "09L",
+            "ident2": "27R",
+            "bearing1": 87.0,
+            "bearing2": 267.0
+          },
+          {
+            "length_ft": 3001,
+            "width_ft": 75,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "05",
+            "ident2": "23",
+            "bearing1": 42.0,
+            "bearing2": 222.0
+          }
+        ],
+        "state": "FL",
+        "type": "medium_airport",
+        "website": null,
+        "wiki": "https://en.wikipedia.org/wiki/Melbourne_International_Airport"
+      },
+      {
+        "city": "Orlando",
+        "country": "US",
+        "elevation_ft": 96,
+        "elevation_m": 29,
+        "iata": "MCO",
+        "icao": "KMCO",
+        "latitude": 28.429399490356445,
+        "longitude": -81.30899810791016,
+        "name": "Orlando International Airport",
+        "note": "Disney World,Epcot Center",
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 12005,
+            "width_ft": 200,
+            "surface": "concrete",
+            "lights": true,
+            "ident1": "18L",
+            "ident2": "36R",
+            "bearing1": 179.0,
+            "bearing2": 359.0
+          },
+          {
+            "length_ft": 12004,
+            "width_ft": 200,
+            "surface": "concrete",
+            "lights": true,
+            "ident1": "18R",
+            "ident2": "36L",
+            "bearing1": 179.0,
+            "bearing2": 359.0
+          },
+          {
+            "length_ft": 10000,
+            "width_ft": 150,
+            "surface": "concrete",
+            "lights": true,
+            "ident1": "17R",
+            "ident2": "35L",
+            "bearing1": 179.0,
+            "bearing2": 359.0
+          },
+          {
+            "length_ft": 9000,
+            "width_ft": 150,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "17L",
+            "ident2": "35R",
+            "bearing1": 179.5,
+            "bearing2": 359.5
+          }
+        ],
+        "state": "FL",
+        "type": "large_airport",
+        "website": "http://www.orlandoairports.net/",
+        "wiki": "https://en.wikipedia.org/wiki/Orlando_International_Airport"
+      },
+      {
+        "city": "Orlando",
+        "country": "US",
+        "elevation_ft": 113,
+        "elevation_m": 34,
+        "iata": "ORL",
+        "icao": "KORL",
+        "latitude": 28.5455,
+        "longitude": -81.332901,
+        "name": "Orlando Executive Airport",
+        "note": "Herndon Airport, Orlando Executive Airport, KORL, ORL, Orlando Municipal Airport, Orlando Army Air Base, Orlando Air Force Base, Naval Training Center Orlando",
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 6003,
+            "width_ft": 150,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "07",
+            "ident2": "25",
+            "bearing1": 67.0,
+            "bearing2": 247.0
+          },
+          {
+            "length_ft": 4638,
+            "width_ft": 100,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "13",
+            "ident2": "31",
+            "bearing1": 130.8,
+            "bearing2": 310.8
+          }
+        ],
+        "state": "FL",
+        "type": "small_airport",
+        "website": null,
+        "wiki": "https://en.wikipedia.org/wiki/Orlando_Executive_Airport"
+      },
+      {
+        "city": "Leesburg",
+        "country": "US",
+        "elevation_ft": 76,
+        "elevation_m": 23,
+        "iata": "LEE",
+        "icao": "KLEE",
+        "latitude": 28.82309914,
+        "longitude": -81.80870056,
+        "name": "Leesburg International Airport",
+        "note": "Leesburg AAF",
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 5000,
+            "width_ft": 100,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "13",
+            "ident2": "31",
+            "bearing1": 130.0,
+            "bearing2": 310.0
+          },
+          {
+            "length_ft": 4957,
+            "width_ft": 100,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "03",
+            "ident2": "21",
+            "bearing1": 35.0,
+            "bearing2": 215.0
+          }
+        ],
+        "state": "FL",
+        "type": "medium_airport",
+        "website": "http://www.leesburgflorida.gov/index.aspx?page=45",
+        "wiki": "https://en.wikipedia.org/wiki/Leesburg_International_Airport"
+      },
+      {
+        "city": "Orlando",
+        "country": "US",
+        "elevation_ft": 55,
+        "elevation_m": 17,
+        "iata": "SFB",
+        "icao": "KSFB",
+        "latitude": 28.777599334716797,
+        "longitude": -81.23750305175781,
+        "name": "Orlando Sanford International Airport",
+        "note": null,
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 9600,
+            "width_ft": 150,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "09L",
+            "ident2": "27R",
+            "bearing1": 90.0,
+            "bearing2": 270.0
+          },
+          {
+            "length_ft": 6003,
+            "width_ft": 150,
+            "surface": "concrete",
+            "lights": true,
+            "ident1": "18",
+            "ident2": "36",
+            "bearing1": 180.0,
+            "bearing2": 360.0
+          },
+          {
+            "length_ft": 3578,
+            "width_ft": 75,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "09C",
+            "ident2": "27C",
+            "bearing1": 90.0,
+            "bearing2": 270.0
+          },
+          {
+            "length_ft": 3500,
+            "width_ft": 75,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "09R",
+            "ident2": "27L",
+            "bearing1": 89.9,
+            "bearing2": 269.9
+          }
+        ],
+        "state": "FL",
+        "type": "large_airport",
+        "website": null,
+        "wiki": "https://en.wikipedia.org/wiki/Orlando_Sanford_International_Airport"
+      },
+      {
+        "city": "Deland",
+        "country": "US",
+        "elevation_ft": 79,
+        "elevation_m": 24,
+        "iata": null,
+        "icao": "KDED",
+        "latitude": 29.06699944,
+        "longitude": -81.28379822,
+        "name": "Deland Municipal Sidney H Taylor Field",
+        "note": null,
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 6001,
+            "width_ft": 100,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "12",
+            "ident2": "30",
+            "bearing1": 117.0,
+            "bearing2": 297.0
+          },
+          {
+            "length_ft": 4301,
+            "width_ft": 75,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "05",
+            "ident2": "23",
+            "bearing1": 49.0,
+            "bearing2": 229.0
+          }
+        ],
+        "state": "FL",
+        "type": "small_airport",
+        "website": null,
+        "wiki": null
+      },
+      {
+        "city": "Deland",
+        "country": "US",
+        "elevation_ft": 79,
+        "elevation_m": 24,
+        "iata": null,
+        "icao": "KDED",
+        "latitude": 29.06699944,
+        "longitude": -81.28379822,
+        "name": "Deland Municipal Sidney H Taylor Field",
+        "note": null,
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 6001,
+            "width_ft": 100,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "12",
+            "ident2": "30",
+            "bearing1": 117.0,
+            "bearing2": 297.0
+          },
+          {
+            "length_ft": 4301,
+            "width_ft": 75,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "05",
+            "ident2": "23",
+            "bearing1": 49.0,
+            "bearing2": 229.0
+          }
+        ],
+        "state": "FL",
+        "type": "small_airport",
+        "website": null,
+        "wiki": null
+      },
+      {
+        "city": "Deland",
+        "country": "US",
+        "elevation_ft": 79,
+        "elevation_m": 24,
+        "iata": null,
+        "icao": "KDED",
+        "latitude": 29.06699944,
+        "longitude": -81.28379822,
+        "name": "Deland Municipal Sidney H Taylor Field",
+        "note": null,
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 6001,
+            "width_ft": 100,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "12",
+            "ident2": "30",
+            "bearing1": 117.0,
+            "bearing2": 297.0
+          },
+          {
+            "length_ft": 4301,
+            "width_ft": 75,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "05",
+            "ident2": "23",
+            "bearing1": 49.0,
+            "bearing2": 229.0
+          }
+        ],
+        "state": "FL",
+        "type": "small_airport",
+        "website": null,
+        "wiki": null
+      },
+      {
+        "city": "Daytona Beach",
+        "country": "US",
+        "elevation_ft": 34,
+        "elevation_m": 10,
+        "iata": "DAB",
+        "icao": "KDAB",
+        "latitude": 29.179899,
+        "longitude": -81.058098,
+        "name": "Daytona Beach International Airport",
+        "note": null,
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 10500,
+            "width_ft": 150,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "07L",
+            "ident2": "25R",
+            "bearing1": 65.0,
+            "bearing2": 245.0
+          },
+          {
+            "length_ft": 6001,
+            "width_ft": 150,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "16",
+            "ident2": "34",
+            "bearing1": 157.0,
+            "bearing2": 337.0
+          },
+          {
+            "length_ft": 3195,
+            "width_ft": 100,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "07R",
+            "ident2": "25L",
+            "bearing1": 65.0,
+            "bearing2": 245.0
+          }
+        ],
+        "state": "FL",
+        "type": "large_airport",
+        "website": null,
+        "wiki": "https://en.wikipedia.org/wiki/Daytona_Beach_International_Airport"
+      },
+      {
+        "city": "Palm Coast",
+        "country": "US",
+        "elevation_ft": 33,
+        "elevation_m": 10,
+        "iata": null,
+        "icao": "KFIN",
+        "latitude": 29.4674,
+        "longitude": -81.206299,
+        "name": "Flagler Executive Airport",
+        "note": "formerly X47, XFL, KXFL, NOLF Bunnell, Flagler County",
+        "reporting": true,
+        "runways": null,
+        "state": "FL",
+        "type": "small_airport",
+        "website": "http://www.flaglercounty.org/index.aspx?NID=135",
+        "wiki": "https://en.wikipedia.org/wiki/Flagler_County_Airport"
+      },
+      {
+        "city": "Palm Coast",
+        "country": "US",
+        "elevation_ft": 33,
+        "elevation_m": 10,
+        "iata": null,
+        "icao": "KFIN",
+        "latitude": 29.4674,
+        "longitude": -81.206299,
+        "name": "Flagler Executive Airport",
+        "note": "formerly X47, XFL, KXFL, NOLF Bunnell, Flagler County",
+        "reporting": true,
+        "runways": null,
+        "state": "FL",
+        "type": "small_airport",
+        "website": "http://www.flaglercounty.org/index.aspx?NID=135",
+        "wiki": "https://en.wikipedia.org/wiki/Flagler_County_Airport"
+      },
+      {
+        "city": "Palatka",
+        "country": "US",
+        "elevation_ft": 48,
+        "elevation_m": 15,
+        "iata": null,
+        "icao": "K28J",
+        "latitude": 29.65859985,
+        "longitude": -81.68890381,
+        "name": "Palatka Municipal - Lt. Kay Larkin Field",
+        "note": null,
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 5999,
+            "width_ft": 100,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "09",
+            "ident2": "27",
+            "bearing1": 87.0,
+            "bearing2": 267.0
+          },
+          {
+            "length_ft": 3510,
+            "width_ft": 75,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "17",
+            "ident2": "35",
+            "bearing1": 165.0,
+            "bearing2": 345.0
+          }
+        ],
+        "state": "FL",
+        "type": "small_airport",
+        "website": null,
+        "wiki": null
+      },
+      {
+        "city": "Palatka",
+        "country": "US",
+        "elevation_ft": 48,
+        "elevation_m": 15,
+        "iata": null,
+        "icao": "K28J",
+        "latitude": 29.65859985,
+        "longitude": -81.68890381,
+        "name": "Palatka Municipal - Lt. Kay Larkin Field",
+        "note": null,
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 5999,
+            "width_ft": 100,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "09",
+            "ident2": "27",
+            "bearing1": 87.0,
+            "bearing2": 267.0
+          },
+          {
+            "length_ft": 3510,
+            "width_ft": 75,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "17",
+            "ident2": "35",
+            "bearing1": 165.0,
+            "bearing2": 345.0
+          }
+        ],
+        "state": "FL",
+        "type": "small_airport",
+        "website": null,
+        "wiki": null
+      },
+      {
+        "city": "Palatka",
+        "country": "US",
+        "elevation_ft": 48,
+        "elevation_m": 15,
+        "iata": null,
+        "icao": "K28J",
+        "latitude": 29.65859985,
+        "longitude": -81.68890381,
+        "name": "Palatka Municipal - Lt. Kay Larkin Field",
+        "note": null,
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 5999,
+            "width_ft": 100,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "09",
+            "ident2": "27",
+            "bearing1": 87.0,
+            "bearing2": 267.0
+          },
+          {
+            "length_ft": 3510,
+            "width_ft": 75,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "17",
+            "ident2": "35",
+            "bearing1": 165.0,
+            "bearing2": 345.0
+          }
+        ],
+        "state": "FL",
+        "type": "small_airport",
+        "website": null,
+        "wiki": null
+      },
+      {
+        "city": "St Augustine",
+        "country": "US",
+        "elevation_ft": 10,
+        "elevation_m": 3,
+        "iata": "UST",
+        "icao": "KSGJ",
+        "latitude": 29.9592,
+        "longitude": -81.339798,
+        "name": "Northeast Florida Regional Airport",
+        "note": "St Augustine Airport, NAAS St. Augustine",
+        "reporting": true,
+        "runways": [
+          {
+            "length_ft": 12000,
+            "width_ft": 1000,
+            "surface": "water",
+            "lights": false,
+            "ident1": "17W",
+            "ident2": "35W",
+            "bearing1": null,
+            "bearing2": null
+          },
+          {
+            "length_ft": 12000,
+            "width_ft": 500,
+            "surface": "water",
+            "lights": false,
+            "ident1": "18W",
+            "ident2": "36W",
+            "bearing1": null,
+            "bearing2": null
+          },
+          {
+            "length_ft": 7996,
+            "width_ft": 150,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "13",
+            "ident2": "31",
+            "bearing1": 126.0,
+            "bearing2": 306.0
+          },
+          {
+            "length_ft": 5000,
+            "width_ft": 1000,
+            "surface": "water",
+            "lights": false,
+            "ident1": "12W",
+            "ident2": "30W",
+            "bearing1": null,
+            "bearing2": null
+          },
+          {
+            "length_ft": 2701,
+            "width_ft": 60,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "06",
+            "ident2": "24",
+            "bearing1": 62.0,
+            "bearing2": 242.0
+          },
+          {
+            "length_ft": 2614,
+            "width_ft": 75,
+            "surface": "asphalt",
+            "lights": true,
+            "ident1": "02",
+            "ident2": "20",
+            "bearing1": 21.0,
+            "bearing2": 201.0
+          }
+        ],
+        "state": "FL",
+        "type": "medium_airport",
+        "website": "http://www.flynf.com/",
+        "wiki": "https://en.wikipedia.org/wiki/St._Augustine_Airport"
+      }
+    ]
+  }

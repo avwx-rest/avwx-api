@@ -163,13 +163,14 @@ _station_search = {
 }
 
 _report_parse = {Required("report"): str}
-_report_along = {
-    Required("distance"): All(Coerce(float), Range(min=0, max=100)),
-    Required("route"): FlightRoute,
-}
 
 _single_station = {Required("station"): Location()}
 _multi_station = {Required("stations"): MultiStation}
+
+_flight_path = {
+    Required("distance"): All(Coerce(float), Range(min=0, max=100)),
+    Required("route"): FlightRoute,
+}
 
 _search_counter = {Required("n", default=10): All(Coerce(int), Range(min=1, max=200))}
 _search_base = _required | _station_search | _search_counter
@@ -201,11 +202,12 @@ report_station = _coord_search_validator("station", True)
 report_location = _coord_search_validator("location", False)
 
 report_given = _schema(_report_shared | _report_parse)
-report_along = _schema(_report_shared | _report_along)
+report_along = _schema(_report_shared | _flight_path)
 report_stations = _schema(_report_shared | _uses_cache | _multi_station)
 
 station = _schema(_required | _single_station)
 stations = _schema(_required | _multi_station)
+station_along = _schema(_required | _flight_path)
 
 coord_search = _schema(_search_base | _coord_search)
 text_search = _schema(_search_base | _text_search)

@@ -2,11 +2,17 @@
 Flight path routing API endpoints
 """
 
+# stdlib
+from contextlib import suppress
+from dataclasses import asdict
+
 # library
 from quart import Response
 from quart_openapi.cors import crossdomain
 
 # stdlib
+from avwx import Station
+from avwx.exceptions import BadStation
 import avwx_api.handle.current as handle
 from avwx_api import app, structs, validate
 from avwx_api.api.base import Base, HEADERS, parse_params, token_check
@@ -19,14 +25,37 @@ ROUTE_HANDLERS = {
 }
 
 
+@app.route("/api/path/station")
+class StationsAlong(Base):
+    """Returns stations along a flight path"""
+
+    validator = validate.station_along
+    struct = structs.StationRoute
+    example = "stations_along"
+    plan_types = ("enterprise",)
+
+    @crossdomain(origin="*", headers=HEADERS)
+    @parse_params
+    @token_check
+    async def get(self, params: structs.Params) -> Response:
+        """Returns reports along a flight path"""
+        stations = await FlightRouter().fetch("station", params.distance, params.route)
+        resp = []
+        for icao in stations:
+            with suppress(BadStation):
+                resp.append(asdict(Station.from_icao(icao)))
+        resp = {"meta": handle.MetarHandler().make_meta(), "results": resp}
+        return self.make_response(resp, params.format)
+
+
 @app.route("/api/path/<report_type>")
-class Along(Base):
-    """Returns stations near a coordinate pair"""
+class ReportsAlong(Base):
+    """Returns reports along a flight path"""
 
     validator = validate.report_along
-    struct = structs.FlightRoute
+    struct = structs.ReportRoute
     handlers = ROUTE_HANDLERS
-    example = "metar"
+    example = "metar_along"
     plan_types = ("enterprise",)
 
     @crossdomain(origin="*", headers=HEADERS)

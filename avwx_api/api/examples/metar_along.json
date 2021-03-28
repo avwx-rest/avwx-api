@@ -1,0 +1,3168 @@
+{
+    "results": [
+      {
+        "altimeter": {
+          "repr": "A3010",
+          "value": 30.1,
+          "spoken": "three zero point one zero"
+        },
+        "clouds": [
+          {
+            "repr": "BKN050",
+            "type": "BKN",
+            "base": 50,
+            "top": null,
+            "modifier": null,
+            "direction": null
+          }
+        ],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KPCM 280655Z 17003KT 10SM BKN050 22/19 A3010 RMK AO2",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "170",
+          "value": 170,
+          "spoken": "one seven zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "03",
+          "value": 3,
+          "spoken": "three"
+        },
+        "wx_codes": [],
+        "raw": "KPCM 280655Z AUTO 17003KT 10SM BKN050 22/19 A3010 RMK AO2",
+        "station": "KPCM",
+        "time": {
+          "repr": "280655Z",
+          "dt": "2021-03-28T06:55:00Z"
+        },
+        "remarks": "RMK AO2",
+        "dewpoint": {
+          "repr": "19",
+          "value": 19,
+          "spoken": "one nine"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": null,
+          "temperature_decimal": null
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "22",
+          "value": 22,
+          "spoken": "two two"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Plant City",
+          "country": "US",
+          "elevation_ft": 153,
+          "elevation_m": 47,
+          "iata": null,
+          "icao": "KPCM",
+          "latitude": 28.00020027,
+          "longitude": -82.16419983,
+          "name": "Plant City Municipal Airport",
+          "note": null,
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 3950,
+              "width_ft": 75,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "10",
+              "ident2": "28",
+              "bearing1": 94.0,
+              "bearing2": 274.0
+            }
+          ],
+          "state": "FL",
+          "type": "small_airport",
+          "website": null,
+          "wiki": null
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3011",
+          "value": 30.11,
+          "spoken": "three zero point one one"
+        },
+        "clouds": [
+          {
+            "repr": "BKN050",
+            "type": "BKN",
+            "base": 50,
+            "top": null,
+            "modifier": null,
+            "direction": null
+          }
+        ],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KPCM 280635Z 00000KT 10SM BKN050 23/19 A3011 RMK AO2",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "000",
+          "value": 0,
+          "spoken": "zero zero zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "00",
+          "value": 0,
+          "spoken": "zero"
+        },
+        "wx_codes": [],
+        "raw": "KPCM 280635Z AUTO 00000KT 10SM BKN050 23/19 A3011 RMK AO2",
+        "station": "KPCM",
+        "time": {
+          "repr": "280635Z",
+          "dt": "2021-03-28T06:35:00Z"
+        },
+        "remarks": "RMK AO2",
+        "dewpoint": {
+          "repr": "19",
+          "value": 19,
+          "spoken": "one nine"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": null,
+          "temperature_decimal": null
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "23",
+          "value": 23,
+          "spoken": "two three"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Plant City",
+          "country": "US",
+          "elevation_ft": 153,
+          "elevation_m": 47,
+          "iata": null,
+          "icao": "KPCM",
+          "latitude": 28.00020027,
+          "longitude": -82.16419983,
+          "name": "Plant City Municipal Airport",
+          "note": null,
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 3950,
+              "width_ft": 75,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "10",
+              "ident2": "28",
+              "bearing1": 94.0,
+              "bearing2": 274.0
+            }
+          ],
+          "state": "FL",
+          "type": "small_airport",
+          "website": null,
+          "wiki": null
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3012",
+          "value": 30.12,
+          "spoken": "three zero point one two"
+        },
+        "clouds": [
+          {
+            "repr": "SCT046",
+            "type": "SCT",
+            "base": 46,
+            "top": null,
+            "modifier": null,
+            "direction": null
+          },
+          {
+            "repr": "OVC050",
+            "type": "OVC",
+            "base": 50,
+            "top": null,
+            "modifier": null,
+            "direction": null
+          }
+        ],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KPCM 280615Z 00000KT 10SM SCT046 OVC050 24/19 A3012 RMK AO2",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "000",
+          "value": 0,
+          "spoken": "zero zero zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "00",
+          "value": 0,
+          "spoken": "zero"
+        },
+        "wx_codes": [],
+        "raw": "KPCM 280615Z AUTO 00000KT 10SM SCT046 OVC050 24/19 A3012 RMK AO2",
+        "station": "KPCM",
+        "time": {
+          "repr": "280615Z",
+          "dt": "2021-03-28T06:15:00Z"
+        },
+        "remarks": "RMK AO2",
+        "dewpoint": {
+          "repr": "19",
+          "value": 19,
+          "spoken": "one nine"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": null,
+          "temperature_decimal": null
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "24",
+          "value": 24,
+          "spoken": "two four"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Plant City",
+          "country": "US",
+          "elevation_ft": 153,
+          "elevation_m": 47,
+          "iata": null,
+          "icao": "KPCM",
+          "latitude": 28.00020027,
+          "longitude": -82.16419983,
+          "name": "Plant City Municipal Airport",
+          "note": null,
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 3950,
+              "width_ft": 75,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "10",
+              "ident2": "28",
+              "bearing1": 94.0,
+              "bearing2": 274.0
+            }
+          ],
+          "state": "FL",
+          "type": "small_airport",
+          "website": null,
+          "wiki": null
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3010",
+          "value": 30.1,
+          "spoken": "three zero point one zero"
+        },
+        "clouds": [
+          {
+            "repr": "SCT055",
+            "type": "SCT",
+            "base": 55,
+            "top": null,
+            "modifier": null,
+            "direction": null
+          }
+        ],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KLAL 280655Z 17005KT 10SM SCT055 22/17 A3010 RMK AO2 PNO",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "170",
+          "value": 170,
+          "spoken": "one seven zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "05",
+          "value": 5,
+          "spoken": "five"
+        },
+        "wx_codes": [],
+        "raw": "KLAL 280655Z AUTO 17005KT 10SM SCT055 22/17 A3010 RMK AO2 PNO",
+        "station": "KLAL",
+        "time": {
+          "repr": "280655Z",
+          "dt": "2021-03-28T06:55:00Z"
+        },
+        "remarks": "RMK AO2 PNO",
+        "dewpoint": {
+          "repr": "17",
+          "value": 17,
+          "spoken": "one seven"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": null,
+          "temperature_decimal": null
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "22",
+          "value": 22,
+          "spoken": "two two"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Lakeland",
+          "country": "US",
+          "elevation_ft": 142,
+          "elevation_m": 43,
+          "iata": "LAL",
+          "icao": "KLAL",
+          "latitude": 27.988899,
+          "longitude": -82.018602,
+          "name": "Lakeland Linder International Airport",
+          "note": null,
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 8500,
+              "width_ft": 150,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "09",
+              "ident2": "27",
+              "bearing1": 90.0,
+              "bearing2": 270.0
+            }
+          ],
+          "state": "FL",
+          "type": "medium_airport",
+          "website": null,
+          "wiki": "https://en.wikipedia.org/wiki/Lakeland_Linder_Regional_Airport"
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3010",
+          "value": 30.1,
+          "spoken": "three zero point one zero"
+        },
+        "clouds": [
+          {
+            "repr": "OVC055",
+            "type": "OVC",
+            "base": 55,
+            "top": null,
+            "modifier": null,
+            "direction": null
+          }
+        ],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KLAL 280635Z 16005KT 10SM OVC055 22/17 A3010 RMK AO2 PNO",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "160",
+          "value": 160,
+          "spoken": "one six zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "05",
+          "value": 5,
+          "spoken": "five"
+        },
+        "wx_codes": [],
+        "raw": "KLAL 280635Z AUTO 16005KT 10SM OVC055 22/17 A3010 RMK AO2 PNO",
+        "station": "KLAL",
+        "time": {
+          "repr": "280635Z",
+          "dt": "2021-03-28T06:35:00Z"
+        },
+        "remarks": "RMK AO2 PNO",
+        "dewpoint": {
+          "repr": "17",
+          "value": 17,
+          "spoken": "one seven"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": null,
+          "temperature_decimal": null
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "22",
+          "value": 22,
+          "spoken": "two two"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Lakeland",
+          "country": "US",
+          "elevation_ft": 142,
+          "elevation_m": 43,
+          "iata": "LAL",
+          "icao": "KLAL",
+          "latitude": 27.988899,
+          "longitude": -82.018602,
+          "name": "Lakeland Linder International Airport",
+          "note": null,
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 8500,
+              "width_ft": 150,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "09",
+              "ident2": "27",
+              "bearing1": 90.0,
+              "bearing2": 270.0
+            }
+          ],
+          "state": "FL",
+          "type": "medium_airport",
+          "website": null,
+          "wiki": "https://en.wikipedia.org/wiki/Lakeland_Linder_Regional_Airport"
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3011",
+          "value": 30.11,
+          "spoken": "three zero point one one"
+        },
+        "clouds": [
+          {
+            "repr": "OVC055",
+            "type": "OVC",
+            "base": 55,
+            "top": null,
+            "modifier": null,
+            "direction": null
+          }
+        ],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KLAL 280615Z 16005KT 10SM OVC055 22/17 A3011 RMK AO2 PNO",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "160",
+          "value": 160,
+          "spoken": "one six zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "05",
+          "value": 5,
+          "spoken": "five"
+        },
+        "wx_codes": [],
+        "raw": "KLAL 280615Z AUTO 16005KT 10SM OVC055 22/17 A3011 RMK AO2 PNO",
+        "station": "KLAL",
+        "time": {
+          "repr": "280615Z",
+          "dt": "2021-03-28T06:15:00Z"
+        },
+        "remarks": "RMK AO2 PNO",
+        "dewpoint": {
+          "repr": "17",
+          "value": 17,
+          "spoken": "one seven"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": null,
+          "temperature_decimal": null
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "22",
+          "value": 22,
+          "spoken": "two two"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Lakeland",
+          "country": "US",
+          "elevation_ft": 142,
+          "elevation_m": 43,
+          "iata": "LAL",
+          "icao": "KLAL",
+          "latitude": 27.988899,
+          "longitude": -82.018602,
+          "name": "Lakeland Linder International Airport",
+          "note": null,
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 8500,
+              "width_ft": 150,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "09",
+              "ident2": "27",
+              "bearing1": 90.0,
+              "bearing2": 270.0
+            }
+          ],
+          "state": "FL",
+          "type": "medium_airport",
+          "website": null,
+          "wiki": "https://en.wikipedia.org/wiki/Lakeland_Linder_Regional_Airport"
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3009",
+          "value": 30.09,
+          "spoken": "three zero point zero nine"
+        },
+        "clouds": [],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KBOW 280655Z 14003KT 10SM 22/19 A3009 RMK AO2",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "140",
+          "value": 140,
+          "spoken": "one four zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "03",
+          "value": 3,
+          "spoken": "three"
+        },
+        "wx_codes": [],
+        "raw": "KBOW 280655Z AUTO 14003KT 10SM CLR 22/19 A3009 RMK AO2",
+        "station": "KBOW",
+        "time": {
+          "repr": "280655Z",
+          "dt": "2021-03-28T06:55:00Z"
+        },
+        "remarks": "RMK AO2",
+        "dewpoint": {
+          "repr": "19",
+          "value": 19,
+          "spoken": "one nine"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": null,
+          "temperature_decimal": null
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "22",
+          "value": 22,
+          "spoken": "two two"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Bartow",
+          "country": "US",
+          "elevation_ft": 125,
+          "elevation_m": 38,
+          "iata": "BOW",
+          "icao": "KBOW",
+          "latitude": 27.943399,
+          "longitude": -81.783401,
+          "name": "Bartow Executive Airport",
+          "note": "Bartow Municipal",
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 5001,
+              "width_ft": 150,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "09L",
+              "ident2": "27R",
+              "bearing1": 87.0,
+              "bearing2": 267.0
+            },
+            {
+              "length_ft": 5000,
+              "width_ft": 100,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "05",
+              "ident2": "23",
+              "bearing1": 46.0,
+              "bearing2": 226.0
+            },
+            {
+              "length_ft": 4400,
+              "width_ft": 150,
+              "surface": "asphalt",
+              "lights": false,
+              "ident1": "09R",
+              "ident2": "27L",
+              "bearing1": 87.0,
+              "bearing2": 267.0
+            }
+          ],
+          "state": "FL",
+          "type": "small_airport",
+          "website": "http://www.bartow-airport.com/",
+          "wiki": "https://en.wikipedia.org/wiki/Bartow_Municipal_Airport"
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3010",
+          "value": 30.1,
+          "spoken": "three zero point one zero"
+        },
+        "clouds": [
+          {
+            "repr": "SCT055",
+            "type": "SCT",
+            "base": 55,
+            "top": null,
+            "modifier": null,
+            "direction": null
+          }
+        ],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KBOW 280635Z 16004KT 10SM SCT055 23/19 A3010 RMK AO2",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "160",
+          "value": 160,
+          "spoken": "one six zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "04",
+          "value": 4,
+          "spoken": "four"
+        },
+        "wx_codes": [],
+        "raw": "KBOW 280635Z AUTO 16004KT 10SM SCT055 23/19 A3010 RMK AO2",
+        "station": "KBOW",
+        "time": {
+          "repr": "280635Z",
+          "dt": "2021-03-28T06:35:00Z"
+        },
+        "remarks": "RMK AO2",
+        "dewpoint": {
+          "repr": "19",
+          "value": 19,
+          "spoken": "one nine"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": null,
+          "temperature_decimal": null
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "23",
+          "value": 23,
+          "spoken": "two three"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Bartow",
+          "country": "US",
+          "elevation_ft": 125,
+          "elevation_m": 38,
+          "iata": "BOW",
+          "icao": "KBOW",
+          "latitude": 27.943399,
+          "longitude": -81.783401,
+          "name": "Bartow Executive Airport",
+          "note": "Bartow Municipal",
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 5001,
+              "width_ft": 150,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "09L",
+              "ident2": "27R",
+              "bearing1": 87.0,
+              "bearing2": 267.0
+            },
+            {
+              "length_ft": 5000,
+              "width_ft": 100,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "05",
+              "ident2": "23",
+              "bearing1": 46.0,
+              "bearing2": 226.0
+            },
+            {
+              "length_ft": 4400,
+              "width_ft": 150,
+              "surface": "asphalt",
+              "lights": false,
+              "ident1": "09R",
+              "ident2": "27L",
+              "bearing1": 87.0,
+              "bearing2": 267.0
+            }
+          ],
+          "state": "FL",
+          "type": "small_airport",
+          "website": "http://www.bartow-airport.com/",
+          "wiki": "https://en.wikipedia.org/wiki/Bartow_Municipal_Airport"
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3011",
+          "value": 30.11,
+          "spoken": "three zero point one one"
+        },
+        "clouds": [
+          {
+            "repr": "OVC055",
+            "type": "OVC",
+            "base": 55,
+            "top": null,
+            "modifier": null,
+            "direction": null
+          }
+        ],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KBOW 280615Z 18006KT 10SM OVC055 24/19 A3011 RMK AO2",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "180",
+          "value": 180,
+          "spoken": "one eight zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "06",
+          "value": 6,
+          "spoken": "six"
+        },
+        "wx_codes": [],
+        "raw": "KBOW 280615Z AUTO 18006KT 10SM OVC055 24/19 A3011 RMK AO2",
+        "station": "KBOW",
+        "time": {
+          "repr": "280615Z",
+          "dt": "2021-03-28T06:15:00Z"
+        },
+        "remarks": "RMK AO2",
+        "dewpoint": {
+          "repr": "19",
+          "value": 19,
+          "spoken": "one nine"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": null,
+          "temperature_decimal": null
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "24",
+          "value": 24,
+          "spoken": "two four"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Bartow",
+          "country": "US",
+          "elevation_ft": 125,
+          "elevation_m": 38,
+          "iata": "BOW",
+          "icao": "KBOW",
+          "latitude": 27.943399,
+          "longitude": -81.783401,
+          "name": "Bartow Executive Airport",
+          "note": "Bartow Municipal",
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 5001,
+              "width_ft": 150,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "09L",
+              "ident2": "27R",
+              "bearing1": 87.0,
+              "bearing2": 267.0
+            },
+            {
+              "length_ft": 5000,
+              "width_ft": 100,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "05",
+              "ident2": "23",
+              "bearing1": 46.0,
+              "bearing2": 226.0
+            },
+            {
+              "length_ft": 4400,
+              "width_ft": 150,
+              "surface": "asphalt",
+              "lights": false,
+              "ident1": "09R",
+              "ident2": "27L",
+              "bearing1": 87.0,
+              "bearing2": 267.0
+            }
+          ],
+          "state": "FL",
+          "type": "small_airport",
+          "website": "http://www.bartow-airport.com/",
+          "wiki": "https://en.wikipedia.org/wiki/Bartow_Municipal_Airport"
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3011",
+          "value": 30.11,
+          "spoken": "three zero point one one"
+        },
+        "clouds": [
+          {
+            "repr": "OVC048",
+            "type": "OVC",
+            "base": 48,
+            "top": null,
+            "modifier": null,
+            "direction": null
+          }
+        ],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KX07 280655Z 00000KT 10SM OVC048 19/19 A3011 RMK A01",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "000",
+          "value": 0,
+          "spoken": "zero zero zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "00",
+          "value": 0,
+          "spoken": "zero"
+        },
+        "wx_codes": [],
+        "raw": "KX07 280655Z AUTO 00000KT 10SM OVC048 19/19 A3011 RMK A01",
+        "station": "KX07",
+        "time": {
+          "repr": "280655Z",
+          "dt": "2021-03-28T06:55:00Z"
+        },
+        "remarks": "RMK A01",
+        "dewpoint": {
+          "repr": "19",
+          "value": 19,
+          "spoken": "one nine"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": null,
+          "temperature_decimal": null
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "19",
+          "value": 19,
+          "spoken": "one nine"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Lake Wales",
+          "country": "US",
+          "elevation_ft": 127,
+          "elevation_m": 39,
+          "iata": null,
+          "icao": "KX07",
+          "latitude": 27.893800735473633,
+          "longitude": -81.62039947509766,
+          "name": "Lake Wales Municipal Airport",
+          "note": null,
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 3999,
+              "width_ft": 100,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "06",
+              "ident2": "24",
+              "bearing1": 59.0,
+              "bearing2": 239.0
+            },
+            {
+              "length_ft": 3999,
+              "width_ft": 75,
+              "surface": "asphalt",
+              "lights": false,
+              "ident1": "17",
+              "ident2": "35",
+              "bearing1": 167.0,
+              "bearing2": 347.0
+            }
+          ],
+          "state": "FL",
+          "type": "small_airport",
+          "website": null,
+          "wiki": null
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3012",
+          "value": 30.12,
+          "spoken": "three zero point one two"
+        },
+        "clouds": [
+          {
+            "repr": "OVC049",
+            "type": "OVC",
+            "base": 49,
+            "top": null,
+            "modifier": null,
+            "direction": null
+          }
+        ],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KX07 280635Z 00000KT 10SM OVC049 20/19 A3012 RMK A01",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "000",
+          "value": 0,
+          "spoken": "zero zero zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "00",
+          "value": 0,
+          "spoken": "zero"
+        },
+        "wx_codes": [],
+        "raw": "KX07 280635Z AUTO 00000KT 10SM OVC049 20/19 A3012 RMK A01",
+        "station": "KX07",
+        "time": {
+          "repr": "280635Z",
+          "dt": "2021-03-28T06:35:00Z"
+        },
+        "remarks": "RMK A01",
+        "dewpoint": {
+          "repr": "19",
+          "value": 19,
+          "spoken": "one nine"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": null,
+          "temperature_decimal": null
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "20",
+          "value": 20,
+          "spoken": "two zero"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Lake Wales",
+          "country": "US",
+          "elevation_ft": 127,
+          "elevation_m": 39,
+          "iata": null,
+          "icao": "KX07",
+          "latitude": 27.893800735473633,
+          "longitude": -81.62039947509766,
+          "name": "Lake Wales Municipal Airport",
+          "note": null,
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 3999,
+              "width_ft": 100,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "06",
+              "ident2": "24",
+              "bearing1": 59.0,
+              "bearing2": 239.0
+            },
+            {
+              "length_ft": 3999,
+              "width_ft": 75,
+              "surface": "asphalt",
+              "lights": false,
+              "ident1": "17",
+              "ident2": "35",
+              "bearing1": 167.0,
+              "bearing2": 347.0
+            }
+          ],
+          "state": "FL",
+          "type": "small_airport",
+          "website": null,
+          "wiki": null
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3013",
+          "value": 30.13,
+          "spoken": "three zero point one three"
+        },
+        "clouds": [
+          {
+            "repr": "OVC050",
+            "type": "OVC",
+            "base": 50,
+            "top": null,
+            "modifier": null,
+            "direction": null
+          }
+        ],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KX07 280615Z 19003KT 10SM OVC050 21/19 A3013 RMK A01",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "190",
+          "value": 190,
+          "spoken": "one nine zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "03",
+          "value": 3,
+          "spoken": "three"
+        },
+        "wx_codes": [],
+        "raw": "KX07 280615Z AUTO 19003KT 10SM OVC050 21/19 A3013 RMK A01",
+        "station": "KX07",
+        "time": {
+          "repr": "280615Z",
+          "dt": "2021-03-28T06:15:00Z"
+        },
+        "remarks": "RMK A01",
+        "dewpoint": {
+          "repr": "19",
+          "value": 19,
+          "spoken": "one nine"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": null,
+          "temperature_decimal": null
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "21",
+          "value": 21,
+          "spoken": "two one"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Lake Wales",
+          "country": "US",
+          "elevation_ft": 127,
+          "elevation_m": 39,
+          "iata": null,
+          "icao": "KX07",
+          "latitude": 27.893800735473633,
+          "longitude": -81.62039947509766,
+          "name": "Lake Wales Municipal Airport",
+          "note": null,
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 3999,
+              "width_ft": 100,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "06",
+              "ident2": "24",
+              "bearing1": 59.0,
+              "bearing2": 239.0
+            },
+            {
+              "length_ft": 3999,
+              "width_ft": 75,
+              "surface": "asphalt",
+              "lights": false,
+              "ident1": "17",
+              "ident2": "35",
+              "bearing1": 167.0,
+              "bearing2": 347.0
+            }
+          ],
+          "state": "FL",
+          "type": "small_airport",
+          "website": null,
+          "wiki": null
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3010",
+          "value": 30.1,
+          "spoken": "three zero point one zero"
+        },
+        "clouds": [],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KGIF 280653Z 18006KT 10SM 23/18 A3010 RMK AO2 SLP189 T02330183",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "180",
+          "value": 180,
+          "spoken": "one eight zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "06",
+          "value": 6,
+          "spoken": "six"
+        },
+        "wx_codes": [],
+        "raw": "KGIF 280653Z AUTO 18006KT 10SM CLR 23/18 A3010 RMK AO2 SLP189 T02330183",
+        "station": "KGIF",
+        "time": {
+          "repr": "280653Z",
+          "dt": "2021-03-28T06:53:00Z"
+        },
+        "remarks": "RMK AO2 SLP189 T02330183",
+        "dewpoint": {
+          "repr": "18",
+          "value": 18,
+          "spoken": "one eight"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": {
+            "repr": "18.3",
+            "value": 18.3,
+            "spoken": "one eight point three"
+          },
+          "temperature_decimal": {
+            "repr": "23.3",
+            "value": 23.3,
+            "spoken": "two three point three"
+          }
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "23",
+          "value": 23,
+          "spoken": "two three"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Winter Haven",
+          "country": "US",
+          "elevation_ft": 145,
+          "elevation_m": 44,
+          "iata": "GIF",
+          "icao": "KGIF",
+          "latitude": 28.062901,
+          "longitude": -81.753304,
+          "name": "Winter Haven Regional Airport - Gilbert Field",
+          "note": null,
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 5006,
+              "width_ft": 100,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "5",
+              "ident2": "23",
+              "bearing1": 45.0,
+              "bearing2": 225.0
+            },
+            {
+              "length_ft": 4001,
+              "width_ft": 100,
+              "surface": "asphalt",
+              "lights": false,
+              "ident1": "11",
+              "ident2": "29",
+              "bearing1": 103.0,
+              "bearing2": 283.0
+            }
+          ],
+          "state": "FL",
+          "type": "small_airport",
+          "website": "http://kgif.mywinterhaven.com/",
+          "wiki": "https://en.wikipedia.org/wiki/Winter_Haven's_Gilbert_Airport"
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3010",
+          "value": 30.1,
+          "spoken": "three zero point one zero"
+        },
+        "clouds": [
+          {
+            "repr": "OVC060",
+            "type": "OVC",
+            "base": 60,
+            "top": null,
+            "modifier": null,
+            "direction": null
+          }
+        ],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KZPH 280635Z 20003KT 10SM OVC060 21/18 A3010 RMK A02 T02110179",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "200",
+          "value": 200,
+          "spoken": "two zero zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "03",
+          "value": 3,
+          "spoken": "three"
+        },
+        "wx_codes": [],
+        "raw": "KZPH 280635Z AUTO 20003KT 10SM OVC060 21/18 A3010 RMK A02 T02110179",
+        "station": "KZPH",
+        "time": {
+          "repr": "280635Z",
+          "dt": "2021-03-28T06:35:00Z"
+        },
+        "remarks": "RMK A02 T02110179",
+        "dewpoint": {
+          "repr": "18",
+          "value": 18,
+          "spoken": "one eight"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": {
+            "repr": "17.9",
+            "value": 17.9,
+            "spoken": "one seven point nine"
+          },
+          "temperature_decimal": {
+            "repr": "21.1",
+            "value": 21.1,
+            "spoken": "two one point one"
+          }
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "21",
+          "value": 21,
+          "spoken": "two one"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Zephyrhills",
+          "country": "US",
+          "elevation_ft": 90,
+          "elevation_m": 27,
+          "iata": "ZPH",
+          "icao": "KZPH",
+          "latitude": 28.2282009125,
+          "longitude": -82.15589904790001,
+          "name": "Zephyrhills Municipal Airport",
+          "note": null,
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 5072,
+              "width_ft": 100,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "19",
+              "ident2": "1",
+              "bearing1": 180.0,
+              "bearing2": 360.0
+            },
+            {
+              "length_ft": 5001,
+              "width_ft": 100,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "5",
+              "ident2": "23",
+              "bearing1": 43.0,
+              "bearing2": 223.0
+            }
+          ],
+          "state": "FL",
+          "type": "small_airport",
+          "website": null,
+          "wiki": "https://en.wikipedia.org/wiki/Zephyrhills_Municipal_Airport"
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3011",
+          "value": 30.11,
+          "spoken": "three zero point one one"
+        },
+        "clouds": [
+          {
+            "repr": "OVC060",
+            "type": "OVC",
+            "base": 60,
+            "top": null,
+            "modifier": null,
+            "direction": null
+          }
+        ],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KZPH 280615Z 00000KT 10SM OVC060 21/18 A3011 RMK A02 T02120176",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "000",
+          "value": 0,
+          "spoken": "zero zero zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "00",
+          "value": 0,
+          "spoken": "zero"
+        },
+        "wx_codes": [],
+        "raw": "KZPH 280615Z AUTO 00000KT 10SM OVC060 21/18 A3011 RMK A02 T02120176",
+        "station": "KZPH",
+        "time": {
+          "repr": "280615Z",
+          "dt": "2021-03-28T06:15:00Z"
+        },
+        "remarks": "RMK A02 T02120176",
+        "dewpoint": {
+          "repr": "18",
+          "value": 18,
+          "spoken": "one eight"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": {
+            "repr": "17.6",
+            "value": 17.6,
+            "spoken": "one seven point six"
+          },
+          "temperature_decimal": {
+            "repr": "21.2",
+            "value": 21.2,
+            "spoken": "two one point two"
+          }
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "21",
+          "value": 21,
+          "spoken": "two one"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Zephyrhills",
+          "country": "US",
+          "elevation_ft": 90,
+          "elevation_m": 27,
+          "iata": "ZPH",
+          "icao": "KZPH",
+          "latitude": 28.2282009125,
+          "longitude": -82.15589904790001,
+          "name": "Zephyrhills Municipal Airport",
+          "note": null,
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 5072,
+              "width_ft": 100,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "19",
+              "ident2": "1",
+              "bearing1": 180.0,
+              "bearing2": 360.0
+            },
+            {
+              "length_ft": 5001,
+              "width_ft": 100,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "5",
+              "ident2": "23",
+              "bearing1": 43.0,
+              "bearing2": 223.0
+            }
+          ],
+          "state": "FL",
+          "type": "small_airport",
+          "website": null,
+          "wiki": "https://en.wikipedia.org/wiki/Zephyrhills_Municipal_Airport"
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3010",
+          "value": 30.1,
+          "spoken": "three zero point one zero"
+        },
+        "clouds": [],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KISM 280656Z 18004KT 10SM 22/21 A3010 RMK AO2 SLP190 T02170206 $",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "180",
+          "value": 180,
+          "spoken": "one eight zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "04",
+          "value": 4,
+          "spoken": "four"
+        },
+        "wx_codes": [],
+        "raw": "KISM 280656Z AUTO 18004KT 10SM CLR 22/21 A3010 RMK AO2 SLP190 T02170206 $",
+        "station": "KISM",
+        "time": {
+          "repr": "280656Z",
+          "dt": "2021-03-28T06:56:00Z"
+        },
+        "remarks": "RMK AO2 SLP190 T02170206 $",
+        "dewpoint": {
+          "repr": "21",
+          "value": 21,
+          "spoken": "two one"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": {
+            "repr": "20.6",
+            "value": 20.6,
+            "spoken": "two zero point six"
+          },
+          "temperature_decimal": {
+            "repr": "21.7",
+            "value": 21.7,
+            "spoken": "two one point seven"
+          }
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "22",
+          "value": 22,
+          "spoken": "two two"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Orlando",
+          "country": "US",
+          "elevation_ft": 82,
+          "elevation_m": 25,
+          "iata": "ISM",
+          "icao": "KISM",
+          "latitude": 28.2898006439,
+          "longitude": -81.4371032715,
+          "name": "Kissimmee Gateway Airport",
+          "note": null,
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 6000,
+              "width_ft": 100,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "15",
+              "ident2": "33",
+              "bearing1": 148.0,
+              "bearing2": 328.0
+            },
+            {
+              "length_ft": 5000,
+              "width_ft": 150,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "06",
+              "ident2": "24",
+              "bearing1": 58.0,
+              "bearing2": 238.0
+            }
+          ],
+          "state": "FL",
+          "type": "medium_airport",
+          "website": "http://www.kissimmee.org/index.aspx?page=111",
+          "wiki": "https://en.wikipedia.org/wiki/Kissimmee_Gateway_Airport"
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3008",
+          "value": 30.08,
+          "spoken": "three zero point zero eight"
+        },
+        "clouds": [],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KMLB 280653Z 16007KT 10SM 23/20 A3008 RMK AO2 SLP186 T02280200",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "160",
+          "value": 160,
+          "spoken": "one six zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "07",
+          "value": 7,
+          "spoken": "seven"
+        },
+        "wx_codes": [],
+        "raw": "KMLB 280653Z AUTO 16007KT 10SM CLR 23/20 A3008 RMK AO2 SLP186 T02280200",
+        "station": "KMLB",
+        "time": {
+          "repr": "280653Z",
+          "dt": "2021-03-28T06:53:00Z"
+        },
+        "remarks": "RMK AO2 SLP186 T02280200",
+        "dewpoint": {
+          "repr": "20",
+          "value": 20,
+          "spoken": "two zero"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": {
+            "repr": "20.0",
+            "value": 20.0,
+            "spoken": "two zero point zero"
+          },
+          "temperature_decimal": {
+            "repr": "22.8",
+            "value": 22.8,
+            "spoken": "two two point eight"
+          }
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "23",
+          "value": 23,
+          "spoken": "two three"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Melbourne",
+          "country": "US",
+          "elevation_ft": 33,
+          "elevation_m": 10,
+          "iata": "MLB",
+          "icao": "KMLB",
+          "latitude": 28.102800369262695,
+          "longitude": -80.64530181884766,
+          "name": "Melbourne International Airport",
+          "note": null,
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 10181,
+              "width_ft": 150,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "09R",
+              "ident2": "27L",
+              "bearing1": 87.0,
+              "bearing2": 267.0
+            },
+            {
+              "length_ft": 6000,
+              "width_ft": 150,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "09L",
+              "ident2": "27R",
+              "bearing1": 87.0,
+              "bearing2": 267.0
+            },
+            {
+              "length_ft": 3001,
+              "width_ft": 75,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "05",
+              "ident2": "23",
+              "bearing1": 42.0,
+              "bearing2": 222.0
+            }
+          ],
+          "state": "FL",
+          "type": "medium_airport",
+          "website": null,
+          "wiki": "https://en.wikipedia.org/wiki/Melbourne_International_Airport"
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3008",
+          "value": 30.08,
+          "spoken": "three zero point zero eight"
+        },
+        "clouds": [
+          {
+            "repr": "SCT250",
+            "type": "SCT",
+            "base": 250,
+            "top": null,
+            "modifier": null,
+            "direction": null
+          }
+        ],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KMCO 280653Z 19012KT 10SM SCT250 22/20 A3008 RMK AO2 SLP184 T02170200",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "190",
+          "value": 190,
+          "spoken": "one nine zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "12",
+          "value": 12,
+          "spoken": "one two"
+        },
+        "wx_codes": [],
+        "raw": "KMCO 280653Z 19012KT 10SM SCT250 22/20 A3008 RMK AO2 SLP184 T02170200",
+        "station": "KMCO",
+        "time": {
+          "repr": "280653Z",
+          "dt": "2021-03-28T06:53:00Z"
+        },
+        "remarks": "RMK AO2 SLP184 T02170200",
+        "dewpoint": {
+          "repr": "20",
+          "value": 20,
+          "spoken": "two zero"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": {
+            "repr": "20.0",
+            "value": 20.0,
+            "spoken": "two zero point zero"
+          },
+          "temperature_decimal": {
+            "repr": "21.7",
+            "value": 21.7,
+            "spoken": "two one point seven"
+          }
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "22",
+          "value": 22,
+          "spoken": "two two"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Orlando",
+          "country": "US",
+          "elevation_ft": 96,
+          "elevation_m": 29,
+          "iata": "MCO",
+          "icao": "KMCO",
+          "latitude": 28.429399490356445,
+          "longitude": -81.30899810791016,
+          "name": "Orlando International Airport",
+          "note": "Disney World,Epcot Center",
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 12005,
+              "width_ft": 200,
+              "surface": "concrete",
+              "lights": true,
+              "ident1": "18L",
+              "ident2": "36R",
+              "bearing1": 179.0,
+              "bearing2": 359.0
+            },
+            {
+              "length_ft": 12004,
+              "width_ft": 200,
+              "surface": "concrete",
+              "lights": true,
+              "ident1": "18R",
+              "ident2": "36L",
+              "bearing1": 179.0,
+              "bearing2": 359.0
+            },
+            {
+              "length_ft": 10000,
+              "width_ft": 150,
+              "surface": "concrete",
+              "lights": true,
+              "ident1": "17R",
+              "ident2": "35L",
+              "bearing1": 179.0,
+              "bearing2": 359.0
+            },
+            {
+              "length_ft": 9000,
+              "width_ft": 150,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "17L",
+              "ident2": "35R",
+              "bearing1": 179.5,
+              "bearing2": 359.5
+            }
+          ],
+          "state": "FL",
+          "type": "large_airport",
+          "website": "http://www.orlandoairports.net/",
+          "wiki": "https://en.wikipedia.org/wiki/Orlando_International_Airport"
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3008",
+          "value": 30.08,
+          "spoken": "three zero point zero eight"
+        },
+        "clouds": [],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KORL 280653Z 18009KT 10SM 23/21 A3008 RMK AO2 SLP188 T02280206",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "180",
+          "value": 180,
+          "spoken": "one eight zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "09",
+          "value": 9,
+          "spoken": "nine"
+        },
+        "wx_codes": [],
+        "raw": "KORL 280653Z AUTO 18009KT 10SM CLR 23/21 A3008 RMK AO2 SLP188 T02280206",
+        "station": "KORL",
+        "time": {
+          "repr": "280653Z",
+          "dt": "2021-03-28T06:53:00Z"
+        },
+        "remarks": "RMK AO2 SLP188 T02280206",
+        "dewpoint": {
+          "repr": "21",
+          "value": 21,
+          "spoken": "two one"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": {
+            "repr": "20.6",
+            "value": 20.6,
+            "spoken": "two zero point six"
+          },
+          "temperature_decimal": {
+            "repr": "22.8",
+            "value": 22.8,
+            "spoken": "two two point eight"
+          }
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "23",
+          "value": 23,
+          "spoken": "two three"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Orlando",
+          "country": "US",
+          "elevation_ft": 113,
+          "elevation_m": 34,
+          "iata": "ORL",
+          "icao": "KORL",
+          "latitude": 28.5455,
+          "longitude": -81.332901,
+          "name": "Orlando Executive Airport",
+          "note": "Herndon Airport, Orlando Executive Airport, KORL, ORL, Orlando Municipal Airport, Orlando Army Air Base, Orlando Air Force Base, Naval Training Center Orlando",
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 6003,
+              "width_ft": 150,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "07",
+              "ident2": "25",
+              "bearing1": 67.0,
+              "bearing2": 247.0
+            },
+            {
+              "length_ft": 4638,
+              "width_ft": 100,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "13",
+              "ident2": "31",
+              "bearing1": 130.8,
+              "bearing2": 310.8
+            }
+          ],
+          "state": "FL",
+          "type": "small_airport",
+          "website": null,
+          "wiki": "https://en.wikipedia.org/wiki/Orlando_Executive_Airport"
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3008",
+          "value": 30.08,
+          "spoken": "three zero point zero eight"
+        },
+        "clouds": [],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KLEE 280653Z 12006KT 10SM 22/19 A3008 RMK AO2 SLP184 T02220189",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "120",
+          "value": 120,
+          "spoken": "one two zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "06",
+          "value": 6,
+          "spoken": "six"
+        },
+        "wx_codes": [],
+        "raw": "KLEE 280653Z AUTO 12006KT 10SM CLR 22/19 A3008 RMK AO2 SLP184 T02220189",
+        "station": "KLEE",
+        "time": {
+          "repr": "280653Z",
+          "dt": "2021-03-28T06:53:00Z"
+        },
+        "remarks": "RMK AO2 SLP184 T02220189",
+        "dewpoint": {
+          "repr": "19",
+          "value": 19,
+          "spoken": "one nine"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": {
+            "repr": "18.9",
+            "value": 18.9,
+            "spoken": "one eight point nine"
+          },
+          "temperature_decimal": {
+            "repr": "22.2",
+            "value": 22.2,
+            "spoken": "two two point two"
+          }
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "22",
+          "value": 22,
+          "spoken": "two two"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Leesburg",
+          "country": "US",
+          "elevation_ft": 76,
+          "elevation_m": 23,
+          "iata": "LEE",
+          "icao": "KLEE",
+          "latitude": 28.82309914,
+          "longitude": -81.80870056,
+          "name": "Leesburg International Airport",
+          "note": "Leesburg AAF",
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 5000,
+              "width_ft": 100,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "13",
+              "ident2": "31",
+              "bearing1": 130.0,
+              "bearing2": 310.0
+            },
+            {
+              "length_ft": 4957,
+              "width_ft": 100,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "03",
+              "ident2": "21",
+              "bearing1": 35.0,
+              "bearing2": 215.0
+            }
+          ],
+          "state": "FL",
+          "type": "medium_airport",
+          "website": "http://www.leesburgflorida.gov/index.aspx?page=45",
+          "wiki": "https://en.wikipedia.org/wiki/Leesburg_International_Airport"
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3008",
+          "value": 30.08,
+          "spoken": "three zero point zero eight"
+        },
+        "clouds": [],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KSFB 280653Z 17006KT 10SM 22/19 A3008 RMK AO2 SLP184 T02220189",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "170",
+          "value": 170,
+          "spoken": "one seven zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "06",
+          "value": 6,
+          "spoken": "six"
+        },
+        "wx_codes": [],
+        "raw": "KSFB 280653Z 17006KT 10SM CLR 22/19 A3008 RMK AO2 SLP184 T02220189",
+        "station": "KSFB",
+        "time": {
+          "repr": "280653Z",
+          "dt": "2021-03-28T06:53:00Z"
+        },
+        "remarks": "RMK AO2 SLP184 T02220189",
+        "dewpoint": {
+          "repr": "19",
+          "value": 19,
+          "spoken": "one nine"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": {
+            "repr": "18.9",
+            "value": 18.9,
+            "spoken": "one eight point nine"
+          },
+          "temperature_decimal": {
+            "repr": "22.2",
+            "value": 22.2,
+            "spoken": "two two point two"
+          }
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "22",
+          "value": 22,
+          "spoken": "two two"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Orlando",
+          "country": "US",
+          "elevation_ft": 55,
+          "elevation_m": 17,
+          "iata": "SFB",
+          "icao": "KSFB",
+          "latitude": 28.777599334716797,
+          "longitude": -81.23750305175781,
+          "name": "Orlando Sanford International Airport",
+          "note": null,
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 9600,
+              "width_ft": 150,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "09L",
+              "ident2": "27R",
+              "bearing1": 90.0,
+              "bearing2": 270.0
+            },
+            {
+              "length_ft": 6003,
+              "width_ft": 150,
+              "surface": "concrete",
+              "lights": true,
+              "ident1": "18",
+              "ident2": "36",
+              "bearing1": 180.0,
+              "bearing2": 360.0
+            },
+            {
+              "length_ft": 3578,
+              "width_ft": 75,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "09C",
+              "ident2": "27C",
+              "bearing1": 90.0,
+              "bearing2": 270.0
+            },
+            {
+              "length_ft": 3500,
+              "width_ft": 75,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "09R",
+              "ident2": "27L",
+              "bearing1": 89.9,
+              "bearing2": 269.9
+            }
+          ],
+          "state": "FL",
+          "type": "large_airport",
+          "website": null,
+          "wiki": "https://en.wikipedia.org/wiki/Orlando_Sanford_International_Airport"
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3009",
+          "value": 30.09,
+          "spoken": "three zero point zero nine"
+        },
+        "clouds": [],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KDED 280655Z 17003KT 10SM 21/20 A3009 RMK AO2 T02110197",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "170",
+          "value": 170,
+          "spoken": "one seven zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "03",
+          "value": 3,
+          "spoken": "three"
+        },
+        "wx_codes": [],
+        "raw": "KDED 280655Z AUTO 17003KT 10SM CLR 21/20 A3009 RMK AO2 T02110197",
+        "station": "KDED",
+        "time": {
+          "repr": "280655Z",
+          "dt": "2021-03-28T06:55:00Z"
+        },
+        "remarks": "RMK AO2 T02110197",
+        "dewpoint": {
+          "repr": "20",
+          "value": 20,
+          "spoken": "two zero"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": {
+            "repr": "19.7",
+            "value": 19.7,
+            "spoken": "one nine point seven"
+          },
+          "temperature_decimal": {
+            "repr": "21.1",
+            "value": 21.1,
+            "spoken": "two one point one"
+          }
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "21",
+          "value": 21,
+          "spoken": "two one"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Deland",
+          "country": "US",
+          "elevation_ft": 79,
+          "elevation_m": 24,
+          "iata": null,
+          "icao": "KDED",
+          "latitude": 29.06699944,
+          "longitude": -81.28379822,
+          "name": "Deland Municipal Sidney H Taylor Field",
+          "note": null,
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 6001,
+              "width_ft": 100,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "12",
+              "ident2": "30",
+              "bearing1": 117.0,
+              "bearing2": 297.0
+            },
+            {
+              "length_ft": 4301,
+              "width_ft": 75,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "05",
+              "ident2": "23",
+              "bearing1": 49.0,
+              "bearing2": 229.0
+            }
+          ],
+          "state": "FL",
+          "type": "small_airport",
+          "website": null,
+          "wiki": null
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3010",
+          "value": 30.1,
+          "spoken": "three zero point one zero"
+        },
+        "clouds": [],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KDED 280635Z 15004KT 10SM 21/20 A3010 RMK AO2 T02120198",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "150",
+          "value": 150,
+          "spoken": "one five zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "04",
+          "value": 4,
+          "spoken": "four"
+        },
+        "wx_codes": [],
+        "raw": "KDED 280635Z AUTO 15004KT 10SM CLR 21/20 A3010 RMK AO2 T02120198",
+        "station": "KDED",
+        "time": {
+          "repr": "280635Z",
+          "dt": "2021-03-28T06:35:00Z"
+        },
+        "remarks": "RMK AO2 T02120198",
+        "dewpoint": {
+          "repr": "20",
+          "value": 20,
+          "spoken": "two zero"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": {
+            "repr": "19.8",
+            "value": 19.8,
+            "spoken": "one nine point eight"
+          },
+          "temperature_decimal": {
+            "repr": "21.2",
+            "value": 21.2,
+            "spoken": "two one point two"
+          }
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "21",
+          "value": 21,
+          "spoken": "two one"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Deland",
+          "country": "US",
+          "elevation_ft": 79,
+          "elevation_m": 24,
+          "iata": null,
+          "icao": "KDED",
+          "latitude": 29.06699944,
+          "longitude": -81.28379822,
+          "name": "Deland Municipal Sidney H Taylor Field",
+          "note": null,
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 6001,
+              "width_ft": 100,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "12",
+              "ident2": "30",
+              "bearing1": 117.0,
+              "bearing2": 297.0
+            },
+            {
+              "length_ft": 4301,
+              "width_ft": 75,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "05",
+              "ident2": "23",
+              "bearing1": 49.0,
+              "bearing2": 229.0
+            }
+          ],
+          "state": "FL",
+          "type": "small_airport",
+          "website": null,
+          "wiki": null
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3010",
+          "value": 30.1,
+          "spoken": "three zero point one zero"
+        },
+        "clouds": [],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KDED 280615Z 15003KT 10SM 21/20 A3010 RMK AO2 T02150200",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "150",
+          "value": 150,
+          "spoken": "one five zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "03",
+          "value": 3,
+          "spoken": "three"
+        },
+        "wx_codes": [],
+        "raw": "KDED 280615Z AUTO 15003KT 10SM CLR 21/20 A3010 RMK AO2 T02150200",
+        "station": "KDED",
+        "time": {
+          "repr": "280615Z",
+          "dt": "2021-03-28T06:15:00Z"
+        },
+        "remarks": "RMK AO2 T02150200",
+        "dewpoint": {
+          "repr": "20",
+          "value": 20,
+          "spoken": "two zero"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": {
+            "repr": "20.0",
+            "value": 20.0,
+            "spoken": "two zero point zero"
+          },
+          "temperature_decimal": {
+            "repr": "21.5",
+            "value": 21.5,
+            "spoken": "two one point five"
+          }
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "21",
+          "value": 21,
+          "spoken": "two one"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Deland",
+          "country": "US",
+          "elevation_ft": 79,
+          "elevation_m": 24,
+          "iata": null,
+          "icao": "KDED",
+          "latitude": 29.06699944,
+          "longitude": -81.28379822,
+          "name": "Deland Municipal Sidney H Taylor Field",
+          "note": null,
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 6001,
+              "width_ft": 100,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "12",
+              "ident2": "30",
+              "bearing1": 117.0,
+              "bearing2": 297.0
+            },
+            {
+              "length_ft": 4301,
+              "width_ft": 75,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "05",
+              "ident2": "23",
+              "bearing1": 49.0,
+              "bearing2": 229.0
+            }
+          ],
+          "state": "FL",
+          "type": "small_airport",
+          "website": null,
+          "wiki": null
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3008",
+          "value": 30.08,
+          "spoken": "three zero point zero eight"
+        },
+        "clouds": [
+          {
+            "repr": "FEW200",
+            "type": "FEW",
+            "base": 200,
+            "top": null,
+            "modifier": null,
+            "direction": null
+          }
+        ],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KDAB 280653Z 20003KT 10SM FEW200 21/19 A3008 RMK AO2 SLP186 T02060194",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "200",
+          "value": 200,
+          "spoken": "two zero zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "03",
+          "value": 3,
+          "spoken": "three"
+        },
+        "wx_codes": [],
+        "raw": "KDAB 280653Z 20003KT 10SM FEW200 21/19 A3008 RMK AO2 SLP186 T02060194",
+        "station": "KDAB",
+        "time": {
+          "repr": "280653Z",
+          "dt": "2021-03-28T06:53:00Z"
+        },
+        "remarks": "RMK AO2 SLP186 T02060194",
+        "dewpoint": {
+          "repr": "19",
+          "value": 19,
+          "spoken": "one nine"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": {
+            "repr": "19.4",
+            "value": 19.4,
+            "spoken": "one nine point four"
+          },
+          "temperature_decimal": {
+            "repr": "20.6",
+            "value": 20.6,
+            "spoken": "two zero point six"
+          }
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "21",
+          "value": 21,
+          "spoken": "two one"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Daytona Beach",
+          "country": "US",
+          "elevation_ft": 34,
+          "elevation_m": 10,
+          "iata": "DAB",
+          "icao": "KDAB",
+          "latitude": 29.179899,
+          "longitude": -81.058098,
+          "name": "Daytona Beach International Airport",
+          "note": null,
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 10500,
+              "width_ft": 150,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "07L",
+              "ident2": "25R",
+              "bearing1": 65.0,
+              "bearing2": 245.0
+            },
+            {
+              "length_ft": 6001,
+              "width_ft": 150,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "16",
+              "ident2": "34",
+              "bearing1": 157.0,
+              "bearing2": 337.0
+            },
+            {
+              "length_ft": 3195,
+              "width_ft": 100,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "07R",
+              "ident2": "25L",
+              "bearing1": 65.0,
+              "bearing2": 245.0
+            }
+          ],
+          "state": "FL",
+          "type": "large_airport",
+          "website": null,
+          "wiki": "https://en.wikipedia.org/wiki/Daytona_Beach_International_Airport"
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3008",
+          "value": 30.08,
+          "spoken": "three zero point zero eight"
+        },
+        "clouds": [],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KFIN 280635Z 18004KT 10SM 20/20 A3008 RMK AO2 T02010198",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "180",
+          "value": 180,
+          "spoken": "one eight zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "04",
+          "value": 4,
+          "spoken": "four"
+        },
+        "wx_codes": [],
+        "raw": "KFIN 280635Z AUTO 18004KT 10SM CLR 20/20 A3008 RMK AO2 T02010198",
+        "station": "KFIN",
+        "time": {
+          "repr": "280635Z",
+          "dt": "2021-03-28T06:35:00Z"
+        },
+        "remarks": "RMK AO2 T02010198",
+        "dewpoint": {
+          "repr": "20",
+          "value": 20,
+          "spoken": "two zero"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": {
+            "repr": "19.8",
+            "value": 19.8,
+            "spoken": "one nine point eight"
+          },
+          "temperature_decimal": {
+            "repr": "20.1",
+            "value": 20.1,
+            "spoken": "two zero point one"
+          }
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "20",
+          "value": 20,
+          "spoken": "two zero"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Palm Coast",
+          "country": "US",
+          "elevation_ft": 33,
+          "elevation_m": 10,
+          "iata": null,
+          "icao": "KFIN",
+          "latitude": 29.4674,
+          "longitude": -81.206299,
+          "name": "Flagler Executive Airport",
+          "note": "formerly X47, XFL, KXFL, NOLF Bunnell, Flagler County",
+          "reporting": true,
+          "runways": null,
+          "state": "FL",
+          "type": "small_airport",
+          "website": "http://www.flaglercounty.org/index.aspx?NID=135",
+          "wiki": "https://en.wikipedia.org/wiki/Flagler_County_Airport"
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3009",
+          "value": 30.09,
+          "spoken": "three zero point zero nine"
+        },
+        "clouds": [],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KFIN 280615Z 17003KT 7SM 20/20 A3009 RMK AO2 T01990195",
+        "visibility": {
+          "repr": "7",
+          "value": 7,
+          "spoken": "seven"
+        },
+        "wind_direction": {
+          "repr": "170",
+          "value": 170,
+          "spoken": "one seven zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "03",
+          "value": 3,
+          "spoken": "three"
+        },
+        "wx_codes": [],
+        "raw": "KFIN 280615Z AUTO 17003KT 7SM CLR 20/20 A3009 RMK AO2 T01990195",
+        "station": "KFIN",
+        "time": {
+          "repr": "280615Z",
+          "dt": "2021-03-28T06:15:00Z"
+        },
+        "remarks": "RMK AO2 T01990195",
+        "dewpoint": {
+          "repr": "20",
+          "value": 20,
+          "spoken": "two zero"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": {
+            "repr": "19.5",
+            "value": 19.5,
+            "spoken": "one nine point five"
+          },
+          "temperature_decimal": {
+            "repr": "19.9",
+            "value": 19.9,
+            "spoken": "one nine point nine"
+          }
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "20",
+          "value": 20,
+          "spoken": "two zero"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Palm Coast",
+          "country": "US",
+          "elevation_ft": 33,
+          "elevation_m": 10,
+          "iata": null,
+          "icao": "KFIN",
+          "latitude": 29.4674,
+          "longitude": -81.206299,
+          "name": "Flagler Executive Airport",
+          "note": "formerly X47, XFL, KXFL, NOLF Bunnell, Flagler County",
+          "reporting": true,
+          "runways": null,
+          "state": "FL",
+          "type": "small_airport",
+          "website": "http://www.flaglercounty.org/index.aspx?NID=135",
+          "wiki": "https://en.wikipedia.org/wiki/Flagler_County_Airport"
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3007",
+          "value": 30.07,
+          "spoken": "three zero point zero seven"
+        },
+        "clouds": [
+          {
+            "repr": "SCT035",
+            "type": "SCT",
+            "base": 35,
+            "top": null,
+            "modifier": null,
+            "direction": null
+          },
+          {
+            "repr": "BKN045",
+            "type": "BKN",
+            "base": 45,
+            "top": null,
+            "modifier": null,
+            "direction": null
+          },
+          {
+            "repr": "BKN055",
+            "type": "BKN",
+            "base": 55,
+            "top": null,
+            "modifier": null,
+            "direction": null
+          }
+        ],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "K28J 280655Z 18003KT 10SM SCT035 BKN045 BKN055 18/17 A3007 RMK AO2",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "180",
+          "value": 180,
+          "spoken": "one eight zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "03",
+          "value": 3,
+          "spoken": "three"
+        },
+        "wx_codes": [],
+        "raw": "K28J 280655Z AUTO 18003KT 10SM SCT035 BKN045 BKN055 18/17 A3007 RMK AO2",
+        "station": "K28J",
+        "time": {
+          "repr": "280655Z",
+          "dt": "2021-03-28T06:55:00Z"
+        },
+        "remarks": "RMK AO2",
+        "dewpoint": {
+          "repr": "17",
+          "value": 17,
+          "spoken": "one seven"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": null,
+          "temperature_decimal": null
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "18",
+          "value": 18,
+          "spoken": "one eight"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Palatka",
+          "country": "US",
+          "elevation_ft": 48,
+          "elevation_m": 15,
+          "iata": null,
+          "icao": "K28J",
+          "latitude": 29.65859985,
+          "longitude": -81.68890381,
+          "name": "Palatka Municipal - Lt. Kay Larkin Field",
+          "note": null,
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 5999,
+              "width_ft": 100,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "09",
+              "ident2": "27",
+              "bearing1": 87.0,
+              "bearing2": 267.0
+            },
+            {
+              "length_ft": 3510,
+              "width_ft": 75,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "17",
+              "ident2": "35",
+              "bearing1": 165.0,
+              "bearing2": 345.0
+            }
+          ],
+          "state": "FL",
+          "type": "small_airport",
+          "website": null,
+          "wiki": null
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3007",
+          "value": 30.07,
+          "spoken": "three zero point zero seven"
+        },
+        "clouds": [
+          {
+            "repr": "SCT034",
+            "type": "SCT",
+            "base": 34,
+            "top": null,
+            "modifier": null,
+            "direction": null
+          },
+          {
+            "repr": "BKN040",
+            "type": "BKN",
+            "base": 40,
+            "top": null,
+            "modifier": null,
+            "direction": null
+          },
+          {
+            "repr": "BKN045",
+            "type": "BKN",
+            "base": 45,
+            "top": null,
+            "modifier": null,
+            "direction": null
+          }
+        ],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "K28J 280635Z 18003KT 10SM SCT034 BKN040 BKN045 17/16 A3007 RMK AO2",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "180",
+          "value": 180,
+          "spoken": "one eight zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "03",
+          "value": 3,
+          "spoken": "three"
+        },
+        "wx_codes": [],
+        "raw": "K28J 280635Z AUTO 18003KT 10SM SCT034 BKN040 BKN045 17/16 A3007 RMK AO2",
+        "station": "K28J",
+        "time": {
+          "repr": "280635Z",
+          "dt": "2021-03-28T06:35:00Z"
+        },
+        "remarks": "RMK AO2",
+        "dewpoint": {
+          "repr": "16",
+          "value": 16,
+          "spoken": "one six"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": null,
+          "temperature_decimal": null
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "17",
+          "value": 17,
+          "spoken": "one seven"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Palatka",
+          "country": "US",
+          "elevation_ft": 48,
+          "elevation_m": 15,
+          "iata": null,
+          "icao": "K28J",
+          "latitude": 29.65859985,
+          "longitude": -81.68890381,
+          "name": "Palatka Municipal - Lt. Kay Larkin Field",
+          "note": null,
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 5999,
+              "width_ft": 100,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "09",
+              "ident2": "27",
+              "bearing1": 87.0,
+              "bearing2": 267.0
+            },
+            {
+              "length_ft": 3510,
+              "width_ft": 75,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "17",
+              "ident2": "35",
+              "bearing1": 165.0,
+              "bearing2": 345.0
+            }
+          ],
+          "state": "FL",
+          "type": "small_airport",
+          "website": null,
+          "wiki": null
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3008",
+          "value": 30.08,
+          "spoken": "three zero point zero eight"
+        },
+        "clouds": [
+          {
+            "repr": "SCT038",
+            "type": "SCT",
+            "base": 38,
+            "top": null,
+            "modifier": null,
+            "direction": null
+          },
+          {
+            "repr": "SCT048",
+            "type": "SCT",
+            "base": 48,
+            "top": null,
+            "modifier": null,
+            "direction": null
+          },
+          {
+            "repr": "SCT055",
+            "type": "SCT",
+            "base": 55,
+            "top": null,
+            "modifier": null,
+            "direction": null
+          }
+        ],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "K28J 280615Z 19003KT 10SM SCT038 SCT048 SCT055 18/17 A3008 RMK AO2",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "190",
+          "value": 190,
+          "spoken": "one nine zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "03",
+          "value": 3,
+          "spoken": "three"
+        },
+        "wx_codes": [],
+        "raw": "K28J 280615Z AUTO 19003KT 10SM SCT038 SCT048 SCT055 18/17 A3008 RMK AO2",
+        "station": "K28J",
+        "time": {
+          "repr": "280615Z",
+          "dt": "2021-03-28T06:15:00Z"
+        },
+        "remarks": "RMK AO2",
+        "dewpoint": {
+          "repr": "17",
+          "value": 17,
+          "spoken": "one seven"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": null,
+          "temperature_decimal": null
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "18",
+          "value": 18,
+          "spoken": "one eight"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "Palatka",
+          "country": "US",
+          "elevation_ft": 48,
+          "elevation_m": 15,
+          "iata": null,
+          "icao": "K28J",
+          "latitude": 29.65859985,
+          "longitude": -81.68890381,
+          "name": "Palatka Municipal - Lt. Kay Larkin Field",
+          "note": null,
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 5999,
+              "width_ft": 100,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "09",
+              "ident2": "27",
+              "bearing1": 87.0,
+              "bearing2": 267.0
+            },
+            {
+              "length_ft": 3510,
+              "width_ft": 75,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "17",
+              "ident2": "35",
+              "bearing1": 165.0,
+              "bearing2": 345.0
+            }
+          ],
+          "state": "FL",
+          "type": "small_airport",
+          "website": null,
+          "wiki": null
+        }
+      },
+      {
+        "altimeter": {
+          "repr": "A3008",
+          "value": 30.08,
+          "spoken": "three zero point zero eight"
+        },
+        "clouds": [],
+        "flight_rules": "VFR",
+        "other": [],
+        "sanitized": "KSGJ 280656Z 18006KT 10SM 22/21 A3008 RMK AO2 SLP184 T02170211 $",
+        "visibility": {
+          "repr": "10",
+          "value": 10,
+          "spoken": "one zero"
+        },
+        "wind_direction": {
+          "repr": "180",
+          "value": 180,
+          "spoken": "one eight zero"
+        },
+        "wind_gust": null,
+        "wind_speed": {
+          "repr": "06",
+          "value": 6,
+          "spoken": "six"
+        },
+        "wx_codes": [],
+        "raw": "KSGJ 280656Z AUTO 18006KT 10SM CLR 22/21 A3008 RMK AO2 SLP184 T02170211 $",
+        "station": "KSGJ",
+        "time": {
+          "repr": "280656Z",
+          "dt": "2021-03-28T06:56:00Z"
+        },
+        "remarks": "RMK AO2 SLP184 T02170211 $",
+        "dewpoint": {
+          "repr": "21",
+          "value": 21,
+          "spoken": "two one"
+        },
+        "remarks_info": {
+          "dewpoint_decimal": {
+            "repr": "21.1",
+            "value": 21.1,
+            "spoken": "two one point one"
+          },
+          "temperature_decimal": {
+            "repr": "21.7",
+            "value": 21.7,
+            "spoken": "two one point seven"
+          }
+        },
+        "runway_visibility": [],
+        "temperature": {
+          "repr": "22",
+          "value": 22,
+          "spoken": "two two"
+        },
+        "wind_variable_direction": [],
+        "info": {
+          "city": "St Augustine",
+          "country": "US",
+          "elevation_ft": 10,
+          "elevation_m": 3,
+          "iata": "UST",
+          "icao": "KSGJ",
+          "latitude": 29.9592,
+          "longitude": -81.339798,
+          "name": "Northeast Florida Regional Airport",
+          "note": "St Augustine Airport, NAAS St. Augustine",
+          "reporting": true,
+          "runways": [
+            {
+              "length_ft": 12000,
+              "width_ft": 1000,
+              "surface": "water",
+              "lights": false,
+              "ident1": "17W",
+              "ident2": "35W",
+              "bearing1": null,
+              "bearing2": null
+            },
+            {
+              "length_ft": 12000,
+              "width_ft": 500,
+              "surface": "water",
+              "lights": false,
+              "ident1": "18W",
+              "ident2": "36W",
+              "bearing1": null,
+              "bearing2": null
+            },
+            {
+              "length_ft": 7996,
+              "width_ft": 150,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "13",
+              "ident2": "31",
+              "bearing1": 126.0,
+              "bearing2": 306.0
+            },
+            {
+              "length_ft": 5000,
+              "width_ft": 1000,
+              "surface": "water",
+              "lights": false,
+              "ident1": "12W",
+              "ident2": "30W",
+              "bearing1": null,
+              "bearing2": null
+            },
+            {
+              "length_ft": 2701,
+              "width_ft": 60,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "06",
+              "ident2": "24",
+              "bearing1": 62.0,
+              "bearing2": 242.0
+            },
+            {
+              "length_ft": 2614,
+              "width_ft": 75,
+              "surface": "asphalt",
+              "lights": true,
+              "ident1": "02",
+              "ident2": "20",
+              "bearing1": 21.0,
+              "bearing2": 201.0
+            }
+          ],
+          "state": "FL",
+          "type": "medium_airport",
+          "website": "http://www.flynf.com/",
+          "wiki": "https://en.wikipedia.org/wiki/St._Augustine_Airport"
+        }
+      }
+    ]
+  }

@@ -92,6 +92,16 @@ class ReportTextSearch(CachedReport, TextSearch):
 
 
 @dataclass
-class FlightRoute(Report):
+class FlightRoute:
     route: list[Coord]
     distance: float
+
+
+@dataclass
+class ReportRoute(Report, FlightRoute):
+    pass
+
+
+@dataclass
+class StationRoute(Params, FlightRoute):
+    pass

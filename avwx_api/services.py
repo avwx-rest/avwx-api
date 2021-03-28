@@ -19,8 +19,13 @@ class FlightRouter(CallsHTTP):
     url = "https://aviationweather.gov/adds/dataserver_current/httpparam"
 
     _valid_types = ("metar", "taf", "aircraftreport")
-    _type_map = {"airep": "aircraftreport"}
-    _targets = {"metar": "METAR", "taf": "TAF", "aircraftreport": "AircraftReport"}
+    _type_map = {"airep": "aircraftreport", "station": "metar"}
+    _targets = {
+        "metar": "METAR",
+        "taf": "TAF",
+        "aircraftreport": "AircraftReport",
+        "station": "METAR",
+    }
 
     def _extract(self, report_type: str, text: str) -> list[str]:
         """Extracts the raw_report element from XML response"""
@@ -34,18 +39,19 @@ class FlightRouter(CallsHTTP):
             raise InvalidRequest(
                 "Could not find report path in response"
             ) from key_error
-        return [r["raw_text"] for r in reports]
+        target = "station_id" if report_type == "station" else "raw_text"
+        return [r[target] for r in reports]
 
     async def fetch(
         self, report_type: str, distance: float, route: list[Coord]
     ) -> list[str]:
         """Fetch reports from the service along a coordinate route"""
-        report_type = self._type_map.get(report_type, report_type)
-        if report_type not in self._valid_types:
+        target_type = self._type_map.get(report_type, report_type)
+        if target_type not in self._valid_types:
             raise InvalidRequest(f"{report_type} is not a valid router report type")
         flight_path = ";".join(f"{lon},{lat}" for lat, lon in route)
         params = {
-            "dataSource": report_type + "s",
+            "dataSource": target_type + "s",
             "requestType": "retrieve",
             "format": "xml",
             "flightPath": f"{distance};{flight_path}",
