@@ -11,9 +11,9 @@ from typing import Union
 
 # module
 import avwx
+from avwx_api_core.structs import Coord
 
 
-Coord = tuple[float, float]
 DataStatus = tuple[dict, int]
 
 

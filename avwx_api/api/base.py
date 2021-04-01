@@ -76,7 +76,7 @@ class Base(AuthView):
                     params[key] = val[0]
             return self.struct(**self.validator(params))
         except (Invalid, MultipleInvalid) as exc:
-            key = exc.path[0]
+            key = str(exc.path[0])
             return {"error": str(exc.msg), "param": key, "help": validate.HELP.get(key)}
 
     def get_example_file(self, report_type: str) -> dict:

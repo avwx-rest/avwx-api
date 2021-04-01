@@ -25,7 +25,8 @@ from voluptuous import (
 # module
 from avwx import Station
 from avwx.exceptions import BadStation
-from avwx_api.structs import Coord
+from avwx_api_core.structs import Coord
+from avwx_api_core.validate import FlightRoute, Latitude, Longitude
 
 
 REPORT_TYPES = ("metar", "taf", "pirep", "mav", "mex", "nbh", "nbs", "nbe")
@@ -49,15 +50,13 @@ HELP = {
     "reporting": "Limit results to reporting stations",
     "maxdist": "Max coordinate distance",
     "text": "Station search string. Ex: orlando%20kmco",
+    "route": "Flight route made of ICAO, navaid, or coordinate pairs. Ex: KLEX;ATL;29.2,-81.1;KMCO",
+    "distance": "Statute miles from the route center",
 }
 
 
 # Includes non-airport reporting stations
 # ICAO_WHITELIST = []
-
-
-Latitude = All(Coerce(float), Range(-90, 90))
-Longitude = All(Coerce(float), Range(-180, 180))
 
 
 def Coordinate(coord: str) -> Coord:
@@ -129,25 +128,6 @@ def SplitIn(values: tuple[str]) -> Callable:
         return split
 
     return validator
-
-
-def FlightRoute(values: str) -> list[Coord]:
-    """Validates a semicolon-separated string of coordinates or navigation markers"""
-    values = values.upper().split(";")
-    if not values:
-        raise Invalid("Could not find any route components in the request")
-    ret = []
-    for val in values:
-        if "," in val:
-            loc = val.split(",")
-            ret.append((Latitude(loc[0]), Longitude(loc[1])))
-        else:
-            try:
-                s = Station.from_icao(val)
-                ret.append((s.latitude, s.longitude))
-            except BadStation as exc:
-                raise Invalid(f"{val} is not a valid ICAO station ident") from exc
-    return ret
 
 
 _required = {Required("format", default="json"): In(FORMATS)}

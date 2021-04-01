@@ -13,10 +13,10 @@ from quart_openapi.cors import crossdomain
 # stdlib
 from avwx import Station
 from avwx.exceptions import BadStation
+from avwx_api_core.services import FlightRouter, InvalidRequest
 import avwx_api.handle.current as handle
 from avwx_api import app, structs, validate
 from avwx_api.api.base import Base, HEADERS, parse_params, token_check
-from avwx_api.services import FlightRouter, InvalidRequest
 
 
 ROUTE_HANDLERS = {
@@ -44,7 +44,11 @@ class StationsAlong(Base):
         for icao in stations:
             with suppress(BadStation):
                 resp.append(asdict(Station.from_icao(icao)))
-        resp = {"meta": handle.MetarHandler().make_meta(), "results": resp}
+        resp = {
+            "meta": handle.MetarHandler().make_meta(),
+            "route": params.route,
+            "results": resp,
+        }
         return self.make_response(resp, params.format)
 
 
@@ -82,5 +86,9 @@ class ReportsAlong(Base):
             stations.append(data["station"])
         await app.cache.update_many(report_type, stations, resp)
         await app.station.add_many(stations, report_type + "-route")
-        resp = {"meta": handler.make_meta(), "results": resp}
+        resp = {
+            "meta": handler.make_meta(),
+            "route": params.route,
+            "results": resp,
+        }
         return self.make_response(resp, params.format)

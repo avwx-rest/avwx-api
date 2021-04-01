@@ -13,7 +13,11 @@ from pymongo import MongoClient, UpdateOne
 
 def make_update(icao: str, date: datetime, reports: Dict[str, dict]) -> UpdateOne:
     """Returns an UpdateOne operation for counts on a day"""
-    return UpdateOne({"icao": icao, "date": date}, {"$inc": reports}, upsert=True,)
+    return UpdateOne(
+        {"icao": icao, "date": date},
+        {"$inc": reports},
+        upsert=True,
+    )
 
 
 def main() -> int:
