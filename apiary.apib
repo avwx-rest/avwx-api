@@ -20,6 +20,24 @@ Some features require paid plans to be associated with the supplied token. Featu
 
 Tokens will be required for all endpoints starting November 1st, 2019 with daily rate limits put in place starting on January 1st, 2020. For more information, see this [post on the dev blog](https://blog.avwx.rest/2019/08-05/).
 
+## Flight Path Routing
+
+This API can return results based on a given flight route. These points can be:
+
+- ICAO station idents: KJFK, EGLL, PHNL
+- Navaids like VOR and NDB: ATL, ORL, PQ
+- Lat,Lon coordinates: 30.35,-81.013
+
+The flight path combines these elements with semicolons to look like:
+
+`KLEX;ATL;30.2,-82.1;ORL;KMCO`
+
+This path starts at Blue Grass Airport in Lexington, KY, down to the Atlanta VOR, a coordinate near Jacksonville, FL, the Orlando VOR, and ends at Orlando International Airport.
+
+Unlike ICAO idents, navaid idents are not globally unique. AVWX determines the most likely coordinate pair based on the next known coordinate. If the final coordinate is still multiple choice, it will pick the two nearest ones and start backfilling. It is highly recommended to bookend each flight path with either ICAO idents or coordinate pairs, but VOR to VOR navigation will still work.
+
+Each routing response with include the resolved coordinates used for determining the flight path.
+
 ## Station [/station/{ident}{?format}]
 
 Returns station information for an airfield or other location by ICAO ident. This is the same information provided when incluing the `info` option with weather requests.
@@ -423,6 +441,258 @@ This example returns reporting stations for "lihue hi"
                 "wiki": "https://en.wikipedia.org/wiki/Pacific_Missile_Range_Facility"
             }
         ]
+
+## Station Routing [/path/station{?route,distance,format}]
+
+Find reporting stations along a flight path. See notes on routing above.
+
++ Parameters
+    + route: `KMCO;ORL;KDAB` (string) - Flight route with ICAO, navaid, and coordinate components
+    + distance: 5 (number) - Distance in statue miles from route centerline
+    + format (string, optional) - Desired response format
+        + Supported: `json`, `xml`, `yaml`
+        + Default: `json`
+
+### Get stations along a flight path [GET]
+
+This example returns reporting stations along a flight path from Orlando to Daytona Beach, FL.
+
++ Request
+
+    + Headers
+    
+            Authorization: Token my_secret_api_token
+
++ Response 200 (application/json)
+
+        {
+            "meta": {
+                "timestamp": "2021-04-01T17:42:48.831526Z",
+                "stations_updated": "2021-03-26"
+            },
+            "route": [
+                [
+                    28.429399490356445,
+                    -81.30899810791016
+                ],
+                [
+                    28.542699813842773,
+                    -81.33499908447266
+                ],
+                [
+                    29.179899,
+                    -81.058098
+                ]
+            ],
+            "results": [
+                {
+                    "city": "Orlando",
+                    "country": "US",
+                    "elevation_ft": 113,
+                    "elevation_m": 34,
+                    "iata": "ORL",
+                    "icao": "KORL",
+                    "latitude": 28.5455,
+                    "longitude": -81.332901,
+                    "name": "Orlando Executive Airport",
+                    "note": "Herndon Airport, Orlando Executive Airport, KORL, ORL, Orlando Municipal Airport, Orlando Army Air Base, Orlando Air Force Base, Naval Training Center Orlando",
+                    "reporting": true,
+                    "runways": [
+                        {
+                            "length_ft": 6003,
+                            "width_ft": 150,
+                            "surface": "asphalt",
+                            "lights": true,
+                            "ident1": "07",
+                            "ident2": "25",
+                            "bearing1": 67.0,
+                            "bearing2": 247.0
+                        },
+                        {
+                            "length_ft": 4638,
+                            "width_ft": 100,
+                            "surface": "asphalt",
+                            "lights": true,
+                            "ident1": "13",
+                            "ident2": "31",
+                            "bearing1": 130.8,
+                            "bearing2": 310.8
+                        }
+                    ],
+                    "state": "FL",
+                    "type": "small_airport",
+                    "website": null,
+                    "wiki": "https://en.wikipedia.org/wiki/Orlando_Executive_Airport"
+                },
+                {
+                    "city": "Orlando",
+                    "country": "US",
+                    "elevation_ft": 96,
+                    "elevation_m": 29,
+                    "iata": "MCO",
+                    "icao": "KMCO",
+                    "latitude": 28.429399490356445,
+                    "longitude": -81.30899810791016,
+                    "name": "Orlando International Airport",
+                    "note": "Disney World,Epcot Center",
+                    "reporting": true,
+                    "runways": [
+                        {
+                            "length_ft": 12005,
+                            "width_ft": 200,
+                            "surface": "concrete",
+                            "lights": true,
+                            "ident1": "18L",
+                            "ident2": "36R",
+                            "bearing1": 179.0,
+                            "bearing2": 359.0
+                        },
+                        {
+                            "length_ft": 12004,
+                            "width_ft": 200,
+                            "surface": "concrete",
+                            "lights": true,
+                            "ident1": "18R",
+                            "ident2": "36L",
+                            "bearing1": 179.0,
+                            "bearing2": 359.0
+                        },
+                        {
+                            "length_ft": 10000,
+                            "width_ft": 150,
+                            "surface": "concrete",
+                            "lights": true,
+                            "ident1": "17R",
+                            "ident2": "35L",
+                            "bearing1": 179.0,
+                            "bearing2": 359.0
+                        },
+                        {
+                            "length_ft": 9000,
+                            "width_ft": 150,
+                            "surface": "asphalt",
+                            "lights": true,
+                            "ident1": "17L",
+                            "ident2": "35R",
+                            "bearing1": 179.5,
+                            "bearing2": 359.5
+                        }
+                    ],
+                    "state": "FL",
+                    "type": "large_airport",
+                    "website": "http://www.orlandoairports.net/",
+                    "wiki": "https://en.wikipedia.org/wiki/Orlando_International_Airport"
+                },
+                {
+                    "city": "Orlando",
+                    "country": "US",
+                    "elevation_ft": 55,
+                    "elevation_m": 17,
+                    "iata": "SFB",
+                    "icao": "KSFB",
+                    "latitude": 28.777599334716797,
+                    "longitude": -81.23750305175781,
+                    "name": "Orlando Sanford International Airport",
+                    "note": null,
+                    "reporting": true,
+                    "runways": [
+                        {
+                            "length_ft": 9600,
+                            "width_ft": 150,
+                            "surface": "asphalt",
+                            "lights": true,
+                            "ident1": "09L",
+                            "ident2": "27R",
+                            "bearing1": 90.0,
+                            "bearing2": 270.0
+                        },
+                        {
+                            "length_ft": 6003,
+                            "width_ft": 150,
+                            "surface": "concrete",
+                            "lights": true,
+                            "ident1": "18",
+                            "ident2": "36",
+                            "bearing1": 180.0,
+                            "bearing2": 360.0
+                        },
+                        {
+                            "length_ft": 3578,
+                            "width_ft": 75,
+                            "surface": "asphalt",
+                            "lights": true,
+                            "ident1": "09C",
+                            "ident2": "27C",
+                            "bearing1": 90.0,
+                            "bearing2": 270.0
+                        },
+                        {
+                            "length_ft": 3500,
+                            "width_ft": 75,
+                            "surface": "asphalt",
+                            "lights": true,
+                            "ident1": "09R",
+                            "ident2": "27L",
+                            "bearing1": 89.9,
+                            "bearing2": 269.9
+                        }
+                    ],
+                    "state": "FL",
+                    "type": "large_airport",
+                    "website": null,
+                    "wiki": "https://en.wikipedia.org/wiki/Orlando_Sanford_International_Airport"
+                },
+                {
+                    "city": "Daytona Beach",
+                    "country": "US",
+                    "elevation_ft": 34,
+                    "elevation_m": 10,
+                    "iata": "DAB",
+                    "icao": "KDAB",
+                    "latitude": 29.179899,
+                    "longitude": -81.058098,
+                    "name": "Daytona Beach International Airport",
+                    "note": null,
+                    "reporting": true,
+                    "runways": [
+                        {
+                            "length_ft": 10500,
+                            "width_ft": 150,
+                            "surface": "asphalt",
+                            "lights": true,
+                            "ident1": "07L",
+                            "ident2": "25R",
+                            "bearing1": 65.0,
+                            "bearing2": 245.0
+                        },
+                        {
+                            "length_ft": 6001,
+                            "width_ft": 150,
+                            "surface": "asphalt",
+                            "lights": true,
+                            "ident1": "16",
+                            "ident2": "34",
+                            "bearing1": 157.0,
+                            "bearing2": 337.0
+                        },
+                        {
+                            "length_ft": 3195,
+                            "width_ft": 100,
+                            "surface": "asphalt",
+                            "lights": true,
+                            "ident1": "07R",
+                            "ident2": "25L",
+                            "bearing1": 65.0,
+                            "bearing2": 245.0
+                        }
+                    ],
+                    "state": "FL",
+                    "type": "large_airport",
+                    "website": null,
+                    "wiki": "https://en.wikipedia.org/wiki/Daytona_Beach_International_Airport"
+                }
+            ]
+        }
 
 ## METAR [/metar/{location}{?options,airport,reporting,format,onfail}]
 
@@ -3659,3 +3929,658 @@ This example returns METARs for "lihue hi"
                 }
             }
         ]
+
+## Report Routing [/path/{report_type}{?route,distance,options,format}]
+
+Find weather reports along a flight path. See notes on routing above.
+
++ Parameters
+    + report_type: `metar` (string) - Weather report type
+        + Supported: `metar`, `taf`
+    + route: `KMCO;ORL;KDAB` (string) - Flight route with ICAO, navaid, and coordinate components
+    + distance: 5 (number) - Distance in statue miles from route centerline
+    + options (string, optional) - Additional options to include as comma-separated string
+        + Supported: `info`, `translate`, `summary`, `speech`
+        + Example: `info,speech`
+    + format (string, optional) - Desired response format
+        + Supported: `json`, `xml`, `yaml`
+        + Default: `json`
+
+### Get stations along a flight path [GET]
+
+This example returns weather reports along a flight path from Orlando to Daytona Beach, FL.
+
++ Request
+
+    + Headers
+    
+            Authorization: Token my_secret_api_token
+
++ Response 200 (application/json)
+
+        {
+            "meta": {
+                "timestamp": "2021-04-01T17:51:19.990666Z",
+                "stations_updated": "2021-03-26"
+            },
+            "route": [
+                [
+                    28.429399490356445,
+                    -81.30899810791016
+                ],
+                [
+                    28.542699813842773,
+                    -81.33499908447266
+                ],
+                [
+                    29.179899,
+                    -81.058098
+                ]
+            ],
+            "results": [
+                {
+                    "altimeter": {
+                        "repr": "A3009",
+                        "value": 30.09,
+                        "spoken": "three zero point zero nine"
+                    },
+                    "clouds": [
+                        {
+                            "repr": "SCT013",
+                            "type": "SCT",
+                            "base": 13,
+                            "top": null,
+                            "modifier": null,
+                            "direction": null
+                        },
+                        {
+                            "repr": "OVC022",
+                            "type": "OVC",
+                            "base": 22,
+                            "top": null,
+                            "modifier": null,
+                            "direction": null
+                        }
+                    ],
+                    "flight_rules": "MVFR",
+                    "other": [],
+                    "sanitized": "KORL 011653Z 36014KT 9SM SCT013 OVC022 20/16 A3009 RMK AO2 SLP192 T02000161 $",
+                    "visibility": {
+                        "repr": "9",
+                        "value": 9,
+                        "spoken": "nine"
+                    },
+                    "wind_direction": {
+                        "repr": "360",
+                        "value": 360,
+                        "spoken": "three six zero"
+                    },
+                    "wind_gust": null,
+                    "wind_speed": {
+                        "repr": "14",
+                        "value": 14,
+                        "spoken": "one four"
+                    },
+                    "wx_codes": [],
+                    "raw": "KORL 011653Z 36014KT 9SM SCT013 OVC022 20/16 A3009 RMK AO2 SLP192 T02000161 $",
+                    "station": "KORL",
+                    "time": {
+                        "repr": "011653Z",
+                        "dt": "2021-04-01T16:53:00Z"
+                    },
+                    "remarks": "RMK AO2 SLP192 T02000161 $",
+                    "dewpoint": {
+                        "repr": "16",
+                        "value": 16,
+                        "spoken": "one six"
+                    },
+                    "remarks_info": {
+                        "dewpoint_decimal": {
+                            "repr": "16.1",
+                            "value": 16.1,
+                            "spoken": "one six point one"
+                        },
+                        "temperature_decimal": {
+                            "repr": "20.0",
+                            "value": 20.0,
+                            "spoken": "two zero point zero"
+                        }
+                    },
+                    "runway_visibility": [],
+                    "temperature": {
+                        "repr": "20",
+                        "value": 20,
+                        "spoken": "two zero"
+                    },
+                    "wind_variable_direction": []
+                },
+                {
+                    "altimeter": {
+                        "repr": "A3006",
+                        "value": 30.06,
+                        "spoken": "three zero point zero six"
+                    },
+                    "clouds": [
+                        {
+                            "repr": "BKN027",
+                            "type": "BKN",
+                            "base": 27,
+                            "top": null,
+                            "modifier": null,
+                            "direction": null
+                        },
+                        {
+                            "repr": "OVC035",
+                            "type": "OVC",
+                            "base": 35,
+                            "top": null,
+                            "modifier": null,
+                            "direction": null
+                        }
+                    ],
+                    "flight_rules": "MVFR",
+                    "other": [],
+                    "sanitized": "KMCO 011653Z 34013KT 10SM BKN027 OVC035 22/17 A3006 RMK AO2 SLP178 T02220172",
+                    "visibility": {
+                        "repr": "10",
+                        "value": 10,
+                        "spoken": "one zero"
+                    },
+                    "wind_direction": {
+                        "repr": "340",
+                        "value": 340,
+                        "spoken": "three four zero"
+                    },
+                    "wind_gust": null,
+                    "wind_speed": {
+                        "repr": "13",
+                        "value": 13,
+                        "spoken": "one three"
+                    },
+                    "wx_codes": [],
+                    "raw": "KMCO 011653Z 34013KT 10SM BKN027 OVC035 22/17 A3006 RMK AO2 SLP178 T02220172",
+                    "station": "KMCO",
+                    "time": {
+                        "repr": "011653Z",
+                        "dt": "2021-04-01T16:53:00Z"
+                    },
+                    "remarks": "RMK AO2 SLP178 T02220172",
+                    "dewpoint": {
+                        "repr": "17",
+                        "value": 17,
+                        "spoken": "one seven"
+                    },
+                    "remarks_info": {
+                        "dewpoint_decimal": {
+                            "repr": "17.2",
+                            "value": 17.2,
+                            "spoken": "one seven point two"
+                        },
+                        "temperature_decimal": {
+                            "repr": "22.2",
+                            "value": 22.2,
+                            "spoken": "two two point two"
+                        }
+                    },
+                    "runway_visibility": [],
+                    "temperature": {
+                        "repr": "22",
+                        "value": 22,
+                        "spoken": "two two"
+                    },
+                    "wind_variable_direction": []
+                },
+                {
+                    "altimeter": {
+                        "repr": "A3006",
+                        "value": 30.06,
+                        "spoken": "three zero point zero six"
+                    },
+                    "clouds": [
+                        {
+                            "repr": "BKN027",
+                            "type": "BKN",
+                            "base": 27,
+                            "top": null,
+                            "modifier": null,
+                            "direction": null
+                        },
+                        {
+                            "repr": "OVC034",
+                            "type": "OVC",
+                            "base": 34,
+                            "top": null,
+                            "modifier": null,
+                            "direction": null
+                        }
+                    ],
+                    "flight_rules": "MVFR",
+                    "other": [],
+                    "sanitized": "KMCO 011643Z 32012KT 10SM BKN027 OVC034 23/17 A3006 RMK AO2 T02280172",
+                    "visibility": {
+                        "repr": "10",
+                        "value": 10,
+                        "spoken": "one zero"
+                    },
+                    "wind_direction": {
+                        "repr": "320",
+                        "value": 320,
+                        "spoken": "three two zero"
+                    },
+                    "wind_gust": null,
+                    "wind_speed": {
+                        "repr": "12",
+                        "value": 12,
+                        "spoken": "one two"
+                    },
+                    "wx_codes": [],
+                    "raw": "KMCO 011643Z 32012KT 10SM BKN027 OVC034 23/17 A3006 RMK AO2 T02280172",
+                    "station": "KMCO",
+                    "time": {
+                        "repr": "011643Z",
+                        "dt": "2021-04-01T16:43:00Z"
+                    },
+                    "remarks": "RMK AO2 T02280172",
+                    "dewpoint": {
+                        "repr": "17",
+                        "value": 17,
+                        "spoken": "one seven"
+                    },
+                    "remarks_info": {
+                        "dewpoint_decimal": {
+                            "repr": "17.2",
+                            "value": 17.2,
+                            "spoken": "one seven point two"
+                        },
+                        "temperature_decimal": {
+                            "repr": "22.8",
+                            "value": 22.8,
+                            "spoken": "two two point eight"
+                        }
+                    },
+                    "runway_visibility": [],
+                    "temperature": {
+                        "repr": "23",
+                        "value": 23,
+                        "spoken": "two three"
+                    },
+                    "wind_variable_direction": []
+                },
+                {
+                    "altimeter": {
+                        "repr": "A3009",
+                        "value": 30.09,
+                        "spoken": "three zero point zero nine"
+                    },
+                    "clouds": [
+                        {
+                            "repr": "SCT008",
+                            "type": "SCT",
+                            "base": 8,
+                            "top": null,
+                            "modifier": null,
+                            "direction": null
+                        },
+                        {
+                            "repr": "SCT013",
+                            "type": "SCT",
+                            "base": 13,
+                            "top": null,
+                            "modifier": null,
+                            "direction": null
+                        },
+                        {
+                            "repr": "OVC018",
+                            "type": "OVC",
+                            "base": 18,
+                            "top": null,
+                            "modifier": null,
+                            "direction": null
+                        }
+                    ],
+                    "flight_rules": "MVFR",
+                    "other": [],
+                    "sanitized": "KSFB 011653Z 33015G20KT 10SM SCT008 SCT013 OVC018 18/12 A3009 RMK AO2 SLP189 T01830122",
+                    "visibility": {
+                        "repr": "10",
+                        "value": 10,
+                        "spoken": "one zero"
+                    },
+                    "wind_direction": {
+                        "repr": "330",
+                        "value": 330,
+                        "spoken": "three three zero"
+                    },
+                    "wind_gust": {
+                        "repr": "20",
+                        "value": 20,
+                        "spoken": "two zero"
+                    },
+                    "wind_speed": {
+                        "repr": "15",
+                        "value": 15,
+                        "spoken": "one five"
+                    },
+                    "wx_codes": [],
+                    "raw": "KSFB 011653Z 33015G20KT 10SM SCT008 SCT013 OVC018 18/12 A3009 RMK AO2 SLP189 T01830122",
+                    "station": "KSFB",
+                    "time": {
+                        "repr": "011653Z",
+                        "dt": "2021-04-01T16:53:00Z"
+                    },
+                    "remarks": "RMK AO2 SLP189 T01830122",
+                    "dewpoint": {
+                        "repr": "12",
+                        "value": 12,
+                        "spoken": "one two"
+                    },
+                    "remarks_info": {
+                        "dewpoint_decimal": {
+                            "repr": "12.2",
+                            "value": 12.2,
+                            "spoken": "one two point two"
+                        },
+                        "temperature_decimal": {
+                            "repr": "18.3",
+                            "value": 18.3,
+                            "spoken": "one eight point three"
+                        }
+                    },
+                    "runway_visibility": [],
+                    "temperature": {
+                        "repr": "18",
+                        "value": 18,
+                        "spoken": "one eight"
+                    },
+                    "wind_variable_direction": []
+                },
+                {
+                    "altimeter": {
+                        "repr": "A3009",
+                        "value": 30.09,
+                        "spoken": "three zero point zero nine"
+                    },
+                    "clouds": [
+                        {
+                            "repr": "BKN013",
+                            "type": "BKN",
+                            "base": 13,
+                            "top": null,
+                            "modifier": null,
+                            "direction": null
+                        },
+                        {
+                            "repr": "OVC020",
+                            "type": "OVC",
+                            "base": 20,
+                            "top": null,
+                            "modifier": null,
+                            "direction": null
+                        }
+                    ],
+                    "flight_rules": "MVFR",
+                    "other": [],
+                    "sanitized": "KORL 011703Z 34012G20KT 10SM BKN013 OVC020 19/16 A3009 RMK AO2 T01940156 $",
+                    "visibility": {
+                        "repr": "10",
+                        "value": 10,
+                        "spoken": "one zero"
+                    },
+                    "wind_direction": {
+                        "repr": "340",
+                        "value": 340,
+                        "spoken": "three four zero"
+                    },
+                    "wind_gust": {
+                        "repr": "20",
+                        "value": 20,
+                        "spoken": "two zero"
+                    },
+                    "wind_speed": {
+                        "repr": "12",
+                        "value": 12,
+                        "spoken": "one two"
+                    },
+                    "wx_codes": [],
+                    "raw": "KORL 011703Z 34012G20KT 10SM BKN013 OVC020 19/16 A3009 RMK AO2 T01940156 $",
+                    "station": "KORL",
+                    "time": {
+                        "repr": "011703Z",
+                        "dt": "2021-04-01T17:03:00Z"
+                    },
+                    "remarks": "RMK AO2 T01940156 $",
+                    "dewpoint": {
+                        "repr": "16",
+                        "value": 16,
+                        "spoken": "one six"
+                    },
+                    "remarks_info": {
+                        "dewpoint_decimal": {
+                            "repr": "15.6",
+                            "value": 15.6,
+                            "spoken": "one five point six"
+                        },
+                        "temperature_decimal": {
+                            "repr": "19.4",
+                            "value": 19.4,
+                            "spoken": "one nine point four"
+                        }
+                    },
+                    "runway_visibility": [],
+                    "temperature": {
+                        "repr": "19",
+                        "value": 19,
+                        "spoken": "one nine"
+                    },
+                    "wind_variable_direction": []
+                },
+                {
+                    "altimeter": {
+                        "repr": "A3010",
+                        "value": 30.1,
+                        "spoken": "three zero point one zero"
+                    },
+                    "clouds": [
+                        {
+                            "repr": "OVC030",
+                            "type": "OVC",
+                            "base": 30,
+                            "top": null,
+                            "modifier": null,
+                            "direction": null
+                        }
+                    ],
+                    "flight_rules": "MVFR",
+                    "other": [],
+                    "sanitized": "KDAB 011719Z 33009KT 10SM OVC030 18/05 A3010 RMK AO2 T01830050",
+                    "visibility": {
+                        "repr": "10",
+                        "value": 10,
+                        "spoken": "one zero"
+                    },
+                    "wind_direction": {
+                        "repr": "330",
+                        "value": 330,
+                        "spoken": "three three zero"
+                    },
+                    "wind_gust": null,
+                    "wind_speed": {
+                        "repr": "09",
+                        "value": 9,
+                        "spoken": "nine"
+                    },
+                    "wx_codes": [],
+                    "raw": "KDAB 011719Z 33009KT 10SM OVC030 18/05 A3010 RMK AO2 T01830050",
+                    "station": "KDAB",
+                    "time": {
+                        "repr": "011719Z",
+                        "dt": "2021-04-01T17:19:00Z"
+                    },
+                    "remarks": "RMK AO2 T01830050",
+                    "dewpoint": {
+                        "repr": "05",
+                        "value": 5,
+                        "spoken": "five"
+                    },
+                    "remarks_info": {
+                        "dewpoint_decimal": {
+                            "repr": "5.0",
+                            "value": 5.0,
+                            "spoken": "five point zero"
+                        },
+                        "temperature_decimal": {
+                            "repr": "18.3",
+                            "value": 18.3,
+                            "spoken": "one eight point three"
+                        }
+                    },
+                    "runway_visibility": [],
+                    "temperature": {
+                        "repr": "18",
+                        "value": 18,
+                        "spoken": "one eight"
+                    },
+                    "wind_variable_direction": []
+                },
+                {
+                    "altimeter": {
+                        "repr": "A3010",
+                        "value": 30.1,
+                        "spoken": "three zero point one zero"
+                    },
+                    "clouds": [
+                        {
+                            "repr": "OVC026",
+                            "type": "OVC",
+                            "base": 26,
+                            "top": null,
+                            "modifier": null,
+                            "direction": null
+                        }
+                    ],
+                    "flight_rules": "MVFR",
+                    "other": [],
+                    "sanitized": "KDAB 011653Z 33009KT 10SM OVC026 18/06 A3010 RMK AO2 SLP191 T01780061",
+                    "visibility": {
+                        "repr": "10",
+                        "value": 10,
+                        "spoken": "one zero"
+                    },
+                    "wind_direction": {
+                        "repr": "330",
+                        "value": 330,
+                        "spoken": "three three zero"
+                    },
+                    "wind_gust": null,
+                    "wind_speed": {
+                        "repr": "09",
+                        "value": 9,
+                        "spoken": "nine"
+                    },
+                    "wx_codes": [],
+                    "raw": "KDAB 011653Z 33009KT 10SM OVC026 18/06 A3010 RMK AO2 SLP191 T01780061",
+                    "station": "KDAB",
+                    "time": {
+                        "repr": "011653Z",
+                        "dt": "2021-04-01T16:53:00Z"
+                    },
+                    "remarks": "RMK AO2 SLP191 T01780061",
+                    "dewpoint": {
+                        "repr": "06",
+                        "value": 6,
+                        "spoken": "six"
+                    },
+                    "remarks_info": {
+                        "dewpoint_decimal": {
+                            "repr": "6.1",
+                            "value": 6.1,
+                            "spoken": "six point one"
+                        },
+                        "temperature_decimal": {
+                            "repr": "17.8",
+                            "value": 17.8,
+                            "spoken": "one seven point eight"
+                        }
+                    },
+                    "runway_visibility": [],
+                    "temperature": {
+                        "repr": "18",
+                        "value": 18,
+                        "spoken": "one eight"
+                    },
+                    "wind_variable_direction": []
+                },
+                {
+                    "altimeter": {
+                        "repr": "A3009",
+                        "value": 30.09,
+                        "spoken": "three zero point zero nine"
+                    },
+                    "clouds": [
+                        {
+                            "repr": "OVC015",
+                            "type": "OVC",
+                            "base": 15,
+                            "top": null,
+                            "modifier": null,
+                            "direction": null
+                        }
+                    ],
+                    "flight_rules": "MVFR",
+                    "other": [],
+                    "sanitized": "KORL 011712Z 35014G18KT 10SM OVC015 19/16 A3009 RMK AO2 T01940156 $",
+                    "visibility": {
+                        "repr": "10",
+                        "value": 10,
+                        "spoken": "one zero"
+                    },
+                    "wind_direction": {
+                        "repr": "350",
+                        "value": 350,
+                        "spoken": "three five zero"
+                    },
+                    "wind_gust": {
+                        "repr": "18",
+                        "value": 18,
+                        "spoken": "one eight"
+                    },
+                    "wind_speed": {
+                        "repr": "14",
+                        "value": 14,
+                        "spoken": "one four"
+                    },
+                    "wx_codes": [],
+                    "raw": "KORL 011712Z 35014G18KT 10SM OVC015 19/16 A3009 RMK AO2 T01940156 $",
+                    "station": "KORL",
+                    "time": {
+                        "repr": "011712Z",
+                        "dt": "2021-04-01T17:12:00Z"
+                    },
+                    "remarks": "RMK AO2 T01940156 $",
+                    "dewpoint": {
+                        "repr": "16",
+                        "value": 16,
+                        "spoken": "one six"
+                    },
+                    "remarks_info": {
+                        "dewpoint_decimal": {
+                            "repr": "15.6",
+                            "value": 15.6,
+                            "spoken": "one five point six"
+                        },
+                        "temperature_decimal": {
+                            "repr": "19.4",
+                            "value": 19.4,
+                            "spoken": "one nine point four"
+                        }
+                    },
+                    "runway_visibility": [],
+                    "temperature": {
+                        "repr": "19",
+                        "value": 19,
+                        "spoken": "one nine"
+                    },
+                    "wind_variable_direction": []
+                }
+            ]
+        }
