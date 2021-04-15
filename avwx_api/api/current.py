@@ -16,16 +16,16 @@ from avwx_api.api.base import Report, Parse, MultiReport
 class MetarFetch(Report):
     report_type = "metar"
     handler = handle.MetarHandler
-    _key_repl = {"base": "altitude"}
-    _key_remv = ("top",)
+    key_repl = {"base": "altitude"}
+    key_remv = ("top",)
 
 
 @app.route("/api/parse/metar")
 class MetarParse(Parse):
     report_type = "metar"
     handler = handle.MetarHandler
-    _key_repl = {"base": "altitude"}
-    _key_remv = ("top",)
+    key_repl = {"base": "altitude"}
+    key_remv = ("top",)
 
 
 @app.route("/api/multi/metar/<stations>")
@@ -33,8 +33,8 @@ class MetarMulti(MultiReport):
     report_type = "metar"
     handler = handle.MetarHandler
     example = "multi_metar"
-    _key_repl = {"base": "altitude"}
-    _key_remv = ("top",)
+    key_repl = {"base": "altitude"}
+    key_remv = ("top",)
 
 
 ## TAF
@@ -44,16 +44,16 @@ class MetarMulti(MultiReport):
 class TafFetch(Report):
     report_type = "taf"
     handler = handle.TafHandler
-    _key_repl = {"base": "altitude"}
-    _key_remv = ("top",)
+    key_repl = {"base": "altitude"}
+    key_remv = ("top",)
 
 
 @app.route("/api/parse/taf")
 class TafParse(Parse):
     report_type = "taf"
     handler = handle.TafHandler
-    _key_repl = {"base": "altitude"}
-    _key_remv = ("top",)
+    key_repl = {"base": "altitude"}
+    key_remv = ("top",)
 
 
 @app.route("/api/multi/taf/<stations>")
@@ -61,8 +61,8 @@ class TafMulti(MultiReport):
     report_type = "taf"
     handler = handle.TafHandler
     example = "multi_taf"
-    _key_repl = {"base": "altitude"}
-    _key_remv = ("top",)
+    key_repl = {"base": "altitude"}
+    key_remv = ("top",)
 
 
 ## PIREP
@@ -76,7 +76,7 @@ class PirepFetch(Report):
     struct = structs.ReportLocation
     validator = validate.report_location
     handler = handle.PirepHandler
-    _key_remv = ("direction",)
+    key_remv = ("direction",)
 
 
 @app.route("/api/parse/pirep")
@@ -87,4 +87,4 @@ class PirepParse(Parse):
     struct = structs.ReportLocation
     validator = validate.report_location
     handler = handle.PirepHandler
-    _key_remv = ("direction",)
+    key_remv = ("direction",)

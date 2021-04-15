@@ -59,6 +59,8 @@ class ReportsAlong(Base):
     validator = validate.report_along
     struct = structs.ReportRoute
     handlers = ROUTE_HANDLERS
+    key_repl = {"base": "altitude"}
+    key_remv = ("top",)
     example = "metar_along"
     plan_types = ("enterprise",)
 

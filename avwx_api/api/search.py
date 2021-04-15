@@ -113,6 +113,8 @@ class ReportCoordSearch(MultiReport):
     validator = validate.report_coord_search
     struct = structs.ReportCoordSearch
     handlers = SEARCH_HANDLERS
+    key_repl = {"base": "altitude"}
+    key_remv = ("top",)
     plan_types = PAID_PLANS
     loc_param = "coord"
     keyed = False
@@ -139,6 +141,8 @@ class ReportTextSearch(MultiReport):
     validator = validate.report_text_search
     struct = structs.ReportTextSearch
     handlers = SEARCH_HANDLERS
+    key_repl = {"base": "altitude"}
+    key_remv = ("top",)
     plan_types = PAID_PLANS
     keyed = False
     log_postfix = "search"
