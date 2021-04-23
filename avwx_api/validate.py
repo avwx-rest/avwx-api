@@ -59,6 +59,12 @@ HELP = {
 # ICAO_WHITELIST = []
 
 
+def _station_for(code: str) -> Station:
+    if len(code) == 3:
+        return Station.from_iata(code)
+    return Station.from_icao(code)
+
+
 def Coordinate(coord: str) -> Coord:
     """Converts a coordinate string into float tuple"""
     try:
@@ -76,13 +82,13 @@ def Location(
     def validator(loc: str) -> Station:
         loc = loc.upper().split(",")
         if len(loc) == 1:
-            icao = loc[0]
+            code = loc[0]
             try:
-                return Station.from_icao(icao)
+                return _station_for(code)
             except BadStation as exc:
                 # if icao in ICAO_WHITELIST:
                 #     return Station(*([None] * 4), "DNE", icao, *([None] * 9))
-                raise Invalid(f"{icao} is not a valid ICAO station ident") from exc
+                raise Invalid(f"{code} is not a valid ICAO or IATA code") from exc
         elif len(loc) == 2:
             try:
                 lat, lon = Latitude(loc[0]), Longitude(loc[1])
@@ -107,11 +113,11 @@ def MultiStation(values: str) -> list[Station]:
     if len(values) > 10:
         raise Invalid("Multi requests are limited to 10 stations or less")
     ret = []
-    for icao in values:
+    for code in values:
         try:
-            ret.append(Station.from_icao(icao))
+            ret.append(_station_for(code))
         except BadStation as exc:
-            raise Invalid(f"{icao} is not a valid ICAO station ident") from exc
+            raise Invalid(f"{code} is not a valid ICAO of IATA code") from exc
     return ret
 
 

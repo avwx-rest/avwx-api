@@ -8,6 +8,10 @@ html, body {
 	background-color: #4f68ae!important;
 }
 
+.navbar-brand > img:hover {
+	opacity: 0.7;
+}
+
 section {
 	padding-top:70px;
 	padding-bottom:50px;
