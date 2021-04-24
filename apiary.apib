@@ -36,6 +36,8 @@ This path starts at Blue Grass Airport in Lexington, KY, down to the Atlanta VOR
 
 Unlike ICAO idents, navaid idents are not globally unique. AVWX determines the most likely coordinate pair based on the next known coordinate. If the final coordinate is still multiple choice, it will pick the two nearest ones and start backfilling. It is highly recommended to bookend each flight path with either ICAO idents or coordinate pairs, but VOR to VOR navigation will still work.
 
+Because there are many overlaps between navaid and IATA codes and the navaids are more useful for flight routing purposes, IATA codes are not supported in a flight path. You'll need to use the airport's ICAO code or coordinates.
+
 Each routing response with include the resolved coordinates used for determining the flight path.
 
 ## Station [/station/{ident}{?format}]
@@ -43,7 +45,7 @@ Each routing response with include the resolved coordinates used for determining
 Returns station information for an airfield or other location by ICAO ident. This is the same information provided when incluing the `info` option with weather requests.
 
 + Parameters
-    + ident: `KJFK` (string) - ICAO station ident
+    + ident: `KJFK` (string) - ICAO & IATA station code
     + format (string, optional) - Desired response format
         + Supported: `json`, `xml`, `yaml`
         + Default: `json`
@@ -699,7 +701,7 @@ This example returns reporting stations along a flight path from Orlando to Dayt
 METAR reports are surface observations for a particular airfield or other station location. There are two standard formats: International and North American. The parser works with both, but it is up to the developer to do the correct interpretation of the data. Use the 'Units' key for labling and conversions.
 
 + Parameters
-    + location: `KJFK` (string) - ICAO station ident or coordinate pair
+    + location: `KJFK` (string) - ICAO & IATA station code or coordinate pair
         + Examples: `EGLL`, `51.47,-0.4`
     + options (string, optional) - Additional options to include as comma-separated string
         + Supported: `info`, `translate`, `summary`, `speech`
@@ -717,7 +719,7 @@ METAR reports are surface observations for a particular airfield or other statio
 
 ### Get METAR Report [GET]
 
-Get the METAR for a specific station by ICAO ident or a lat,lon coordinate pair. The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
+Get the METAR for a specific station by ICAO & IATA station code or a lat,lon coordinate pair. The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
 
 + Request
 
@@ -955,7 +957,7 @@ Parse a user-supplied METAR included as the plain text body of the request. Note
 TAF reports are atmospheric conditions for an area within five nautical miles of a particular airfield or other station location. Unlike METAR which only has two standard formats, TAF reports vary considderably more based on their geography. For example, Oceania TAF reports include two unique keys: Temp-List and Alt-List.
 
 + Parameters
-    + location: `KJFK` (string) - ICAO station ident or coordinate pair
+    + location: `KJFK` (string) - ICAO & IATA station code or coordinate pair
         + Examples: `EGLL`, `51.47,-0.4`
     + options: `summary` (string, optional) - Additional options to include as comma-separated string
         + Supported: `info`, `translate`, `summary`, `speech`
@@ -973,7 +975,7 @@ TAF reports are atmospheric conditions for an area within five nautical miles of
 
 ### Get TAF Report [GET]
 
-Get the TAF for a specific station by ICAO ident or a lat,lon coordinate pair. The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
+Get the TAF for a specific station by ICAO & IATA station code or a lat,lon coordinate pair. The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
 
 + Request
 
@@ -1672,7 +1674,7 @@ A PIREP (Pilot Report) is an observation made by pilots inflight meant to aid co
 Note: translate, summary, and speech options not yet available
 
 + Parameters
-    + location: `KMCO` (string) - ICAO station ident or coordinate pair
+    + location: `KMCO` (string) - ICAO & IATA station code or coordinate pair
         + Examples: `EGLL`, `51.47,-0.4`
     + options: `info` (string, optional) - Additional options to include as comma-separated string
         + Supported: `info`
@@ -1685,7 +1687,7 @@ Note: translate, summary, and speech options not yet available
 
 ### Get PIREP Report [GET]
 
-Get PIREPs within 200 miles of a specific station by ICAO ident or a lat,lon coordinate pair.
+Get PIREPs within 200 miles of a specific station by ICAO & IATA station code or a lat,lon coordinate pair.
 
 + Request (text/plain)
 
@@ -1907,7 +1909,7 @@ While these reports officially support ICAO stations in the United States and Pu
 + Parameters
     + report: `nbs` (string) - NBM report type
         + Supported: `nbh`, `nbs`, `nbe`
-    + location: `KJFK` (string) - ICAO station ident or coordinate pair
+    + location: `KJFK` (string) - ICAO & IATA station code or coordinate pair
         + Examples: `EGLL`, `51.47,-0.4`
     + options: (string, optional) - Additional options to include as comma-separated string
         + Supported: `info`
@@ -1924,7 +1926,7 @@ While these reports officially support ICAO stations in the United States and Pu
 
 ### Get NBM NBS Report [GET]
 
-Get the NBM NBS report for a specific station by ICAO ident or a lat,lon coordinate pair. The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
+Get the NBM NBS report for a specific station by ICAO & IATA station code or a lat,lon coordinate pair. The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
 
 Note: The forecast list is truncated to the first few time periods.
 
@@ -2762,7 +2764,7 @@ NOAA is retiring all GFS reports over the next few years and recommends everyone
 + Parameters
     + report: `mav` (string) - GFS report type
         + Supported: `mav`, `mex`
-    + location: `KJFK` (string) - ICAO station ident or coordinate pair
+    + location: `KJFK` (string) - ICAO & IATA station code or coordinate pair
         + Examples: `EGLL`, `51.47,-0.4`
     + options: (string, optional) - Additional options to include as comma-separated string
         + Supported: `info`
@@ -2779,7 +2781,7 @@ NOAA is retiring all GFS reports over the next few years and recommends everyone
 
 ### Get GFS MAV Report [GET]
 
-Get the GFS MAV report for a specific station by ICAO ident or a lat,lon coordinate pair. The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
+Get the GFS MAV report for a specific station by ICAO & IATA station code or a lat,lon coordinate pair. The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
 
 Note: The forecast list is truncated to the first few time periods.
 
@@ -3402,7 +3404,6 @@ Note: the documented output is truncated.
             ]
         }
 
-
 ## Multiple Reports [/multi/{report_type}/{locations}{?options,format,onfail}]
 
 This endpoint returns the results for multiple stations for a given report type (`metar`, `taf`). It accepts the same request parameters as normal METAR and TAF requests, but accepts a comma-separated string of up to 10 stations in one call.
@@ -3411,7 +3412,7 @@ This endpoint returns the results for multiple stations for a given report type 
 
     + report_type: `metar` (string) - Weather report type
         + Supported: `metar`, `taf`
-    +locations: `KJFK,KSFO` (string) - Comma-separated string of up to 10 ICAO idents
+    + locations: `KJFK,KSFO` (string) - Comma-separated string of up to 10 ICAO & IATA station codes
     + options: `speech` (string, optional) - Additional options to include as comma-separated string
         + Supported: `info`, `translate`, `summary`, `speech`
         + Example: `info,speech`
