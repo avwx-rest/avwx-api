@@ -130,7 +130,7 @@ class ReportHandler:
             return {"error": ERRORS[4].format(self.report_type)}, 500
         # Parse the fetched data
         try:
-            parser._post_update()  # pylint: disable=protected-access
+            await parser._post_update()  # pylint: disable=protected-access
         except avwx.exceptions.BadStation as exc:
             print("Unknown Station:", exc)
             return {"error": ERRORS[2].format(parser.station)}, 400
