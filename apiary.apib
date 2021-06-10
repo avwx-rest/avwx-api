@@ -698,6 +698,11 @@ This example returns reporting stations along a flight path from Orlando to Dayt
 
 METAR reports are surface observations for a particular airfield or other station location. There are two standard formats: International and North American. The parser works with both, but it is up to the developer to do the correct interpretation of the data. Use the 'Units' key for labling and conversions.
 
+Field notes:
+
+- Relative humidity is a percentage coded as 0 to 1
+- Pressure and density altitude of the airport are always returned in feet to match with cloud layers. You may want to convert into meters when displaying to your users
+
 + Parameters
     + location: `KJFK` (string) - ICAO & IATA station code or coordinate pair
         + Examples: `EGLL`, `51.47,-0.4`
@@ -800,14 +805,44 @@ Get the METAR for a specific station by ICAO & IATA station code or a lat,lon co
                 "value": 7,
                 "spoken": "seven"
             },
+            "relative_humidity": 0.7994238789303805,
             "remarks_info": {
+                "maximum_temperature_6": null,
+                "minimum_temperature_6": null,
+                "pressure_tendency": null,
+                "precip_36_hours": null,
+                "precip_24_hours": null,
+                "sunshine_minutes": null,
+                "codes": [
+                    {
+                        "repr": "AO2",
+                        "value": "Automated with precipitation sensor"
+                    },
+                    {
+                        "repr": "P0000",
+                        "value": "Trace amount of rain in the last hour"
+                    },
+                    {
+                        "repr": "RAB10",
+                        "value": "Rain began at :10"
+                    }
+                ],
                 "dewpoint_decimal": {
-                    "repr": "6.7",
+                    "repr": "0067",
                     "value": 6.7,
                     "spoken": "six point seven"
                 },
+                "maximum_temperature_24": null,
+                "minimum_temperature_24": null,
+                "precip_hourly": null,
+                "sea_level_pressure": {
+                    "repr": "SLP042",
+                    "value": 1004.2,
+                    "spoken": "one zero zero four point two"
+                },
+                "snow_depth": null,
                 "temperature_decimal": {
-                    "repr": "10.0",
+                    "repr": "0100",
                     "value": 10.0,
                     "spoken": "one zero point zero"
                 }
@@ -819,7 +854,10 @@ Get the METAR for a specific station by ICAO & IATA station code or a lat,lon co
                 "spoken": "one zero"
             },
             "wind_variable_direction": [],
+            "density_altitude": -324,
+            "pressure_altitude": 273,
             "units": {
+                "accumulation": "in",
                 "altimeter": "inHg",
                 "altitude": "ft",
                 "temperature": "C",
@@ -912,14 +950,48 @@ Parse a user-supplied METAR included as the plain text body of the request. Note
                 "value": 21,
                 "spoken": "two one"
             },
+            "relative_humidity": 0.6922556897462213,
             "remarks_info": {
+                "maximum_temperature_6": {
+                    "repr": "10267",
+                    "value": 26.7,
+                    "spoken": "two six point seven"
+                },
+                "minimum_temperature_6": {
+                    "repr": "20239",
+                    "value": 23.9,
+                    "spoken": "two three point nine"
+                },
+                "pressure_tendency": {
+                    "repr": "53009",
+                    "tendency": "Decreasing or steady, then increasing",
+                    "change": 0.9
+                },
+                "precip_36_hours": null,
+                "precip_24_hours": null,
+                "sunshine_minutes": null,
+                "codes": [
+                {
+                    "repr": "AO2",
+                    "value": "Automated with precipitation sensor"
+                }
+                ],
                 "dewpoint_decimal": {
-                    "repr": "20.6",
+                    "repr": "0206",
                     "value": 20.6,
                     "spoken": "two zero point six"
                 },
+                "maximum_temperature_24": null,
+                "minimum_temperature_24": null,
+                "precip_hourly": null,
+                "sea_level_pressure": {
+                    "repr": "SLP178",
+                    "value": 1017.8,
+                    "spoken": "one zero one seven point eight"
+                },
+                "snow_depth": null,
                 "temperature_decimal": {
-                    "repr": "26.7",
+                    "repr": "0267",
                     "value": 26.7,
                     "spoken": "two six point seven"
                 }
@@ -931,6 +1003,8 @@ Parse a user-supplied METAR included as the plain text body of the request. Note
                 "spoken": "two seven"
             },
             "wind_variable_direction": [],
+            "density_altitude": 1332,
+            "pressure_altitude": -83,
             "translations": {
                 "altimeter": "30.05 inHg (1018 hPa)",
                 "clouds": "Scattered clouds at 2200ft - Reported AGL",
