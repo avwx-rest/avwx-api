@@ -276,7 +276,7 @@ class ReportHandler:
             resp["translations"] = asdict(parser.translations)
         if "summary" in opts:
             if self.report_type == "taf":
-                for i in range(len(parser.translations["forecast"])):
+                for i in range(len(parser.translations.forecast)):
                     resp["forecast"][i]["summary"] = parser.summary[i]
             else:
                 resp["summary"] = parser.summary
