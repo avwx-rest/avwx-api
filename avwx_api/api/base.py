@@ -7,7 +7,7 @@ import json
 import asyncio as aio
 from functools import wraps
 from pathlib import Path
-from typing import Union
+from typing import Optional, Union
 
 # library
 from quart import Response, request
@@ -16,7 +16,7 @@ from voluptuous import Invalid, MultipleInvalid
 
 # module
 import avwx
-from avwx_api_core.views import AuthView, make_token_check
+from avwx_api_core.views import AuthView, Token, make_token_check
 from avwx_api import app, handle, structs, validate
 
 
@@ -97,13 +97,13 @@ class Report(Base):
     @crossdomain(origin="*", headers=HEADERS)
     @parse_params
     @token_check
-    async def get(self, params: structs.Params) -> Response:
+    async def get(self, params: structs.Params, token: Optional[Token]) -> Response:
         """GET handler returning reports"""
-        nofail = params.onfail == "cache"
         loc = getattr(params, self.loc_param)
+        config = structs.ParseConfig.from_params(params, token)
         await app.station.from_params(params, params.report_type)
         handler = self.handler or self.handlers.get(params.report_type)
-        data, code = await handler.fetch_report(loc, params.options, nofail)
+        data, code = await handler.fetch_report(loc, config)
         return self.make_response(data, params.format, code)
 
 
@@ -115,14 +115,15 @@ class Parse(Base):
 
     @crossdomain(origin="*", headers=HEADERS)
     @token_check
-    async def post(self, **kwargs) -> Response:
+    async def post(self, token: Optional[Token], **kwargs) -> Response:
         """POST handler to parse given reports"""
         data = await request.data
         params = self.validate_params(report=data.decode() or None, **kwargs)
         if isinstance(params, dict):
             return self.make_response(params, code=400)
+        config = structs.ParseConfig.from_params(params, token)
         handler = self.handler or self.handlers.get(params.report_type)
-        data, code = handler.parse_given(params.report, params.options)
+        data, code = await handler.parse_given(params.report, config)
         if "station" in data:
             report_type = params.report_type + "-given"
             await app.station.add(data["station"], report_type)
@@ -162,15 +163,15 @@ class MultiReport(Base):
     @crossdomain(origin="*", headers=HEADERS)
     @parse_params
     @token_check
-    async def get(self, params: structs.Params) -> Response:
+    async def get(self, params: structs.Params, token: Optional[Token]) -> Response:
         """GET handler returning multiple reports"""
         locations, distances = self.split_distances(self.get_locations(params))
-        nofail = params.onfail == "cache"
+        config = structs.ParseConfig.from_params(params, token)
         handler = self.handler or self.handlers.get(params.report_type)
 
         coros = []
         for loc in locations:
-            coros.append(handler.fetch_report(loc, params.options, nofail))
+            coros.append(handler.fetch_report(loc, config))
             await app.station.add(loc.icao, params.report_type + "-" + self.log_postfix)
         data = [r[0] for r in await aio.gather(*coros)]
 

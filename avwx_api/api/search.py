@@ -5,7 +5,6 @@ Search API endpoints
 # pylint: disable=arguments-differ,too-many-ancestors
 
 # stdlib
-from dataclasses import asdict
 from typing import Any, Optional
 
 # library
@@ -18,6 +17,7 @@ from avwx_api_core.token import Token
 import avwx_api.handle.current as handle
 from avwx_api import app, structs, validate
 from avwx_api.api.base import Base, HEADERS, MultiReport, parse_params, token_check
+from avwx_api.station_manager import station_data_for
 
 
 SEARCH_HANDLERS = {
@@ -69,7 +69,7 @@ class Near(Base):
     @crossdomain(origin="*", headers=HEADERS)
     @parse_params
     @token_check
-    async def get(self, params: structs.Params) -> Response:
+    async def get(self, params: structs.Params, token: Optional[Token]) -> Response:
         """Returns stations near a coordinate pair"""
         stations = avwx.station.nearest(
             *params.coord, params.n, params.airport, params.reporting, params.maxdist
@@ -77,7 +77,7 @@ class Near(Base):
         if isinstance(stations, dict):
             stations = [stations]
         for i, stn in enumerate(stations):
-            stations[i]["station"] = asdict(stn["station"])
+            stations[i]["station"] = await station_data_for(stn["station"], token=token)
         return self.make_response(stations, params.format)
 
 
@@ -97,12 +97,12 @@ class TextSearch(Base):
     @crossdomain(origin="*", headers=HEADERS)
     @parse_params
     @token_check
-    async def get(self, params: structs.Params) -> Response:
+    async def get(self, params: structs.Params, token: Optional[Token]) -> Response:
         """Returns stations from a text-based search"""
         stations = avwx.station.search(
             params.text, params.n, params.airport, params.reporting
         )
-        stations = [asdict(s) for s in stations]
+        stations = [await station_data_for(s, token=token) for s in stations]
         return self.make_response(stations, params.format)
 
 

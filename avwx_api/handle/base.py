@@ -17,7 +17,8 @@ import rollbar
 # module
 import avwx
 from avwx_api import app
-from avwx_api.structs import DataStatus
+from avwx_api.station_manager import station_data_for
+from avwx_api.structs import DataStatus, ParseConfig
 
 ERRORS = [
     "Station Lookup Error: {} not found for {}. There might not be a current report in ADDS",
@@ -185,14 +186,14 @@ class ReportHandler:
         return data, cache, code
 
     def _format_report(
-        self, data: dict[str, Any], options: list[str]
+        self, data: dict[str, Any], config: ParseConfig
     ) -> dict[str, Any]:
         """Formats the report/cache data into the expected response format"""
         ret = data.get("data", data)
         if isinstance(ret, list):
-            return {"data": [self._format_report(item, options) for item in ret]}
+            return {"data": [self._format_report(item, config) for item in ret]}
         for opt in self.option_keys:
-            if opt in options:
+            if getattr(config, opt, False):
                 if opt == "summary" and self.report_type == "taf":
                     for i in range(len(ret["forecast"])):
                         ret["forecast"][i]["summary"] = data["summary"][i]
@@ -201,7 +202,7 @@ class ReportHandler:
         return ret
 
     async def fetch_report(
-        self, station: avwx.Station, opts: list[str], nofail: bool = False
+        self, station: avwx.Station, config: ParseConfig
     ) -> DataStatus:
         """Returns weather data for the given report type, station, and options
         Also returns the appropriate HTTP response code
@@ -216,21 +217,20 @@ class ReportHandler:
             data, cache, code = await self._station_cache_or_fetch(
                 station, force_cache=True
             )
-            return self._post_handle(data, code, cache, station, opts, nofail)
+            return await self._post_handle(data, code, cache, station, config)
         except Exception as exc:
             print("Unknown Parsing Error", exc)
             rollbar.report_exc_info(extra_data={"state": "outer fetch"})
             return {"error": ERRORS[1].format(self.report_type)}, 500
 
     # pylint: disable=too-many-arguments
-    def _post_handle(
+    async def _post_handle(
         self,
         data: dict,
         code: int,
         cache: dict,
         station: avwx.Station,
-        opts: list[str],
-        nofail: bool,
+        config: ParseConfig,
     ) -> DataStatus:
         """Performs post parser update operations"""
         resp = {"meta": self.make_meta()}
@@ -238,7 +238,7 @@ class ReportHandler:
             resp["meta"]["cache-timestamp"] = data["timestamp"]
         # Handle errors according to nofail argument
         if code != 200:
-            if nofail:
+            if config.cache_on_fail:
                 if cache is None:
                     resp[
                         "error"
@@ -255,42 +255,43 @@ class ReportHandler:
                 resp.update(data)
                 return resp, code
         # Format the return data
-        resp.update(self._format_report(data, opts))
+        resp.update(self._format_report(data, config))
         # Add station info if requested
-        if station and "info" in opts:
-            resp["info"] = asdict(station)
+        if station and config.station:
+            resp["info"] = await station_data_for(station, config)
         return resp, code
 
-    def _parse_given(self, report: str, opts: list[str]) -> DataStatus:
+    async def _parse_given(self, report: str, config: ParseConfig) -> DataStatus:
         """Attempts to parse a given report supplied by the user"""
         if len(report) < 4 or "{" in report or "[" in report:
             return ({"error": "Could not find station at beginning of report"}, 400)
         try:
-            station = avwx.Station.from_icao(report[:4])
+            icao = report[6:10] if report.lower().startswith("metar ") else report[:4]
+            station = avwx.Station.from_icao(icao)
         except avwx.exceptions.BadStation:
             return {"error": ERRORS[2].format(report[:4])}, 400
         report = report.replace("\\n", "\n")
         parser = self.parser.from_report(report)
         resp = asdict(parser.data)
-        if "translate" in opts:
+        if config.translate:
             resp["translations"] = asdict(parser.translations)
-        if "summary" in opts:
+        if config.summary:
             if self.report_type == "taf":
                 for i in range(len(parser.translations.forecast)):
                     resp["forecast"][i]["summary"] = parser.summary[i]
             else:
                 resp["summary"] = parser.summary
-        if "speech" in opts:
+        if config.speech:
             resp["speech"] = parser.speech
         # Add station info if requested
-        if "info" in opts:
-            resp["info"] = asdict(station)
+        if config.station:
+            resp["info"] = await station_data_for(station, config)
         return resp, 200
 
-    def parse_given(self, report: str, opts: list[str]) -> DataStatus:
+    async def parse_given(self, report: str, config: ParseConfig) -> DataStatus:
         """Attempts to parse a given report supplied by the user"""
         try:
-            data, code = self._parse_given(report, opts)
+            data, code = await self._parse_given(report, config)
             data["meta"] = self.make_meta()
         except Exception as exc:
             print("Unknown Parsing Error", exc)

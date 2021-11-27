@@ -11,7 +11,7 @@ from typing import Union
 # module
 import avwx
 from avwx_api.handle.base import ReportHandler, ERRORS
-from avwx_api.structs import Coord, DataStatus
+from avwx_api.structs import Coord, DataStatus, ParseConfig
 
 
 OPTIONS = ("summary", "speech", "translate")
@@ -38,8 +38,7 @@ class PirepHandler(ReportHandler):
     async def fetch_report(
         self,
         loc: Union[avwx.Station, Coord],
-        opts: list[str],
-        nofail: bool = False,
+        config: ParseConfig,
     ) -> DataStatus:
         """Returns weather data for the given report type, station, and options
         Also returns the appropriate HTTP response code
@@ -59,9 +58,9 @@ class PirepHandler(ReportHandler):
             data, cache, code = await self._station_cache_or_fetch(station)
         else:
             raise Exception(f"loc is not a valid value: {loc}")
-        return self._post_handle(data, code, cache, station, opts, nofail)
+        return await self._post_handle(data, code, cache, station, config)
 
-    def _parse_given(self, report: str, opts: list[str]) -> DataStatus:
+    async def _parse_given(self, report: str, config: ParseConfig) -> DataStatus:
         """Attempts to parse a given report supplied by the user"""
         if len(report) < 3 or "{" in report:
             return ({"error": "Could not find station at beginning of report"}, 400)

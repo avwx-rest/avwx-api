@@ -7,11 +7,12 @@ avwx_api.structs - Parameter dataclasses
 
 # stdlib
 from dataclasses import dataclass
-from typing import Union
+from typing import Optional, Union
 
 # module
 import avwx
 from avwx_api_core.structs import Coord
+from avwx_api_core.token import Token
 
 
 DataStatus = tuple[dict, int]
@@ -60,7 +61,7 @@ class Station(Params):
 
 @dataclass
 class Stations(Params):
-    stations: list[Station]
+    stations: list[avwx.Station]
 
 
 @dataclass
@@ -105,3 +106,34 @@ class ReportRoute(Report, FlightRoute):
 @dataclass
 class StationRoute(Params, FlightRoute):
     pass
+
+
+_NAMED_OPTIONS = ("translate", "summary", "speech")
+
+
+@dataclass
+class ParseConfig:
+    """Config flags for report parse handling"""
+
+    translate: bool
+    summary: bool
+    speech: bool
+    station: bool
+    aviowiki_data: bool
+    cache_on_fail: bool
+
+    @staticmethod
+    def use_aviowiki_data(token: Optional[Token]) -> bool:
+        """Returns True if a token has the AvioWiki Data addon"""
+        return token and "awdata" in token.addons
+
+    @classmethod
+    def from_params(cls, params: Report, token: Optional[Token]) -> "ParseConfig":
+        """Create config from route inputs"""
+        options = {key: key in params.options for key in _NAMED_OPTIONS}
+        return cls(
+            **options,
+            station="info" in params.options,
+            aviowiki_data=cls.use_aviowiki_data(token),
+            cache_on_fail=getattr(params, "onfail", None) == "cache",
+        )
