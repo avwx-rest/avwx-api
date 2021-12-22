@@ -29,7 +29,7 @@ class StationList(Base):
 
     @crossdomain(origin="*", headers=HEADERS)
     @token_check
-    async def get(self) -> Response:
+    async def get(self, *_) -> Response:
         """Returns the current list of reporting stations"""
         return self.make_response(avwx.station.station_list())
 

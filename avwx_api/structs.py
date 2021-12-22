@@ -128,12 +128,13 @@ class ParseConfig:
         return token and "awdata" in token.addons
 
     @classmethod
-    def from_params(cls, params: Report, token: Optional[Token]) -> "ParseConfig":
+    def from_params(cls, params: Params, token: Optional[Token]) -> "ParseConfig":
         """Create config from route inputs"""
-        options = {key: key in params.options for key in _NAMED_OPTIONS}
+        keys = getattr(params, "options", [])
+        options = {key: key in keys for key in _NAMED_OPTIONS}
         return cls(
             **options,
-            station="info" in params.options,
+            station="info" in keys,
             aviowiki_data=cls.use_aviowiki_data(token),
             cache_on_fail=getattr(params, "onfail", None) == "cache",
         )

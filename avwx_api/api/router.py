@@ -41,13 +41,12 @@ class StationsAlong(Base):
     @token_check
     async def get(self, params: structs.Params, token: Optional[Token]) -> Response:
         """Returns reports along a flight path"""
-        config = structs.ParseConfig.from_params(params, token)
         stations = await FlightRouter().fetch("station", params.distance, params.route)
         resp = []
         for icao in stations:
             with suppress(BadStation):
                 station = Station.from_icao(icao)
-                resp.append(await station_data_for(station, config))
+                resp.append(await station_data_for(station, token=token))
         resp = {
             "meta": handle.MetarHandler().make_meta(),
             "route": params.route,
