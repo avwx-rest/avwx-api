@@ -2,7 +2,7 @@
 
 ![](https://avwx.rest/static/favicons/apple-icon-76x76.png)
 
-[![Requirements Status](https://requires.io/github/avwx-rest/avwx-api/requirements.svg?branch=master)](https://requires.io/github/avwx-rest/avwx-api/requirements/?branch=master)
+[![Requirements Status](https://requires.io/github/avwx-rest/avwx-api/requirements.svg?branch=main)](https://requires.io/github/avwx-rest/avwx-api/requirements/?branch=main)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## About
