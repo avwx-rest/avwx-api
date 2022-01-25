@@ -38,6 +38,110 @@ Because there are many overlaps between navaid and IATA codes and the navaids ar
 
 Each routing response will include the resolved coordinates used for determining the flight path.
 
+## AvioWiki Airport Data
+
+AVWX has partnered with [AvioWiki](https://www.aviowiki.com) to provide a reliable, constantly verified source of airport informaion. If you've added the [AvioWiki addon](https://account.avwx.rest/plans) to your account, you'll instantly start receiving this new vetted data. This will replace the open source - but sometimes out-of-date - information compiled from [OurAirports](https://ourairports.com) and other locations. If you are using AVWX for mission-critical applications, it is highly reccomended that you enable this addon.
+
+The served data includes general airport information and all landing surfaces including runways, helipads, etc. For more information, check out [AvioWiki's API Docs](https://www.aviowiki.com/docs/airports/authenticated-api-endpoints/airport-data/). Additional fields can be requested by contacting us.
+
+```json
+{
+  "icao": "KLEX",
+  "iata": "LEX",
+  "faa": "LEX",
+  "localIdentifier": "LEX",
+  "name": "Blue Grass Airport",
+  "servedCity": "Lexington, KY",
+  "servedCityGoverningDistrict": {
+    "code": "US-KY",
+    "name": "Kentucky",
+    "administrativeType": "State"
+  },
+  "administrativeCity": null,
+  "administrativeCityGoverningDistrict": null,
+  "elevation": 298.4,
+  "coordinates": {
+    "latitude": 38.03675,
+    "longitude": -84.6086389
+  },
+  "variation": -4.0,
+  "country": {
+    "iso2": "US",
+    "iso3": "USA",
+    "isoNumeric": 840,
+    "name": "United States",
+    "officialName": "United States of America",
+    "localIdentifierName": null
+  },
+  "timeZone": "America/New_York",
+  "perimeter": null,
+  "type": "AIRPORT",
+  "operator": "PUBLIC",
+  "accessibleFor": [
+    "TRAINING",
+    "HELICOPTER",
+    "MILITARY",
+    "GENERAL_AVIATION",
+    "BUSINESS_AVIATION",
+    "SCHEDULED",
+    "NON_SCHEDULED"
+  ],
+  "ifr": null,
+  "nonScheduledPermission": "NONE",
+  "nonScheduledPermissionNotes": null,
+  "mandatoryHandling": null,
+  "mandatoryQualification": null,
+  "qualificationLink": null,
+  "qualificationNotes": null,
+  "weightLimit": null,
+  "wingspanLimit": null,
+  "paxLimit": null,
+  "referenceWeatherStation": null,
+  "aid": "APT-D9FK-4BKT",
+  "runways": [
+    {
+      "helipad": null,
+      "identifier": "04",
+      "magneticBearing": 46.0,
+      "trueBearing": 42.0,
+      "standardPattern": true,
+      "thresholdElevation": 286.51,
+      "width": 45.72,
+      "tora": 2134.82,
+      "toda": 2134.82,
+      "asda": 2134.82,
+      "lda": 2012.9,
+      "surface": "ASPHALT",
+      "pcnNumerical": 59,
+      "pcnType": "F",
+      "pcnStrength": "B",
+      "pcnTirePressure": "W",
+      "pcnMethod": "T",
+      "edgeLights": true,
+      "thresholdLights": null,
+      "endLights": null,
+      "centerLights": true,
+      "centerLightsSpacing": null,
+      "touchDownZoneLights": true,
+      "visualApproachSlopeIndicator": "P4L",
+      "approachLightConfiguration": "MALSR",
+      "instrumental": true,
+      "precision": true,
+      "separate": null,
+      "thresholdCoordinates": {
+        "latitude": 38.0276904,
+        "longitude": -84.6151088
+      },
+      "slope": null,
+      "grooved": true,
+      "parent": "APT-D9FK-4BKT",
+      "aid": "RWY-I42U-U7GL"
+    },
+    ...
+  ]
+}
+```
+
 ## Station [/station/{ident}{?format}]
 
 Returns station information for an airfield or other location by ICAO ident. This is the same information provided when incluing the `info` option with weather requests.
@@ -1876,7 +1980,7 @@ Get PIREPs within 200 miles of a specific station by ICAO & IATA station code or
                         "station": null,
                         "distance": null
                     },
-                    "other: [],
+                    "other": [],
                     "sanitized": "MCO UA /OV LEESE/TM 2030/FL120/TP B737/TB CONT MOD",
                     "temperature": null,
                     "turbulance": {
