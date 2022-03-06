@@ -55,14 +55,15 @@ HELP = {
 }
 
 
-# Includes non-airport reporting stations
-# ICAO_WHITELIST = []
+BLOCKED_COUNTRIES = {"RU": "Russia", "BY": "Belarus"}
 
 
 def _station_for(code: str) -> Station:
-    if len(code) == 3:
-        return Station.from_iata(code)
-    return Station.from_icao(code)
+    station = Station.from_iata(code) if len(code) == 3 else Station.from_icao(code)
+    if station.country in BLOCKED_COUNTRIES:
+        blocked = ", ".join(BLOCKED_COUNTRIES.values())
+        raise Invalid(f"AVWX is currently blocking requests for airports in: {blocked}")
+    return station
 
 
 def Coordinate(coord: str) -> Coord:
