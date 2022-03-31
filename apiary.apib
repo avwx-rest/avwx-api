@@ -23,6 +23,7 @@ Some features require paid plans to be associated with the supplied token. Featu
 This API can return results based on a given flight route. These points can be:
 
 - ICAO station idents: KJFK, EGLL, PHNL
+- IATA airport idents: MIA, LGA, HNL
 - Navaids like VOR and NDB: ATL, ORL, PQ
 - Lat,Lon coordinates: 30.35,-81.013
 
@@ -34,7 +35,7 @@ This path starts at Blue Grass Airport in Lexington, KY, down to the Atlanta VOR
 
 Unlike ICAO idents, navaid idents are not globally unique. AVWX determines the most likely coordinate pair based on the next known coordinate. If the final coordinate is still multiple choice, it will pick the two nearest ones and start backfilling. It is highly recommended to bookend each flight path with either ICAO idents or coordinate pairs, but VOR to VOR navigation will still work.
 
-Because there are many overlaps between navaid and IATA codes and the navaids are more useful for flight routing purposes, IATA codes are not supported in a flight path. You'll need to use the airport's ICAO code or coordinates.
+Because there are many overlaps between navaid and IATA codes and the navaids are more useful for flight routing purposes, IATA codes are deprioritized when calculating the flight path. It's recommended to use the airport's ICAO code or coordinates if known.
 
 Each routing response will include the resolved coordinates used for determining the flight path.
 
@@ -575,18 +576,21 @@ This example returns reporting stations along a flight path from Orlando to Dayt
                 "stations_updated": "2021-03-26"
             },
             "route": [
-                [
-                    28.429399490356445,
-                    -81.30899810791016
-                ],
-                [
-                    28.542699813842773,
-                    -81.33499908447266
-                ],
-                [
-                    29.179899,
-                    -81.058098
-                ]
+                {
+                    "lat": 28.429399490356445,
+                    "lon":-81.30899810791016,
+                    "repr": "KMCO"
+                },
+                {
+                    "lat": 28.542699813842773,
+                    "lon": -81.33499908447266,
+                    "repr": "ORL"
+                },
+                {
+                    "lat": 29.179899,
+                    "lon": -81.058098,
+                    "repr": "KDAB"
+                }
             ],
             "results": [
                 {
@@ -2076,6 +2080,301 @@ Parse a user-supplied PIREP included as the plain text body of the request.
             }
         }
 
+## AIR / SIGMET [/airsigmet{?format,onfail}]
+
+A SIGMET (Significant Meteorological Information) is a weather advisory for the safety of all aircraft. They are divided into:
+
+- Convective - thunderstorms, hail, and cyclones
+- Non-Convective - turbulence, icing, dust clouds, volcanic activity, and radiation
+
+An AIRMET (Airman's Meteorological Information) is a weather advisory for smaller aircraft or VFR navigation. They are divided into:
+
+- Sierra - IFR conditions like low ceilings and mountain obscuration
+- Tango - turbulance and high surface winds
+- Zulu - icing and freezing levels
+
+Both types share a similar report format and therefore are combined into a single list. The bulletin and weather type can be used to classify each as a SIGMET or AIRMET for filtering purposes.
+
++ Parameters
+    + format (string, optional) - Desired response format
+        + Supported: `json`, `xml`, `yaml`
+        + Default: `json`
+    + onfail (string, optional) - Error or use out-of-date cache when unable to fetch report
+        + Supported: `cache`, `error`
+        + Default: `cache`
+
+### Get AIR / SIGMET Report [GET]
+
+Get all global AIRMET and SIGMET advisories. Filtering may be added in the future.
+
++ Request (text/plain)
+
+    + Headers
+
+            Authorization: Token my_secret_api_token
+
++ Response 200 (application/json)
+
+        {
+            "meta": {
+                "timestamp": "2022-03-31T07:17:21.905613Z",
+                "stations_updated": "2022-03-30"
+            },
+            "reports": [
+                {
+                    "raw": "WAUS45 KKCI 310245 SLCT WA 310245 AIRMET TANGO FOR TURB VALID UNTIL 310900 AIRMET TURB...ID MT NV UT AZ WA OR CA AND CSTL WTRS FROM 60SW YQL TO 60N LKT TO 70WSW TWF TO 60NNE PGS TO 50ESE EED TO 20E MZB TO 20ESE SNS TO 90W OED TO 140W TOU TO 60SW YQL MOD TURB BTN FL250 AND FL380. CONDS CONTG BYD 09Z THRU 15Z.",
+                    "sanitized": "WAUS45 KKCI 310245 SLCT WA 310245 AIRMET TANGO FOR TURB VALID UNTIL 310900 AIRMET TURB...ID MT NV UT AZ WA OR CA AND CSTL WTRS FROM 60SW YQL TO 60N LKT TO 70WSW TWF TO 60NNE PGS TO 50ESE EED TO 20E MZB TO 20ESE SNS TO 90W OED TO 140W TOU TO 60SW YQL MOD TURB BTN FL250 AND FL380 CONDS CONTG BYD 09Z THRU 15Z.",
+                    "station": null,
+                    "time": {
+                        "repr": "310245",
+                        "dt": "2022-03-31T02:45:00Z"
+                    },
+                    "remarks": null,
+                    "bulletin": {
+                        "repr": "WAUS45",
+                        "type": {
+                            "repr": "WA",
+                            "value": "airmet"
+                        },
+                        "country": "US",
+                        "number": 45
+                    },
+                    "issuer": "KKCI",
+                    "correction": null,
+                    "area": "SLC",
+                    "type": "AIRMET TANGO FOR TURB",
+                    "start_time": null,
+                    "end_time": {
+                        "repr": "310900",
+                        "dt": "2022-03-31T09:00:00Z"
+                    },
+                    "body": "AIRMET TURB...ID MT NV UT AZ WA OR CA AND CSTL WTRS FROM 60SW YQL TO 60N LKT TO 70WSW TWF TO 60NNE PGS TO 50ESE EED TO 20E MZB TO 20ESE SNS TO 90W OED TO 140W TOU TO 60SW YQL MOD TURB BTN FL250 AND FL380 CONDS CONTG BYD 09Z THRU 15Z.",
+                    "region": "<elip> ID MT NV UT AZ WA OR CA AND CSTL WTRS",
+                    "observation": {
+                        "type": {
+                            "repr": "MOD TURB",
+                            "value": "Moderate Turbulence"
+                        },
+                        "start_time": null,
+                        "end_time": null,
+                        "position": null,
+                        "floor": {
+                            "repr": "FL250",
+                            "value": 250,
+                            "spoken": "flight level two five zero"
+                        },
+                        "ceiling": {
+                            "repr": "FL380",
+                            "value": 380,
+                            "spoken": "flight level three eight zero"
+                        },
+                        "coords": [
+                            {
+                                "lat": 48.92287840375436,
+                                "lon": -113.74017840162536,
+                                "repr": "60SW YQL"
+                            },
+                            {
+                                "lat": 46.02110365927132,
+                                "lon": -114.08399963378906,
+                                "repr": "60N LKT"
+                            },
+                            {
+                                "lat": 42.02410412509356,
+                                "lon": -115.93523092435264,
+                                "repr": "70WSW TWF"
+                            },
+                            {
+                                "lat": 36.54897311612283,
+                                "lon": -113.06907514278058,
+                                "repr": "60NNE PGS"
+                            },
+                            {
+                                "lat": 34.44299659740049,
+                                "lon": -113.54309881420377,
+                                "repr": "50ESE EED"
+                            },
+                            {
+                                "lat": 32.781575906588024,
+                                "lon": -116.82962082921186,
+                                "repr": "20E MZB"
+                            },
+                            {
+                                "lat": 36.53545245006972,
+                                "lon": -121.22085871934948,
+                                "repr": "20ESE SNS"
+                            },
+                            {
+                                "lat": 42.46167689082834,
+                                "lon": -124.93971922107896,
+                                "repr": "90W OED"
+                            },
+                            {
+                                "lat": 48.2468401459394,
+                                "lon": -128.11931177158036,
+                                "repr": "140W TOU"
+                            },
+                            {
+                                "lat": 48.92287840375436,
+                                "lon": -113.74017840162536,
+                                "repr": "60SW YQL"
+                            }
+                        ],
+                        "bounds": [],
+                        "movement": null,
+                        "intensity": null,
+                        "other": [
+                            "CONDS",
+                            "CONTG",
+                            "BYD",
+                            "09Z",
+                            "THRU",
+                            "15Z"
+                        ]
+                    },
+                    "forecast": null,
+                    "units": {
+                        "accumulation": "in",
+                        "altimeter": "hPa",
+                        "altitude": "ft",
+                        "temperature": "C",
+                        "visibility": "m",
+                        "wind_speed": "kt"
+                    }
+                }
+            ]
+        }
+
+## Parse AIR / SIGMET [/parse/airsigmet{?format}]
+
+Parses an AIRMET or SIGMET report supplied by the user.
+
++ Parameters
+
+    + format (string, optional) - Desired response format
+        + Supported: `json`, `xml`, `yaml`
+        + Default: `json`
+
+### Parse a Given AIR / SIGMET [POST]
+
+Parse a user-supplied AIRMET or SIGMET included as the plain text body of the request.
+
++ Request (text/plain)
+
+    + Headers
+
+            Authorization: Token my_secret_api_token
+
+    + Body
+
+            WAUS41 KKCI 292045 BOST WA 292045 AIRMET TANGO UPDT 3 FOR TURB VALID UNTIL 300300 AIRMET TURB...ME NH VT MA RI CT NY NJ PA MD DE AND CSTL WTRS FROM 70NW PQI TO 60NE PQI TO 80SSW YSJ TO 60SSE ACK TO 60S ETX TO 50S MSS TO 20ESE YSC TO 70NW PQI MOD TURB BLW 080. CONDS CONTG BYD 03Z THRU 09Z.
+
++ Response 200 (application/json)
+
+        {
+            "raw": "WAUS41 KKCI 292045 BOST WA 292045 AIRMET TANGO UPDT 3 FOR TURB VALID UNTIL 300300 AIRMET TURB...ME NH VT MA RI CT NY NJ PA MD DE AND CSTL WTRS FROM 70NW PQI TO 60NE PQI TO 80SSW YSJ TO 60SSE ACK TO 60S ETX TO 50S MSS TO 20ESE YSC TO 70NW PQI MOD TURB BLW 080. CONDS CONTG BYD 03Z THRU 09Z.",
+            "sanitized": "WAUS41 KKCI 292045 BOST WA 292045 AIRMET TANGO UPDT 3 FOR TURB VALID UNTIL 300300 AIRMET TURB...ME NH VT MA RI CT NY NJ PA MD DE AND CSTL WTRS FROM 70NW PQI TO 60NE PQI TO 80SSW YSJ TO 60SSE ACK TO 60S ETX TO 50S MSS TO 20ESE YSC TO 70NW PQI MOD TURB BLW 080. CONDS CONTG BYD 03Z THRU 09Z.",
+            "station": null,
+            "time": {
+                "repr": "292045",
+                "dt": "2022-03-29T20:45:00Z"
+            },
+            "remarks": null,
+            "bulletin": {
+                "repr": "WAUS41",
+                "type": {
+                    "repr": "WA",
+                    "value": "airmet"
+                },
+                "country": "US",
+                "number": 41
+            },
+            "issuer": "KKCI",
+            "correction": null,
+            "area": "BOS",
+            "type": "AIRMET TANGO UPDT 3 FOR TURB",
+            "start_time": null,
+            "end_time": {
+                "repr": "300300",
+                "dt": "2022-03-30T03:00:00Z"
+            },
+            "body": "AIRMET TURB...ME NH VT MA RI CT NY NJ PA MD DE AND CSTL WTRS FROM 70NW PQI TO 60NE PQI TO 80SSW YSJ TO 60SSE ACK TO 60S ETX TO 50S MSS TO 20ESE YSC TO 70NW PQI MOD TURB BLW 080. CONDS CONTG BYD 03Z THRU 09Z.",
+            "region": "<elip> ME NH VT MA RI CT NY NJ PA MD DE AND CSTL WTRS",
+            "observation": {
+                "type": {
+                    "repr": "MOD TURB",
+                    "value": "Moderate Turbulence"
+                },
+                "start_time": null,
+                "end_time": null,
+                "position": null,
+                "floor": null,
+                "ceiling": {
+                    "repr": "080",
+                    "value": 80,
+                    "spoken": "eight zero"
+                },
+                "coords": [
+                    {
+                        "lat": 47.59233523833518,
+                        "lon": -69.31332856013144,
+                        "repr": "70NW PQI"
+                    },
+                    {
+                        "lat": 47.476265450315495,
+                        "lon": -67.0520903857819,
+                        "repr": "60NE PQI"
+                    },
+                    {
+                        "lat": 44.173213730414766,
+                        "lon": -66.57972414026338,
+                        "repr": "80SSW YSJ"
+                    },
+                    {
+                        "lat": 40.35624404803827,
+                        "lon": -69.5261383937499,
+                        "repr": "60SSE ACK"
+                    },
+                    {
+                        "lat": 39.58024645968407,
+                        "lon": -75.68399810791016,
+                        "repr": "60S ETX"
+                    },
+                    {
+                        "lat": 44.08107958758354,
+                        "lon": -74.72270202636719,
+                        "repr": "50S MSS"
+                    },
+                    {
+                        "lat": 45.310224949942636,
+                        "lon": -71.25502369204965,
+                        "repr": "20ESE YSC"
+                    },
+                    {
+                        "lat": 47.59233523833518,
+                        "lon": -69.31332856013144,
+                        "repr": "70NW PQI"
+                    }
+                ],
+                "bounds": [],
+                "movement": null,
+                "intensity": null,
+                "other": [
+                    "CONDS",
+                    "CONTG",
+                    "BYD",
+                    "03Z",
+                    "THRU",
+                    "09Z"
+                ]
+            },
+            "forecast": null,
+            "meta": {
+                "timestamp": "2022-03-31T01:43:51.454365Z",
+                "stations_updated": "2022-03-30"
+            }
+        }
+
 ## NBM [/nbm/{report}/{location}{?options,airport,reporting,format,onfail}]
 
 The [National Blend of Models](https://www.weather.gov/mdl/nbm_home) is a weather forecast model for North America provided by NOAA. AVWX currently supports these forecast types that pertain to atmospheric conditions:
@@ -2118,7 +2417,7 @@ Note: The forecast list is truncated to the first few time periods.
 
 + Response 200 (application/json)
 
-                {
+        {
             "meta": {
                 "timestamp": "2020-08-02T17:36:00.207461Z",
                 "stations_updated": "2020-07-30"
@@ -4145,18 +4444,21 @@ This example returns weather reports along a flight path from Orlando to Daytona
                 "stations_updated": "2021-03-26"
             },
             "route": [
-                [
-                    28.429399490356445,
-                    -81.30899810791016
-                ],
-                [
-                    28.542699813842773,
-                    -81.33499908447266
-                ],
-                [
-                    29.179899,
-                    -81.058098
-                ]
+                {
+                    "lat": 28.429399490356445,
+                    "lon":-81.30899810791016,
+                    "repr": "KMCO"
+                },
+                {
+                    "lat": 28.542699813842773,
+                    "lon": -81.33499908447266,
+                    "repr": "ORL"
+                },
+                {
+                    "lat": 29.179899,
+                    "lon": -81.058098,
+                    "repr": "KDAB"
+                }
             ],
             "results": [
                 {
