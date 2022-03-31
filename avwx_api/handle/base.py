@@ -92,7 +92,7 @@ class BaseHandler:
         return ret
 
     async def _call_update(
-        self, operation: Coroutine, state: dict, err_station: str
+        self, operation: Coroutine, state: dict, err_station: str, err_source
     ) -> Optional[DataStatus]:
         """Attempts to run async operations five times before giving up"""
         try:
@@ -110,12 +110,7 @@ class BaseHandler:
                         )
                     break
             else:
-                # msg = f"Unable to call {parser.service.__class__.__name__}"
-                # rollbar.report_message(msg, extra_data=state_info)
-                return (
-                    {"error": ERRORS[5].format(self.parser.service.__class__.__name__)},
-                    502,
-                )
+                return {"error": ERRORS[5].format(err_source)}, 502
         except aio.CancelledError:
             print("Cancelled Error")
             return {"error": "Server rebooting. Try again"}, 503
@@ -186,11 +181,15 @@ class ReportHandler(BaseHandler):
         self, parser: avwx.base.AVWXBase, err_station: Any = None
     ) -> DataStatus:
         """Updates the data of a given parser and returns any errors"""
+        try:
+            source = parser.service.__class__.__name__
+        except AttributeError:
+            source = "Remote Server"
         state_info = {
             "state": "fetch",
             "type": self.report_type,
             "station": getattr(parser, "station", None),
-            "source": parser.service,
+            "source": source,
         }
 
         async def wrapper():
@@ -201,6 +200,7 @@ class ReportHandler(BaseHandler):
             wrapper,
             state_info,
             err_station,
+            source,
         )
         if error:
             return error
@@ -326,10 +326,14 @@ class ManagerHandler(BaseHandler):
         self, manager: avwx.AirSigManager, err_station: Any = None
     ) -> DataStatus:
         """Updates a manager data"""
+        try:
+            source = ",".join(s.__class__.__name__ for s in manager._services)
+        except AttributeError:
+            source = "Remote Servers"
         state_info = {
             "state": "fetch",
             "type": self.report_type,
-            "source": manager._services,
+            "source": source,
         }
         # Update the parser's raw data
         async def wrapper():
@@ -339,6 +343,7 @@ class ManagerHandler(BaseHandler):
             wrapper,
             state_info,
             err_station,
+            source,
         )
         if error:
             return error
