@@ -1,5 +1,5 @@
-# Start from the official Python 3.9 container
-FROM python:3.10.1
+# Start from the official Python 3.10 container
+FROM python:3.10.3
 
 # Expose the default Quart port
 EXPOSE 8000
@@ -9,12 +9,6 @@ WORKDIR /home/api
 
 # Create new user to run as non-root
 RUN useradd -m -r user && chown user /home/api
-
-# Add Tini for better signal handling and thread cleanup
-ENV TINI_VERSION v0.19.0
-ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
-RUN chmod +x /tini
-ENTRYPOINT ["/tini", "--"]
 
 # Install the require Python packages
 COPY requirements.txt .
