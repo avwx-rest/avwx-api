@@ -9,7 +9,7 @@ import asyncio as aio
 from contextlib import suppress
 from dataclasses import asdict
 from datetime import datetime, timezone
-from typing import Any, Optional
+from typing import Any, Coroutine, Optional
 
 # library
 import rollbar
@@ -92,13 +92,13 @@ class BaseHandler:
         return ret
 
     async def _call_update(
-        self, operation, state: dict, err_station: str
+        self, operation: Coroutine, state: dict, err_station: str
     ) -> Optional[DataStatus]:
         """Attempts to run async operations five times before giving up"""
         try:
             for _ in range(3):
                 with suppress(TimeoutError, avwx.exceptions.SourceError):
-                    if not await operation:
+                    if not await operation():
                         err = 0 if isinstance(err_station, str) else 3
                         return (
                             {
@@ -192,9 +192,13 @@ class ReportHandler(BaseHandler):
             "station": getattr(parser, "station", None),
             "source": parser.service,
         }
+
+        async def wrapper():
+            return await parser.async_update(timeout=2, disable_post=True)
+
         # Update the parser's raw data
         error = await self._call_update(
-            parser.async_update(timeout=2, disable_post=True),
+            wrapper,
             state_info,
             err_station,
         )
@@ -328,8 +332,11 @@ class ManagerHandler(BaseHandler):
             "source": manager._services,
         }
         # Update the parser's raw data
+        async def wrapper():
+            return await manager.async_update(timeout=2, disable_post=True)
+
         error = await self._call_update(
-            manager.async_update(timeout=2, disable_post=True),
+            wrapper,
             state_info,
             err_station,
         )
