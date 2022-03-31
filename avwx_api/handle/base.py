@@ -364,7 +364,7 @@ class ManagerHandler(BaseHandler):
                 manager.reports.append(report)
         return None, None
 
-    async def _new_report(self, cache: bool = None) -> DataStatus:
+    async def _new_report(self, cache: bool = None) -> tuple[list[dict], int]:
         """Fetch and parse new reports from manager"""
         # Conditional defaults
         cache = self.cache if cache is None else cache
@@ -378,11 +378,11 @@ class ManagerHandler(BaseHandler):
         # Update the cache with the new report data
         coros = []
         if cache:
-            keys = [i["data"]["raw"][:20] for i in data]
+            keys = [i["data"]["raw"][:25] for i in data]
             coros.append(app.cache.update_many(self.report_type, keys, data))
         if coros:
             await aio.gather(*coros)
-        return {"reports": data}, 200
+        return data, 200
 
     async def _cache_or_fetch(
         self,
@@ -395,12 +395,12 @@ class ManagerHandler(BaseHandler):
         if not cache:
             data, code = await self._new_report(use_cache)
         else:
-            data = {"reports": cache}
+            data = cache
         return data, cache, code
 
     async def _post_handle(
         self,
-        data: dict,
+        data: list[dict],
         code: int,
         cache: list[dict],
         config: ParseConfig,
@@ -413,13 +413,13 @@ class ManagerHandler(BaseHandler):
                 if not cache:
                     resp["error"] = "No reports or cache are available"
                     return resp, 204
-                resp["reports"], code = cache, 200
+                data, code = cache, 200
                 resp["meta"]["warning"] = ERRORS[7]
             else:
                 resp.update(data)
                 return resp, code
         # Format the return data
-        resp.update(self._format_report(data, config))
+        resp["reports"] = [self._format_report(r, config) for r in data]
         return resp, code
 
     async def fetch_reports(self, config: ParseConfig) -> DataStatus:
