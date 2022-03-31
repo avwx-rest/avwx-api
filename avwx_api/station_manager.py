@@ -33,8 +33,9 @@ async def aid_for_icao(icao: str) -> Optional[str]:
     if app.mdb is None:
         return
     search = app.mdb.avio.aids.find_one({"_id": icao})
-    data = await mongo_handler(search)
-    return data["aid"]
+    if data := await mongo_handler(search):
+        return data.get("aid")
+    return None
 
 
 async def _call(client: httpx.AsyncClient, endpoint: str, aid: str) -> Optional[dict]:
@@ -63,7 +64,8 @@ async def get_aviowiki_data(icao: str) -> Optional[dict]:
         del data["_id"]
         return data
     data = await fetch_from_aviowiki(icao)
-    await app.cache.update(TABLE, icao, data)
+    if data:
+        await app.cache.update(TABLE, icao, data)
     return data
 
 

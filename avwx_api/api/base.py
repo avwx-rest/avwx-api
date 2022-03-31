@@ -7,7 +7,7 @@ import json
 import asyncio as aio
 from functools import wraps
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional
 
 # library
 from quart import Response, request
@@ -16,6 +16,7 @@ from voluptuous import Invalid, MultipleInvalid
 
 # module
 import avwx
+from avwx_api.handle.base import ManagerHandler, ReportHandler
 from avwx_api_core.views import AuthView, Token, make_token_check
 from avwx_api import app, handle, structs, validate
 
@@ -99,11 +100,15 @@ class Report(Base):
     @token_check
     async def get(self, params: structs.Params, token: Optional[Token]) -> Response:
         """GET handler returning reports"""
-        loc = getattr(params, self.loc_param)
         config = structs.ParseConfig.from_params(params, token)
         await app.station.from_params(params, params.report_type)
         handler = self.handler or self.handlers.get(params.report_type)
-        data, code = await handler.fetch_report(loc, config)
+        if isinstance(handler, ManagerHandler):
+            fetch = handler.fetch_reports(config)
+        elif isinstance(handler, ReportHandler):
+            loc = getattr(params, self.loc_param, None)
+            fetch = handler.fetch_report(loc, config)
+        data, code = await fetch
         return self.make_response(data, params.format, code)
 
 
@@ -143,12 +148,12 @@ class MultiReport(Base):
 
     log_postfix = "multi"
 
-    def get_locations(self, params: structs.Params) -> list[Union[avwx.Station, dict]]:
+    def get_locations(self, params: structs.Params) -> list[avwx.Station | dict]:
         """Returns the list of locations to pass to each handler"""
         return getattr(params, self.loc_param)
 
     @staticmethod
-    def split_distances(data: list[Union[avwx.Station, dict]]) -> tuple[list, dict]:
+    def split_distances(data: list[avwx.Station | dict]) -> tuple[list, dict]:
         """Splits any distances from the location data"""
         locations, distances = [], {}
         for item in data:

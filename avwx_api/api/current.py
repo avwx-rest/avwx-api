@@ -88,3 +88,24 @@ class PirepParse(Parse):
     validator = validate.report_location
     handler = handle.PirepHandler
     key_remv = ("direction",)
+
+
+## AIRMET SIGMET
+
+
+@app.route("/api/airsigmet")
+class AirSigFetch(Report):
+    report_type = "airsigmet"
+    plan_types = ("pro", "enterprise")
+    struct = structs.CachedReport
+    validator = validate.global_report
+    handler = handle.AirSigHandler
+
+
+@app.route("/api/parse/airsigmet")
+class AirSigParse(Parse):
+    report_type = "airsigmet"
+    plan_types = ("pro", "enterprise")
+    struct = structs.ReportGiven
+    validator = validate.report_given
+    handler = handle.AirSigHandler

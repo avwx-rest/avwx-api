@@ -72,7 +72,12 @@ class Near(Base):
     async def get(self, params: structs.Params, token: Optional[Token]) -> Response:
         """Returns stations near a coordinate pair"""
         stations = avwx.station.nearest(
-            *params.coord, params.n, params.airport, params.reporting, params.maxdist
+            params.coord.lat,
+            params.coord.lon,
+            params.n,
+            params.airport,
+            params.reporting,
+            params.maxdist,
         )
         if isinstance(stations, dict):
             stations = [stations]
@@ -127,7 +132,12 @@ class ReportCoordSearch(MultiReport):
 
     def get_locations(self, params: structs.Params) -> list[dict]:
         stations = avwx.station.nearest(
-            *params.coord, params.n, params.airport, params.reporting, params.maxdist
+            params.coord.lat,
+            params.coord.lon,
+            params.n,
+            params.airport,
+            params.reporting,
+            params.maxdist,
         )
         if isinstance(stations, dict):
             stations = [stations]

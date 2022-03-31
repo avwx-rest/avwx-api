@@ -25,11 +25,11 @@ from voluptuous import (
 # module
 from avwx import Station
 from avwx.exceptions import BadStation
-from avwx_api_core.structs import Coord
+from avwx.structs import Coord
 from avwx_api_core.validate import FlightRoute, Latitude, Longitude
 
 
-REPORT_TYPES = ("metar", "taf", "pirep", "mav", "mex", "nbh", "nbs", "nbe")
+REPORT_TYPES = ("metar", "taf", "pirep", "airsigmet", "mav", "mex", "nbh", "nbs", "nbe")
 OPTIONS = ("info", "translate", "summary", "speech")
 FORMATS = ("json", "xml", "yaml")
 ONFAIL = ("error", "cache")
@@ -69,8 +69,8 @@ def _station_for(code: str) -> Station:
 def Coordinate(coord: str) -> Coord:
     """Converts a coordinate string into float tuple"""
     try:
-        split_coord = coord.split(",")
-        return Latitude(split_coord[0]), Longitude(split_coord[1])
+        split = coord.split(",")
+        return Coord(lat=Latitude(split[0]), lon=Longitude(split[1]), repr=coord)
     except Exception as exc:
         raise Invalid(f"{coord} is not a valid coordinate pair") from exc
 
@@ -80,7 +80,8 @@ def Location(
 ) -> Callable:
     """Converts a station ident or coordinate pair string into a Station"""
 
-    def validator(loc: str) -> Station:
+    def validator(loc: str) -> Station | Coord:
+        value = loc
         loc = loc.upper().split(",")
         if len(loc) == 1:
             code = loc[0]
@@ -97,11 +98,11 @@ def Location(
                     return Station.nearest(
                         lat, lon, is_airport=airport, sends_reports=reporting
                     )[0]
-                return lat, lon
+                return Coord(lat=lat, lon=lon, repr=value)
             except Exception as exc:
-                raise Invalid(f"{loc} is not a valid coordinate pair") from exc
+                raise Invalid(f"{value} is not a valid coordinate pair") from exc
         else:
-            raise Invalid(f"{loc} is not a valid station/coordinate pair")
+            raise Invalid(f"{value} is not a valid station/coordinate pair")
 
     return validator
 
@@ -191,6 +192,8 @@ report_location = _coord_search_validator("location", False)
 report_given = _schema(_report_shared | _report_parse)
 report_along = _schema(_report_shared | _flight_path)
 report_stations = _schema(_report_shared | _uses_cache | _multi_station)
+
+global_report = _schema(_report_shared | _uses_cache)
 
 station = _schema(_required | _single_station)
 stations = _schema(_required | _multi_station)

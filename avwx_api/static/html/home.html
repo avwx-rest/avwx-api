@@ -55,7 +55,7 @@
     <!-- <h3 class="text-center">The easiest, most accurate report parsing with worldwide coverage</h3>
     <br/> -->
   	<div class="container">
-        <div class="row">
+        <div class="row justify-content-center">
             <div class="col-md-4 col-sm-6 text-center">
                 <h3>METAR</h3>
                 <p>Current surface conditions at an airport or other reporting location that updates every hour or earlier</p>
@@ -67,6 +67,10 @@
             <div class="col-md-4 col-sm-6 text-center">
                 <h3>PIREP</h3>
                 <p>Inflight observations meant to aid controllers and pilots routing around adverse conditions and others of note</p>
+            </div>
+            <div class="col-md-4 col-sm-6 text-center">
+                <h3>AIR / SIGMET</h3>
+                <p>Global source of inflight weather advisories for turbulence, thunderstorms, icing, and more</p>
             </div>
             <div class="col-md-4 col-sm-6 text-center">
                 <h3>NBM</h3>
@@ -141,14 +145,14 @@
         <div class="col-sm-6 col-md-5">
             <div class="bubble">
                 <h2>About</h2>
-                <p>AVWX is a publicly-available REST API for aviation weather. The service organizes METAR, TAF, PIREP, and other report types into their individual elements and returns them in JSON, XML, or YAML format. It does a considerable amount of error correction so that your report is as clean and thorough as possible. It has additional services like providing station information, translating the report into English, and creating summary strings meant to be read or spoken. For more details, check out the <a href="https://avwx.docs.apiary.io">documentation</a>.</p>
+                <p>AVWX is a publicly-available REST API for aviation weather. The service organizes METAR, TAF, and other report types into their individual elements and returns them in JSON, XML, or YAML format. It does a considerable amount of error correction so that your report is as clean and thorough as possible. It has additional services like providing station information, translating the report into English, and creating summary strings meant to be read or spoken. For more details, check out the <a href="https://avwx.docs.apiary.io">documentation</a>.</p>
             </div>
         </div>
         <div class="col-sm-6 col-md-5">
             <div class="bubble">
                 <h2>Pricing</h2>
                 <p>AVWX offers three pricing tiers: <b>hobby</b>, <b>pro</b>, and <b>enterprise</b>. The basic METAR and TAF parsing services are free, but other features require monthly or yearly paid plans. Check out the <a href="https://account.avwx.rest">pricing guide</a> for more information.</p>
-                <p>Additionally, the developer will gladly accept donations if a monthly plan is not an option. Thank you in advance!</p>
+                <p>Additionally, the developers will gladly accept donations if a monthly plan is not an option. Thank you in advance!</p>
                 <a class="dbox-donation-button" href="https://donorbox.org/support-avwx" style="background:#2d81c5 url(https://d1iczxrky3cnb2.cloudfront.net/red_logo.png) no-repeat 56px center; color: #fff;text-decoration: none;font-family: Verdana,sans-serif;display: inline-block;font-size: 16px;padding: 17px 64px 17px 94px; -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; box-shadow: 0 2px 0 0 #1f5a89; text-shadow: 0 1px rgba(0, 0, 0, 0.3);" >Support AVWX</a>
             </div>
         </div>
@@ -159,14 +163,14 @@
     <div class="row text-center">
         <div class="col-sm-6">
             <div class="bubble">
-                <h2>About Me</h2>
-                <p>Hi, I'm Michael. I'm a pilot, software developer, and tech meetup organizer based in Orlando, FL. You can find more of my projects at <a href="http://mdupont.com">mdupont.com</a>.</p>
+                <h2>About Us</h2>
+                <p>AVWX is made by pilots and developers for pilots and developers. We're based out of Orlando, FL at KMCO, KORL, KISM, and KSFB. Happy to meet anyone coming to the area.</p>
             </div>
         </div>
         <div class="col-sm-6">
             <div class="bubble">
                 <h2>Contact</h2>
-                <p>Bugs? Comments? Feature Requests? Are you using the API and want your project to be featured? Email me at <a href="mailto:avwx@dupont.dev">avwx@dupont.dev</a>.</p>
+                <p>Bugs? Comments? Feature Requests? Are you using the API and want your project to be featured? Email us at <a href="mailto:avwx@dupont.dev">avwx@dupont.dev</a>.</p>
             </div>
         </div>
     </div>
@@ -178,15 +182,15 @@
             <h2>Who uses AVWX?</h2>
             <p>The parser itself has been field-tested and in use since September 2014. It was originally made for a <a href="https://github.com/flyinactor91/METAR-RasPi">Raspberry Pi IoT project</a>, but was eventually made available as a public API. I've been contacted by flight schools, research institutions, and many mobile and desktop application developers. Here are a few of my favorite projects using AVWX.</p>
             <div class="container">
-                <div class="row">
+                <div class="row justify-content-center">
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="card">
-                            <a href="https://aerolink.club/">
-                                <img src="/static/img/aerolink.png" class="card-img-top" alt="Aero Link logo with iOS screenshots">
+                            <a href="https://www.vatsim.net/">
+                                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/1/15/Virtual_Air_Traffic_Simulation_Network_%28logo%29.png/300px-Virtual_Air_Traffic_Simulation_Network_%28logo%29.png" class="card-img-top" alt="VATSIM Logo">
                             </a>
                             <div class="card-body">
-                                <h5 class="card-title">AeroLink</h5>
-                                <p class="card-text">Flight bag app for South America.</p>
+                                <h5 class="card-title">VATSIM</h5>
+                                <p class="card-text">Virtual Air Traffic Simulation network</p>
                             </div>
                         </div>
                     </div>
@@ -198,6 +202,19 @@
                             <div class="card-body">
                                 <h5 class="card-title">FleetCaptain</h5>
                                 <p class="card-text">Flight school fleet management</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="card">
+                            <a href="https://aerolink.club/">
+                                <img src="/static/img/aerolink.png" class="card-img-top" alt="Aero Link logo with iOS screenshots">
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title">AeroLink</h5>
+                                <p class="card-text">Flight bag app for South America</p>
                             </div>
                         </div>
                     </div>
@@ -230,7 +247,7 @@
 </section>
 
 <footer>
-    Copyright © 2021 duPont Technologies LLC
+    Copyright © 2022 duPont Technologies LLC
 </footer>
 
 </body>

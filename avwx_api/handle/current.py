@@ -6,12 +6,12 @@ Handle current report requests
 
 # stdlib
 from dataclasses import asdict
-from typing import Union
 
 # module
 import avwx
-from avwx_api.handle.base import ReportHandler, ERRORS
-from avwx_api.structs import Coord, DataStatus, ParseConfig
+from avwx.structs import Coord
+from avwx_api.handle.base import ManagerHandler, ReportHandler, ERRORS
+from avwx_api.structs import DataStatus, ParseConfig
 
 
 OPTIONS = ("summary", "speech", "translate")
@@ -20,24 +20,21 @@ OPTIONS = ("summary", "speech", "translate")
 class MetarHandler(ReportHandler):
     parser = avwx.Metar
     option_keys = OPTIONS
-    history = True
 
 
 class TafHandler(ReportHandler):
     parser = avwx.Taf
     option_keys = OPTIONS
-    history = True
 
 
 class PirepHandler(ReportHandler):
     parser: avwx.Pireps = avwx.Pireps
     report_type = "pirep"
-    option_keys: tuple[str] = tuple()
     listed_data: bool = True
 
     async def fetch_report(
         self,
-        loc: Union[avwx.Station, Coord],
+        loc: avwx.Station | Coord,
         config: ParseConfig,
     ) -> DataStatus:
         """Returns weather data for the given report type, station, and options
@@ -48,8 +45,8 @@ class PirepHandler(ReportHandler):
         """
         station, code, cache = None, 200, None
         # If coordinates. We don't cache coordinates
-        if isinstance(loc, tuple):
-            parser = self.parser(lat=loc[0], lon=loc[1])
+        if isinstance(loc, Coord):
+            parser = self.parser(lat=loc.lat, lon=loc.lon)
             data, code = await self._new_report(parser, cache=False)
         elif isinstance(loc, avwx.Station):
             station = loc
@@ -73,3 +70,8 @@ class PirepHandler(ReportHandler):
         parser.update(report)
         resp = asdict(parser.data[0])
         return resp, 200
+
+
+class AirSigHandler(ManagerHandler):
+    parser = avwx.AirSigmet
+    manager = avwx.AirSigManager

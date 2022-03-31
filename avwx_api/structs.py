@@ -7,11 +7,11 @@ avwx_api.structs - Parameter dataclasses
 
 # stdlib
 from dataclasses import dataclass
-from typing import Optional, Union
+from typing import Optional
 
 # module
 import avwx
-from avwx_api_core.structs import Coord
+from avwx.structs import Coord
 from avwx_api_core.token import Token
 
 
@@ -46,7 +46,7 @@ class ReportStations(CachedReport):
 
 @dataclass
 class ReportLocation(CachedReport):
-    location: Union[avwx.Station, Coord]
+    location: avwx.Station | Coord
 
 
 @dataclass
