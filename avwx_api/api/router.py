@@ -9,10 +9,12 @@ from typing import Optional
 # library
 from quart import Response
 from quart_openapi.cors import crossdomain
+from shapely.geometry import LineString, Polygon
 
-# stdlib
+# module
 from avwx import Station
 from avwx.exceptions import BadStation
+from avwx.structs import Coord
 from avwx_api_core.services import FlightRouter, InvalidRequest
 from avwx_api_core.token import Token
 import avwx_api.handle.current as handle
@@ -51,6 +53,49 @@ class StationsAlong(Base):
             "meta": handle.MetarHandler().make_meta(),
             "route": params.route,
             "results": resp,
+        }
+        return self.make_response(resp, params.format)
+
+
+@app.route("/api/path/airsigmet")
+class AirSigAlong(Base):
+    """Returns AirSigmets that intersect a flight path"""
+
+    validator = validate.airsig_along
+    struct = structs.AirSigRoute
+    example = "airsig_along"
+    plan_types = ("enterprise",)
+
+    @staticmethod
+    def _filter_intersects(route: list[Coord], reports: list[dict]) -> list[dict]:
+        """Filters report list that intersect a flight path"""
+        ret = []
+        path = LineString(c.pair for c in route)
+        for report in reports:
+            for period in ("observation", "forecast"):
+                with suppress(TypeError):
+                    coords = report[period]["coords"]
+                    if len(coords) < 3:
+                        continue
+                    poly = Polygon((c["lat"], c["lon"]) for c in coords)
+                    if poly.intersects(path):
+                        ret.append(report)
+                        break
+        return ret
+
+    @crossdomain(origin="*", headers=HEADERS)
+    @parse_params
+    @token_check
+    async def get(self, params: structs.Params, token: Optional[Token]) -> Response:
+        """Returns reports along a flight path"""
+        config = structs.ParseConfig.from_params(params, token)
+        data, code = await handle.AirSigHandler().fetch_reports(config)
+        if code != 200:
+            return self.make_response(data, params.format, code)
+        resp = {
+            "meta": handle.MetarHandler().make_meta(),
+            "route": params.route,
+            "reports": self._filter_intersects(params.route, data["reports"]),
         }
         return self.make_response(resp, params.format)
 

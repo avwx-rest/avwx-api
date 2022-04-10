@@ -4,9 +4,29 @@ Current report API endpoints
 
 # pylint: disable=missing-class-docstring,too-many-ancestors
 
+# stdlib
+from contextlib import suppress
+from typing import Optional
+
+# library
+from quart import Response
+from quart_openapi.cors import crossdomain
+from shapely.geometry import Point, Polygon
+
+# module
+from avwx.structs import Coord
+from avwx_api_core.token import Token
 import avwx_api.handle.current as handle
 from avwx_api import app, structs, validate
-from avwx_api.api.base import Report, Parse, MultiReport
+from avwx_api.api.base import (
+    Base,
+    Report,
+    Parse,
+    MultiReport,
+    HEADERS,
+    parse_params,
+    token_check,
+)
 
 
 ## METAR
@@ -109,3 +129,50 @@ class AirSigParse(Parse):
     struct = structs.ReportGiven
     validator = validate.report_given
     handler = handle.AirSigHandler
+
+
+@app.route("/api/airsigmet/<location>")
+class AirSigContains(Base):
+    """Returns AirSigmets that contains a location"""
+
+    validator = validate.airsig_contains
+    struct = structs.AirSigContains
+    loc_param = "location"
+    example = "airsig_contains"
+    plan_types = ("pro", "enterprise")
+
+    @staticmethod
+    def _filter_contains(point: Point, reports: list[dict]) -> list[dict]:
+        """Filters report list that contain a coordinate point"""
+        ret = []
+        for report in reports:
+            for period in ("observation", "forecast"):
+                with suppress(TypeError):
+                    coords = report[period]["coords"]
+                    if len(coords) < 3:
+                        continue
+                    poly = Polygon((c["lat"], c["lon"]) for c in coords)
+                    if poly.contains(point):
+                        ret.append(report)
+                        break
+        return ret
+
+    @crossdomain(origin="*", headers=HEADERS)
+    @parse_params
+    @token_check
+    async def get(self, params: structs.Params, token: Optional[Token]) -> Response:
+        """Returns reports along a flight path"""
+        config = structs.ParseConfig.from_params(params, token)
+        data, code = await handle.AirSigHandler().fetch_reports(config)
+        if code != 200:
+            return self.make_response(data, params.format, code)
+        if isinstance(params.location, Coord):
+            coord = params.location
+        else:
+            coord = params.location.coord
+        resp = {
+            "meta": handle.MetarHandler().make_meta(),
+            "point": coord,
+            "reports": self._filter_contains(coord.point, data["reports"]),
+        }
+        return self.make_response(resp, params.format)

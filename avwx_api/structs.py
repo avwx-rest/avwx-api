@@ -95,17 +95,31 @@ class ReportTextSearch(CachedReport, TextSearch):
 @dataclass
 class FlightRoute:
     route: list[Coord]
+
+
+@dataclass
+class DistanceFrom:
     distance: float
 
 
 @dataclass
-class ReportRoute(Report, FlightRoute):
+class ReportRoute(Report, FlightRoute, DistanceFrom):
     pass
 
 
 @dataclass
-class StationRoute(Params, FlightRoute):
+class StationRoute(Params, FlightRoute, DistanceFrom):
     pass
+
+
+@dataclass
+class AirSigRoute(Params, FlightRoute):
+    pass
+
+
+@dataclass
+class AirSigContains(Params):
+    location: avwx.Station | Coord
 
 
 _NAMED_OPTIONS = ("translate", "summary", "speech")

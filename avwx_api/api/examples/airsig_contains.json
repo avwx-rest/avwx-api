@@ -1,0 +1,249 @@
+{
+	"point": {
+		"lat": 27.988899,
+		"lon": -82.018602,
+		"repr": "KLAL"
+	},
+	"results": [
+		{
+			"raw": "WAUS42 KKCI 092045 MIAT WA 092045 AIRMET TANGO UPDT 3 FOR TURB STG WNDS AND LLWS VALID UNTIL 100300 AIRMET TURB...GA FL AND CSTL WTRS FROM 50SW PZD TO 20WSW CRG TO 220SSE ILM TO 180E PBI TO 70ENE PBI TO 90E MIA TO 80WSW EYW TO 90WSW PIE TO 170W PIE TO 50SW PZD MOD TURB BTN FL240 AND FL390. CONDS CONTG BYD 03Z THRU 09Z.",
+			"sanitized": "WAUS42 KKCI 092045 MIAT WA 092045 AIRMET TANGO UPDT 3 FOR TURB STG WNDS AND LLWS VALID UNTIL 100300 AIRMET TURB...GA FL AND CSTL WTRS FROM 50SW PZD TO 20WSW CRG TO 220SSE ILM TO 180E PBI TO 70ENE PBI TO 90E MIA TO 80WSW EYW TO 90WSW PIE TO 170W PIE TO 50SW PZD MOD TURB BTN FL240 AND FL390 CONDS CONTG BYD 03Z THRU 09Z.",
+			"station": null,
+			"time": {
+				"repr": "092045",
+				"dt": "2022-04-09T20:45:00Z"
+			},
+			"remarks": null,
+			"bulletin": {
+				"repr": "WAUS42",
+				"type": {
+					"repr": "WA",
+					"value": "airmet"
+				},
+				"country": "US",
+				"number": 42
+			},
+			"issuer": "KKCI",
+			"correction": null,
+			"area": "MIA",
+			"type": "AIRMET TANGO UPDT 3 FOR TURB STG WNDS AND LLWS",
+			"start_time": null,
+			"end_time": {
+				"repr": "100300",
+				"dt": "2022-04-10T03:00:00Z"
+			},
+			"body": "AIRMET TURB...GA FL AND CSTL WTRS FROM 50SW PZD TO 20WSW CRG TO 220SSE ILM TO 180E PBI TO 70ENE PBI TO 90E MIA TO 80WSW EYW TO 90WSW PIE TO 170W PIE TO 50SW PZD MOD TURB BTN FL240 AND FL390 CONDS CONTG BYD 03Z THRU 09Z.",
+			"region": "GA FL AND CSTL WTRS",
+			"observation": {
+				"type": {
+					"repr": "MOD TURB",
+					"value": "Moderate Turbulence"
+				},
+				"start_time": null,
+				"end_time": null,
+				"position": null,
+				"floor": {
+					"repr": "FL240",
+					"value": 240,
+					"spoken": "flight level two four zero"
+				},
+				"ceiling": {
+					"repr": "FL390",
+					"value": 390,
+					"spoken": "flight level three nine zero"
+				},
+				"coords": [
+					{
+						"lat": 31.062799694425536,
+						"lon": -84.97914456190854,
+						"repr": "50SW PZD"
+					},
+					{
+						"lat": 30.210552936622655,
+						"lon": -81.86532290972373,
+						"repr": "20WSW CRG"
+					},
+					{
+						"lat": 30.946407577939,
+						"lon": -76.24359789680189,
+						"repr": "220SSE ILM"
+					},
+					{
+						"lat": 26.640631040950968,
+						"lon": -76.73807001219129,
+						"repr": "180E PBI"
+					},
+					{
+						"lat": 27.122701871982393,
+						"lon": -78.87847305611729,
+						"repr": "70ENE PBI"
+					},
+					{
+						"lat": 35.29391465152129,
+						"lon": -1.1229727370891476,
+						"repr": "90E MIA"
+					},
+					{
+						"lat": 24.068010274815315,
+						"lon": -83.1464641299101,
+						"repr": "80WSW EYW"
+					},
+					{
+						"lat": 27.32341107484432,
+						"lon": -84.24027615195355,
+						"repr": "90WSW PIE"
+					},
+					{
+						"lat": 27.870702521336405,
+						"lon": -85.8816922859451,
+						"repr": "170W PIE"
+					},
+					{
+						"lat": 31.062799694425536,
+						"lon": -84.97914456190854,
+						"repr": "50SW PZD"
+					}
+				],
+				"bounds": [],
+				"movement": null,
+				"intensity": null,
+				"other": [
+					"CONDS",
+					"CONTG",
+					"BYD",
+					"03Z",
+					"THRU",
+					"09Z"
+				]
+			},
+			"forecast": null,
+			"units": {
+				"accumulation": "in",
+				"altimeter": "hPa",
+				"altitude": "ft",
+				"temperature": "C",
+				"visibility": "m",
+				"wind_speed": "kt"
+			}
+		},
+		{
+			"raw": "WAUS42 KKCI 092045 MIAT WA 092045 AIRMET TANGO UPDT 3 FOR TURB STG WNDS AND LLWS VALID UNTIL 100300 AIRMET TURB...GA FL AND CSTL WTRS FROM 20NE AMG TO 60S SAV TO 90ENE CRG TO 100NE TRV TO 70ESE PBI TO 70E EYW TO 40SSW RSW TO 20SSW PIE TO 30SSE CTY TO 60SW AMG TO 20NE AMG MOD TURB BLW 100. CONDS ENDG 00-03Z.",
+			"sanitized": "WAUS42 KKCI 092045 MIAT WA 092045 AIRMET TANGO UPDT 3 FOR TURB STG WNDS AND LLWS VALID UNTIL 100300 AIRMET TURB...GA FL AND CSTL WTRS FROM 20NE AMG TO 60S SAV TO 90ENE CRG TO 100NE TRV TO 70ESE PBI TO 70E EYW TO 40SSW RSW TO 20SSW PIE TO 30SSE CTY TO 60SW AMG TO 20NE AMG MOD TURB BLW 100. CONDS ENDG 00-03Z.",
+			"station": null,
+			"time": {
+				"repr": "092045",
+				"dt": "2022-04-09T20:45:00Z"
+			},
+			"remarks": null,
+			"bulletin": {
+				"repr": "WAUS42",
+				"type": {
+					"repr": "WA",
+					"value": "airmet"
+				},
+				"country": "US",
+				"number": 42
+			},
+			"issuer": "KKCI",
+			"correction": null,
+			"area": "MIA",
+			"type": "AIRMET TANGO UPDT 3 FOR TURB STG WNDS AND LLWS",
+			"start_time": null,
+			"end_time": {
+				"repr": "100300",
+				"dt": "2022-04-10T03:00:00Z"
+			},
+			"body": "AIRMET TURB...GA FL AND CSTL WTRS FROM 20NE AMG TO 60S SAV TO 90ENE CRG TO 100NE TRV TO 70ESE PBI TO 70E EYW TO 40SSW RSW TO 20SSW PIE TO 30SSE CTY TO 60SW AMG TO 20NE AMG MOD TURB BLW 100. CONDS ENDG 00-03Z.",
+			"region": "GA FL AND CSTL WTRS",
+			"observation": {
+				"type": {
+					"repr": "MOD TURB",
+					"value": "Moderate Turbulence"
+				},
+				"start_time": null,
+				"end_time": null,
+				"position": null,
+				"floor": null,
+				"ceiling": {
+					"repr": "100",
+					"value": 100,
+					"spoken": "one hundred"
+				},
+				"coords": [
+					{
+						"lat": 31.77241293168869,
+						"lon": -82.23160764129749,
+						"repr": "20NE AMG"
+					},
+					{
+						"lat": 15.548936795218124,
+						"lon": 104.76000213623047,
+						"repr": "60S SAV"
+					},
+					{
+						"lat": -35.5615470154245,
+						"lon": 149.56062160618774,
+						"repr": "90ENE CRG"
+					},
+					{
+						"lat": 9.664248750249747,
+						"lon": 78.11323748207604,
+						"repr": "100NE TRV"
+					},
+					{
+						"lat": 26.227275073028668,
+						"lon": -78.8878721227731,
+						"repr": "70ESE PBI"
+					},
+					{
+						"lat": 24.58046064185233,
+						"lon": -80.52059337842083,
+						"repr": "70E EYW"
+					},
+					{
+						"lat": 25.91187292366639,
+						"lon": -82.05874516737852,
+						"repr": "40SSW RSW"
+					},
+					{
+						"lat": 27.598919819382733,
+						"lon": -82.82788112917204,
+						"repr": "20SSW PIE"
+					},
+					{
+						"lat": 29.135722177832356,
+						"lon": -82.83020722652982,
+						"repr": "30SSE CTY"
+					},
+					{
+						"lat": 30.825177680131407,
+						"lon": -83.32931919028739,
+						"repr": "60SW AMG"
+					},
+					{
+						"lat": 31.77241293168869,
+						"lon": -82.23160764129749,
+						"repr": "20NE AMG"
+					}
+				],
+				"bounds": [],
+				"movement": null,
+				"intensity": null,
+				"other": [
+					"CONDS",
+					"ENDG",
+					"00-03Z"
+				]
+			},
+			"forecast": null,
+			"units": {
+				"accumulation": "in",
+				"altimeter": "hPa",
+				"altitude": "ft",
+				"temperature": "C",
+				"visibility": "m",
+				"wind_speed": "kt"
+			}
+		}
+	]
+}

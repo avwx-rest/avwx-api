@@ -16,9 +16,9 @@ from voluptuous import Invalid, MultipleInvalid
 
 # module
 import avwx
-from avwx_api.handle.base import ManagerHandler, ReportHandler
 from avwx_api_core.views import AuthView, Token, make_token_check
 from avwx_api import app, handle, structs, validate
+from avwx_api.handle.base import ManagerHandler, ReportHandler
 
 
 HEADERS = ["Authorization", "Content-Type"]

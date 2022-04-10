@@ -33,6 +33,7 @@ ERRORS = [
 
 
 class BaseHandler:
+    """Base request handler class"""
 
     parser: avwx.base.AVWXBase
 
@@ -318,6 +319,7 @@ class ReportHandler(BaseHandler):
 
 
 class ManagerHandler(BaseHandler):
+    """Request handler for report managers with global"""
 
     manager: avwx.AirSigManager  # Change to a base manager once implemented
     use_station = False
@@ -326,6 +328,7 @@ class ManagerHandler(BaseHandler):
         self, manager: avwx.AirSigManager, err_station: Any = None
     ) -> DataStatus:
         """Updates a manager data"""
+        # pylint: disable=protected-access
         try:
             source = ",".join(s.__class__.__name__ for s in manager._services)
         except AttributeError:
