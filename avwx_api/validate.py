@@ -41,16 +41,16 @@ HELP = {
     "options": f'Response content and parsing options. Ex: "info,summary" in {OPTIONS}',
     "report": "Raw report string to be parsed. Given in the POST body as plain text",
     "report_type": f"Weather report type {REPORT_TYPES}",
-    "station": 'ICAO & IATA station code or coord pair. Ex: KJFK, LHR, or "12.34,-12.34"',
-    "location": 'ICAO & IATA station code or coord pair. Ex: KJFK, LHR, or "12.34,-12.34"',
-    "stations": 'ICAO & IATA station codes. Ex: "KMCO,LEX,KJFK"',
+    "station": 'ICAO, IATA, GPS code, or coord pair. Ex: KJFK, LHR, or "12.34,-12.34"',
+    "location": 'ICAO, IATA, GPS code, or coord pair. Ex: KJFK, LHR, or "12.34,-12.34"',
+    "stations": 'ICAO, IATA, or GPS codes. Ex: "KMCO,LEX,KJFK"',
     "coord": 'Coordinate pair. Ex: "12.34,-12.34"',
     "n": "Number of stations to return",
     "airport": "Limit results to airports",
     "reporting": "Limit results to reporting stations",
     "maxdist": "Max coordinate distance",
     "text": "Station search string. Ex: orlando%20kmco",
-    "route": "Flight route made of ICAO, navaid, or coordinate pairs. Ex: KLEX;ATL;29.2,-81.1;KMCO",
+    "route": "Flight route made of ICAO, navaid, IATA, GPS code, or coordinate pairs. Ex: KLEX;ATL;29.2,-81.1;KMCO",
     "distance": "Statute miles from the route center",
 }
 
@@ -60,7 +60,7 @@ BLOCKED_COUNTRIES = {"RU": "Russia", "BY": "Belarus"}
 
 def _station_for(code: str) -> Station:
     # pylint: disable=redefined-outer-name
-    station = Station.from_iata(code) if len(code) == 3 else Station.from_icao(code)
+    station = Station.from_code(code)
     if station.country in BLOCKED_COUNTRIES:
         blocked = ", ".join(BLOCKED_COUNTRIES.values())
         raise Invalid(f"AVWX is currently blocking requests for airports in: {blocked}")
@@ -89,9 +89,7 @@ def Location(
             try:
                 return _station_for(code)
             except BadStation as exc:
-                # if icao in ICAO_WHITELIST:
-                #     return Station(*([None] * 4), "DNE", icao, *([None] * 9))
-                raise Invalid(f"{code} is not a valid ICAO or IATA code") from exc
+                raise Invalid(f"{code} is not a valid ICAO, IATA, or GPS code") from exc
         elif len(loc) == 2:
             try:
                 lat, lon = Latitude(loc[0]), Longitude(loc[1])
@@ -120,7 +118,7 @@ def MultiStation(values: str) -> list[Station]:
         try:
             ret.append(_station_for(code))
         except BadStation as exc:
-            raise Invalid(f"{code} is not a valid ICAO of IATA code") from exc
+            raise Invalid(f"{code} is not a valid ICAO, IATA, or GPS code") from exc
     return ret
 
 
@@ -150,6 +148,7 @@ _station_search = {
     Required("airport", default=True): Boolean(None),
     Required("reporting", default=True): Boolean(None),
 }
+_station_list = {Required("reporting", default=True): Boolean(None)}
 
 _report_parse = {Required("report"): str}
 
@@ -198,6 +197,7 @@ global_report = _schema(_report_shared | _uses_cache)
 station = _schema(_required | _single_station)
 stations = _schema(_required | _multi_station)
 station_along = _schema(_required | _flight_path | _distance_from)
+station_list = _schema(_required | _station_list)
 
 airsig_along = _schema(_required | _flight_path)
 airsig_contains = _schema(_required | _location)

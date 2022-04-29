@@ -45,9 +45,9 @@ class StationsAlong(Base):
         """Returns reports along a flight path"""
         stations = await FlightRouter().fetch("station", params.distance, params.route)
         resp = []
-        for icao in stations:
+        for code in stations:
             with suppress(BadStation):
-                station = Station.from_icao(icao)
+                station = Station.from_code(code)
                 resp.append(await station_data_for(station, token=token))
         resp = {
             "meta": handle.MetarHandler().make_meta(),

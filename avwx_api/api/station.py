@@ -19,24 +19,28 @@ from avwx_api.station_manager import station_data_for
 
 async def get_station(station: avwx.Station, token: Optional[Token]) -> dict:
     """Log and returns station data as dict"""
-    await app.station.add(station.icao, "station")
-    return await station_data_for(station, token=token)
+    await app.station.add(station.lookup_code, "station")
+    return await station_data_for(station, token=token) or {}
 
 
 @app.route("/api/station/list")
 class StationList(Base):
     """Returns the current list of reporting stations"""
 
+    validator = validate.station_list
+    struct = structs.StationList
+
     @crossdomain(origin="*", headers=HEADERS)
+    @parse_params
     @token_check
-    async def get(self, *_) -> Response:
+    async def get(self, params: structs.Params, _) -> Response:
         """Returns the current list of reporting stations"""
-        return self.make_response(avwx.station.station_list())
+        return self.make_response(avwx.station.station_list(reporting=params.reporting))
 
 
 @app.route("/api/station/<station>")
 class Station(Base):
-    """Returns station details for ICAO and coordinates"""
+    """Returns station details for ident and coordinates"""
 
     validator = validate.station
     struct = structs.Station
@@ -46,14 +50,14 @@ class Station(Base):
     @parse_params
     @token_check
     async def get(self, params: structs.Params, token: Optional[Token]) -> Response:
-        """Returns station details for ICAO and coordinates"""
+        """Returns station details for idents and coordinates"""
         data = await get_station(params.station, token)
         return self.make_response(data, params.format)
 
 
 @app.route("/api/multi/station/<stations>")
 class MultiStation(Base):
-    """Returns station details for multiple ICAO idents"""
+    """Returns station details for multiple idents"""
 
     validator = validate.stations
     struct = structs.Stations
@@ -66,6 +70,6 @@ class MultiStation(Base):
     @parse_params
     @token_check
     async def get(self, params: structs.Params, token: Optional[Token]) -> Response:
-        """Returns station details for multiple ICAO idents"""
-        data = {s.icao: await get_station(s, token) for s in params.stations}
+        """Returns station details for multiple idents"""
+        data = {s.lookup_code: await get_station(s, token) for s in params.stations}
         return self.make_response(data, params.format)

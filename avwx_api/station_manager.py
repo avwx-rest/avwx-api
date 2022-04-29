@@ -10,6 +10,7 @@ from typing import Optional
 
 # library
 import httpx
+import rollbar
 
 # module
 from avwx import Station
@@ -28,11 +29,11 @@ ENDPOINTS = [
 HEADERS = {"Authorization": "Bearer " + environ.get("AVIOWIKI_API_KEY", "")}
 
 
-async def aid_for_icao(icao: str) -> Optional[str]:
-    """Returns the AvioWiki ID for an ICAO ident"""
+async def aid_for_code(code: str) -> Optional[str]:
+    """Returns the AvioWiki ID for a station ident"""
     if app.mdb is None:
         return
-    search = app.mdb.avio.aids.find_one({"_id": icao})
+    search = app.mdb.avio.aids.find_one({"_id": code})
     if data := await mongo_handler(search):
         return data.get("aid")
     return None
@@ -47,9 +48,9 @@ async def _call(client: httpx.AsyncClient, endpoint: str, aid: str) -> Optional[
     return resp.json()
 
 
-async def fetch_from_aviowiki(icao: str) -> Optional[dict]:
+async def fetch_from_aviowiki(code: str) -> Optional[dict]:
     """Fetch airport data from AvioWiki servers"""
-    aid = await aid_for_icao(icao)
+    aid = await aid_for_code(code)
     async with httpx.AsyncClient(timeout=10) as client:
         coros = [_call(client, e, aid) for e in ENDPOINTS]
         data, runways = await aio.gather(*coros)
@@ -58,14 +59,14 @@ async def fetch_from_aviowiki(icao: str) -> Optional[dict]:
     return data
 
 
-async def get_aviowiki_data(icao: str) -> Optional[dict]:
+async def get_aviowiki_data(code: str) -> Optional[dict]:
     """Fetch aviowiki data"""
-    if data := await app.cache.get(TABLE, icao):
+    if data := await app.cache.get(TABLE, code):
         del data["_id"]
         return data
-    data = await fetch_from_aviowiki(icao)
+    data = await fetch_from_aviowiki(code)
     if data:
-        await app.cache.update(TABLE, icao, data)
+        await app.cache.update(TABLE, code, data)
     return data
 
 
@@ -86,5 +87,9 @@ async def station_data_for(
 ) -> Optional[dict]:
     """Returns airport data dict from station or another source"""
     if _use_aviowiki_data(config, token):
-        return await get_aviowiki_data(station.icao)
+        data = await get_aviowiki_data(station.lookup_code)
+        if data is None:
+            text = f"{station.icao}-{station.gps}-{station.local}"
+            rollbar.report_message(text, "info")
+        return data
     return asdict(station)

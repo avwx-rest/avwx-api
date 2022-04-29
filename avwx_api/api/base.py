@@ -143,7 +143,7 @@ class MultiReport(Base):
     loc_param = "stations"
     plan_types = ("pro", "enterprise")
 
-    # If True, returns a dict with ICAO idents. Otherwise a list based on location order
+    # If True, returns a dict with station idents. Otherwise a list based on location order
     keyed: bool = True
 
     log_postfix = "multi"
@@ -158,9 +158,9 @@ class MultiReport(Base):
         locations, distances = [], {}
         for item in data:
             if isinstance(item, dict):
-                station = item.pop("station")
+                station: avwx.Station = item.pop("station")
                 locations.append(station)
-                distances[station.icao] = item
+                distances[station.lookup_code] = item
             else:
                 locations.append(item)
         return locations, distances
@@ -177,12 +177,17 @@ class MultiReport(Base):
         coros = []
         for loc in locations:
             coros.append(handler.fetch_report(loc, config))
-            await app.station.add(loc.icao, params.report_type + "-" + self.log_postfix)
+            await app.station.add(
+                loc.lookup_code, params.report_type + "-" + self.log_postfix
+            )
         data = [r[0] for r in await aio.gather(*coros)]
 
         # Expand to keyed dict when supplied specific keys
         if self.keyed:
-            keys = [loc.icao if hasattr(loc, "icao") else loc for loc in locations]
+            keys = [
+                loc.lookup_code if hasattr(loc, "lookup_code") else loc
+                for loc in locations
+            ]
             data = dict(zip(keys, data))
         # Remove non-existing responses for list results
         else:

@@ -72,6 +72,11 @@ class StationSearch(Params):
 
 
 @dataclass
+class StationList(Params):
+    reporting: bool
+
+
+@dataclass
 class CoordSearch(StationSearch):
     coord: Coord
     maxdist: float

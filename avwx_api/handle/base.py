@@ -137,10 +137,10 @@ class BaseHandler:
             if len(report) < 4 or "{" in report or "[" in report:
                 return ({"error": "Could not find station at beginning of report"}, 400)
             try:
-                icao = (
+                code = (
                     report[6:10] if report.lower().startswith("metar ") else report[:4]
                 )
-                station = avwx.Station.from_icao(icao)
+                station = avwx.Station.from_code(code)
             except avwx.exceptions.BadStation:
                 print("No station")
                 return {"error": ERRORS[2].format(report[:4])}, 400
@@ -226,7 +226,7 @@ class ReportHandler(BaseHandler):
         # Conditional defaults
         cache = self.cache if cache is None else cache
         # Fetch a new parsed report
-        location_key = parser.icao or (parser.lat, parser.lon)
+        location_key = parser.code or (parser.lat, parser.lon)
         error, code = await self._update_parser(parser, location_key)
         if error:
             return error, code
@@ -248,11 +248,15 @@ class ReportHandler(BaseHandler):
     ) -> tuple[dict, dict, int]:
         """For a station, fetch data from the cache or return a new report"""
         data, code = None, 200
-        cache = await app.cache.get(self.report_type, station.icao, force=force_cache)
+        cache = await app.cache.get(
+            self.report_type, station.lookup_code, force=force_cache
+        )
         if cache is None or app.cache.has_expired(
             cache.get("timestamp"), self.report_type
         ):
-            data, code = await self._new_report(self.parser(station.icao), use_cache)
+            data, code = await self._new_report(
+                self.parser(station.lookup_code), use_cache
+            )
         else:
             data = cache
         return data, cache, code
@@ -267,7 +271,7 @@ class ReportHandler(BaseHandler):
         If nofail and a new report can't be fetched, the cache will be returned with a warning
         """
         if not station.sends_reports:
-            return {"error": ERRORS[6].format(station.icao)}, 204
+            return {"error": ERRORS[6].format(station.lookup_code)}, 204
         # Fetch an existing and up-to-date cache or make a new report
         try:
             data, cache, code = await self._station_cache_or_fetch(
