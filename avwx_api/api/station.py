@@ -35,7 +35,8 @@ class StationList(Base):
     @token_check
     async def get(self, params: structs.Params, _) -> Response:
         """Returns the current list of reporting stations"""
-        return self.make_response(avwx.station.station_list(reporting=params.reporting))
+        data = avwx.station.station_list(reporting=params.reporting)
+        return self.make_response(data, params)
 
 
 @app.route("/api/station/<station>")
@@ -52,7 +53,7 @@ class Station(Base):
     async def get(self, params: structs.Params, token: Optional[Token]) -> Response:
         """Returns station details for idents and coordinates"""
         data = await get_station(params.station, token)
-        return self.make_response(data, params.format)
+        return self.make_response(data, params)
 
 
 @app.route("/api/multi/station/<stations>")
@@ -72,4 +73,4 @@ class MultiStation(Base):
     async def get(self, params: structs.Params, token: Optional[Token]) -> Response:
         """Returns station details for multiple idents"""
         data = {s.lookup_code: await get_station(s, token) for s in params.stations}
-        return self.make_response(data, params.format)
+        return self.make_response(data, params)

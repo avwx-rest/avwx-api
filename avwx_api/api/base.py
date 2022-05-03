@@ -109,7 +109,7 @@ class Report(Base):
             loc = getattr(params, self.loc_param, None)
             fetch = handler.fetch_report(loc, config)
         data, code = await fetch
-        return self.make_response(data, params.format, code)
+        return self.make_response(data, params, code)
 
 
 class Parse(Base):
@@ -132,7 +132,7 @@ class Parse(Base):
         if "station" in data:
             report_type = params.report_type + "-given"
             await app.station.add(data["station"], report_type)
-        return self.make_response(data, params.format, code)
+        return self.make_response(data, params, code)
 
 
 class MultiReport(Base):
@@ -198,4 +198,4 @@ class MultiReport(Base):
             for i, item in enumerate(data):
                 data[i]["distance"] = distances.get(item.get("station"), {})
 
-        return self.make_response(data, params.format)
+        return self.make_response(data, params)

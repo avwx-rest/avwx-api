@@ -1,6 +1,5 @@
 """
-Michael duPont - michael@mdupont.com
-avwx_api.structs - Parameter dataclasses
+Parameter dataclasses
 """
 
 # pylint: disable=missing-class-docstring,invalid-name
@@ -12,15 +11,11 @@ from typing import Optional
 # module
 import avwx
 from avwx.structs import Coord
+from avwx_api_core.structs import Params
 from avwx_api_core.token import Token
 
 
 DataStatus = tuple[dict, int]
-
-
-@dataclass
-class Params:
-    format: str
 
 
 @dataclass

@@ -197,12 +197,7 @@ class ReportHandler(BaseHandler):
             return await parser.async_update(timeout=2, disable_post=True)
 
         # Update the parser's raw data
-        error = await self._call_update(
-            wrapper,
-            state_info,
-            err_station,
-            source,
-        )
+        error = await self._call_update(wrapper, state_info, err_station, source,)
         if error:
             return error
         # Parse the fetched data
@@ -241,10 +236,7 @@ class ReportHandler(BaseHandler):
         return data, 200
 
     async def _station_cache_or_fetch(
-        self,
-        station: avwx.Station,
-        force_cache: bool = False,
-        use_cache: bool = None,
+        self, station: avwx.Station, force_cache: bool = False, use_cache: bool = None,
     ) -> tuple[dict, dict, int]:
         """For a station, fetch data from the cache or return a new report"""
         data, code = None, 200
@@ -306,10 +298,7 @@ class ReportHandler(BaseHandler):
                     return resp, 204
                 data, code = cache, 200
                 resp["meta"].update(
-                    {
-                        "cache-timestamp": data["timestamp"],
-                        "warning": ERRORS[7],
-                    }
+                    {"cache-timestamp": data["timestamp"], "warning": ERRORS[7],}
                 )
             else:
                 resp.update(data)
@@ -346,12 +335,7 @@ class ManagerHandler(BaseHandler):
         async def wrapper():
             return await manager.async_update(timeout=2, disable_post=True)
 
-        error = await self._call_update(
-            wrapper,
-            state_info,
-            err_station,
-            source,
-        )
+        error = await self._call_update(wrapper, state_info, err_station, source,)
         if error:
             return error
         # Parse the fetched data
@@ -392,9 +376,7 @@ class ManagerHandler(BaseHandler):
         return data, 200
 
     async def _cache_or_fetch(
-        self,
-        force_cache: bool = False,
-        use_cache: bool = None,
+        self, force_cache: bool = False, use_cache: bool = None,
     ) -> tuple[list[dict], list[dict], int]:
         """For a station, fetch data from the cache or return a new report"""
         data, code = None, 200
@@ -406,11 +388,7 @@ class ManagerHandler(BaseHandler):
         return data, cache, code
 
     async def _post_handle(
-        self,
-        data: list[dict],
-        code: int,
-        cache: list[dict],
-        config: ParseConfig,
+        self, data: list[dict], code: int, cache: list[dict], config: ParseConfig,
     ) -> DataStatus:
         """Performs post manager update operations"""
         resp = {"meta": self.make_meta()}

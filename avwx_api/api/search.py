@@ -83,7 +83,7 @@ class Near(Base):
             stations = [stations]
         for i, stn in enumerate(stations):
             stations[i]["station"] = await station_data_for(stn["station"], token=token)
-        return self.make_response(stations, params.format)
+        return self.make_response(stations, params)
 
 
 @app.route("/api/search/station")
@@ -108,7 +108,7 @@ class TextSearch(Base):
             params.text, params.n, params.airport, params.reporting
         )
         stations = [await station_data_for(s, token=token) for s in stations]
-        return self.make_response(stations, params.format)
+        return self.make_response(stations, params)
 
 
 @app.route("/api/<report_type>/near/<coord>")

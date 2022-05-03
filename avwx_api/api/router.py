@@ -54,7 +54,7 @@ class StationsAlong(Base):
             "route": params.route,
             "results": resp,
         }
-        return self.make_response(resp, params.format)
+        return self.make_response(resp, params)
 
 
 @app.route("/api/path/airsigmet")
@@ -91,13 +91,13 @@ class AirSigAlong(Base):
         config = structs.ParseConfig.from_params(params, token)
         data, code = await handle.AirSigHandler().fetch_reports(config)
         if code != 200:
-            return self.make_response(data, params.format, code)
+            return self.make_response(data, params, code)
         resp = {
             "meta": handle.MetarHandler().make_meta(),
             "route": params.route,
             "reports": self._filter_intersects(params.route, data["reports"]),
         }
-        return self.make_response(resp, params.format)
+        return self.make_response(resp, params)
 
 
 @app.route("/api/path/<report_type>")
@@ -125,7 +125,7 @@ class ReportsAlong(Base):
             )
         except InvalidRequest:
             resp = {"error": f"Routing doesn't support {report_type}"}
-            return self.make_response(resp, params.format, 400)
+            return self.make_response(resp, params, 400)
         handler = self.handlers.get(report_type)
         resp, stations = [], []
         for report in reports:
@@ -142,4 +142,4 @@ class ReportsAlong(Base):
             "route": params.route,
             "results": resp,
         }
-        return self.make_response(resp, params.format)
+        return self.make_response(resp, params)

@@ -33,9 +33,7 @@ class PirepHandler(ReportHandler):
     listed_data: bool = True
 
     async def fetch_report(
-        self,
-        loc: avwx.Station | Coord,
-        config: ParseConfig,
+        self, loc: avwx.Station | Coord, config: ParseConfig,
     ) -> DataStatus:
         """Returns weather data for the given report type, station, and options
         Also returns the appropriate HTTP response code

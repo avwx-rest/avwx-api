@@ -3,7 +3,7 @@ Michael duPont - michael@mdupont.com
 avwx_api.validators - Parameter validators
 """
 
-# pylint: disable=C0103
+# pylint: disable=invalid-name
 
 # stdlib
 from typing import Callable
@@ -24,19 +24,24 @@ from voluptuous import (
 
 # module
 from avwx import Station
-from avwx.exceptions import BadStation
 from avwx.structs import Coord
-from avwx_api_core.validate import FlightRoute, Latitude, Longitude
+from avwx_api_core.validate import (
+    station_for,
+    required,
+    FlightRoute,
+    Latitude,
+    Longitude,
+    SplitIn,
+    HELP_TEXT,
+)
 
 
 REPORT_TYPES = ("metar", "taf", "pirep", "airsigmet", "mav", "mex", "nbh", "nbs", "nbe")
 OPTIONS = ("info", "translate", "summary", "speech")
-FORMATS = ("json", "xml", "yaml")
 ONFAIL = ("error", "cache")
 
 
-HELP = {
-    "format": f"Accepted response formats {FORMATS}",
+HELP = HELP_TEXT | {
     "onfail": f"Desired behavior when report fetch fails {ONFAIL}",
     "options": f'Response content and parsing options. Ex: "info,summary" in {OPTIONS}',
     "report": "Raw report string to be parsed. Given in the POST body as plain text",
@@ -53,18 +58,6 @@ HELP = {
     "route": "Flight route made of ICAO, navaid, IATA, GPS code, or coordinate pairs. Ex: KLEX;ATL;29.2,-81.1;KMCO",
     "distance": "Statute miles from the route center",
 }
-
-
-BLOCKED_COUNTRIES = {"RU": "Russia", "BY": "Belarus"}
-
-
-def _station_for(code: str) -> Station:
-    # pylint: disable=redefined-outer-name
-    station = Station.from_code(code)
-    if station.country in BLOCKED_COUNTRIES:
-        blocked = ", ".join(BLOCKED_COUNTRIES.values())
-        raise Invalid(f"AVWX is currently blocking requests for airports in: {blocked}")
-    return station
 
 
 def Coordinate(coord: str) -> Coord:
@@ -85,12 +78,8 @@ def Location(
         value = loc
         loc = loc.upper().split(",")
         if len(loc) == 1:
-            code = loc[0]
-            try:
-                return _station_for(code)
-            except BadStation as exc:
-                raise Invalid(f"{code} is not a valid ICAO, IATA, or GPS code") from exc
-        elif len(loc) == 2:
+            return station_for(loc[0])
+        if len(loc) == 2:
             try:
                 lat, lon = Latitude(loc[0]), Longitude(loc[1])
                 if coerce_station:
@@ -115,31 +104,12 @@ def MultiStation(values: str) -> list[Station]:
         raise Invalid("Multi requests are limited to 10 stations or less")
     ret = []
     for code in values:
-        try:
-            ret.append(_station_for(code))
-        except BadStation as exc:
-            raise Invalid(f"{code} is not a valid ICAO, IATA, or GPS code") from exc
+        ret.append(station_for(code))
     return ret
 
 
-def SplitIn(values: tuple[str]) -> Callable:
-    """Returns a validator to check for given values in a comma-separated string"""
-
-    def validator(csv: str) -> str:
-        if not csv:
-            return []
-        split = csv.split(",")
-        for val in split:
-            if val not in values:
-                raise Invalid(f"'{val}' could not be found in {values}")
-        return split
-
-    return validator
-
-
-_required = {Required("format", default="json"): In(FORMATS)}
 _report_shared = {
-    **_required,
+    **required,
     Required("options", default=""): SplitIn(OPTIONS),
     Required("report_type"): In(REPORT_TYPES),
 }
@@ -160,7 +130,7 @@ _flight_path = {Required("route"): FlightRoute}
 _distance_from = {Required("distance"): All(Coerce(float), Range(min=0, max=100))}
 
 _search_counter = {Required("n", default=10): All(Coerce(int), Range(min=1, max=200))}
-_search_base = _required | _station_search | _search_counter
+_search_base = required | _station_search | _search_counter
 _coord_search = {
     Required("coord"): Coordinate,
     Required("maxdist", default=10): All(Coerce(float), Range(min=0, max=360)),
@@ -194,13 +164,13 @@ report_stations = _schema(_report_shared | _uses_cache | _multi_station)
 
 global_report = _schema(_report_shared | _uses_cache)
 
-station = _schema(_required | _single_station)
-stations = _schema(_required | _multi_station)
-station_along = _schema(_required | _flight_path | _distance_from)
-station_list = _schema(_required | _station_list)
+station = _schema(required | _single_station)
+stations = _schema(required | _multi_station)
+station_along = _schema(required | _flight_path | _distance_from)
+station_list = _schema(required | _station_list)
 
-airsig_along = _schema(_required | _flight_path)
-airsig_contains = _schema(_required | _location)
+airsig_along = _schema(required | _flight_path)
+airsig_contains = _schema(required | _location)
 
 coord_search = _schema(_search_base | _coord_search)
 text_search = _schema(_search_base | _text_search)

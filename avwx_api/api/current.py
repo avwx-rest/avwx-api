@@ -165,7 +165,7 @@ class AirSigContains(Base):
         config = structs.ParseConfig.from_params(params, token)
         data, code = await handle.AirSigHandler().fetch_reports(config)
         if code != 200:
-            return self.make_response(data, params.format, code)
+            return self.make_response(data, params, code)
         if isinstance(params.location, Coord):
             coord = params.location
         else:
@@ -175,4 +175,4 @@ class AirSigContains(Base):
             "point": coord,
             "reports": self._filter_contains(coord.point, data["reports"]),
         }
-        return self.make_response(resp, params.format)
+        return self.make_response(resp, params)
