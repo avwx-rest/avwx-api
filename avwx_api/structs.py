@@ -135,6 +135,7 @@ class ParseConfig:
     station: bool
     aviowiki_data: bool
     cache_on_fail: bool
+    nearest_on_fail: bool
 
     @staticmethod
     def use_aviowiki_data(token: Optional[Token]) -> bool:
@@ -151,4 +152,5 @@ class ParseConfig:
             station="info" in keys,
             aviowiki_data=cls.use_aviowiki_data(token),
             cache_on_fail=getattr(params, "onfail", None) == "cache",
+            nearest_on_fail=getattr(params, "onfail", None) == "nearest",
         )

@@ -38,7 +38,7 @@ from avwx_api_core.validate import (
 
 REPORT_TYPES = ("metar", "taf", "pirep", "airsigmet", "mav", "mex", "nbh", "nbs", "nbe")
 OPTIONS = ("info", "translate", "summary", "speech")
-ONFAIL = ("error", "cache")
+ONFAIL = ("error", "cache", "nearest")
 
 
 HELP = HELP_TEXT | {
