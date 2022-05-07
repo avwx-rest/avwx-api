@@ -879,8 +879,8 @@ Field notes:
         + Examples: `spoken,repr`, `runways`
     + filter (string, optional) - Only include these keys in the response
         + Examples: `sanitized`, `flight_rules,altimeter,value`
-    + onfail (string, optional) - Error or use out-of-date cache when unable to fetch report
-        + Supported: `cache`, `error`
+    + onfail (string, optional) - Error, use out-of-date cache, or check nearest station when unable to fetch report
+        + Supported: `cache`, `error`, `nearest`
         + Default: `cache`
 
 ### Get METAR Report [GET]
@@ -1212,8 +1212,8 @@ TAF reports are atmospheric conditions for an area within five nautical miles of
         + Examples: `spoken,repr`, `runways`
     + filter (string, optional) - Only include these keys in the response
         + Examples: `sanitized`, `flight_rules,altimeter,value`
-    + onfail (string, optional) - Error or use out-of-date cache when unable to fetch report
-        + Supported: `cache`, `error`
+    + onfail (string, optional) - Error, use out-of-date cache, or check nearest station when unable to fetch report
+        + Supported: `cache`, `error`, `nearest`
         + Default: `cache`
 
 ### Get TAF Report [GET]
@@ -1932,8 +1932,8 @@ Note: translate, summary, and speech options not yet available
         + Examples: `spoken,repr`, `runways`
     + filter (string, optional) - Only include these keys in the response
         + Examples: `sanitized`, `flight_rules,altimeter,value`
-    + onfail (string, optional) - Error or use out-of-date cache when unable to fetch report
-        + Supported: `cache`, `error`
+    + onfail (string, optional) - Error, use out-of-date cache, or check nearest station when unable to fetch report
+        + Supported: `cache`, `error`, `nearest`
         + Default: `cache`
 
 ### Get PIREP Report [GET]
@@ -4292,8 +4292,8 @@ This endpoint returns the results for multiple stations for a given report type 
         + Examples: `spoken,repr`, `runways`
     + filter (string, optional) - Only include these keys in the response
         + Examples: `sanitized`, `flight_rules,altimeter,value`
-    + onfail (string, optional) - Error or use out-of-date cache when unable to fetch report
-        + Supported: `cache`, `error`
+    + onfail (string, optional) - Error, use out-of-date cache, or check nearest station when unable to fetch report
+        + Supported: `cache`, `error`, `nearest`
         + Default: `cache`
 
 ### Get METAR Reports [GET]
@@ -4501,8 +4501,8 @@ Returns the nearest weather reports to a coordinate pair. By default, these are 
         + Examples: `spoken,repr`, `runways`
     + filter (string, optional) - Only include these keys in the response
         + Examples: `sanitized`, `flight_rules,altimeter,value`
-    + onfail (string, optional) - Error or use out-of-date cache when unable to fetch report
-        + Supported: `cache`, `error`
+    + onfail (string, optional) - Error, use out-of-date cache, or check nearest station when unable to fetch report
+        + Supported: `cache`, `error`, `nearest`
         + Default: `cache`
 
 ### Get METARs around a coordinate [GET]
@@ -4705,8 +4705,8 @@ Returns weather reports by searching for stations by ICAO, IATA, name, city, and
         + Examples: `spoken,repr`, `runways`
     + filter (string, optional) - Only include these keys in the response
         + Examples: `sanitized`, `flight_rules,altimeter,value`
-    + onfail (string, optional) - Error or use out-of-date cache when unable to fetch report
-        + Supported: `cache`, `error`
+    + onfail (string, optional) - Error, use out-of-date cache, or check nearest station when unable to fetch report
+        + Supported: `cache`, `error`, `nearest`
         + Default: `cache`
 
 ### Get METARs via text search [GET]
