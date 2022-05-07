@@ -21,6 +21,12 @@ async def home() -> Response:
     return await app.send_static_file("html/home.html")
 
 
+@app.route("/ping")
+def ping() -> Response:
+    """Send empty 200 ping response"""
+    return Response(None, 200)
+
+
 # API Routing Errors
 
 
