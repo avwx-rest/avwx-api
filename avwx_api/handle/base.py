@@ -52,6 +52,15 @@ class BaseHandler:
             self.option_keys = tuple()
 
     @staticmethod
+    def validate_supplied_report(report: str) -> Optional[DataStatus]:
+        """Validates a report supplied by the user before parsing
+        Returns a data status tuple only if an error is found
+        """
+        if len(report) < 4 or "{" in report or "[" in report:
+            return {"error": "Doesn't look like the raw report string"}, 400
+        return None
+
+    @staticmethod
     def make_meta() -> dict:
         """Create base metadata dict"""
         return {
@@ -134,8 +143,8 @@ class BaseHandler:
     async def _parse_given(self, report: str, config: ParseConfig) -> DataStatus:
         """Attempts to parse a given report supplied by the user"""
         if self.use_station:
-            if len(report) < 4 or "{" in report or "[" in report:
-                return ({"error": "Could not find station at beginning of report"}, 400)
+            if error := self.validate_supplied_report(report):
+                return error
             try:
                 code = (
                     report[6:10] if report.lower().startswith("metar ") else report[:4]
@@ -226,7 +235,7 @@ class ReportHandler(BaseHandler):
         # Conditional defaults
         cache = self.cache if cache is None else cache
         # Fetch a new parsed report
-        location_key = parser.code or (parser.lat, parser.lon)
+        location_key = parser.code or parser.coord.pair
         error, code = await self._update_parser(parser, location_key)
         if error:
             return error, code
@@ -254,9 +263,8 @@ class ReportHandler(BaseHandler):
         if cache is None or app.cache.has_expired(
             cache.get("timestamp"), self.report_type
         ):
-            data, code = await self._new_report(
-                self.parser(station.lookup_code), use_cache
-            )
+            parser = self.parser(station.lookup_code)
+            data, code = await self._new_report(parser, use_cache)
         else:
             data = cache
         return data, cache, code
@@ -331,6 +339,21 @@ class ReportHandler(BaseHandler):
         if station and config.station:
             resp["info"] = await station_data_for(station, config)
         return resp, code
+
+
+class ListedReportHandler(ReportHandler):
+    """Request handler for local report lists"""
+
+    listed_data: bool = True
+
+    async def _parse_given(self, report: str, config: ParseConfig) -> DataStatus:
+        """Attempts to parse a given report supplied by the user"""
+        if error := self.validate_supplied_report(report):
+            return error
+        parser = self.parser("KJFK")  # We ignore the station
+        await parser.async_parse(report)
+        resp = asdict(parser.data[0])
+        return resp, 200
 
 
 class ManagerHandler(BaseHandler):

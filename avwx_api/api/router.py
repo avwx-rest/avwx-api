@@ -14,6 +14,7 @@ from shapely.geometry import LineString, Polygon
 # module
 from avwx import Station
 from avwx.exceptions import BadStation
+from avwx.service import FAA_NOTAM
 from avwx.structs import Coord
 from avwx_api_core.services import FlightRouter, InvalidRequest
 from avwx_api_core.token import Token
@@ -96,6 +97,43 @@ class AirSigAlong(Base):
             "meta": handle.MetarHandler().make_meta(),
             "route": params.route,
             "reports": self._filter_intersects(params.route, data["reports"]),
+        }
+        return self.make_response(resp, params)
+
+
+@app.route("/api/path/notam")
+class NotamAlong(Base):
+    """Returns NOTAMs along a flight path"""
+
+    validator = validate.notam_along
+    struct = structs.NotamRoute
+    handler = handle.NotamHandler
+    key_remv = ("remarks",)
+    example = "notam_along"
+    plan_types = ("enterprise",)
+
+    @crossdomain(origin="*", headers=HEADERS)
+    @parse_params
+    @token_check
+    async def get(self, params: structs.Params, token: Optional[Token]) -> Response:
+        """Returns reports along a flight path"""
+        config = structs.ParseConfig.from_params(params, token)
+        try:
+            reports = await FAA_NOTAM("notam").async_fetch(path=params.route)
+        except InvalidRequest:
+            resp = {"error": "Search criteria appears to be invalid"}
+            return self.make_response(resp, params, 400)
+        parsed = []
+        for report in reports:
+            data, code = await self.handler.parse_given(report, config)
+            if code != 200:
+                continue
+            del data["meta"]
+            parsed.append(data)
+        resp = {
+            "meta": self.handler.make_meta(),
+            "route": params.route,
+            "results": parsed,
         }
         return self.make_response(resp, params)
 

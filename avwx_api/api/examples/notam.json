@@ -1,0 +1,2785 @@
+{
+	"meta": {
+		"timestamp": "2022-06-01T01:22:11.957604Z",
+		"stations_updated": "2022-05-27"
+	},
+	"data": [
+		{
+			"raw": "Q) ZJX/undefined/NBO/A/000/999/2825N08118W025\nA) KMCO\nB) 2107221958\nC) 2307221957EST\nE) SID ORLANDO INTL, ORLANDO, FL.\nORLANDO FOUR DEPARTURE...\nTAKEOFF MINIMUMS: RWY 35R: ATC CLIMB OF 566 FT PER NM TO 2600, RWY 36L: ATC CLIMB OF 637 FT PER NM TO 2300, RWY 36R: ATC CLIMB OF 621 FT PER NM TO 2300, IF UNABLE TO ACCEPT CLIMB RATE, ADVISE ATC PRIOR TO TAXI.",
+			"sanitized": "Q) ZJX/undefined/NBO/A/000/999/2825N08118W025\nA) KMCO\nB) 2107221958\nC) 2307221957EST\nE) SID ORLANDO INTL, ORLANDO, FL.\nORLANDO FOUR DEPARTURE...\nTAKEOFF MINIMUMS: RWY 35R: ATC CLIMB OF 566 FT PER NM TO 2600, RWY 36L: ATC CLIMB OF 637 FT PER NM TO 2300, RWY 36R: ATC CLIMB OF 621 FT PER NM TO 2300, IF UNABLE TO ACCEPT CLIMB RATE, ADVISE ATC PRIOR TO TAXI.",
+			"station": "KMCO",
+			"time": {
+				"repr": "08/10/2021 1337",
+				"dt": "2021-08-10T13:37:00Z"
+			},
+			"number": null,
+			"replaces": null,
+			"type": null,
+			"qualifiers": {
+				"repr": "ZJX/undefined/NBO/A/000/999/2825N08118W025",
+				"fir": "ZJX",
+				"subject": null,
+				"condition": null,
+				"traffic": null,
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "025",
+					"value": 25,
+					"spoken": "two five"
+				}
+			},
+			"start_time": {
+				"repr": "2107221958",
+				"dt": "2021-07-22T19:58:00Z"
+			},
+			"end_time": {
+				"repr": "2307221957EST",
+				"dt": "2023-07-22T19:57:00Z"
+			},
+			"schedule": null,
+			"body": "SID ORLANDO INTL, ORLANDO, FL.\nORLANDO FOUR DEPARTURE...\nTAKEOFF MINIMUMS: RWY 35R: ATC CLIMB OF 566 FT PER NM TO 2600, RWY 36L: ATC CLIMB OF 637 FT PER NM TO 2300, RWY 36R: ATC CLIMB OF 621 FT PER NM TO 2300, IF UNABLE TO ACCEPT CLIMB RATE, ADVISE ATC PRIOR TO TAXI.",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "12/083 NOTAMN \r\nQ) ZJX/QMXLT/IV/NBO/A/000/999/2825N08118W005 \r\nA) KMCO \r\nB) 2112071637 \r\nC) 2206302359 \r\n\r\nE) TWY A BTN WEST RAMP SOUTH END AND TWY B10 NONMOVEMENT AREA",
+			"sanitized": "12/083 NOTAMN \nQ) ZJX/QMXLT/IV/NBO/A/000/999/2825N08118W005 \nA) KMCO \nB) 2112071637 \nC) 2206302359 \n\nE) TWY A BTN WEST RAMP SOUTH END AND TWY B10 NONMOVEMENT AREA",
+			"station": "KMCO",
+			"time": {
+				"repr": "12/07/2021 1637",
+				"dt": "2021-12-07T16:37:00Z"
+			},
+			"number": "12/083",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMN",
+				"value": "New"
+			},
+			"qualifiers": {
+				"repr": "ZJX/QMXLT/IV/NBO/A/000/999/2825N08118W005",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "MX",
+					"value": "Taxiway"
+				},
+				"condition": {
+					"repr": "LT",
+					"value": "Limited to"
+				},
+				"traffic": {
+					"repr": "IV",
+					"value": "IFR and VFR"
+				},
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "005",
+					"value": 5,
+					"spoken": "five"
+				}
+			},
+			"start_time": {
+				"repr": "2112071637",
+				"dt": "2021-12-07T16:37:00Z"
+			},
+			"end_time": {
+				"repr": "2206302359",
+				"dt": "2022-06-30T23:59:00Z"
+			},
+			"schedule": null,
+			"body": "TWY A BTN WEST RAMP SOUTH END AND TWY B10 NONMOVEMENT AREA",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "Q) ZJX/QXXXX/I/NBO/A/000/999/2825N08118W025\nA) KMCO\nB) 2112212148\nC) 2208022148EST\nE) IAP ORLANDO INTL, ORLANDO, FL.\nILS RWY 17L (SA CAT I), AMDT 4A ...\nILS RWY 35L (SA CAT I), AMDT 8 ...\nILS RWY 35R (SA CAT I), AMDT 5A ...\nILS RWY 36R (SA CAT I), AMDT 11 ...\nILS RWY 17R (CAT II), AMDT 5E ...\nILS RWY 17L (CAT II - III), AMDT 4A ...\nILS RWY 35L (CAT II - III), AMDT 8 ...\nILS RWY 35R (CAT II - III), AMDT 5A ...\nILS RWY 36R (CAT II - III), AMDT 11 ...\nPROCEDURE NA EXC FOR ACFT USING APPROVED ALTERNATIVE METHODS OF COMPLIANCE DUE TO 5G C-BAND INTERFERENCE PLUS SEE AIRWORTHINESS DIRECTIVES 2021-23-12, 2021-23-13",
+			"sanitized": "Q) ZJX/QXXXX/I/NBO/A/000/999/2825N08118W025\nA) KMCO\nB) 2112212148\nC) 2208022148EST\nE) IAP ORLANDO INTL, ORLANDO, FL.\nILS RWY 17L (SA CAT I), AMDT 4A ...\nILS RWY 35L (SA CAT I), AMDT 8 ...\nILS RWY 35R (SA CAT I), AMDT 5A ...\nILS RWY 36R (SA CAT I), AMDT 11 ...\nILS RWY 17R (CAT II), AMDT 5E ...\nILS RWY 17L (CAT II - III), AMDT 4A ...\nILS RWY 35L (CAT II - III), AMDT 8 ...\nILS RWY 35R (CAT II - III), AMDT 5A ...\nILS RWY 36R (CAT II - III), AMDT 11 ...\nPROCEDURE NA EXC FOR ACFT USING APPROVED ALTERNATIVE METHODS OF COMPLIANCE DUE TO 5G C-BAND INTERFERENCE PLUS SEE AIRWORTHINESS DIRECTIVES 2021-23-12, 2021-23-13",
+			"station": "KMCO",
+			"time": {
+				"repr": "01/13/2022 0506",
+				"dt": "2022-01-13T05:06:00Z"
+			},
+			"number": null,
+			"replaces": null,
+			"type": null,
+			"qualifiers": {
+				"repr": "ZJX/QXXXX/I/NBO/A/000/999/2825N08118W025",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "XX",
+					"value": "Unknown"
+				},
+				"condition": {
+					"repr": "XX",
+					"value": "Unknown"
+				},
+				"traffic": {
+					"repr": "I",
+					"value": "IFR"
+				},
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "025",
+					"value": 25,
+					"spoken": "two five"
+				}
+			},
+			"start_time": {
+				"repr": "2112212148",
+				"dt": "2021-12-21T21:48:00Z"
+			},
+			"end_time": {
+				"repr": "2208022148EST",
+				"dt": "2022-08-02T21:48:00Z"
+			},
+			"schedule": null,
+			"body": "IAP ORLANDO INTL, ORLANDO, FL.\nILS RWY 17L (SA CAT I), AMDT 4A ...\nILS RWY 35L (SA CAT I), AMDT 8 ...\nILS RWY 35R (SA CAT I), AMDT 5A ...\nILS RWY 36R (SA CAT I), AMDT 11 ...\nILS RWY 17R (CAT II), AMDT 5E ...\nILS RWY 17L (CAT II - III), AMDT 4A ...\nILS RWY 35L (CAT II - III), AMDT 8 ...\nILS RWY 35R (CAT II - III), AMDT 5A ...\nILS RWY 36R (CAT II - III), AMDT 11 ...\nPROCEDURE NA EXC FOR ACFT USING APPROVED ALTERNATIVE METHODS OF COMPLIANCE DUE TO 5G C-BAND INTERFERENCE PLUS SEE AIRWORTHINESS DIRECTIVES 2021-23-12, 2021-23-13",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "02/087 NOTAMR \r\nQ) ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005 \r\nA) KMCO \r\nB) 2202161130 \r\nC) 2206082100 \r\n\r\nE) TWY E BTN RWY 17R/35L AND TWY E6 CLSD LGTD AND BARRICADED",
+			"sanitized": "02/087 NOTAMR \nQ) ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005 \nA) KMCO \nB) 2202161130 \nC) 2206082100 \n\nE) TWY E BTN RWY 17R/35L AND TWY E6 CLSD LGTD AND BARRICADED",
+			"station": "KMCO",
+			"time": {
+				"repr": "02/16/2022 1130",
+				"dt": "2022-02-16T11:30:00Z"
+			},
+			"number": "02/087",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMR",
+				"value": "Replace"
+			},
+			"qualifiers": {
+				"repr": "ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "MX",
+					"value": "Taxiway"
+				},
+				"condition": {
+					"repr": "LC",
+					"value": "Closed"
+				},
+				"traffic": {
+					"repr": "IV",
+					"value": "IFR and VFR"
+				},
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "005",
+					"value": 5,
+					"spoken": "five"
+				}
+			},
+			"start_time": {
+				"repr": "2202161130",
+				"dt": "2022-02-16T11:30:00Z"
+			},
+			"end_time": {
+				"repr": "2206082100",
+				"dt": "2022-06-08T21:00:00Z"
+			},
+			"schedule": null,
+			"body": "TWY E BTN RWY 17R/35L AND TWY E6 CLSD LGTD AND BARRICADED",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "02/088 NOTAMR \r\nQ) ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005 \r\nA) KMCO \r\nB) 2202161131 \r\nC) 2206082100 \r\n\r\nE) TWY E6 CLSD LGTD AND BARRICADED",
+			"sanitized": "02/088 NOTAMR \nQ) ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005 \nA) KMCO \nB) 2202161131 \nC) 2206082100 \n\nE) TWY E6 CLSD LGTD AND BARRICADED",
+			"station": "KMCO",
+			"time": {
+				"repr": "02/16/2022 1131",
+				"dt": "2022-02-16T11:31:00Z"
+			},
+			"number": "02/088",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMR",
+				"value": "Replace"
+			},
+			"qualifiers": {
+				"repr": "ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "MX",
+					"value": "Taxiway"
+				},
+				"condition": {
+					"repr": "LC",
+					"value": "Closed"
+				},
+				"traffic": {
+					"repr": "IV",
+					"value": "IFR and VFR"
+				},
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "005",
+					"value": 5,
+					"spoken": "five"
+				}
+			},
+			"start_time": {
+				"repr": "2202161131",
+				"dt": "2022-02-16T11:31:00Z"
+			},
+			"end_time": {
+				"repr": "2206082100",
+				"dt": "2022-06-08T21:00:00Z"
+			},
+			"schedule": null,
+			"body": "TWY E6 CLSD LGTD AND BARRICADED",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "02/089 NOTAMN \r\nQ) ZJX/QMXHW/IV/NBO/A/000/999/2825N08118W005 \r\nA) KMCO \r\nB) 2202161139 \r\nC) 2206082100 \r\n\r\nE) TWY E BTN RWY 17R/35L AND TWY E6 WIP CONST LGTD AND BARRICADED",
+			"sanitized": "02/089 NOTAMN \nQ) ZJX/QMXHW/IV/NBO/A/000/999/2825N08118W005 \nA) KMCO \nB) 2202161139 \nC) 2206082100 \n\nE) TWY E BTN RWY 17R/35L AND TWY E6 WIP CONST LGTD AND BARRICADED",
+			"station": "KMCO",
+			"time": {
+				"repr": "02/16/2022 1139",
+				"dt": "2022-02-16T11:39:00Z"
+			},
+			"number": "02/089",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMN",
+				"value": "New"
+			},
+			"qualifiers": {
+				"repr": "ZJX/QMXHW/IV/NBO/A/000/999/2825N08118W005",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "MX",
+					"value": "Taxiway"
+				},
+				"condition": {
+					"repr": "HW",
+					"value": "Work in progress"
+				},
+				"traffic": {
+					"repr": "IV",
+					"value": "IFR and VFR"
+				},
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "005",
+					"value": 5,
+					"spoken": "five"
+				}
+			},
+			"start_time": {
+				"repr": "2202161139",
+				"dt": "2022-02-16T11:39:00Z"
+			},
+			"end_time": {
+				"repr": "2206082100",
+				"dt": "2022-06-08T21:00:00Z"
+			},
+			"schedule": null,
+			"body": "TWY E BTN RWY 17R/35L AND TWY E6 WIP CONST LGTD AND BARRICADED",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "02/090 NOTAMN \r\nQ) ZJX/QMXHW/IV/NBO/A/000/999/2825N08118W005 \r\nA) KMCO \r\nB) 2202161140 \r\nC) 2206082100 \r\n\r\nE) TWY E6 WIP CONST LGTD AND BARRICADED",
+			"sanitized": "02/090 NOTAMN \nQ) ZJX/QMXHW/IV/NBO/A/000/999/2825N08118W005 \nA) KMCO \nB) 2202161140 \nC) 2206082100 \n\nE) TWY E6 WIP CONST LGTD AND BARRICADED",
+			"station": "KMCO",
+			"time": {
+				"repr": "02/16/2022 1140",
+				"dt": "2022-02-16T11:40:00Z"
+			},
+			"number": "02/090",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMN",
+				"value": "New"
+			},
+			"qualifiers": {
+				"repr": "ZJX/QMXHW/IV/NBO/A/000/999/2825N08118W005",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "MX",
+					"value": "Taxiway"
+				},
+				"condition": {
+					"repr": "HW",
+					"value": "Work in progress"
+				},
+				"traffic": {
+					"repr": "IV",
+					"value": "IFR and VFR"
+				},
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "005",
+					"value": 5,
+					"spoken": "five"
+				}
+			},
+			"start_time": {
+				"repr": "2202161140",
+				"dt": "2022-02-16T11:40:00Z"
+			},
+			"end_time": {
+				"repr": "2206082100",
+				"dt": "2022-06-08T21:00:00Z"
+			},
+			"schedule": null,
+			"body": "TWY E6 WIP CONST LGTD AND BARRICADED",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "02/086 NOTAMN \r\nQ) ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005 \r\nA) KMCO \r\nB) 2202171200 \r\nC) 2206082100 \r\n\r\nE) TWY F BTN RWY 17R/35L AND TWY N CLSD LGTD AND BARRICADED",
+			"sanitized": "02/086 NOTAMN \nQ) ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005 \nA) KMCO \nB) 2202171200 \nC) 2206082100 \n\nE) TWY F BTN RWY 17R/35L AND TWY N CLSD LGTD AND BARRICADED",
+			"station": "KMCO",
+			"time": {
+				"repr": "02/16/2022 1129",
+				"dt": "2022-02-16T11:29:00Z"
+			},
+			"number": "02/086",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMN",
+				"value": "New"
+			},
+			"qualifiers": {
+				"repr": "ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "MX",
+					"value": "Taxiway"
+				},
+				"condition": {
+					"repr": "LC",
+					"value": "Closed"
+				},
+				"traffic": {
+					"repr": "IV",
+					"value": "IFR and VFR"
+				},
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "005",
+					"value": 5,
+					"spoken": "five"
+				}
+			},
+			"start_time": {
+				"repr": "2202171200",
+				"dt": "2022-02-17T12:00:00Z"
+			},
+			"end_time": {
+				"repr": "2206082100",
+				"dt": "2022-06-08T21:00:00Z"
+			},
+			"schedule": null,
+			"body": "TWY F BTN RWY 17R/35L AND TWY N CLSD LGTD AND BARRICADED",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "02/091 NOTAMN \r\nQ) ZJX/QMXHW/IV/NBO/A/000/999/2825N08118W005 \r\nA) KMCO \r\nB) 2202171200 \r\nC) 2206082100 \r\n\r\nE) TWY F BTN RWY 17R/35L AND TWY N WIP CONST LGTD AND BARRICADED",
+			"sanitized": "02/091 NOTAMN \nQ) ZJX/QMXHW/IV/NBO/A/000/999/2825N08118W005 \nA) KMCO \nB) 2202171200 \nC) 2206082100 \n\nE) TWY F BTN RWY 17R/35L AND TWY N WIP CONST LGTD AND BARRICADED",
+			"station": "KMCO",
+			"time": {
+				"repr": "02/16/2022 1141",
+				"dt": "2022-02-16T11:41:00Z"
+			},
+			"number": "02/091",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMN",
+				"value": "New"
+			},
+			"qualifiers": {
+				"repr": "ZJX/QMXHW/IV/NBO/A/000/999/2825N08118W005",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "MX",
+					"value": "Taxiway"
+				},
+				"condition": {
+					"repr": "HW",
+					"value": "Work in progress"
+				},
+				"traffic": {
+					"repr": "IV",
+					"value": "IFR and VFR"
+				},
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "005",
+					"value": 5,
+					"spoken": "five"
+				}
+			},
+			"start_time": {
+				"repr": "2202171200",
+				"dt": "2022-02-17T12:00:00Z"
+			},
+			"end_time": {
+				"repr": "2206082100",
+				"dt": "2022-06-08T21:00:00Z"
+			},
+			"schedule": null,
+			"body": "TWY F BTN RWY 17R/35L AND TWY N WIP CONST LGTD AND BARRICADED",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "03/240 NOTAMN \r\nQ) ZJX/QLAAS/IV/BO/A/000/999/2825N08118W005 \r\nA) KMCO \r\nB) 2204041000 \r\nC) 2210012000 \r\n\r\nE) RWY 17L ALS U/S",
+			"sanitized": "03/240 NOTAMN \nQ) ZJX/QLAAS/IV/BO/A/000/999/2825N08118W005 \nA) KMCO \nB) 2204041000 \nC) 2210012000 \n\nE) RWY 17L ALS U/S",
+			"station": "KMCO",
+			"time": {
+				"repr": "03/28/2022 1000",
+				"dt": "2022-03-28T10:00:00Z"
+			},
+			"number": "03/240",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMN",
+				"value": "New"
+			},
+			"qualifiers": {
+				"repr": "ZJX/QLAAS/IV/BO/A/000/999/2825N08118W005",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "LA",
+					"value": "Approach lighting system"
+				},
+				"condition": {
+					"repr": "AS",
+					"value": "Unserviceable"
+				},
+				"traffic": {
+					"repr": "IV",
+					"value": "IFR and VFR"
+				},
+				"purpose": [
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "005",
+					"value": 5,
+					"spoken": "five"
+				}
+			},
+			"start_time": {
+				"repr": "2204041000",
+				"dt": "2022-04-04T10:00:00Z"
+			},
+			"end_time": {
+				"repr": "2210012000",
+				"dt": "2022-10-01T20:00:00Z"
+			},
+			"schedule": null,
+			"body": "RWY 17L ALS U/S",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "04/149 NOTAMN \r\nQ) ZJX/QMMXX/IV/NBO/A/000/999/2825N08118W005 \r\nA) KMCO \r\nB) 2204181643 \r\nC) 2206302359 \r\n\r\nE) RWY 18R/36L CL MARKINGS OBSCURED",
+			"sanitized": "04/149 NOTAMN \nQ) ZJX/QMMXX/IV/NBO/A/000/999/2825N08118W005 \nA) KMCO \nB) 2204181643 \nC) 2206302359 \n\nE) RWY 18R/36L CL MARKINGS OBSCURED",
+			"station": "KMCO",
+			"time": {
+				"repr": "04/18/2022 1642",
+				"dt": "2022-04-18T16:42:00Z"
+			},
+			"number": "04/149",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMN",
+				"value": "New"
+			},
+			"qualifiers": {
+				"repr": "ZJX/QMMXX/IV/NBO/A/000/999/2825N08118W005",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "MM",
+					"value": "Daylight markings"
+				},
+				"condition": {
+					"repr": "XX",
+					"value": "Unknown"
+				},
+				"traffic": {
+					"repr": "IV",
+					"value": "IFR and VFR"
+				},
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "005",
+					"value": 5,
+					"spoken": "five"
+				}
+			},
+			"start_time": {
+				"repr": "2204181643",
+				"dt": "2022-04-18T16:43:00Z"
+			},
+			"end_time": {
+				"repr": "2206302359",
+				"dt": "2022-06-30T23:59:00Z"
+			},
+			"schedule": null,
+			"body": "RWY 18R/36L CL MARKINGS OBSCURED",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "04/166 NOTAMN\nQ) ZJX/QOLAS/IV/M/E/000/199.8/2825N08118W005\nA) KMCO\nB) 2204211135\nC) 2207200400 \nE) OBST TOWER 60 (32.1 AGL) 2.2 WNW LGTS U/S (ASR 1020301)",
+			"sanitized": "04/166 NOTAMN\nQ) ZJX/QOLAS/IV/M/E/000/199.8/2825N08118W005\nA) KMCO\nB) 2204211135\nC) 2207200400 \nE) OBST TOWER 60 (32.1 AGL) 2.2 WNW LGTS U/S (ASR 1020301)",
+			"station": "KMCO",
+			"time": {
+				"repr": "04/21/2022 1135",
+				"dt": "2022-04-21T11:35:00Z"
+			},
+			"number": "04/166",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMN",
+				"value": "New"
+			},
+			"qualifiers": {
+				"repr": "ZJX/QOLAS/IV/M/E/000/199.8/2825N08118W005",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "OL",
+					"value": "Obstacle lights"
+				},
+				"condition": {
+					"repr": "AS",
+					"value": "Unserviceable"
+				},
+				"traffic": {
+					"repr": "IV",
+					"value": "IFR and VFR"
+				},
+				"purpose": [
+					{
+						"repr": "M",
+						"value": "Miscellaneous"
+					}
+				],
+				"scope": [
+					{
+						"repr": "E",
+						"value": "En Route"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "199.8",
+					"value": 199.8,
+					"spoken": "one nine nine point eight"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "005",
+					"value": 5,
+					"spoken": "five"
+				}
+			},
+			"start_time": {
+				"repr": "2204211135",
+				"dt": "2022-04-21T11:35:00Z"
+			},
+			"end_time": {
+				"repr": "2207200400",
+				"dt": "2022-07-20T04:00:00Z"
+			},
+			"schedule": null,
+			"body": "OBST TOWER 60 (32.1 AGL) 2.2 WNW LGTS U/S (ASR 1020301)",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "04/169 NOTAMN \r\nQ) ZJX/QMMXX/IV/NBO/A/000/999/2825N08118W005 \r\nA) KMCO \r\nB) 2204211344 \r\nC) 2206302359 \r\n\r\nE) RWY 17R/35L CL MARKINGS OBSCURED",
+			"sanitized": "04/169 NOTAMN \nQ) ZJX/QMMXX/IV/NBO/A/000/999/2825N08118W005 \nA) KMCO \nB) 2204211344 \nC) 2206302359 \n\nE) RWY 17R/35L CL MARKINGS OBSCURED",
+			"station": "KMCO",
+			"time": {
+				"repr": "04/21/2022 1343",
+				"dt": "2022-04-21T13:43:00Z"
+			},
+			"number": "04/169",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMN",
+				"value": "New"
+			},
+			"qualifiers": {
+				"repr": "ZJX/QMMXX/IV/NBO/A/000/999/2825N08118W005",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "MM",
+					"value": "Daylight markings"
+				},
+				"condition": {
+					"repr": "XX",
+					"value": "Unknown"
+				},
+				"traffic": {
+					"repr": "IV",
+					"value": "IFR and VFR"
+				},
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "005",
+					"value": 5,
+					"spoken": "five"
+				}
+			},
+			"start_time": {
+				"repr": "2204211344",
+				"dt": "2022-04-21T13:44:00Z"
+			},
+			"end_time": {
+				"repr": "2206302359",
+				"dt": "2022-06-30T23:59:00Z"
+			},
+			"schedule": null,
+			"body": "RWY 17R/35L CL MARKINGS OBSCURED",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "04/171 NOTAMR \r\nQ) ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005 \r\nA) KMCO \r\nB) 2204221119 \r\nC) 2209052359 \r\n\r\nE) TWY B BTN TWY B10 AND TWY B12 CLSD LGTD AND BARRICADED",
+			"sanitized": "04/171 NOTAMR \nQ) ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005 \nA) KMCO \nB) 2204221119 \nC) 2209052359 \n\nE) TWY B BTN TWY B10 AND TWY B12 CLSD LGTD AND BARRICADED",
+			"station": "KMCO",
+			"time": {
+				"repr": "04/22/2022 1117",
+				"dt": "2022-04-22T11:17:00Z"
+			},
+			"number": "04/171",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMR",
+				"value": "Replace"
+			},
+			"qualifiers": {
+				"repr": "ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "MX",
+					"value": "Taxiway"
+				},
+				"condition": {
+					"repr": "LC",
+					"value": "Closed"
+				},
+				"traffic": {
+					"repr": "IV",
+					"value": "IFR and VFR"
+				},
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "005",
+					"value": 5,
+					"spoken": "five"
+				}
+			},
+			"start_time": {
+				"repr": "2204221119",
+				"dt": "2022-04-22T11:19:00Z"
+			},
+			"end_time": {
+				"repr": "2209052359",
+				"dt": "2022-09-05T23:59:00Z"
+			},
+			"schedule": null,
+			"body": "TWY B BTN TWY B10 AND TWY B12 CLSD LGTD AND BARRICADED",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "04/172 NOTAMR \r\nQ) ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005 \r\nA) KMCO \r\nB) 2204221119 \r\nC) 2209052359 \r\n\r\nE) TWY B11 BTN TWY B AND SOUTH TERMINAL C RAMP CLSD LGTD AND BARRICADED",
+			"sanitized": "04/172 NOTAMR \nQ) ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005 \nA) KMCO \nB) 2204221119 \nC) 2209052359 \n\nE) TWY B11 BTN TWY B AND SOUTH TERMINAL C RAMP CLSD LGTD AND BARRICADED",
+			"station": "KMCO",
+			"time": {
+				"repr": "04/22/2022 1118",
+				"dt": "2022-04-22T11:18:00Z"
+			},
+			"number": "04/172",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMR",
+				"value": "Replace"
+			},
+			"qualifiers": {
+				"repr": "ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "MX",
+					"value": "Taxiway"
+				},
+				"condition": {
+					"repr": "LC",
+					"value": "Closed"
+				},
+				"traffic": {
+					"repr": "IV",
+					"value": "IFR and VFR"
+				},
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "005",
+					"value": 5,
+					"spoken": "five"
+				}
+			},
+			"start_time": {
+				"repr": "2204221119",
+				"dt": "2022-04-22T11:19:00Z"
+			},
+			"end_time": {
+				"repr": "2209052359",
+				"dt": "2022-09-05T23:59:00Z"
+			},
+			"schedule": null,
+			"body": "TWY B11 BTN TWY B AND SOUTH TERMINAL C RAMP CLSD LGTD AND BARRICADED",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "04/173 NOTAMR \r\nQ) ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005 \r\nA) KMCO \r\nB) 2204221120 \r\nC) 2209052359 \r\n\r\nE) TWY B12 BTN TWY B AND SOUTH TERMINAL C RAMP CLSD LGTD AND BARRICADED",
+			"sanitized": "04/173 NOTAMR \nQ) ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005 \nA) KMCO \nB) 2204221120 \nC) 2209052359 \n\nE) TWY B12 BTN TWY B AND SOUTH TERMINAL C RAMP CLSD LGTD AND BARRICADED",
+			"station": "KMCO",
+			"time": {
+				"repr": "04/22/2022 1119",
+				"dt": "2022-04-22T11:19:00Z"
+			},
+			"number": "04/173",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMR",
+				"value": "Replace"
+			},
+			"qualifiers": {
+				"repr": "ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "MX",
+					"value": "Taxiway"
+				},
+				"condition": {
+					"repr": "LC",
+					"value": "Closed"
+				},
+				"traffic": {
+					"repr": "IV",
+					"value": "IFR and VFR"
+				},
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "005",
+					"value": 5,
+					"spoken": "five"
+				}
+			},
+			"start_time": {
+				"repr": "2204221120",
+				"dt": "2022-04-22T11:20:00Z"
+			},
+			"end_time": {
+				"repr": "2209052359",
+				"dt": "2022-09-05T23:59:00Z"
+			},
+			"schedule": null,
+			"body": "TWY B12 BTN TWY B AND SOUTH TERMINAL C RAMP CLSD LGTD AND BARRICADED",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "04/175 NOTAMR \r\nQ) ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005 \r\nA) KMCO \r\nB) 2204221121 \r\nC) 2209052359 \r\n\r\nE) TWY E1 BTN TWY F AND TWY B9 CLSD LGTD AND BARRICADED",
+			"sanitized": "04/175 NOTAMR \nQ) ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005 \nA) KMCO \nB) 2204221121 \nC) 2209052359 \n\nE) TWY E1 BTN TWY F AND TWY B9 CLSD LGTD AND BARRICADED",
+			"station": "KMCO",
+			"time": {
+				"repr": "04/22/2022 1120",
+				"dt": "2022-04-22T11:20:00Z"
+			},
+			"number": "04/175",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMR",
+				"value": "Replace"
+			},
+			"qualifiers": {
+				"repr": "ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "MX",
+					"value": "Taxiway"
+				},
+				"condition": {
+					"repr": "LC",
+					"value": "Closed"
+				},
+				"traffic": {
+					"repr": "IV",
+					"value": "IFR and VFR"
+				},
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "005",
+					"value": 5,
+					"spoken": "five"
+				}
+			},
+			"start_time": {
+				"repr": "2204221121",
+				"dt": "2022-04-22T11:21:00Z"
+			},
+			"end_time": {
+				"repr": "2209052359",
+				"dt": "2022-09-05T23:59:00Z"
+			},
+			"schedule": null,
+			"body": "TWY E1 BTN TWY F AND TWY B9 CLSD LGTD AND BARRICADED",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "04/176 NOTAMR \r\nQ) ZJX/QMNLC/IV/NBO/A/000/999/2825N08118W005 \r\nA) KMCO \r\nB) 2204221122 \r\nC) 2209052359 \r\n\r\nE) APRON TXL E1 CLSD LGTD AND BARRICADED",
+			"sanitized": "04/176 NOTAMR \nQ) ZJX/QMNLC/IV/NBO/A/000/999/2825N08118W005 \nA) KMCO \nB) 2204221122 \nC) 2209052359 \n\nE) APRON TXL E1 CLSD LGTD AND BARRICADED",
+			"station": "KMCO",
+			"time": {
+				"repr": "04/22/2022 1121",
+				"dt": "2022-04-22T11:21:00Z"
+			},
+			"number": "04/176",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMR",
+				"value": "Replace"
+			},
+			"qualifiers": {
+				"repr": "ZJX/QMNLC/IV/NBO/A/000/999/2825N08118W005",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "MN",
+					"value": "Apron"
+				},
+				"condition": {
+					"repr": "LC",
+					"value": "Closed"
+				},
+				"traffic": {
+					"repr": "IV",
+					"value": "IFR and VFR"
+				},
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "005",
+					"value": 5,
+					"spoken": "five"
+				}
+			},
+			"start_time": {
+				"repr": "2204221122",
+				"dt": "2022-04-22T11:22:00Z"
+			},
+			"end_time": {
+				"repr": "2209052359",
+				"dt": "2022-09-05T23:59:00Z"
+			},
+			"schedule": null,
+			"body": "APRON TXL E1 CLSD LGTD AND BARRICADED",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "05/008 NOTAMN \r\nQ) ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005 \r\nA) KMCO \r\nB) 2205031117 \r\nC) 2209052359 \r\n\r\nE) TWY B9 BTN TWY C AND TWY E1 CLSD LGTD AND BARRICADED",
+			"sanitized": "05/008 NOTAMN \nQ) ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005 \nA) KMCO \nB) 2205031117 \nC) 2209052359 \n\nE) TWY B9 BTN TWY C AND TWY E1 CLSD LGTD AND BARRICADED",
+			"station": "KMCO",
+			"time": {
+				"repr": "05/03/2022 1115",
+				"dt": "2022-05-03T11:15:00Z"
+			},
+			"number": "05/008",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMN",
+				"value": "New"
+			},
+			"qualifiers": {
+				"repr": "ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "MX",
+					"value": "Taxiway"
+				},
+				"condition": {
+					"repr": "LC",
+					"value": "Closed"
+				},
+				"traffic": {
+					"repr": "IV",
+					"value": "IFR and VFR"
+				},
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "005",
+					"value": 5,
+					"spoken": "five"
+				}
+			},
+			"start_time": {
+				"repr": "2205031117",
+				"dt": "2022-05-03T11:17:00Z"
+			},
+			"end_time": {
+				"repr": "2209052359",
+				"dt": "2022-09-05T23:59:00Z"
+			},
+			"schedule": null,
+			"body": "TWY B9 BTN TWY C AND TWY E1 CLSD LGTD AND BARRICADED",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "05/169 NOTAMN \r\nQ) ZJX/QMMXX/IV/NBO/A/000/999/2825N08118W005 \r\nA) KMCO \r\nB) 2205272130 \r\nC) 2206302100 \r\n\r\nE) TWY N EDGE MARKINGS BTN TWY N4 AND TWY F NONSTD",
+			"sanitized": "05/169 NOTAMN \nQ) ZJX/QMMXX/IV/NBO/A/000/999/2825N08118W005 \nA) KMCO \nB) 2205272130 \nC) 2206302100 \n\nE) TWY N EDGE MARKINGS BTN TWY N4 AND TWY F NONSTD",
+			"station": "KMCO",
+			"time": {
+				"repr": "05/27/2022 2129",
+				"dt": "2022-05-27T21:29:00Z"
+			},
+			"number": "05/169",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMN",
+				"value": "New"
+			},
+			"qualifiers": {
+				"repr": "ZJX/QMMXX/IV/NBO/A/000/999/2825N08118W005",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "MM",
+					"value": "Daylight markings"
+				},
+				"condition": {
+					"repr": "XX",
+					"value": "Unknown"
+				},
+				"traffic": {
+					"repr": "IV",
+					"value": "IFR and VFR"
+				},
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "005",
+					"value": 5,
+					"spoken": "five"
+				}
+			},
+			"start_time": {
+				"repr": "2205272130",
+				"dt": "2022-05-27T21:30:00Z"
+			},
+			"end_time": {
+				"repr": "2206302100",
+				"dt": "2022-06-30T21:00:00Z"
+			},
+			"schedule": null,
+			"body": "TWY N EDGE MARKINGS BTN TWY N4 AND TWY F NONSTD",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "05/170 NOTAMN \r\nQ) ZJX//IV/NBO/A/000/999/2825N08118W025 \r\nA) KMCO \r\nB) 2205280804 \r\nC) 2210012000 \r\n\r\nE) ILS RWY 17L CAT II NOT AUTH",
+			"sanitized": "05/170 NOTAMN \nQ) ZJX//IV/NBO/A/000/999/2825N08118W025 \nA) KMCO \nB) 2205280804 \nC) 2210012000 \n\nE) ILS RWY 17L CAT II NOT AUTH",
+			"station": "KMCO",
+			"time": {
+				"repr": "05/28/2022 0802",
+				"dt": "2022-05-28T08:02:00Z"
+			},
+			"number": "05/170",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMN",
+				"value": "New"
+			},
+			"qualifiers": {
+				"repr": "ZJX//IV/NBO/A/000/999/2825N08118W025",
+				"fir": "ZJX",
+				"subject": null,
+				"condition": null,
+				"traffic": {
+					"repr": "IV",
+					"value": "IFR and VFR"
+				},
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "025",
+					"value": 25,
+					"spoken": "two five"
+				}
+			},
+			"start_time": {
+				"repr": "2205280804",
+				"dt": "2022-05-28T08:04:00Z"
+			},
+			"end_time": {
+				"repr": "2210012000",
+				"dt": "2022-10-01T20:00:00Z"
+			},
+			"schedule": null,
+			"body": "ILS RWY 17L CAT II NOT AUTH",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "Q) ZJX//NBO/A/000/999/2825N08118W025\nA) KMCO\nB) 2204090001\nC) 2211182359EST\nE) IAP ORLANDO INTL, ORLANDO, FL.\nILS OR LOC RWY 18R, AMDT 11A...\nDME REQUIRED EXCEPT FOR AIRCRAFT EQUIPPED WITH SUITABLE RNAV SYSTEM WITH GPS,\nMLB VOR OUT OF SERVICE.",
+			"sanitized": "Q) ZJX//NBO/A/000/999/2825N08118W025\nA) KMCO\nB) 2204090001\nC) 2211182359EST\nE) IAP ORLANDO INTL, ORLANDO, FL.\nILS OR LOC RWY 18R, AMDT 11A...\nDME REQUIRED EXCEPT FOR AIRCRAFT EQUIPPED WITH SUITABLE RNAV SYSTEM WITH GPS,\nMLB VOR OUT OF SERVICE.",
+			"station": "KMCO",
+			"time": {
+				"repr": "05/29/2022 2203",
+				"dt": "2022-05-29T22:03:00Z"
+			},
+			"number": null,
+			"replaces": null,
+			"type": null,
+			"qualifiers": {
+				"repr": "ZJX//NBO/A/000/999/2825N08118W025",
+				"fir": "ZJX",
+				"subject": null,
+				"condition": null,
+				"traffic": null,
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "025",
+					"value": 25,
+					"spoken": "two five"
+				}
+			},
+			"start_time": {
+				"repr": "2204090001",
+				"dt": "2022-04-09T00:01:00Z"
+			},
+			"end_time": {
+				"repr": "2211182359EST",
+				"dt": "2022-11-18T23:59:00Z"
+			},
+			"schedule": null,
+			"body": "IAP ORLANDO INTL, ORLANDO, FL.\nILS OR LOC RWY 18R, AMDT 11A...\nDME REQUIRED EXCEPT FOR AIRCRAFT EQUIPPED WITH SUITABLE RNAV SYSTEM WITH GPS,\nMLB VOR OUT OF SERVICE.",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "Q) ZJX/QPIXX/I/NBO/A/000/999/2825N08118W025\nA) KMCO\nB) 2204090004\nC) 2211190002EST\nE) IAP ORLANDO INTL, ORLANDO, FL.\nILS OR LOC RWY 35L, AMDT 8...\nILS RWY 35L (SA CAT I)...\nILS RWY 35L (CAT II AND III)...\nMISSED APPROACH: CLIMB TO 500 THEN CLIMBING RIGHT TURN TO 4000 ON OMN VORTAC R-193 TO ZOKUM INT/OMN 31.77 DME AND HOLD..",
+			"sanitized": "Q) ZJX/QPIXX/I/NBO/A/000/999/2825N08118W025\nA) KMCO\nB) 2204090004\nC) 2211190002EST\nE) IAP ORLANDO INTL, ORLANDO, FL.\nILS OR LOC RWY 35L, AMDT 8...\nILS RWY 35L (SA CAT I)...\nILS RWY 35L (CAT II AND III)...\nMISSED APPROACH: CLIMB TO 500 THEN CLIMBING RIGHT TURN TO 4000 ON OMN VORTAC R-193 TO ZOKUM INT/OMN 31.77 DME AND HOLD..",
+			"station": "KMCO",
+			"time": {
+				"repr": "05/29/2022 2203",
+				"dt": "2022-05-29T22:03:00Z"
+			},
+			"number": null,
+			"replaces": null,
+			"type": null,
+			"qualifiers": {
+				"repr": "ZJX/QPIXX/I/NBO/A/000/999/2825N08118W025",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "PI",
+					"value": "Instrument approach procedure"
+				},
+				"condition": {
+					"repr": "XX",
+					"value": "Unknown"
+				},
+				"traffic": {
+					"repr": "I",
+					"value": "IFR"
+				},
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "025",
+					"value": 25,
+					"spoken": "two five"
+				}
+			},
+			"start_time": {
+				"repr": "2204090004",
+				"dt": "2022-04-09T00:04:00Z"
+			},
+			"end_time": {
+				"repr": "2211190002EST",
+				"dt": "2022-11-19T00:02:00Z"
+			},
+			"schedule": null,
+			"body": "IAP ORLANDO INTL, ORLANDO, FL.\nILS OR LOC RWY 35L, AMDT 8...\nILS RWY 35L (SA CAT I)...\nILS RWY 35L (CAT II AND III)...\nMISSED APPROACH: CLIMB TO 500 THEN CLIMBING RIGHT TURN TO 4000 ON OMN VORTAC R-193 TO ZOKUM INT/OMN 31.77 DME AND HOLD..",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "05/161 NOTAMN \r\nQ) ZJX/QOBXX/IV/M/AE/000/116/2825N08118W005 \r\nA) KMCO \r\nB) 2205311100 \r\nC) 2206032100 \r\n D) DLY 1100-2100 \r\n\r\nE) OBST CRANE 35 (9) 0.92 ESE( 282524N0811735W) FLAGGED",
+			"sanitized": "05/161 NOTAMN \nQ) ZJX/QOBXX/IV/M/AE/000/116/2825N08118W005 \nA) KMCO \nB) 2205311100 \nC) 2206032100 \n D) DLY 1100-2100 \n\nE) OBST CRANE 35 (9) 0.92 ESE( 282524N0811735W) FLAGGED",
+			"station": "KMCO",
+			"time": {
+				"repr": "05/27/2022 1116",
+				"dt": "2022-05-27T11:16:00Z"
+			},
+			"number": "05/161",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMN",
+				"value": "New"
+			},
+			"qualifiers": {
+				"repr": "ZJX/QOBXX/IV/M/AE/000/116/2825N08118W005",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "OB",
+					"value": "Obstacle"
+				},
+				"condition": {
+					"repr": "XX",
+					"value": "Unknown"
+				},
+				"traffic": {
+					"repr": "IV",
+					"value": "IFR and VFR"
+				},
+				"purpose": [
+					{
+						"repr": "M",
+						"value": "Miscellaneous"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					},
+					{
+						"repr": "E",
+						"value": "En Route"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "116",
+					"value": 116,
+					"spoken": "one one six"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "005",
+					"value": 5,
+					"spoken": "five"
+				}
+			},
+			"start_time": {
+				"repr": "2205311100",
+				"dt": "2022-05-31T11:00:00Z"
+			},
+			"end_time": {
+				"repr": "2206032100",
+				"dt": "2022-06-03T21:00:00Z"
+			},
+			"schedule": "DLY 1100-2100",
+			"body": "OBST CRANE 35 (9) 0.92 ESE( 282524N0811735W) FLAGGED",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "Q) ZJX/QPIXX/I/NBO/A/000/999/2825N08118W025\nA) KMCO\nB) 2201031753\nC) 2208151753EST\nE) IAP ORLANDO INTL, ORLANDO, FL.\nILS OR LOC RWY 17L, AMDT 4A...\nILS OR LOC RWY 17R, AMDT 5E...\nILS OR LOC RWY 18R, AMDT 11A...\nILS OR LOC RWY 35L, AMDT 8...\nILS OR LOC RWY 35R, AMDT 5A...\nILS OR LOC RWY 36R, AMDT 11...\nILS RWY 17L (SA CAT I), AMDT 4...,\nILS RWY 17L (CAT II AND III), AMDT 4...\nILS RWY 17R (CAT II), AMDT 5E...\nILS RWY 35L (SA CAT I), AMDT 8...\nILS RWY 35L (CAT II AND III), AMDT 8,\nILS RWY 35R (SA CAT I), AMDT 5...\nILS RWY 35R (CAT II AND III), AMDT 5...\nILS RWY 36R (SAT CAT I), AMDT 11...\nILS RWY 36R (CAT II AND III), AMDT 11...\nALTERNATE MINIMUMS NA,\nORL VORTAC UNMONITORED.",
+			"sanitized": "Q) ZJX/QPIXX/I/NBO/A/000/999/2825N08118W025\nA) KMCO\nB) 2201031753\nC) 2208151753EST\nE) IAP ORLANDO INTL, ORLANDO, FL.\nILS OR LOC RWY 17L, AMDT 4A...\nILS OR LOC RWY 17R, AMDT 5E...\nILS OR LOC RWY 18R, AMDT 11A...\nILS OR LOC RWY 35L, AMDT 8...\nILS OR LOC RWY 35R, AMDT 5A...\nILS OR LOC RWY 36R, AMDT 11...\nILS RWY 17L (SA CAT I), AMDT 4...,\nILS RWY 17L (CAT II AND III), AMDT 4...\nILS RWY 17R (CAT II), AMDT 5E...\nILS RWY 35L (SA CAT I), AMDT 8...\nILS RWY 35L (CAT II AND III), AMDT 8,\nILS RWY 35R (SA CAT I), AMDT 5...\nILS RWY 35R (CAT II AND III), AMDT 5...\nILS RWY 36R (SAT CAT I), AMDT 11...\nILS RWY 36R (CAT II AND III), AMDT 11...\nALTERNATE MINIMUMS NA,\nORL VORTAC UNMONITORED.",
+			"station": "KMCO",
+			"time": {
+				"repr": "05/31/2022 1720",
+				"dt": "2022-05-31T17:20:00Z"
+			},
+			"number": null,
+			"replaces": null,
+			"type": null,
+			"qualifiers": {
+				"repr": "ZJX/QPIXX/I/NBO/A/000/999/2825N08118W025",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "PI",
+					"value": "Instrument approach procedure"
+				},
+				"condition": {
+					"repr": "XX",
+					"value": "Unknown"
+				},
+				"traffic": {
+					"repr": "I",
+					"value": "IFR"
+				},
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "025",
+					"value": 25,
+					"spoken": "two five"
+				}
+			},
+			"start_time": {
+				"repr": "2201031753",
+				"dt": "2022-01-03T17:53:00Z"
+			},
+			"end_time": {
+				"repr": "2208151753EST",
+				"dt": "2022-08-15T17:53:00Z"
+			},
+			"schedule": null,
+			"body": "IAP ORLANDO INTL, ORLANDO, FL.\nILS OR LOC RWY 17L, AMDT 4A...\nILS OR LOC RWY 17R, AMDT 5E...\nILS OR LOC RWY 18R, AMDT 11A...\nILS OR LOC RWY 35L, AMDT 8...\nILS OR LOC RWY 35R, AMDT 5A...\nILS OR LOC RWY 36R, AMDT 11...\nILS RWY 17L (SA CAT I), AMDT 4...,\nILS RWY 17L (CAT II AND III), AMDT 4...\nILS RWY 17R (CAT II), AMDT 5E...\nILS RWY 35L (SA CAT I), AMDT 8...\nILS RWY 35L (CAT II AND III), AMDT 8,\nILS RWY 35R (SA CAT I), AMDT 5...\nILS RWY 35R (CAT II AND III), AMDT 5...\nILS RWY 36R (SAT CAT I), AMDT 11...\nILS RWY 36R (CAT II AND III), AMDT 11...\nALTERNATE MINIMUMS NA,\nORL VORTAC UNMONITORED.",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "06/001 NOTAMN \r\nQ) ZJX/QXXAS/IV/NBO/A/000/999/2825N08118W005 \r\nA) KMCO \r\nB) 2206010106 \r\nC) 2206102100 \r\n\r\nE) TAXIWAY N \r\n ELEVATED RWY GUARD LGT BTN TWY N1 AND TWY N6 U/S",
+			"sanitized": "06/001 NOTAMN \nQ) ZJX/QXXAS/IV/NBO/A/000/999/2825N08118W005 \nA) KMCO \nB) 2206010106 \nC) 2206102100 \n\nE) TAXIWAY N \n ELEVATED RWY GUARD LGT BTN TWY N1 AND TWY N6 U/S",
+			"station": "KMCO",
+			"time": {
+				"repr": "06/01/2022 0105",
+				"dt": "2022-06-01T01:05:00Z"
+			},
+			"number": "06/001",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMN",
+				"value": "New"
+			},
+			"qualifiers": {
+				"repr": "ZJX/QXXAS/IV/NBO/A/000/999/2825N08118W005",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "XX",
+					"value": "Unknown"
+				},
+				"condition": {
+					"repr": "AS",
+					"value": "Unserviceable"
+				},
+				"traffic": {
+					"repr": "IV",
+					"value": "IFR and VFR"
+				},
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "005",
+					"value": 5,
+					"spoken": "five"
+				}
+			},
+			"start_time": {
+				"repr": "2206010106",
+				"dt": "2022-06-01T01:06:00Z"
+			},
+			"end_time": {
+				"repr": "2206102100",
+				"dt": "2022-06-10T21:00:00Z"
+			},
+			"schedule": null,
+			"body": "TAXIWAY N \n ELEVATED RWY GUARD LGT BTN TWY N1 AND TWY N6 U/S",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "05/173 NOTAMN \r\nQ) ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005 \r\nA) KMCO \r\nB) 2206011000 \r\nC) 2206011100 \r\n\r\nE) TWY J5 BTN AIRSIDE 2 RAMP AND TWY J CLSD",
+			"sanitized": "05/173 NOTAMN \nQ) ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005 \nA) KMCO \nB) 2206011000 \nC) 2206011100 \n\nE) TWY J5 BTN AIRSIDE 2 RAMP AND TWY J CLSD",
+			"station": "KMCO",
+			"time": {
+				"repr": "05/31/2022 1349",
+				"dt": "2022-05-31T13:49:00Z"
+			},
+			"number": "05/173",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMN",
+				"value": "New"
+			},
+			"qualifiers": {
+				"repr": "ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "MX",
+					"value": "Taxiway"
+				},
+				"condition": {
+					"repr": "LC",
+					"value": "Closed"
+				},
+				"traffic": {
+					"repr": "IV",
+					"value": "IFR and VFR"
+				},
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "005",
+					"value": 5,
+					"spoken": "five"
+				}
+			},
+			"start_time": {
+				"repr": "2206011000",
+				"dt": "2022-06-01T10:00:00Z"
+			},
+			"end_time": {
+				"repr": "2206011100",
+				"dt": "2022-06-01T11:00:00Z"
+			},
+			"schedule": null,
+			"body": "TWY J5 BTN AIRSIDE 2 RAMP AND TWY J CLSD",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "05/162 NOTAMN \r\nQ)ZJX/QFMXX/IV/NBO/A/000/999/2825N08118W005 \r\nA) KMCO \r\nB) 2206011100 \r\nC) 2206011600 \r\nE) SVC MBST/WS DETECTION SYSTEM NOT AVBL",
+			"sanitized": "05/162 NOTAMN \nQ)ZJX/QFMXX/IV/NBO/A/000/999/2825N08118W005 \nA) KMCO \nB) 2206011100 \nC) 2206011600 \nE) SVC MBST/WS DETECTION SYSTEM NOT AVBL",
+			"station": "KMCO",
+			"time": {
+				"repr": "05/27/2022 1117",
+				"dt": "2022-05-27T11:17:00Z"
+			},
+			"number": "05/162",
+			"replaces": "Q)ZJX/QFMXX/IV/NBO/A/000/999/2825N08118W005",
+			"type": {
+				"repr": "NOTAMN",
+				"value": "New"
+			},
+			"qualifiers": null,
+			"start_time": {
+				"repr": "2206011100",
+				"dt": "2022-06-01T11:00:00Z"
+			},
+			"end_time": {
+				"repr": "2206011600",
+				"dt": "2022-06-01T16:00:00Z"
+			},
+			"schedule": null,
+			"body": "SVC MBST/WS DETECTION SYSTEM NOT AVBL",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "05/172 NOTAMN \r\nQ) ZJX//IV/NBO/A/000/999/2825N08118W025 \r\nA) KMCO \r\nB) 2206011100 \r\nC) 2206012000 \r\n\r\nE) ILS RWY 36R LOCALIZER/GP/DME U/S",
+			"sanitized": "05/172 NOTAMN \nQ) ZJX//IV/NBO/A/000/999/2825N08118W025 \nA) KMCO \nB) 2206011100 \nC) 2206012000 \n\nE) ILS RWY 36R LOCALIZER/GP/DME U/S",
+			"station": "KMCO",
+			"time": {
+				"repr": "05/31/2022 1312",
+				"dt": "2022-05-31T13:12:00Z"
+			},
+			"number": "05/172",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMN",
+				"value": "New"
+			},
+			"qualifiers": {
+				"repr": "ZJX//IV/NBO/A/000/999/2825N08118W025",
+				"fir": "ZJX",
+				"subject": null,
+				"condition": null,
+				"traffic": {
+					"repr": "IV",
+					"value": "IFR and VFR"
+				},
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "025",
+					"value": 25,
+					"spoken": "two five"
+				}
+			},
+			"start_time": {
+				"repr": "2206011100",
+				"dt": "2022-06-01T11:00:00Z"
+			},
+			"end_time": {
+				"repr": "2206012000",
+				"dt": "2022-06-01T20:00:00Z"
+			},
+			"schedule": null,
+			"body": "ILS RWY 36R LOCALIZER/GP/DME U/S",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "05/177 NOTAMN \r\nQ) ZJX/QLIAS/IV/NBO/A/000/999/2825N08118W005 \r\nA) KMCO \r\nB) 2206011130 \r\nC) 2206012100 \r\n\r\nE) AD AP RWY STATUS LGT SYSTEM U/S",
+			"sanitized": "05/177 NOTAMN \nQ) ZJX/QLIAS/IV/NBO/A/000/999/2825N08118W005 \nA) KMCO \nB) 2206011130 \nC) 2206012100 \n\nE) AD AP RWY STATUS LGT SYSTEM U/S",
+			"station": "KMCO",
+			"time": {
+				"repr": "05/31/2022 2134",
+				"dt": "2022-05-31T21:34:00Z"
+			},
+			"number": "05/177",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMN",
+				"value": "New"
+			},
+			"qualifiers": {
+				"repr": "ZJX/QLIAS/IV/NBO/A/000/999/2825N08118W005",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "LI",
+					"value": "Runway end identifier lights"
+				},
+				"condition": {
+					"repr": "AS",
+					"value": "Unserviceable"
+				},
+				"traffic": {
+					"repr": "IV",
+					"value": "IFR and VFR"
+				},
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "005",
+					"value": 5,
+					"spoken": "five"
+				}
+			},
+			"start_time": {
+				"repr": "2206011130",
+				"dt": "2022-06-01T11:30:00Z"
+			},
+			"end_time": {
+				"repr": "2206012100",
+				"dt": "2022-06-01T21:00:00Z"
+			},
+			"schedule": null,
+			"body": "AD AP RWY STATUS LGT SYSTEM U/S",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "05/174 NOTAMN \r\nQ) ZJX/QMRLC/IV/NBO/A/000/999/2825N08118W005 \r\nA) KMCO \r\nB) 2206011200 \r\nC) 2206011400 \r\n\r\nE) \r\nRWY 17R/35L CLSD",
+			"sanitized": "05/174 NOTAMN \nQ) ZJX/QMRLC/IV/NBO/A/000/999/2825N08118W005 \nA) KMCO \nB) 2206011200 \nC) 2206011400 \n\nE) \nRWY 17R/35L CLSD",
+			"station": "KMCO",
+			"time": {
+				"repr": "05/31/2022 1350",
+				"dt": "2022-05-31T13:50:00Z"
+			},
+			"number": "05/174",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMN",
+				"value": "New"
+			},
+			"qualifiers": {
+				"repr": "ZJX/QMRLC/IV/NBO/A/000/999/2825N08118W005",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "MR",
+					"value": "Runway"
+				},
+				"condition": {
+					"repr": "LC",
+					"value": "Closed"
+				},
+				"traffic": {
+					"repr": "IV",
+					"value": "IFR and VFR"
+				},
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "005",
+					"value": 5,
+					"spoken": "five"
+				}
+			},
+			"start_time": {
+				"repr": "2206011200",
+				"dt": "2022-06-01T12:00:00Z"
+			},
+			"end_time": {
+				"repr": "2206011400",
+				"dt": "2022-06-01T14:00:00Z"
+			},
+			"schedule": null,
+			"body": "RWY 17R/35L CLSD",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "05/163 NOTAMN \r\nQ) ZJX/QOLAS/IV/M/E/000/240/2825N08118W005 \r\nA) KMCO \r\nB) 2206011200 \r\nC) 2206011600 \r\nE) OBST CRANE 72 ( 46 AGL) 2.6 NE LGTS FLAGGED AND LGTD (ASN 2022-ASO-5716-OE)",
+			"sanitized": "05/163 NOTAMN \nQ) ZJX/QOLAS/IV/M/E/000/240/2825N08118W005 \nA) KMCO \nB) 2206011200 \nC) 2206011600 \nE) OBST CRANE 72 ( 46 AGL) 2.6 NE LGTS FLAGGED AND LGTD (ASN 2022-ASO-5716-OE)",
+			"station": "KMCO",
+			"time": {
+				"repr": "05/27/2022 1125",
+				"dt": "2022-05-27T11:25:00Z"
+			},
+			"number": "05/163",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMN",
+				"value": "New"
+			},
+			"qualifiers": {
+				"repr": "ZJX/QOLAS/IV/M/E/000/240/2825N08118W005",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "OL",
+					"value": "Obstacle lights"
+				},
+				"condition": {
+					"repr": "AS",
+					"value": "Unserviceable"
+				},
+				"traffic": {
+					"repr": "IV",
+					"value": "IFR and VFR"
+				},
+				"purpose": [
+					{
+						"repr": "M",
+						"value": "Miscellaneous"
+					}
+				],
+				"scope": [
+					{
+						"repr": "E",
+						"value": "En Route"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "240",
+					"value": 240,
+					"spoken": "two four zero"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "005",
+					"value": 5,
+					"spoken": "five"
+				}
+			},
+			"start_time": {
+				"repr": "2206011200",
+				"dt": "2022-06-01T12:00:00Z"
+			},
+			"end_time": {
+				"repr": "2206011600",
+				"dt": "2022-06-01T16:00:00Z"
+			},
+			"schedule": null,
+			"body": "OBST CRANE 72 ( 46 AGL) 2.6 NE LGTS FLAGGED AND LGTD (ASN 2022-ASO-5716-OE)",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "05/175 NOTAMN \r\nQ) ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005 \r\nA) KMCO \r\nB) 2206011430 \r\nC) 2206011600 \r\n\r\nE) TWY B BTN TWY E AND TWY F CLSD",
+			"sanitized": "05/175 NOTAMN \nQ) ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005 \nA) KMCO \nB) 2206011430 \nC) 2206011600 \n\nE) TWY B BTN TWY E AND TWY F CLSD",
+			"station": "KMCO",
+			"time": {
+				"repr": "05/31/2022 1350",
+				"dt": "2022-05-31T13:50:00Z"
+			},
+			"number": "05/175",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMN",
+				"value": "New"
+			},
+			"qualifiers": {
+				"repr": "ZJX/QMXLC/IV/NBO/A/000/999/2825N08118W005",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "MX",
+					"value": "Taxiway"
+				},
+				"condition": {
+					"repr": "LC",
+					"value": "Closed"
+				},
+				"traffic": {
+					"repr": "IV",
+					"value": "IFR and VFR"
+				},
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "005",
+					"value": 5,
+					"spoken": "five"
+				}
+			},
+			"start_time": {
+				"repr": "2206011430",
+				"dt": "2022-06-01T14:30:00Z"
+			},
+			"end_time": {
+				"repr": "2206011600",
+				"dt": "2022-06-01T16:00:00Z"
+			},
+			"schedule": null,
+			"body": "TWY B BTN TWY E AND TWY F CLSD",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "05/156 NOTAMN \r\nQ) ZJX/QXXAS/I/BO/A/000/999/2825N08118W005 \r\nA) KMCO \r\nB) 2206020400 \r\nC) 2206020900 \r\n\r\nE) SVC SMR U/S",
+			"sanitized": "05/156 NOTAMN \nQ) ZJX/QXXAS/I/BO/A/000/999/2825N08118W005 \nA) KMCO \nB) 2206020400 \nC) 2206020900 \n\nE) SVC SMR U/S",
+			"station": "KMCO",
+			"time": {
+				"repr": "05/27/2022 0017",
+				"dt": "2022-05-27T00:17:00Z"
+			},
+			"number": "05/156",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMN",
+				"value": "New"
+			},
+			"qualifiers": {
+				"repr": "ZJX/QXXAS/I/BO/A/000/999/2825N08118W005",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "XX",
+					"value": "Unknown"
+				},
+				"condition": {
+					"repr": "AS",
+					"value": "Unserviceable"
+				},
+				"traffic": {
+					"repr": "I",
+					"value": "IFR"
+				},
+				"purpose": [
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "005",
+					"value": 5,
+					"spoken": "five"
+				}
+			},
+			"start_time": {
+				"repr": "2206020400",
+				"dt": "2022-06-02T04:00:00Z"
+			},
+			"end_time": {
+				"repr": "2206020900",
+				"dt": "2022-06-02T09:00:00Z"
+			},
+			"schedule": null,
+			"body": "SVC SMR U/S",
+			"lower": null,
+			"upper": null
+		},
+		{
+			"raw": "05/157 NOTAMN \r\nQ) ZJX/QLIAS/IV/NBO/A/000/999/2825N08118W005 \r\nA) KMCO \r\nB) 2206020400 \r\nC) 2206020900 \r\n\r\nE) AD AP RWY STATUS LGT SYSTEM U/S",
+			"sanitized": "05/157 NOTAMN \nQ) ZJX/QLIAS/IV/NBO/A/000/999/2825N08118W005 \nA) KMCO \nB) 2206020400 \nC) 2206020900 \n\nE) AD AP RWY STATUS LGT SYSTEM U/S",
+			"station": "KMCO",
+			"time": {
+				"repr": "05/27/2022 0018",
+				"dt": "2022-05-27T00:18:00Z"
+			},
+			"number": "05/157",
+			"replaces": null,
+			"type": {
+				"repr": "NOTAMN",
+				"value": "New"
+			},
+			"qualifiers": {
+				"repr": "ZJX/QLIAS/IV/NBO/A/000/999/2825N08118W005",
+				"fir": "ZJX",
+				"subject": {
+					"repr": "LI",
+					"value": "Runway end identifier lights"
+				},
+				"condition": {
+					"repr": "AS",
+					"value": "Unserviceable"
+				},
+				"traffic": {
+					"repr": "IV",
+					"value": "IFR and VFR"
+				},
+				"purpose": [
+					{
+						"repr": "N",
+						"value": "Immediate"
+					},
+					{
+						"repr": "B",
+						"value": "Briefing"
+					},
+					{
+						"repr": "O",
+						"value": "Flight Operations"
+					}
+				],
+				"scope": [
+					{
+						"repr": "A",
+						"value": "Aerodrome"
+					}
+				],
+				"lower": {
+					"repr": "000",
+					"value": 0,
+					"spoken": "zero"
+				},
+				"upper": {
+					"repr": "999",
+					"value": 999,
+					"spoken": "nine nine nine"
+				},
+				"coord": {
+					"lat": 28.25,
+					"lon": -81.18,
+					"repr": "2825N08118W"
+				},
+				"radius": {
+					"repr": "005",
+					"value": 5,
+					"spoken": "five"
+				}
+			},
+			"start_time": {
+				"repr": "2206020400",
+				"dt": "2022-06-02T04:00:00Z"
+			},
+			"end_time": {
+				"repr": "2206020900",
+				"dt": "2022-06-02T09:00:00Z"
+			},
+			"schedule": null,
+			"body": "AD AP RWY STATUS LGT SYSTEM U/S",
+			"lower": null,
+			"upper": null
+		}
+	]
+}

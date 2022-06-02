@@ -122,11 +122,21 @@ class AirSigContains(Params):
     location: avwx.Station | Coord
 
 
+@dataclass
+class NotamLocation(ReportLocation, DistanceFrom):
+    pass
+
+
+@dataclass
+class NotamRoute(Params, DistanceFrom):
+    route: list[str]
+
+
 _NAMED_OPTIONS = ("translate", "summary", "speech")
 
 
 @dataclass
-class ParseConfig:
+class ParseConfig:  # pylint: disbale=too-many-instance-attributes
     """Config flags for report parse handling"""
 
     translate: bool
@@ -136,6 +146,7 @@ class ParseConfig:
     aviowiki_data: bool
     cache_on_fail: bool
     nearest_on_fail: bool
+    distance: Optional[int]
 
     @staticmethod
     def use_aviowiki_data(token: Optional[Token]) -> bool:
@@ -153,4 +164,5 @@ class ParseConfig:
             aviowiki_data=cls.use_aviowiki_data(token),
             cache_on_fail=getattr(params, "onfail", None) == "cache",
             nearest_on_fail=getattr(params, "onfail", None) == "nearest",
+            distance=getattr(params, "distance", None),
         )

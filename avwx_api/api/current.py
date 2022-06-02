@@ -102,10 +102,7 @@ class PirepFetch(Report):
 @app.route("/api/parse/pirep")
 class PirepParse(Parse):
     report_type = "pirep"
-    loc_param = "location"
     plan_types = ("pro", "enterprise")
-    struct = structs.ReportLocation
-    validator = validate.report_location
     handler = handle.PirepHandler
     key_remv = ("direction",)
 
@@ -176,3 +173,28 @@ class AirSigContains(Base):
             "reports": self._filter_contains(coord.point, data["reports"]),
         }
         return self.make_response(resp, params)
+
+
+## NOTAM
+
+
+@app.route("/api/notam/<location>")
+class NotamFetch(Report):
+    report_type = "notam"
+    loc_param = "location"
+    plan_types = ("enterprise",)
+    struct = structs.NotamLocation
+    validator = validate.notam_location
+    handler = handle.NotamHandler
+    key_remv = ("remarks",)
+
+
+@app.route("/api/parse/notam")
+class NotamParse(Parse):
+    report_type = "notam"
+    loc_param = "location"
+    plan_types = ("enterprise",)
+    struct = structs.ReportGiven
+    validator = validate.report_given
+    handler = handle.NotamHandler
+    key_remv = ("remarks",)

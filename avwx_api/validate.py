@@ -36,7 +36,18 @@ from avwx_api_core.validate import (
 )
 
 
-REPORT_TYPES = ("metar", "taf", "pirep", "airsigmet", "mav", "mex", "nbh", "nbs", "nbe")
+REPORT_TYPES = (
+    "metar",
+    "taf",
+    "pirep",
+    "airsigmet",
+    "notam",
+    "mav",
+    "mex",
+    "nbh",
+    "nbs",
+    "nbe",
+)
 OPTIONS = ("info", "translate", "summary", "speech")
 ONFAIL = ("error", "cache", "nearest")
 
@@ -58,6 +69,17 @@ HELP = HELP_TEXT | {
     "route": "Flight route made of ICAO, navaid, IATA, GPS code, or coordinate pairs. Ex: KLEX;ATL;29.2,-81.1;KMCO",
     "distance": "Statute miles from the route center",
 }
+
+
+def SplitChar(char: str) -> Callable:
+    """Returns a validator to split a string by a specific character"""
+
+    def validator(value: str) -> str:
+        if not value:
+            return []
+        return value.split(char)
+
+    return validator
 
 
 def Coordinate(coord: str) -> Coord:
@@ -127,7 +149,10 @@ _multi_station = {Required("stations"): MultiStation}
 _location = {Required("location"): Location(coerce_station=False)}
 
 _flight_path = {Required("route"): FlightRoute}
-_distance_from = {Required("distance"): All(Coerce(float), Range(min=0, max=100))}
+_text_path = {Required("route"): SplitChar(";")}
+_distance_from = {
+    Required("distance", default=10): All(Coerce(float), Range(min=0, max=100)),
+}
 
 _search_counter = {Required("n", default=10): All(Coerce(int), Range(min=1, max=200))}
 _search_base = required | _station_search | _search_counter
@@ -171,6 +196,9 @@ station_list = _schema(required | _station_list)
 
 airsig_along = _schema(required | _flight_path)
 airsig_contains = _schema(required | _location)
+
+notam_location = _schema(_report_shared | _uses_cache | _location | _distance_from)
+notam_along = _schema(required | _text_path | _distance_from)
 
 coord_search = _schema(_search_base | _coord_search)
 text_search = _schema(_search_base | _text_search)

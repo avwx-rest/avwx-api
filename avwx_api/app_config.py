@@ -14,6 +14,7 @@ from quart_openapi import Pint
 from rollbar.contrib.quart import report_exception
 
 # module
+from avwx import exceptions as avwx_exceptions
 from avwx_api_core.app import add_cors, CustomJSONEncoder
 from avwx_api_core.cache import CacheManager
 from avwx_api_core.token import TokenManager
@@ -49,3 +50,8 @@ def init_rollbar():
         return
     rollbar.init(key, root="avwx_api", allow_logging_basic_config=False)
     got_request_exception.connect(report_exception, app, weak=False)
+
+    def exception_intercept(exception: Exception, **extra: dict) -> None:
+        rollbar.report_exc_info(exception, extra_data=extra)
+
+    avwx_exceptions.exception_intercept = exception_intercept
