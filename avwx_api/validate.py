@@ -150,8 +150,12 @@ _location = {Required("location"): Location(coerce_station=False)}
 
 _flight_path = {Required("route"): FlightRoute}
 _text_path = {Required("route"): SplitChar(";")}
+
 _distance_from = {
-    Required("distance", default=10): All(Coerce(float), Range(min=0, max=100)),
+    Required("distance", default=10): All(Coerce(int), Range(min=1, max=125))
+}
+_distance_along = {
+    Required("distance", default=5): All(Coerce(float), Range(min=0, max=100))
 }
 
 _search_counter = {Required("n", default=10): All(Coerce(int), Range(min=1, max=200))}
@@ -184,21 +188,21 @@ report_station = _coord_search_validator("station", True)
 report_location = _coord_search_validator("location", False)
 
 report_given = _schema(_report_shared | _report_parse)
-report_along = _schema(_report_shared | _flight_path | _distance_from)
+report_along = _schema(_report_shared | _flight_path | _distance_along)
 report_stations = _schema(_report_shared | _uses_cache | _multi_station)
 
 global_report = _schema(_report_shared | _uses_cache)
 
 station = _schema(required | _single_station)
 stations = _schema(required | _multi_station)
-station_along = _schema(required | _flight_path | _distance_from)
+station_along = _schema(required | _flight_path | _distance_along)
 station_list = _schema(required | _station_list)
 
 airsig_along = _schema(required | _flight_path)
 airsig_contains = _schema(required | _location)
 
 notam_location = _schema(_report_shared | _uses_cache | _location | _distance_from)
-notam_along = _schema(required | _text_path | _distance_from)
+notam_along = _schema(required | _text_path | _distance_along)
 
 coord_search = _schema(_search_base | _coord_search)
 text_search = _schema(_search_base | _text_search)
