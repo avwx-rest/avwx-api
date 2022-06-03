@@ -1936,7 +1936,7 @@ Note: translate, summary, and speech options not yet available
         + Supported: `cache`, `error`, `nearest`
         + Default: `cache`
 
-### Get PIREP Report [GET]
+### Get PIREP Reports [GET]
 
 Get PIREPs within 200 miles of a specific station by ICAO & IATA station code or a lat,lon coordinate pair.
 
@@ -2334,7 +2334,6 @@ Get all global AIRMET and SIGMET advisories.
 Parses an AIRMET or SIGMET report supplied by the user.
 
 + Parameters
-
     + format (string, optional) - Desired response format
         + Supported: `json`, `xml`, `yaml`
         + Default: `json`
@@ -2463,7 +2462,7 @@ Parse a user-supplied AIRMET or SIGMET included as the plain text body of the re
             }
         }
 
-## AIR / SIGMET Contains [/airsigmet/{location}{?format,remove,filter,onfail}]
+## AIR / SIGMET Contains [/airsigmet/{location}{?distance,format,remove,filter,onfail}]
 
 Get AIRMET and SIGMET advisories that contain a station or coordinate inside the observation or forecast boundary polygon.
 
@@ -2745,6 +2744,256 @@ This example returns AIRMET and SIGMET advisories that apply to Orlando Internat
                     }
                 }
             ]
+        }
+
+## NOTAM [/notam/{location}{?distance,format,remove,filter,onfail}]
+
+Get NOTAM reports detailing special events or conditions affecting airport and flight operations. These can include, but are in no way limitted to:
+
+- Runway closures
+- Lack of radar services
+- Rocket launches
+- Hazard locations
+- Airspace restrictions
+- Construction updates
+- Unusual aircraft activity
+
+NOTAMs have varius classifications and apply to certain types or size of aircraft. Some apply only to IFR operations, like when an ILS is out of service. Others apply only to airport operations the en route aircraft can ignore.
+
+Every NOTAM has a start and end date and time. Additional NOTAMs may be issued to update, replace, or cancel existing NOTAMs as well. Some NOTAMs may still be served up to 10 days after the end date, so it's up to the developer to include or filter these reports.
+
++ Parameters
+    + location: `KMCO` (string) - ICAO & IATA station code or coordinate pair
+        + Examples: `EGLL`, `51.47,-0.4`
+    + distance (number,optional) - Distance in statue miles from airport or coordinate center
+        + Default: `10`
+    + format (string, optional) - Desired response format
+        + Supported: `json`, `xml`, `yaml`
+        + Default: `json`
+    + remove (string, optional) - Remove unused keys from the response
+        + Examples: `spoken,repr`, `runways`
+    + filter (string, optional) - Only include these keys in the response
+        + Examples: `sanitized`, `flight_rules,altimeter,value`
+
+### Get NOTAM Reports [GET]
+
+Get NOTAMs the apply to a specific airport or within a specified distance of a coordinate.
+
++ Request (text/plain)
+
+    + Headers
+
+            Authorization: Token my_secret_api_token
+
++ Response 200 (application/json)
+
+        {
+            "meta": {
+                "timestamp": "2022-06-01T01:22:11.957604Z",
+                "stations_updated": "2022-05-27"
+            },
+            "data": [
+                {
+                    "raw": "12/083 NOTAMN \r\nQ) ZJX/QMXLT/IV/NBO/A/000/999/2825N08118W005 \r\nA) KMCO \r\nB) 2112071637 \r\nC) 2206302359 \r\n\r\nE) TWY A BTN WEST RAMP SOUTH END AND TWY B10 NONMOVEMENT AREA",
+                    "sanitized": "12/083 NOTAMN \nQ) ZJX/QMXLT/IV/NBO/A/000/999/2825N08118W005 \nA) KMCO \nB) 2112071637 \nC) 2206302359 \n\nE) TWY A BTN WEST RAMP SOUTH END AND TWY B10 NONMOVEMENT AREA",
+                    "station": "KMCO",
+                    "time": {
+                        "repr": "12/07/2021 1637",
+                        "dt": "2021-12-07T16:37:00Z"
+                    },
+                    "number": "12/083",
+                    "replaces": null,
+                    "type": {
+                        "repr": "NOTAMN",
+                        "value": "New"
+                    },
+                    "qualifiers": {
+                        "repr": "ZJX/QMXLT/IV/NBO/A/000/999/2825N08118W005",
+                        "fir": "ZJX",
+                        "subject": {
+                            "repr": "MX",
+                            "value": "Taxiway"
+                        },
+                        "condition": {
+                            "repr": "LT",
+                            "value": "Limited to"
+                        },
+                        "traffic": {
+                            "repr": "IV",
+                            "value": "IFR and VFR"
+                        },
+                        "purpose": [
+                            {
+                                "repr": "N",
+                                "value": "Immediate"
+                            },
+                            {
+                                "repr": "B",
+                                "value": "Briefing"
+                            },
+                            {
+                                "repr": "O",
+                                "value": "Flight Operations"
+                            }
+                        ],
+                        "scope": [
+                            {
+                                "repr": "A",
+                                "value": "Aerodrome"
+                            }
+                        ],
+                        "lower": {
+                            "repr": "000",
+                            "value": 0,
+                            "spoken": "zero"
+                        },
+                        "upper": {
+                            "repr": "999",
+                            "value": 999,
+                            "spoken": "nine nine nine"
+                        },
+                        "coord": {
+                            "lat": 28.25,
+                            "lon": -81.18,
+                            "repr": "2825N08118W"
+                        },
+                        "radius": {
+                            "repr": "005",
+                            "value": 5,
+                            "spoken": "five"
+                        }
+                    },
+                    "start_time": {
+                        "repr": "2112071637",
+                        "dt": "2021-12-07T16:37:00Z"
+                    },
+                    "end_time": {
+                        "repr": "2206302359",
+                        "dt": "2022-06-30T23:59:00Z"
+                    },
+                    "schedule": null,
+                    "body": "TWY A BTN WEST RAMP SOUTH END AND TWY B10 NONMOVEMENT AREA",
+                    "lower": null,
+                    "upper": null
+                }
+            ]
+        }
+
+## Parse NOTAM [/parse/notam{?format,remove,filter}]
+
+Parses a NOTAM report supplied by the user.
+
++ Parameters
+    + format (string, optional) - Desired response format
+        + Supported: `json`, `xml`, `yaml`
+        + Default: `json`
+    + remove (string, optional) - Remove unused keys from the response
+        + Examples: `spoken,repr`, `runways`
+    + filter (string, optional) - Only include these keys in the response
+        + Examples: `sanitized`, `flight_rules,altimeter,value`
+
+### Parse a Given NOTAM [POST]
+
+Parse a user-supplied NOTAM included as the plain text body of the request.
+
++ Request (text/plain)
+
+    + Headers
+
+            Authorization: Token my_secret_api_token
+
+    + Body
+
+            Q) ZJX/QPIXX/I/NBO/A/000/999/2832N08119W025
+            A) KORL
+            B) 2012022118
+            C) 2212052117EST
+            E) IAP EXECUTIVE, ORLANDO, FL.
+            ILS OR LOC RWY 7, AMDT 24B...
+            NOTE: AUTOPILOT COUPLED APPROACH NA BELOW 320 MSL.
+
++ Response 200 (application/json)
+
+        {
+            "raw": "Q) ZJX/QPIXX/I/NBO/A/000/999/2832N08119W025\nA) KORL\nB) 2012022118\nC) 2212052117EST\nE) IAP EXECUTIVE, ORLANDO, FL.\nILS OR LOC RWY 7, AMDT 24B...\nNOTE: AUTOPILOT COUPLED APPROACH NA BELOW 320 MSL.",
+            "sanitized": "Q) ZJX/QPIXX/I/NBO/A/000/999/2832N08119W025\nA) KORL\nB) 2012022118\nC) 2212052117EST\nE) IAP EXECUTIVE, ORLANDO, FL.\nILS OR LOC RWY 7, AMDT 24B...\nNOTE: AUTOPILOT COUPLED APPROACH NA BELOW 320 MSL.",
+            "station": "KORL",
+            "time": null,
+            "number": null,
+            "replaces": null,
+            "type": null,
+            "qualifiers": {
+                "repr": "ZJX/QPIXX/I/NBO/A/000/999/2832N08119W025",
+                "fir": "ZJX",
+                "subject": {
+                    "repr": "PI",
+                    "value": "Instrument approach procedure"
+                },
+                "condition": {
+                    "repr": "XX",
+                    "value": "Unknown"
+                },
+                "traffic": {
+                    "repr": "I",
+                    "value": "IFR"
+                },
+                "purpose": [
+                    {
+                        "repr": "N",
+                        "value": "Immediate"
+                    },
+                    {
+                        "repr": "B",
+                        "value": "Briefing"
+                    },
+                    {
+                        "repr": "O",
+                        "value": "Flight Operations"
+                    }
+                ],
+                "scope": [
+                    {
+                        "repr": "A",
+                        "value": "Aerodrome"
+                    }
+                ],
+                "lower": {
+                    "repr": "000",
+                    "value": 0,
+                    "spoken": "zero"
+                },
+                "upper": {
+                    "repr": "999",
+                    "value": 999,
+                    "spoken": "nine nine nine"
+                },
+                "coord": {
+                    "lat": 28.32,
+                    "lon": -81.19,
+                    "repr": "2832N08119W"
+                },
+                "radius": {
+                    "repr": "025",
+                    "value": 25,
+                    "spoken": "two five"
+                }
+            },
+            "start_time": {
+                "repr": "2012022118",
+                "dt": "2020-12-02T21:18:00Z"
+            },
+            "end_time": {
+                "repr": "2212052117EST",
+                "dt": "2022-12-05T21:17:00Z"
+            },
+            "schedule": null,
+            "body": "IAP EXECUTIVE, ORLANDO, FL.\nILS OR LOC RWY 7, AMDT 24B...\nNOTE: AUTOPILOT COUPLED APPROACH NA BELOW 320 MSL.",
+            "lower": null,
+            "upper": null,
+            "meta": {
+                "timestamp": "2022-06-01T01:37:28.109126Z",
+                "stations_updated": "2022-05-27"
+            }
         }
 
 ## NBM [/nbm/{report}/{location}{?options,airport,reporting,format,remove,filter,onfail}]
@@ -4816,11 +5065,14 @@ This example returns METARs for "lihue hi"
 
 Find weather reports along a flight path. See notes on routing above.
 
+Note: NOTAM routing is limited to ICAO and IATA codes due to data source limitations. If there is enough interest, the other markers could be added by resolving to the nearest airport per point in the path.
+
 + Parameters
     + report_type: `metar` (string) - Weather report type
-        + Supported: `metar`, `taf, airsigmet`
+        + Supported: `metar`, `taf`, `airsigmet`, `notam`
     + route: `KMCO;ORL;KDAB` (string) - Flight route with ICAO, navaid, and coordinate components
-    + distance: 5 (number) - Distance in statue miles from route centerline. Does not apply to `airsigmet`
+    + distance (number, optional) - Distance in statue miles from airport or coordinate center. Does not apply to `airsigmet`
+        + Default: 5
     + options (string, optional) - Additional options to include as comma-separated string
         + Supported: `info`, `translate`, `summary`, `speech`
         + Example: `info,speech`
