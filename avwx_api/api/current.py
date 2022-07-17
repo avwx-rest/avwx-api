@@ -18,6 +18,7 @@ from avwx.structs import Coord
 from avwx_api_core.token import Token
 import avwx_api.handle.current as handle
 from avwx_api import app, structs, validate
+from avwx_api.handle.summary import SummaryHandler
 from avwx_api.api.base import (
     Base,
     Report,
@@ -198,3 +199,17 @@ class NotamParse(Parse):
     validator = validate.report_given
     handler = handle.NotamHandler
     key_remv = ("remarks",)
+
+
+## Summary
+
+
+@app.route("/api/summary/<station>")
+class StationSummary(Report):
+    report_type = "summary"
+    plan_types = ("pro", "enterprise")
+    struct = structs.ReportStation
+    validator: validate.report_station
+    handler = SummaryHandler
+    key_repl = {"base": "altitude"}
+    key_remv = ("top",)

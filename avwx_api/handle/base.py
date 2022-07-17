@@ -229,11 +229,12 @@ class ReportHandler(BaseHandler):
         return None, None
 
     async def _new_report(
-        self, parser: avwx.base.AVWXBase, cache: bool = None
+        self, parser: avwx.base.AVWXBase, cache: bool = None, report_type: str = None
     ) -> DataStatus:
         """Fetch and parse report data for a given station"""
         # Conditional defaults
-        cache = self.cache if cache is None else cache
+        cache = cache or self.cache
+        report_type = report_type or self.report_type
         # Fetch a new parsed report
         location_key = parser.code or parser.coord.pair
         error, code = await self._update_parser(parser, location_key)
@@ -244,7 +245,7 @@ class ReportHandler(BaseHandler):
         # Update the cache with the new report data
         coros = []
         if cache:
-            coros.append(app.cache.update(self.report_type, location_key, data))
+            coros.append(app.cache.update(report_type, location_key, data))
         if coros:
             await aio.gather(*coros)
         return data, 200
@@ -254,17 +255,16 @@ class ReportHandler(BaseHandler):
         station: avwx.Station,
         force_cache: bool = False,
         use_cache: bool = None,
+        report_type: str = None,
+        parser: avwx.base.AVWXBase = None,
     ) -> tuple[dict, dict, int]:
         """For a station, fetch data from the cache or return a new report"""
         data, code = None, 200
-        cache = await app.cache.get(
-            self.report_type, station.lookup_code, force=force_cache
-        )
-        if cache is None or app.cache.has_expired(
-            cache.get("timestamp"), self.report_type
-        ):
-            parser = self.parser(station.lookup_code)
-            data, code = await self._new_report(parser, use_cache)
+        report_type = report_type or self.report_type
+        cache = await app.cache.get(report_type, station.lookup_code, force=force_cache)
+        if cache is None or app.cache.has_expired(cache.get("timestamp"), report_type):
+            parser = (parser or self.parser)(station.lookup_code)
+            data, code = await self._new_report(parser, use_cache, report_type)
         else:
             data = cache
         return data, cache, code
@@ -302,8 +302,8 @@ class ReportHandler(BaseHandler):
     ) -> DataStatus:
         """Performs post parser update operations"""
         resp = {"meta": self.make_meta()}
-        if "timestamp" in data:
-            resp["meta"]["cache-timestamp"] = data["timestamp"]
+        if cache_time := data.get("timestamp"):
+            resp["meta"]["cache-timestamp"] = cache_time
         # Handle errors according to nofail argument
         if code != 200:
             if config.nearest_on_fail:

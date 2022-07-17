@@ -47,6 +47,7 @@ REPORT_TYPES = (
     "nbh",
     "nbs",
     "nbe",
+    "summary",
 )
 OPTIONS = ("info", "translate", "summary", "speech")
 ONFAIL = ("error", "cache", "nearest")
