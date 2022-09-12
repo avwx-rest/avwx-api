@@ -195,8 +195,6 @@ class NotamParse(Parse):
     report_type = "notam"
     loc_param = "location"
     plan_types = ("enterprise",)
-    struct = structs.ReportGiven
-    validator = validate.report_given
     handler = handle.NotamHandler
     key_remv = ("remarks",)
 
@@ -207,9 +205,16 @@ class NotamParse(Parse):
 @app.route("/api/summary/<station>")
 class StationSummary(Report):
     report_type = "summary"
-    plan_types = ("pro", "enterprise")
-    struct = structs.ReportStation
-    validator: validate.report_station
     handler = SummaryHandler
+    key_repl = {"base": "altitude"}
+    key_remv = ("top",)
+
+
+@app.route("/api/multi/summary/<stations>")
+class StationSummaryMulti(MultiReport):
+    report_type = "summary"
+    plan_types = ("pro", "enterprise")
+    handler = SummaryHandler
+    example = "multi_summary"
     key_repl = {"base": "altitude"}
     key_remv = ("top",)

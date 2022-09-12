@@ -1,7 +1,7 @@
 git+https://github.com/avwx-rest/avwx-api-core@34ef8cde0d5fae6a6eabf71b29668b2927782110
 
-avwx-engine[all]==1.8.2
-hypercorn>=0.13
+avwx-engine[all]==1.8.4
+hypercorn>=0.14
 rollbar>=0.16
 werkzeug==2.1.2
 voluptuous~=0.13

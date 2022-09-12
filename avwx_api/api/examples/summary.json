@@ -1,0 +1,54 @@
+{
+	"meta": {},
+	"metar": {
+		"time": "2022-09-06T02:51:00Z",
+		"flight_rules": "VFR",
+		"wx_codes": [
+			{
+				"repr": "-RA",
+				"value": "Light Rain"
+			}
+		],
+		"visibility": {
+			"repr": "10",
+			"value": 10,
+			"spoken": "one zero"
+		},
+		"ceiling": {
+			"repr": "BKN048",
+			"type": "BKN",
+			"altitude": 48,
+			"modifier": null
+		}
+	},
+	"taf": {
+		"time": "2022-09-06T02:32:00Z",
+		"forecast": [
+			{
+				"start_time": "2022-09-06T03:00:00Z",
+				"end_time": "2022-09-06T09:00:00Z",
+				"flight_rules": "VFR"
+			},
+			{
+				"start_time": "2022-09-06T09:00:00Z",
+				"end_time": "2022-09-06T14:00:00Z",
+				"flight_rules": "MVFR"
+			},
+			{
+				"start_time": "2022-09-06T14:00:00Z",
+				"end_time": "2022-09-06T21:00:00Z",
+				"flight_rules": "IFR"
+			},
+			{
+				"start_time": "2022-09-06T21:00:00Z",
+				"end_time": "2022-09-07T00:00:00Z",
+				"flight_rules": "IFR"
+			},
+			{
+				"start_time": "2022-09-07T00:00:00Z",
+				"end_time": "2022-09-07T06:00:00Z",
+				"flight_rules": "IFR"
+			}
+		]
+	}
+}
