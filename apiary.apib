@@ -25,7 +25,7 @@ Airports and reporting stations can have four possible identifying codes assigne
 - ICAO: 4-letter code assigned by the International Civil Aviation Organization
 - IATA: 3-letter code assigned by the International Air Transport Association
 - GPS: 4-letter code used for in-flight GPS navigation
-- Local: The 3 or 4-letter code by the regional governing authority
+- Local: The 3 or 4-letter code assigned by the regional governing authority
 
 AVWX matches the airport to your supplied station code by: ICAO, IATA, then GPS. The local code is information only.
 
@@ -851,6 +851,96 @@ This example returns reporting stations along a flight path from Orlando to Dayt
                     "wiki": "https://en.wikipedia.org/wiki/Daytona_Beach_International_Airport"
                 }
             ]
+        }
+
+## Summary [/summary/{location}{?options,format,remove,filter,onfail}]
+
+The summary provides the current and future flight conditions as well as a few other elements to explain them. For many developers, this is probably all you need. The API pulls this info from the METAR and TAF reports. If you need more info, you can still use those endpoints directly.
+
++ Parameters
+    + location: `KJFK` (string) - ICAO & IATA station code or coordinate pair
+        + Examples: `EGLL`, `51.47,-0.4`
+    + options (string, optional) - Additional options to include as comma-separated string
+        + Supported: `info`, `translate`, `summary`, `speech`
+        + Example: `info,speech`
+    + format (string, optional) - Desired response format
+        + Supported: `json`, `xml`, `yaml`
+        + Default: `json`
+    + remove (string, optional) - Remove unused keys from the response
+        + Examples: `spoken,repr`, `runways`
+    + filter (string, optional) - Only include these keys in the response
+        + Examples: `sanitized`, `flight_rules,altimeter,value`
+    + onfail (string, optional) - Error, use out-of-date cache, or check nearest station when unable to fetch report
+        + Supported: `cache`, `error`, `nearest`
+        + Default: `cache`
+
+### Get Summary Status [GET]
+
+Get the current and forecasted flight conditions for a specific station by ICAO & IATA station code or a lat,lon coordinate pair. The API will return the station nearest to those coordinates. Include `info` in the options to get details about the selected station.
+
++ Request
+
+    + Headers
+    
+            Authorization: Token my_secret_api_token
+
++ Response 200 (application/json)
+
+        {
+            "meta": {
+                "timestamp": "2022-09-06T03:30:17.558193+00:00Z"
+            },
+            "metar": {
+                "time": "2022-09-06T02:51:00Z",
+                "flight_rules": "VFR",
+                "wx_codes": [
+                    {
+                        "repr": "-RA",
+                        "value": "Light Rain"
+                    }
+                ],
+                "visibility": {
+                    "repr": "10",
+                    "value": 10,
+                    "spoken": "one zero"
+                },
+                "ceiling": {
+                    "repr": "BKN048",
+                    "type": "BKN",
+                    "altitude": 48,
+                    "modifier": null
+                }
+            },
+            "taf": {
+                "time": "2022-09-06T02:32:00Z",
+                "forecast": [
+                    {
+                        "start_time": "2022-09-06T03:00:00Z",
+                        "end_time": "2022-09-06T09:00:00Z",
+                        "flight_rules": "VFR"
+                    },
+                    {
+                        "start_time": "2022-09-06T09:00:00Z",
+                        "end_time": "2022-09-06T14:00:00Z",
+                        "flight_rules": "MVFR"
+                    },
+                    {
+                        "start_time": "2022-09-06T14:00:00Z",
+                        "end_time": "2022-09-06T21:00:00Z",
+                        "flight_rules": "IFR"
+                    },
+                    {
+                        "start_time": "2022-09-06T21:00:00Z",
+                        "end_time": "2022-09-07T00:00:00Z",
+                        "flight_rules": "IFR"
+                    },
+                    {
+                        "start_time": "2022-09-07T00:00:00Z",
+                        "end_time": "2022-09-07T06:00:00Z",
+                        "flight_rules": "IFR"
+                    }
+                ]
+            }
         }
 
 ## METAR [/metar/{location}{?options,airport,reporting,format,remove,filter,onfail}]
@@ -4529,7 +4619,7 @@ This endpoint returns the results for multiple stations for a given report type 
 + Parameters
 
     + report_type: `metar` (string) - Weather report type
-        + Supported: `metar`, `taf`
+        + Supported: `summary`, `metar`, `taf`
     + locations: `KJFK,KSFO` (string) - Comma-separated string of up to 10 ICAO & IATA station codes
     + options: `speech` (string, optional) - Additional options to include as comma-separated string
         + Supported: `info`, `translate`, `summary`, `speech`
