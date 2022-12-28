@@ -160,7 +160,7 @@ class MultiReport(Base):
             if isinstance(item, dict):
                 station: avwx.Station = item.pop("station")
                 locations.append(station)
-                distances[station.lookup_code] = item
+                distances[station.storage_code] = item
             else:
                 locations.append(item)
         return locations, distances
@@ -178,14 +178,14 @@ class MultiReport(Base):
         for loc in locations:
             coros.append(handler.fetch_report(loc, config))
             await app.station.add(
-                loc.lookup_code, params.report_type + "-" + self.log_postfix
+                loc.storage_code, params.report_type + "-" + self.log_postfix
             )
         data = [r[0] for r in await aio.gather(*coros)]
 
         # Expand to keyed dict when supplied specific keys
         if self.keyed:
             keys = [
-                loc.lookup_code if hasattr(loc, "lookup_code") else loc
+                loc.storage_code if hasattr(loc, "storage_code") else loc
                 for loc in locations
             ]
             data = dict(zip(keys, data))

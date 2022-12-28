@@ -87,7 +87,7 @@ async def station_data_for(
 ) -> Optional[dict]:
     """Returns airport data dict from station or another source"""
     if _use_aviowiki_data(config, token):
-        data = await get_aviowiki_data(station.lookup_code)
+        data = await get_aviowiki_data(station.storage_code)
         if data is None:
             text = f"{station.icao}-{station.gps}-{station.local}"
             rollbar.report_message(text, "info")

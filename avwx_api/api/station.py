@@ -19,7 +19,7 @@ from avwx_api.station_manager import station_data_for
 
 async def get_station(station: avwx.Station, token: Optional[Token]) -> dict:
     """Log and returns station data as dict"""
-    await app.station.add(station.lookup_code, "station")
+    await app.station.add(station.storage_code, "station")
     return await station_data_for(station, token=token) or {}
 
 
@@ -72,5 +72,5 @@ class MultiStation(Base):
     @token_check
     async def get(self, params: structs.Params, token: Optional[Token]) -> Response:
         """Returns station details for multiple idents"""
-        data = {s.lookup_code: await get_station(s, token) for s in params.stations}
+        data = {s.storage_code: await get_station(s, token) for s in params.stations}
         return self.make_response(data, params)

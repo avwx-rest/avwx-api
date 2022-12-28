@@ -60,9 +60,9 @@ class StationCounter(DelayedCounter):
     async def from_params(self, params: Params, report_type: str):
         """Counts station based on param values"""
         if hasattr(params, "station"):
-            code = params.station.lookup_code
+            code = params.station.storage_code
         elif hasattr(params, "location") and isinstance(params.location, Station):
-            code = params.location.lookup_code
+            code = params.location.storage_code
         else:
             return
         await self.add(code, report_type)

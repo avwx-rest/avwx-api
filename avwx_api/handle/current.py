@@ -60,7 +60,7 @@ class PirepHandler(ListedReportHandler):
         elif isinstance(loc, avwx.Station):
             station = loc
             if not station.sends_reports:
-                return {"error": ERRORS[6].format(station.lookup_code)}, 204
+                return {"error": ERRORS[6].format(station.storage_code)}, 204
             data, cache, code = await self._station_cache_or_fetch(station)
         else:
             raise Exception(f"loc is not a valid value: {loc}")
@@ -102,7 +102,7 @@ class NotamHandler(ListedReportHandler):
         elif isinstance(loc, avwx.Station):
             station = loc
             if not station.sends_reports:
-                return {"error": ERRORS[6].format(station.lookup_code)}, 204
+                return {"error": ERRORS[6].format(station.storage_code)}, 204
             # Don't cache non-default radius
             if config.distance != 10:
                 parser = self.parser(station.lookup_code)

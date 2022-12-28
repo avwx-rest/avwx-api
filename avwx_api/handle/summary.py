@@ -81,7 +81,7 @@ class SummaryHandler(ReportHandler):
         Cache report data is available for use, but summaries themselves are not cached
         """
         if not station.sends_reports:
-            return {"error": ERRORS[6].format(station.lookup_code)}, 204
+            return {"error": ERRORS[6].format(station.storage_code)}, 204
         # Create summary from METAR and TAF reports
         (metar, *_), (taf, *_) = await aio.gather(
             self._station_cache_or_fetch(
@@ -89,7 +89,7 @@ class SummaryHandler(ReportHandler):
             ),
             self._station_cache_or_fetch(station, report_type="taf", parser=avwx.Taf),
         )
-        data = make_summary(metar["data"], taf["data"])
+        data = make_summary(metar.get("data"), taf.get("data"))
         # Create response
         resp = {"meta": self.make_meta()}
         if cache_time := metar.get("timestamp"):

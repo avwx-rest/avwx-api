@@ -21,6 +21,10 @@ from avwx_api_core.token import TokenManager
 from avwx_api.station_counter import StationCounter
 
 
+from dotenv import load_dotenv
+load_dotenv()
+
+
 CACHE_EXPIRES = {"metar": 1, "taf": 1, "awdata": 60 * 24}
 MONGO_URI = environ.get("MONGO_URI")
 
@@ -40,6 +44,7 @@ async def init_helpers():
     app.cache = CacheManager(app, expires=CACHE_EXPIRES)
     app.token = TokenManager(app)
     app.station = StationCounter(app)
+    app.cache_only = {}
 
 
 @app.before_first_request
@@ -55,3 +60,11 @@ def init_rollbar():
         rollbar.report_exc_info(exception, extra_data=extra)
 
     avwx_exceptions.exception_intercept = exception_intercept
+
+
+@app.before_first_request
+async def init_cache_only_map():
+    """Fetch cache-only station lists for the duration of the worker"""
+    for table in ("awos",):
+        codes = await app.mdb.cache[table].distinct("_id", {}, {})
+        app.cache_only.update({code: table for code in codes})

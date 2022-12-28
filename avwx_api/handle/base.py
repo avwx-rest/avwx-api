@@ -228,6 +228,23 @@ class ReportHandler(BaseHandler):
             return {"error": ERRORS[1].format(self.report_type), "raw": parser.raw}, 500
         return None, None
 
+    @staticmethod
+    def _cache_only_source(station: avwx.Station) -> bool:
+        """Returns True if the station is found only in a special cache"""
+        return station.storage_code in app.cache_only
+
+    async def _handle_cache_only(self, station: avwx.Station, config: ParseConfig) -> DataStatus:
+        data, code = None, 200
+        report_type = app.cache_only[station.storage_code]
+        data = await app.cache.get(report_type, station.storage_code, force=True)
+        if data is None:
+            data, code = {"error": "No report found"}, 204
+        data, code = await self._post_handle(data, code, None, station, config)
+        with suppress(KeyError):
+            if "ADVISORY" in data["raw"]:
+                data["meta"]["warning"] = "This AWOS is for advisory purposes only, not for flight planning"
+        return data, code
+
     async def _new_report(
         self, parser: avwx.base.AVWXBase, cache: bool = None, report_type: str = None
     ) -> DataStatus:
@@ -261,7 +278,7 @@ class ReportHandler(BaseHandler):
         """For a station, fetch data from the cache or return a new report"""
         data, code = None, 200
         report_type = report_type or self.report_type
-        cache = await app.cache.get(report_type, station.lookup_code, force=force_cache)
+        cache = await app.cache.get(report_type, station.storage_code, force=force_cache)
         if cache is None or app.cache.has_expired(cache.get("timestamp"), report_type):
             parser = (parser or self.parser)(station.lookup_code)
             data, code = await self._new_report(parser, use_cache, report_type)
@@ -278,8 +295,10 @@ class ReportHandler(BaseHandler):
         Uses a cache to store recent report hashes which are (at most) two minutes old
         If nofail and a new report can't be fetched, the cache will be returned with a warning
         """
+        if self._cache_only_source(station):
+            return await self._handle_cache_only(station, config)
         if not station.sends_reports:
-            return {"error": ERRORS[6].format(station.lookup_code)}, 204
+            return {"error": ERRORS[6].format(station.storage_code)}, 204
         # Fetch an existing and up-to-date cache or make a new report
         try:
             data, cache, code = await self._station_cache_or_fetch(
@@ -311,7 +330,7 @@ class ReportHandler(BaseHandler):
                 config.nearest_on_fail = False
                 near = station.nearby()
                 resp, code = await self.fetch_report(near[0][0], config)
-                text = f"No report found at {station.lookup_code}"
+                text = f"No report found at {station.storage_code}"
                 try:
                     resp["meta"]["warning"] = text
                 except KeyError:
