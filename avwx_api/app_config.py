@@ -8,6 +8,7 @@ from os import environ
 
 # library
 import rollbar
+from dotenv import load_dotenv
 from motor.motor_asyncio import AsyncIOMotorClient
 from quart import got_request_exception
 from quart_openapi import Pint
@@ -21,7 +22,6 @@ from avwx_api_core.token import TokenManager
 from avwx_api.station_counter import StationCounter
 
 
-from dotenv import load_dotenv
 load_dotenv()
 
 

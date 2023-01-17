@@ -31,6 +31,21 @@ ERRORS = [
     "Unable to fetch report. This cached data might be out of date. To return an error instead, set ?onfail=error",
 ]
 
+WARNINGS = [
+    "This AWOS is for advisory purposes only, not for flight planning",
+]
+
+
+def find_code(report: str) -> str:
+    """Finds the station code ignoring certain prefixes"""
+    try:
+        split = report.strip().split()
+        if split[0].lower() in ("metar", "taf"):
+            return split[1]
+        return split[0]
+    except IndexError:
+        return ""
+
 
 class BaseHandler:
     """Base request handler class"""
@@ -146,10 +161,7 @@ class BaseHandler:
             if error := self.validate_supplied_report(report):
                 return error
             try:
-                code = (
-                    report[6:10] if report.lower().startswith("metar ") else report[:4]
-                )
-                station = avwx.Station.from_code(code)
+                station = avwx.Station.from_code(find_code(report))
             except avwx.exceptions.BadStation:
                 print("No station")
                 return {"error": ERRORS[2].format(report[:4])}, 400
@@ -233,7 +245,9 @@ class ReportHandler(BaseHandler):
         """Returns True if the station is found only in a special cache"""
         return station.storage_code in app.cache_only
 
-    async def _handle_cache_only(self, station: avwx.Station, config: ParseConfig) -> DataStatus:
+    async def _handle_cache_only(
+        self, station: avwx.Station, config: ParseConfig
+    ) -> DataStatus:
         data, code = None, 200
         report_type = app.cache_only[station.storage_code]
         data = await app.cache.get(report_type, station.storage_code, force=True)
@@ -242,7 +256,7 @@ class ReportHandler(BaseHandler):
         data, code = await self._post_handle(data, code, None, station, config)
         with suppress(KeyError):
             if "ADVISORY" in data["raw"]:
-                data["meta"]["warning"] = "This AWOS is for advisory purposes only, not for flight planning"
+                data["meta"]["warning"] = WARNINGS[0]
         return data, code
 
     async def _new_report(
@@ -278,7 +292,9 @@ class ReportHandler(BaseHandler):
         """For a station, fetch data from the cache or return a new report"""
         data, code = None, 200
         report_type = report_type or self.report_type
-        cache = await app.cache.get(report_type, station.storage_code, force=force_cache)
+        cache = await app.cache.get(
+            report_type, station.storage_code, force=force_cache
+        )
         if cache is None or app.cache.has_expired(cache.get("timestamp"), report_type):
             parser = (parser or self.parser)(station.lookup_code)
             data, code = await self._new_report(parser, use_cache, report_type)
