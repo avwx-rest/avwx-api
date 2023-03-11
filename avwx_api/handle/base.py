@@ -110,7 +110,7 @@ class BaseHandler:
         for opt in self.option_keys:
             if getattr(config, opt, False):
                 if opt == "summary" and self.report_type == "taf":
-                    for i in range(len(ret["forecast"])):
+                    for i in range(len(ret.get("forecast", []))):
                         ret["forecast"][i]["summary"] = data["summary"][i]
                 else:
                     ret[opt] = data.get(opt)

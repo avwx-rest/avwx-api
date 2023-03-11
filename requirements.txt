@@ -1,6 +1,6 @@
 git+https://github.com/avwx-rest/avwx-api-core@3ea12472e7bcc3b6731fcb9a3dc09b1bc40d98da
 
-avwx-engine[all]==1.8.10
+avwx-engine[all]==1.8.11
 hypercorn~=0.14
 python-dotenv~=0.21
 rollbar>=0.16
