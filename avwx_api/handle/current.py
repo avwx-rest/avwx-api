@@ -63,7 +63,7 @@ class PirepHandler(ListedReportHandler):
                 return {"error": ERRORS[6].format(station.storage_code)}, 204
             data, cache, code = await self._station_cache_or_fetch(station)
         else:
-            raise Exception(f"loc is not a valid value: {loc}")
+            raise ValueError(f"loc is not a valid value: {loc}")
         return await self._post_handle(data, code, cache, station, config)
 
     @staticmethod
@@ -111,5 +111,5 @@ class NotamHandler(ListedReportHandler):
             else:
                 data, cache, code = await self._station_cache_or_fetch(station)
         else:
-            raise Exception(f"loc is not a valid value: {loc}")
+            raise ValueError(f"loc is not a valid value: {loc}")
         return await self._post_handle(data, code, cache, station, config)

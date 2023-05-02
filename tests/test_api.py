@@ -10,9 +10,7 @@ REPORT_TYPES = ("metar", "taf", "pirep", "gfs/mav", "gfs/mex")
 
 @pytest.mark.asyncio
 async def test_cors():
-    """
-    Tests that CORS headers are available at the primary endpoints
-    """
+    """Tests that CORS headers are available at the primary endpoints"""
     client = app.test_client()
     for url in [f"/api/{report_type}/KJFK" for report_type in REPORT_TYPES]:
         resp = await client.get(url)

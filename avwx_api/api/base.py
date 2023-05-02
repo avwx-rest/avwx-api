@@ -130,7 +130,7 @@ class Parse(Base):
         handler = self.handler or self.handlers.get(params.report_type)
         data, code = await handler.parse_given(params.report, config)
         if "station" in data:
-            report_type = params.report_type + "-given"
+            report_type = f"{params.report_type}-given"
             await app.station.add(data["station"], report_type)
         return self.make_response(data, params, code)
 
@@ -178,7 +178,7 @@ class MultiReport(Base):
         for loc in locations:
             coros.append(handler.fetch_report(loc, config))
             await app.station.add(
-                loc.storage_code, params.report_type + "-" + self.log_postfix
+                loc.storage_code, f"{params.report_type}-{self.log_postfix}"
             )
         data = [r[0] for r in await aio.gather(*coros)]
 

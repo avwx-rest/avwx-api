@@ -136,7 +136,7 @@ _NAMED_OPTIONS = ("translate", "summary", "speech")
 
 
 @dataclass
-class ParseConfig:  # pylint: disbale=too-many-instance-attributes
+class ParseConfig:  # pylint: disable=too-many-instance-attributes
     """Config flags for report parse handling"""
 
     translate: bool

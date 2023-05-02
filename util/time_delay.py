@@ -2,6 +2,7 @@
 Tests update delays from different NOAA sources and the API
 """
 
+
 # stdlib
 from contextlib import suppress
 from datetime import datetime
@@ -11,6 +12,7 @@ from time import sleep
 import httpx
 from avwx import Metar
 from avwx.service.scrape import NOAA_ADDS, NOAA_FTP, NOAA_Scrape, Service
+from datetime import timezone
 
 
 def from_service(service: Service, icao: str) -> str:
@@ -23,7 +25,7 @@ def from_service(service: Service, icao: str) -> str:
 def from_api(icao: str) -> str:
     """Returns the timestamp fetched from the API"""
     # NOTE: Disable token auth with prod cache
-    data = httpx.get("http://localhost:8000/api/metar/" + icao).json()
+    data = httpx.get(f"http://localhost:8000/api/metar/{icao}").json()
     return data["time"]["repr"]
 
 
@@ -44,7 +46,7 @@ def main():
     while True:
         times = get_times(icao)
         if len(set(times.values())) != 1:
-            print(datetime.utcnow(), times)
+            print(datetime.now(timezone.utc), times)
             print()
             counter = 0
         else:

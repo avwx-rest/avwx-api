@@ -76,9 +76,7 @@ def SplitChar(char: str) -> Callable:
     """Returns a validator to split a string by a specific character"""
 
     def validator(value: str) -> str:
-        if not value:
-            return []
-        return value.split(char)
+        return value.split(char) if value else []
 
     return validator
 
@@ -125,10 +123,7 @@ def MultiStation(values: str) -> list[Station]:
         raise Invalid("Could not find any stations in the request")
     if len(values) > 10:
         raise Invalid("Multi requests are limited to 10 stations or less")
-    ret = []
-    for code in values:
-        ret.append(station_for(code))
-    return ret
+    return [station_for(code) for code in values]
 
 
 _report_shared = {

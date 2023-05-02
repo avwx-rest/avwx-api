@@ -34,9 +34,7 @@ async def aid_for_code(code: str) -> Optional[str]:
     if app.mdb is None:
         return
     search = app.mdb.avio.aids.find_one({"_id": code})
-    if data := await mongo_handler(search):
-        return data.get("aid")
-    return None
+    return data.get("aid") if (data := await mongo_handler(search)) else None
 
 
 async def _call(client: httpx.AsyncClient, endpoint: str, aid: str) -> Optional[dict]:
@@ -75,9 +73,7 @@ def _use_aviowiki_data(config: Optional[ParseConfig], token: Optional[Token]) ->
         return False
     if config and config.aviowiki_data:
         return True
-    if token and ParseConfig.use_aviowiki_data(token):
-        return True
-    return False
+    return bool(token and ParseConfig.use_aviowiki_data(token))
 
 
 async def station_data_for(

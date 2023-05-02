@@ -40,9 +40,7 @@ def find_code(report: str) -> str:
     """Finds the station code ignoring certain prefixes"""
     try:
         split = report.strip().split()
-        if split[0].lower() in ("metar", "taf"):
-            return split[1]
-        return split[0]
+        return split[1] if split[0].lower() in {"metar", "taf"} else split[0]
     except IndexError:
         return ""
 
@@ -411,6 +409,7 @@ class ManagerHandler(BaseHandler):
             "type": self.report_type,
             "source": source,
         }
+
         # Update the parser's raw data
         async def wrapper():
             return await manager.async_update(timeout=2, disable_post=True)
@@ -492,7 +491,7 @@ class ManagerHandler(BaseHandler):
                 data, code = cache, 200
                 resp["meta"]["warning"] = ERRORS[7]
             else:
-                resp.update(data)
+                resp |= data
                 return resp, code
         # Format the return data
         resp["reports"] = [self._format_report(r, config) for r in data]

@@ -175,7 +175,7 @@ class ReportsAlong(Base):
             stations.append(data["station"])
         if resp:
             await app.cache.update_many(report_type, stations, resp)
-            await app.station.add_many(stations, report_type + "-route")
+            await app.station.add_many(stations, f"{report_type}-route")
         resp = {
             "meta": handler.make_meta(),
             "route": params.route,

@@ -7,7 +7,6 @@ Handle airport summary requests
 # stdlib
 import asyncio as aio
 from contextlib import suppress
-from pprint import pprint
 from typing import Optional
 
 # module
@@ -28,12 +27,14 @@ def clip_timestamps(data: dict) -> dict:
     return data
 
 
+def is_ceiling(cloud: dict) -> bool:
+    """Returns True is the cloud dict is a valid ceiling"""
+    return cloud["base"] and cloud["type"] in {"OVC", "BKN", "VV"}
+
+
 def get_ceiling(clouds: list[dict]):
     """Get the cloud ceiling. Identical to parsing.core but with a dict"""
-    for cloud in clouds:
-        if cloud["base"] and cloud["type"] in ("OVC", "BKN", "VV"):
-            return cloud
-    return None
+    return next((cloud for cloud in clouds if is_ceiling(cloud)), None)
 
 
 def metar_summary(metar: Optional[dict]) -> dict:
@@ -95,7 +96,7 @@ class SummaryHandler(ReportHandler):
         if cache_time := metar.get("timestamp"):
             resp["meta"]["cache-timestamp"] = cache_time
         # Format the return data
-        resp.update(self._format_report(data, config))
+        resp |= self._format_report(data, config)
         # Add station info if requested
         if station and config.station:
             resp["info"] = await station_data_for(station, config)

@@ -46,10 +46,7 @@ def check_count_limit(
 
 def arg_matching(target: Any, args: tuple[Any]) -> Any:
     """Returns the first arg matching the target type"""
-    for arg in args:
-        if isinstance(arg, target):
-            return arg
-    return None
+    return next((arg for arg in args if isinstance(arg, target)), None)
 
 
 @app.route("/api/station/near/<coord>")

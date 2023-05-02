@@ -1,6 +1,5 @@
 """
-Michael duPont - michael@mdupont.com
-tests/test_validators.py - Test parameter validators
+Test parameter validators
 """
 
 # library
@@ -8,14 +7,12 @@ import pytest
 from voluptuous import Invalid
 
 # module
-import avwx_api.validators as validators
+import avwx_api.validate as validate
 
 
 def test_split_in():
-    """
-    Tests that SplitIn returns a split string only containing certain values
-    """
-    validator = validators.SplitIn(("test", "values", "here"))
+    """Tests that SplitIn returns a split string only containing certain values"""
+    validator = validate.SplitIn(("test", "values", "here"))
     good_strings = ("test,values,here", "here", "values,test")
     for string in good_strings:
         assert string.split(",") == validator(string)
