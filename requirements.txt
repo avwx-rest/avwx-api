@@ -1,9 +1,9 @@
-git+https://github.com/avwx-rest/avwx-api-core@1721b99d41bbe5e99c04956633cec1d93c60ec64
+git+https://github.com/avwx-rest/avwx-api-core@a7fc3c9cba08361ebc0bb0bc8c9e711d310146af
 
 avwx-engine[all]==1.8.11
 hypercorn~=0.14
 python-dotenv~=1.0
 rollbar>=0.16
-typing_extensions~=4.5
+typing_extensions~=4.6
 voluptuous~=0.13
-Werkzeug==2.1.2
+werkzeug==2.1.2
