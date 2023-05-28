@@ -6,4 +6,4 @@ python-dotenv~=1.0
 rollbar>=0.16
 typing_extensions~=4.6
 voluptuous~=0.13
-werkzeug==2.1.2
+werkzeug==2.2.3
