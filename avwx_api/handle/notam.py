@@ -20,8 +20,10 @@ from avwx_api.structs import DataStatus, ParseConfig
 TAG_PATTERN = re.compile(r"<[^>]*>")
 
 
-def timestamp_from_notam_date(text: str) -> Timestamp:
+def timestamp_from_notam_date(text: str) -> Timestamp | str:
     """Convert FAA NOTAM dt format"""
+    if text == "PERM":
+        return text
     issued_value = datetime.strptime(text, r"%m/%d/%Y %H%M")
     return Timestamp(text, issued_value)
 
