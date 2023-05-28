@@ -80,36 +80,36 @@ class PirepHandler(ListedReportHandler):
         return None
 
 
-class NotamHandler(ListedReportHandler):
-    parser = avwx.Notams
-    report_type = "notam"
+# class NotamHandler(ListedReportHandler):
+#     parser = avwx.Notams
+#     report_type = "notam"
 
-    async def fetch_report(
-        self,
-        loc: avwx.Station | Coord,
-        config: ParseConfig,
-    ) -> DataStatus:
-        """Returns NOTAMs for a location and config
+#     async def fetch_report(
+#         self,
+#         loc: avwx.Station | Coord,
+#         config: ParseConfig,
+#     ) -> DataStatus:
+#         """Returns NOTAMs for a location and config
 
-        Caching only applies to stations with default radius, not coord or custom radius
-        """
-        station, code, cache = None, 200, None
-        # Don't cache coordinates
-        if isinstance(loc, Coord):
-            parser = self.parser(coord=loc)
-            parser.radius = int(config.distance)
-            data, code = await self._new_report(parser, cache=False)
-        elif isinstance(loc, avwx.Station):
-            station = loc
-            if not station.sends_reports:
-                return {"error": ERRORS[6].format(station.storage_code)}, 204
-            # Don't cache non-default radius
-            if config.distance != 10:
-                parser = self.parser(station.lookup_code)
-                parser.radius = int(config.distance)
-                data, code = await self._new_report(parser, cache=False)
-            else:
-                data, cache, code = await self._station_cache_or_fetch(station)
-        else:
-            raise ValueError(f"loc is not a valid value: {loc}")
-        return await self._post_handle(data, code, cache, station, config)
+#         Caching only applies to stations with default radius, not coord or custom radius
+#         """
+#         station, code, cache = None, 200, None
+#         # Don't cache coordinates
+#         if isinstance(loc, Coord):
+#             parser = self.parser(coord=loc)
+#             parser.radius = int(config.distance)
+#             data, code = await self._new_report(parser, cache=False)
+#         elif isinstance(loc, avwx.Station):
+#             station = loc
+#             if not station.sends_reports:
+#                 return {"error": ERRORS[6].format(station.storage_code)}, 204
+#             # Don't cache non-default radius
+#             if config.distance != 10:
+#                 parser = self.parser(station.lookup_code)
+#                 parser.radius = int(config.distance)
+#                 data, code = await self._new_report(parser, cache=False)
+#             else:
+#                 data, cache, code = await self._station_cache_or_fetch(station)
+#         else:
+#             raise ValueError(f"loc is not a valid value: {loc}")
+#         return await self._post_handle(data, code, cache, station, config)

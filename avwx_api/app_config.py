@@ -65,6 +65,8 @@ def init_rollbar():
 @app.before_first_request
 async def init_cache_only_map():
     """Fetch cache-only station lists for the duration of the worker"""
+    if app.mdb is None:
+        return
     for table in ("awos",):
         codes = await app.mdb.cache[table].distinct("_id")
         app.cache_only.update({code: table for code in codes})

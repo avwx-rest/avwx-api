@@ -18,6 +18,7 @@ from avwx.structs import Coord
 from avwx_api_core.token import Token
 import avwx_api.handle.current as handle
 from avwx_api import app, structs, validate
+from avwx_api.handle.notam import NotamHandler
 from avwx_api.handle.summary import SummaryHandler
 from avwx_api.api.base import (
     Base,
@@ -186,7 +187,7 @@ class NotamFetch(Report):
     plan_types = ("enterprise",)
     struct = structs.NotamLocation
     validator = validate.notam_location
-    handler = handle.NotamHandler
+    handler = NotamHandler
     key_remv = ("remarks",)
 
 
@@ -195,7 +196,7 @@ class NotamParse(Parse):
     report_type = "notam"
     loc_param = "location"
     plan_types = ("enterprise",)
-    handler = handle.NotamHandler
+    handler = NotamHandler
     key_remv = ("remarks",)
 
 

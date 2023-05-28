@@ -14,13 +14,14 @@ from shapely.geometry import LineString, Polygon
 # module
 from avwx import Station
 from avwx.exceptions import BadStation
-from avwx.service import FAA_NOTAM
 from avwx.structs import Coord
 from avwx_api_core.services import FlightRouter, InvalidRequest
 from avwx_api_core.token import Token
 import avwx_api.handle.current as handle
 from avwx_api import app, structs, validate
 from avwx_api.api.base import Base, HEADERS, parse_params, token_check
+from avwx_api.handle.notam import NotamHandler
+from avwx_api.service import FAA_NOTAM
 from avwx_api.station_manager import station_data_for
 
 
@@ -107,7 +108,7 @@ class NotamAlong(Base):
 
     validator = validate.notam_along
     struct = structs.NotamRoute
-    handler = handle.NotamHandler
+    handler = NotamHandler
     key_remv = ("remarks",)
     example = "notam_along"
     plan_types = ("enterprise",)
