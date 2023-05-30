@@ -20,12 +20,28 @@ from avwx_api.structs import DataStatus, ParseConfig
 TAG_PATTERN = re.compile(r"<[^>]*>")
 
 
-def timestamp_from_notam_date(text: str) -> Timestamp | str:
+def timestamp_from_notam_date(text: str | None) -> Timestamp | str | None:
     """Convert FAA NOTAM dt format"""
-    if text == "PERM":
-        return text
-    issued_value = datetime.strptime(text, r"%m/%d/%Y %H%M")
+    if not text:
+        return None
+    if text.startswith("PERM"):
+        return "PERM"
+    if len(text) < 13:
+        return None
+    try:
+        issued_value = datetime.strptime(text[:16], r"%m/%d/%Y %H%M%Z")
+    except ValueError:
+        issued_value = datetime.strptime(text[:13], r"%m/%d/%Y %H%M")
     return Timestamp(text, issued_value)
+
+
+def coord_from_pointer(text: str | None) -> Coord | None:
+    """Extract Coord from data payload"""
+    if not text:
+        return None
+    text = text[6:-1]
+    lat, lon = text.split()
+    return Coord(float(lat), float(lon), text)
 
 
 def parse_icao_notam(report: str, issue_text: str | None) -> tuple[NotamData, Units]:
@@ -37,9 +53,6 @@ def parse_icao_notam(report: str, issue_text: str | None) -> tuple[NotamData, Un
 
 def parse_legacy_notam(data: dict) -> tuple[NotamData, Units]:
     """Parse traditional NOTAM object from FAA API"""
-    coord_text = data["mapPointer"][6:-1]
-    lat, lon = coord_text.split()
-    coord = Coord(float(lat), float(lon), coord_text)
     qualifiers = Qualifiers(
         repr="",
         fir="",
@@ -50,23 +63,23 @@ def parse_legacy_notam(data: dict) -> tuple[NotamData, Units]:
         scope=[],
         lower=None,
         upper=None,
-        coord=coord,
+        coord=coord_from_pointer(data.get("mapPointer")),
         radius=None,
     )
     return NotamData(
-        raw=data["traditionalMessage"],
-        sanitized=data["traditionalMessage"],
-        station=data["icaoId"],
-        time=timestamp_from_notam_date(data["issueDate"]),
+        raw=data.get("traditionalMessage"),
+        sanitized=data.get("traditionalMessage"),
+        station=data.get("icaoId"),
+        time=timestamp_from_notam_date(data.get("issueDate")),
         remarks=None,
         number=data["notamNumber"],
         replaces=None,
         type=None,
         qualifiers=qualifiers,
-        start_time=timestamp_from_notam_date(data["startDate"]),
-        end_time=timestamp_from_notam_date(data["endDate"]),
+        start_time=timestamp_from_notam_date(data.get("startDate")),
+        end_time=timestamp_from_notam_date(data.get("endDate")),
         schedule=None,
-        body=data["traditionalMessage"],
+        body=data.get("traditionalMessage"),
         lower=None,
         upper=None,
     ), Units(**IN_UNITS)
