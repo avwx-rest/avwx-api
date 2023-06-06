@@ -3,7 +3,7 @@ NOTAM handling during FAA ICAO format migration
 """
 
 import re
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 
 import avwx
 from avwx.exceptions import exception_intercept
@@ -20,12 +20,12 @@ from avwx_api.structs import DataStatus, ParseConfig
 TAG_PATTERN = re.compile(r"<[^>]*>")
 
 
-def timestamp_from_notam_date(text: str | None) -> Timestamp | str | None:
+def timestamp_from_notam_date(text: str | None) -> Timestamp | None:
     """Convert FAA NOTAM dt format"""
     if not text:
         return None
     if text.startswith("PERM"):
-        return "PERM"
+        return Timestamp(text, datetime(2100, 1, 1, tzinfo=timezone.utc))
     if len(text) < 13:
         return None
     try:
