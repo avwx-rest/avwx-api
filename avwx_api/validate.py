@@ -6,6 +6,7 @@ avwx_api.validators - Parameter validators
 # pylint: disable=invalid-name
 
 # stdlib
+from contextlib import suppress
 from typing import Callable
 
 # library
@@ -123,7 +124,11 @@ def MultiStation(values: str) -> list[Station]:
         raise Invalid("Could not find any stations in the request")
     if len(values) > 10:
         raise Invalid("Multi requests are limited to 10 stations or less")
-    return [station_for(code) for code in values]
+    stations = []
+    for code in values:
+        with suppress(Invalid):
+            stations.append(station_for(code))
+    return stations
 
 
 _report_shared = {
