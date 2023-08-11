@@ -6,14 +6,17 @@ Manages station data sourcing
 import asyncio as aio
 from dataclasses import asdict
 from os import environ
+from socket import gaierror
 from typing import Optional
 
 # library
 import httpx
+import httpcore
 import rollbar
 
 # module
 from avwx import Station
+from avwx.exceptions import SourceError
 from avwx_api_core.token import Token
 from avwx_api_core.util.handler import mongo_handler
 from avwx_api import app
@@ -26,7 +29,25 @@ ENDPOINTS = [
     "",  # airport data
     "/runways/all",  # runways
 ]
-HEADERS = {"Authorization": "Bearer " + environ.get("AVIOWIKI_API_KEY", "")}
+API_KEY = environ.get("AVIOWIKI_API_KEY", "")
+HEADERS = {"Authorization": f"Bearer {API_KEY}"}
+
+
+TIMEOUT_ERRORS = (
+    httpx.ConnectTimeout,
+    httpx.ReadTimeout,
+    httpx.WriteTimeout,
+    httpx.PoolTimeout,
+    httpcore.ReadTimeout,
+    httpcore.WriteTimeout,
+    httpcore.PoolTimeout,
+)
+CONNECTION_ERRORS = (gaierror, httpcore.ConnectError, httpx.ConnectError)
+NETWORK_ERRORS = (
+    httpcore.ReadError,
+    httpcore.NetworkError,
+    httpcore.RemoteProtocolError,
+)
 
 
 async def aid_for_code(code: str) -> Optional[str]:
@@ -37,13 +58,29 @@ async def aid_for_code(code: str) -> Optional[str]:
     return data.get("aid") if (data := await mongo_handler(search)) else None
 
 
-async def _call(client: httpx.AsyncClient, endpoint: str, aid: str) -> Optional[dict]:
+async def _call(
+    client: httpx.AsyncClient, endpoint: str, aid: str, retries: int = 3
+) -> Optional[dict]:
     url = (AVIOWIKI_URL + endpoint).format(aid)
     try:
-        resp = await client.get(url, headers=HEADERS)
-    except httpx.RequestError:
+        for _ in range(retries):
+            resp = await client.get(url, headers=HEADERS)
+            if resp.status_code == 200:
+                data = resp.json()
+                if "error" not in data:
+                    return data
+            # Skip retries if remote server error
+            if resp.status_code >= 500:
+                raise SourceError(f"aviowiki server returned {resp.status_code}")
         return None
-    return resp.json()
+    except TIMEOUT_ERRORS as timeout_error:
+        raise TimeoutError("Timeout from aviowiki server") from timeout_error
+    except CONNECTION_ERRORS as connect_error:
+        raise ConnectionError("Unable to connect to aviowiki server") from connect_error
+    except NETWORK_ERRORS as network_error:
+        raise ConnectionError(
+            "Unable to read data from aviowiki server"
+        ) from network_error
 
 
 async def fetch_from_aviowiki(code: str) -> Optional[dict]:
@@ -69,7 +106,7 @@ async def get_aviowiki_data(code: str) -> Optional[dict]:
 
 
 def _use_aviowiki_data(config: Optional[ParseConfig], token: Optional[Token]) -> bool:
-    if app.mdb is None:
+    if not API_KEY or app.mdb is None:
         return False
     if config and config.aviowiki_data:
         return True
