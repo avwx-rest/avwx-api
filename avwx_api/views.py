@@ -6,7 +6,7 @@ avwx_api.views - Routes and views for the Quart application
 # pylint: disable=W0702
 
 # library
-from quart import Response, jsonify
+from quart import Response, jsonify, redirect
 
 # module
 from avwx_api import app
@@ -16,9 +16,9 @@ from avwx_api import app
 
 @app.route("/")
 @app.route("/home")
-async def home() -> Response:
+def home() -> Response:
     """Returns static home page"""
-    return await app.send_static_file("html/home.html")
+    return redirect("https://info.avwx.rest")
 
 
 @app.route("/ping")

@@ -1,5 +1,5 @@
 # Start from the official Python 3.11 container
-FROM python:3.11.1
+FROM python:3.11.5
 
 # Expose the default Quart port
 EXPOSE 8000
