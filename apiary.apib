@@ -165,9 +165,9 @@ Returns station information for an airfield or other location by ICAO ident. Thi
     + format (string, optional) - Desired response format
         + Supported: `json`, `xml`, `yaml`
         + Default: `json`
-    + remove (string, optional) - Remove unused keys from the response
+    + remove (string, optional) - Remove unused keys from the response, recursive
         + Examples: `spoken,repr`, `runways`
-    + filter (string, optional) - Only include these keys in the response
+    + filter (string, optional) - Only include these keys in the response, recursive
         + Examples: `sanitized`, `flight_rules,altimeter,value`
 
 ### Get Station Information [GET]
@@ -243,9 +243,9 @@ Returns the nearest stations to a coordinate pair. By default, these are only re
     + format (string, optional) - Desired response format
         + Supported: `json`, `xml`, `yaml`
         + Default: `json`
-    + remove (string, optional) - Remove unused keys from the response
+    + remove (string, optional) - Remove unused keys from the response, recursive
         + Examples: `spoken,repr`, `runways`
-    + filter (string, optional) - Only include these keys in the response
+    + filter (string, optional) - Only include these keys in the response, recursive
         + Examples: `sanitized`, `flight_rules,altimeter,value`
 
 ### Get Stations around a coordinate [GET]
@@ -413,9 +413,9 @@ Text search for stations by ICAO, IATA, name, city, and state. By default, these
     + format (string, optional) - Desired response format
         + Supported: `json`, `xml`, `yaml`
         + Default: `json`
-    + remove (string, optional) - Remove unused keys from the response
+    + remove (string, optional) - Remove unused keys from the response, recursive
         + Examples: `spoken,repr`, `runways`
-    + filter (string, optional) - Only include these keys in the response
+    + filter (string, optional) - Only include these keys in the response, recursive
         + Examples: `sanitized`, `flight_rules,altimeter,value`
 
 ### Get stations via text search [GET]
@@ -596,9 +596,9 @@ Find reporting stations along a flight path. See notes on routing above.
     + format (string, optional) - Desired response format
         + Supported: `json`, `xml`, `yaml`
         + Default: `json`
-    + remove (string, optional) - Remove unused keys from the response
+    + remove (string, optional) - Remove unused keys from the response, recursive
         + Examples: `spoken,repr`, `runways`
-    + filter (string, optional) - Only include these keys in the response
+    + filter (string, optional) - Only include these keys in the response, recursive
         + Examples: `sanitized`, `flight_rules,altimeter,value`
 
 ### Get stations along a flight path [GET]
@@ -866,9 +866,9 @@ The summary provides the current and future flight conditions as well as a few o
     + format (string, optional) - Desired response format
         + Supported: `json`, `xml`, `yaml`
         + Default: `json`
-    + remove (string, optional) - Remove unused keys from the response
+    + remove (string, optional) - Remove unused keys from the response, recursive
         + Examples: `spoken,repr`, `runways`
-    + filter (string, optional) - Only include these keys in the response
+    + filter (string, optional) - Only include these keys in the response, recursive
         + Examples: `sanitized`, `flight_rules,altimeter,value`
     + onfail (string, optional) - Error, use out-of-date cache, or check nearest station when unable to fetch report
         + Supported: `cache`, `error`, `nearest`
@@ -965,9 +965,9 @@ Field notes:
     + format (string, optional) - Desired response format
         + Supported: `json`, `xml`, `yaml`
         + Default: `json`
-    + remove (string, optional) - Remove unused keys from the response
+    + remove (string, optional) - Remove unused keys from the response, recursive
         + Examples: `spoken,repr`, `runways`
-    + filter (string, optional) - Only include these keys in the response
+    + filter (string, optional) - Only include these keys in the response, recursive
         + Examples: `sanitized`, `flight_rules,altimeter,value`
     + onfail (string, optional) - Error, use out-of-date cache, or check nearest station when unable to fetch report
         + Supported: `cache`, `error`, `nearest`
@@ -1131,9 +1131,9 @@ Parses a METAR report supplied by the user.
     + format (string, optional) - Desired response format
         + Supported: `json`, `xml`, `yaml`
         + Default: `json`
-    + remove (string, optional) - Remove unused keys from the response
+    + remove (string, optional) - Remove unused keys from the response, recursive
         + Examples: `spoken,repr`, `runways`
-    + filter (string, optional) - Only include these keys in the response
+    + filter (string, optional) - Only include these keys in the response, recursive
         + Examples: `sanitized`, `flight_rules,altimeter,value`
 
 ### Parse a Given METAR [POST]
@@ -1298,9 +1298,9 @@ TAF reports are atmospheric conditions for an area within five nautical miles of
     + format (string, optional) - Desired response format
         + supported: `json`, `xml`, `yaml`
         + Default: `json`
-    + remove (string, optional) - Remove unused keys from the response
+    + remove (string, optional) - Remove unused keys from the response, recursive
         + Examples: `spoken,repr`, `runways`
-    + filter (string, optional) - Only include these keys in the response
+    + filter (string, optional) - Only include these keys in the response, recursive
         + Examples: `sanitized`, `flight_rules,altimeter,value`
     + onfail (string, optional) - Error, use out-of-date cache, or check nearest station when unable to fetch report
         + Supported: `cache`, `error`, `nearest`
@@ -1710,9 +1710,9 @@ Parses a TAF report supplied by the user.
     + format (string, optional) - Desired response format
         + Supported: `json`, `xml`, `yaml`
         + Default: `json`
-    + remove (string, optional) - Remove unused keys from the response
+    + remove (string, optional) - Remove unused keys from the response, recursive
         + Examples: `spoken,repr`, `runways`
-    + filter (string, optional) - Only include these keys in the response
+    + filter (string, optional) - Only include these keys in the response, recursive
         + Examples: `sanitized`, `flight_rules,altimeter,value`
 
 ### Parse a Given TAF [POST]
@@ -2018,9 +2018,9 @@ Note: translate, summary, and speech options not yet available
     + format (string, optional) - Desired response format
         + Supported: `json`, `xml`, `yaml`
         + Default: `json`
-    + remove (string, optional) - Remove unused keys from the response
+    + remove (string, optional) - Remove unused keys from the response, recursive
         + Examples: `spoken,repr`, `runways`
-    + filter (string, optional) - Only include these keys in the response
+    + filter (string, optional) - Only include these keys in the response, recursive
         + Examples: `sanitized`, `flight_rules,altimeter,value`
     + onfail (string, optional) - Error, use out-of-date cache, or check nearest station when unable to fetch report
         + Supported: `cache`, `error`, `nearest`
@@ -2180,9 +2180,9 @@ Note: translate, summary, and speech options not yet available
     + format (string, optional) - Desired response format
         + Supported: `json`, `xml`, `yaml`
         + Default: `json`
-    + remove (string, optional) - Remove unused keys from the response
+    + remove (string, optional) - Remove unused keys from the response, recursive
         + Examples: `spoken,repr`, `runways`
-    + filter (string, optional) - Only include these keys in the response
+    + filter (string, optional) - Only include these keys in the response, recursive
         + Examples: `sanitized`, `flight_rules,altimeter,value`
 
 ### Parse a Given PIREP [POST]
@@ -2269,9 +2269,9 @@ Filtering options are available for:
     + format (string, optional) - Desired response format
         + Supported: `json`, `xml`, `yaml`
         + Default: `json`
-    + remove (string, optional) - Remove unused keys from the response
+    + remove (string, optional) - Remove unused keys from the response, recursive
         + Examples: `spoken,repr`, `runways`
-    + filter (string, optional) - Only include these keys in the response
+    + filter (string, optional) - Only include these keys in the response, recursive
         + Examples: `sanitized`, `flight_rules,altimeter,value`
     + onfail (string, optional) - Error or use out-of-date cache when unable to fetch report
         + Supported: `cache`, `error`
@@ -2427,9 +2427,9 @@ Parses an AIRMET or SIGMET report supplied by the user.
     + format (string, optional) - Desired response format
         + Supported: `json`, `xml`, `yaml`
         + Default: `json`
-    + remove (string, optional) - Remove unused keys from the response
+    + remove (string, optional) - Remove unused keys from the response, recursive
         + Examples: `spoken,repr`, `runways`
-    + filter (string, optional) - Only include these keys in the response
+    + filter (string, optional) - Only include these keys in the response, recursive
         + Examples: `sanitized`, `flight_rules,altimeter,value`
 
 ### Parse a Given AIR / SIGMET [POST]
@@ -2562,9 +2562,9 @@ Get AIRMET and SIGMET advisories that contain a station or coordinate inside the
     + format (string, optional) - Desired response format
         + Supported: `json`, `xml`, `yaml`
         + Default: `json`
-    + remove (string, optional) - Remove unused keys from the response
+    + remove (string, optional) - Remove unused keys from the response, recursive
         + Examples: `spoken,repr`, `runways`
-    + filter (string, optional) - Only include these keys in the response
+    + filter (string, optional) - Only include these keys in the response, recursive
         + Examples: `sanitized`, `flight_rules,altimeter,value`
     + onfail (string, optional) - Error or use out-of-date cache when unable to fetch report
         + Supported: `cache`, `error`
@@ -2860,9 +2860,9 @@ Every NOTAM has a start and end date and time. Additional NOTAMs may be issued t
     + format (string, optional) - Desired response format
         + Supported: `json`, `xml`, `yaml`
         + Default: `json`
-    + remove (string, optional) - Remove unused keys from the response
+    + remove (string, optional) - Remove unused keys from the response, recursive
         + Examples: `spoken,repr`, `runways`
-    + filter (string, optional) - Only include these keys in the response
+    + filter (string, optional) - Only include these keys in the response, recursive
         + Examples: `sanitized`, `flight_rules,altimeter,value`
 
 ### Get NOTAM Reports [GET]
@@ -2977,9 +2977,9 @@ Parses a NOTAM report supplied by the user.
     + format (string, optional) - Desired response format
         + Supported: `json`, `xml`, `yaml`
         + Default: `json`
-    + remove (string, optional) - Remove unused keys from the response
+    + remove (string, optional) - Remove unused keys from the response, recursive
         + Examples: `spoken,repr`, `runways`
-    + filter (string, optional) - Only include these keys in the response
+    + filter (string, optional) - Only include these keys in the response, recursive
         + Examples: `sanitized`, `flight_rules,altimeter,value`
 
 ### Parse a Given NOTAM [POST]
@@ -3110,9 +3110,9 @@ While these reports officially support ICAO stations in the United States and Pu
     + format (string, optional) - Desired response format
         + Supported: `json`, `xml`, `yaml`
         + Default: `json`
-    + remove (string, optional) - Remove unused keys from the response
+    + remove (string, optional) - Remove unused keys from the response, recursive
         + Examples: `spoken,repr`, `runways`
-    + filter (string, optional) - Only include these keys in the response
+    + filter (string, optional) - Only include these keys in the response, recursive
         + Examples: `sanitized`, `flight_rules,altimeter,value`
     + onfail (string, optional) - Error or use out-of-date cache when unable to fetch report
         + Supported: `cache`, `error`
@@ -3524,9 +3524,9 @@ Parses an NBM report supplied by the user.
     + format (string, optional) - Desired response format
         + Supported: `json`, `xml`, `yaml`
         + Default: `json`
-    + remove (string, optional) - Remove unused keys from the response
+    + remove (string, optional) - Remove unused keys from the response, recursive
         + Examples: `spoken,repr`, `runways`
-    + filter (string, optional) - Only include these keys in the response
+    + filter (string, optional) - Only include these keys in the response, recursive
         + Examples: `sanitized`, `flight_rules,altimeter,value`
 
 ### Parse a Given NBM Report [POST]
@@ -3973,9 +3973,9 @@ NOAA is retiring all GFS reports over the next few years and recommends everyone
     + format (string, optional) - Desired response format
         + Supported: `json`, `xml`, `yaml`
         + Default: `json`
-    + remove (string, optional) - Remove unused keys from the response
+    + remove (string, optional) - Remove unused keys from the response, recursive
         + Examples: `spoken,repr`, `runways`
-    + filter (string, optional) - Only include these keys in the response
+    + filter (string, optional) - Only include these keys in the response, recursive
         + Examples: `sanitized`, `flight_rules,altimeter,value`
     + onfail (string, optional) - Error or use out-of-date cache when unable to fetch report
         + Supported: `cache`, `error`
@@ -4345,9 +4345,9 @@ Parses a GFS report supplied by the user.
     + format (string, optional) - Desired response format
         + Supported: `json`, `xml`, `yaml`
         + Default: `json`
-    + remove (string, optional) - Remove unused keys from the response
+    + remove (string, optional) - Remove unused keys from the response, recursive
         + Examples: `spoken,repr`, `runways`
-    + filter (string, optional) - Only include these keys in the response
+    + filter (string, optional) - Only include these keys in the response, recursive
         + Examples: `sanitized`, `flight_rules,altimeter,value`
 
 ### Parse a Given MAV Report [POST]
@@ -4627,9 +4627,9 @@ This endpoint returns the results for multiple stations for a given report type 
     + format (string, optional) - Desired response format
         + supported: `json`, `xml`, `yaml`
         + Default: `json`
-    + remove (string, optional) - Remove unused keys from the response
+    + remove (string, optional) - Remove unused keys from the response, recursive
         + Examples: `spoken,repr`, `runways`
-    + filter (string, optional) - Only include these keys in the response
+    + filter (string, optional) - Only include these keys in the response, recursive
         + Examples: `sanitized`, `flight_rules,altimeter,value`
     + onfail (string, optional) - Error, use out-of-date cache, or check nearest station when unable to fetch report
         + Supported: `cache`, `error`, `nearest`
@@ -4836,9 +4836,9 @@ Returns the nearest weather reports to a coordinate pair. By default, these are 
     + format (string, optional) - Desired response format
         + Supported: `json`, `xml`, `yaml`
         + Default: `json`
-    + remove (string, optional) - Remove unused keys from the response
+    + remove (string, optional) - Remove unused keys from the response, recursive
         + Examples: `spoken,repr`, `runways`
-    + filter (string, optional) - Only include these keys in the response
+    + filter (string, optional) - Only include these keys in the response, recursive
         + Examples: `sanitized`, `flight_rules,altimeter,value`
     + onfail (string, optional) - Error, use out-of-date cache, or check nearest station when unable to fetch report
         + Supported: `cache`, `error`, `nearest`
@@ -5040,9 +5040,9 @@ Returns weather reports by searching for stations by ICAO, IATA, name, city, and
     + format (string, optional) - Desired response format
         + Supported: `json`, `xml`, `yaml`
         + Default: `json`
-    + remove (string, optional) - Remove unused keys from the response
+    + remove (string, optional) - Remove unused keys from the response, recursive
         + Examples: `spoken,repr`, `runways`
-    + filter (string, optional) - Only include these keys in the response
+    + filter (string, optional) - Only include these keys in the response, recursive
         + Examples: `sanitized`, `flight_rules,altimeter,value`
     + onfail (string, optional) - Error, use out-of-date cache, or check nearest station when unable to fetch report
         + Supported: `cache`, `error`, `nearest`
@@ -5169,9 +5169,9 @@ Note: NOTAM routing is limited to ICAO and IATA codes due to data source limitat
     + format (string, optional) - Desired response format
         + Supported: `json`, `xml`, `yaml`
         + Default: `json`
-    + remove (string, optional) - Remove unused keys from the response
+    + remove (string, optional) - Remove unused keys from the response, recursive
         + Examples: `spoken,repr`, `runways`
-    + filter (string, optional) - Only include these keys in the response
+    + filter (string, optional) - Only include these keys in the response, recursive
         + Examples: `sanitized`, `flight_rules,altimeter,value`
 
 ### Get stations along a flight path [GET]
