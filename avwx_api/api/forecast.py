@@ -16,6 +16,7 @@ NBM_HANDLERS = {
     "nbh": handle.NbhHandler,
     "nbs": handle.NbsHandler,
     "nbe": handle.NbeHandler,
+    "nbx": handle.NbxHandler,
 }
 
 

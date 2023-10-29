@@ -27,3 +27,7 @@ class NbsHandler(ReportHandler):
 
 class NbeHandler(ReportHandler):
     parser = avwx.Nbe
+
+
+class NbxHandler(ReportHandler):
+    parser = avwx.Nbx
