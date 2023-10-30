@@ -37,8 +37,8 @@ app.after_request(add_cors)
 def init_rollbar():
     """Initialize Rollbar exception logging"""
     key = environ.get("LOG_KEY")
-    if not (key and app.env == "production"):
-        return
+    # if not (key and app.env == "production"):
+    #     return
     rollbar.init(key, root="avwx_api", allow_logging_basic_config=False)
     got_request_exception.connect(report_exception, app, weak=False)
 
