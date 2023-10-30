@@ -29,8 +29,9 @@ CACHE_EXPIRES = {"metar": 1, "taf": 1, "awdata": 60 * 24}
 MONGO_URI = environ.get("MONGO_URI")
 
 
+Pint.json_provider_class = CustomJSONProvider
 app = Pint(__name__)
-app.json_provider_class = CustomJSONProvider
+
 app.after_request(add_cors)
 
 
