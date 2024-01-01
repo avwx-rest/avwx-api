@@ -1,5 +1,5 @@
 # Start from the official Python 3.11 container
-FROM python:3.11.5
+FROM python:3.11.7
 
 # Expose the default Quart port
 EXPOSE 8000
@@ -10,7 +10,7 @@ WORKDIR /home/api
 # Create new user to run as non-root
 RUN useradd -m -r user && chown user /home/api
 
-# Install the require Python packages
+# Install the required Python packages
 COPY requirements.txt .
 RUN pip install -U pip
 RUN pip install -Ur requirements.txt --no-cache-dir --compile
