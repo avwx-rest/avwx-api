@@ -31,6 +31,10 @@ from avwx_api.api.base import (
 )
 
 
+MT_REPL = {"base": "altitude"}
+MT_REMV = ("top",)
+
+
 ## METAR
 
 
@@ -38,16 +42,16 @@ from avwx_api.api.base import (
 class MetarFetch(Report):
     report_type = "metar"
     handler = handle.MetarHandler
-    key_repl = {"base": "altitude"}
-    key_remv = ("top",)
+    key_repl = MT_REPL
+    key_remv = MT_REMV
 
 
 @app.route("/api/parse/metar")
 class MetarParse(Parse):
     report_type = "metar"
     handler = handle.MetarHandler
-    key_repl = {"base": "altitude"}
-    key_remv = ("top",)
+    key_repl = MT_REPL
+    key_remv = MT_REMV
 
 
 @app.route("/api/multi/metar/<stations>")
@@ -55,8 +59,8 @@ class MetarMulti(MultiReport):
     report_type = "metar"
     handler = handle.MetarHandler
     example = "multi_metar"
-    key_repl = {"base": "altitude"}
-    key_remv = ("top",)
+    key_repl = MT_REPL
+    key_remv = MT_REMV
 
 
 ## TAF
@@ -66,16 +70,16 @@ class MetarMulti(MultiReport):
 class TafFetch(Report):
     report_type = "taf"
     handler = handle.TafHandler
-    key_repl = {"base": "altitude"}
-    key_remv = ("top",)
+    key_repl = MT_REPL
+    key_remv = MT_REMV
 
 
 @app.route("/api/parse/taf")
 class TafParse(Parse):
     report_type = "taf"
     handler = handle.TafHandler
-    key_repl = {"base": "altitude"}
-    key_remv = ("top",)
+    key_repl = MT_REPL
+    key_remv = MT_REMV
 
 
 @app.route("/api/multi/taf/<stations>")
@@ -83,8 +87,8 @@ class TafMulti(MultiReport):
     report_type = "taf"
     handler = handle.TafHandler
     example = "multi_taf"
-    key_repl = {"base": "altitude"}
-    key_remv = ("top",)
+    key_repl = MT_REPL
+    key_remv = MT_REMV
 
 
 ## PIREP
@@ -207,8 +211,8 @@ class NotamParse(Parse):
 class StationSummary(Report):
     report_type = "summary"
     handler = SummaryHandler
-    key_repl = {"base": "altitude"}
-    key_remv = ("top",)
+    key_repl = MT_REPL
+    key_remv = MT_REMV
 
 
 @app.route("/api/multi/summary/<stations>")
@@ -217,5 +221,5 @@ class StationSummaryMulti(MultiReport):
     plan_types = ("pro", "enterprise")
     handler = SummaryHandler
     example = "multi_summary"
-    key_repl = {"base": "altitude"}
-    key_remv = ("top",)
+    key_repl = MT_REPL
+    key_remv = MT_REMV
