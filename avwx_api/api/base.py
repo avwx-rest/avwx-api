@@ -1,6 +1,4 @@
-"""
-Functional API endpoints separate from static views
-"""
+"""Functional API endpoints separate from static views."""
 
 # stdlib
 import json
@@ -17,7 +15,7 @@ from voluptuous import Invalid, MultipleInvalid
 # module
 import avwx
 from avwx_api_core.views import AuthView, Token, make_token_check
-from avwx_api import app, handle, structs, validate
+from avwx_api import app, structs, validate
 from avwx_api.handle.base import ManagerHandler, ReportHandler
 
 
@@ -28,7 +26,7 @@ EXAMPLE_PATH = Path(__file__).parent / "examples"
 
 
 def parse_params(func):
-    """Collects and parses endpoint parameters"""
+    """Collect and parses endpoint parameters."""
 
     @wraps(func)
     async def wrapper(self, **kwargs):
@@ -50,9 +48,9 @@ class Base(AuthView):
 
     validator: validate.Schema
     struct: structs.Params
-    report_type: str = None
-    handler: handle.base.ReportHandler = None
-    handlers: dict[str, handle.base.ReportHandler] = None
+    report_type: str | None = None
+    handler: ReportHandler | None = None
+    handlers: dict[str, ReportHandler] = None
 
     # Name of parameter used for report location
     loc_param: str = "station"
@@ -98,7 +96,7 @@ class Report(Base):
     @crossdomain(origin="*", headers=HEADERS)
     @parse_params
     @token_check
-    async def get(self, params: structs.Params, token: Optional[Token]) -> Response:
+    async def get(self, params: structs.Report, token: Optional[Token]) -> Response:
         """GET handler returning reports"""
         config = structs.ParseConfig.from_params(params, token)
         await app.station.from_params(params, params.report_type)
@@ -123,7 +121,9 @@ class Parse(Base):
     async def post(self, token: Optional[Token], **kwargs) -> Response:
         """POST handler to parse given reports"""
         data = await request.data
-        params = self.validate_params(report=data.decode() or None, **kwargs)
+        params: structs.ReportGiven = self.validate_params(
+            report=data.decode() or None, **kwargs
+        )
         if isinstance(params, dict):
             return self.make_response(params, code=400)
         config = structs.ParseConfig.from_params(params, token)
@@ -168,7 +168,7 @@ class MultiReport(Base):
     @crossdomain(origin="*", headers=HEADERS)
     @parse_params
     @token_check
-    async def get(self, params: structs.Params, token: Optional[Token]) -> Response:
+    async def get(self, params: structs.Report, token: Optional[Token]) -> Response:
         """GET handler returning multiple reports"""
         locations, distances = self.split_distances(self.get_locations(params))
         config = structs.ParseConfig.from_params(params, token)
