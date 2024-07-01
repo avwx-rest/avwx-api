@@ -129,7 +129,7 @@ class Notams(Reports):
             icao=self.code, coord=self.coord, radius=self.radius, timeout=timeout
         )
         self.source = self.service.root
-        return await self._update(reports, None, disable_post)
+        return await self._update(reports, None, disable_post=disable_post)
 
     async def async_parse(
         self, reports: str | list[str], issued: date | None = None
@@ -142,7 +142,7 @@ class Notams(Reports):
         if isinstance(reports, str):
             reports = [reports]
         reports = [{"icaoMessage": r} for r in reports]
-        return await self._update(reports, issued, False)
+        return await self._update(reports, issued, disable_port=False)
 
 
 class NotamHandler(ListedReportHandler):
