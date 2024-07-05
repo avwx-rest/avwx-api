@@ -142,7 +142,7 @@ class Notams(Reports):
         if isinstance(reports, str):
             reports = [reports]
         reports = [{"icaoMessage": r} for r in reports]
-        return await self._update(reports, issued, disable_port=False)
+        return await self._update(reports, issued, disable_post=False)
 
 
 class NotamHandler(ListedReportHandler):
