@@ -2,26 +2,23 @@
 Manages station data sourcing
 """
 
-# stdlib
+
 import asyncio as aio
 from dataclasses import asdict
 from os import environ
 from socket import gaierror
 from typing import Optional
 
-# library
-import httpx
 import httpcore
+import httpx
 import rollbar
-
-# module
 from avwx import Station
 from avwx.exceptions import SourceError
 from avwx_api_core.token import Token
 from avwx_api_core.util.handler import mongo_handler
+
 from avwx_api import app
 from avwx_api.structs import ParseConfig
-
 
 TABLE = "awdata"
 AVIOWIKI_URL = "https://api.aviowiki.com/airports/{}"

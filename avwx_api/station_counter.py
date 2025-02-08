@@ -4,13 +4,13 @@ Manages station counts for usage metrics
 
 # pylint: disable=arguments-differ
 
-# stdlib
+
 import time
 from datetime import datetime, timezone
 
-# module
-from avwx_api_core.counter.base import DelayedCounter
 from avwx import Station
+from avwx_api_core.counter.base import DelayedCounter
+
 from avwx_api.structs import Params
 
 

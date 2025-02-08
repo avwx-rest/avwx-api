@@ -3,6 +3,7 @@ Tests shared and high-level attributes of the API
 """
 
 import pytest
+
 from avwx_api import app
 
 REPORT_TYPES = ("metar", "taf", "pirep", "gfs/mav", "gfs/mex")

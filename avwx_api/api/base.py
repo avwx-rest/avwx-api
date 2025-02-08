@@ -1,23 +1,20 @@
 """Functional API endpoints separate from static views."""
 
-# stdlib
-import json
+
 import asyncio as aio
+import json
 from functools import wraps
 from pathlib import Path
 from typing import Optional
 
-# library
+import avwx
+from avwx_api_core.views import AuthView, Token, make_token_check
 from quart import Response, request
 from quart_openapi.cors import crossdomain
 from voluptuous import Invalid, MultipleInvalid
 
-# module
-import avwx
-from avwx_api_core.views import AuthView, Token, make_token_check
 from avwx_api import app, structs, validate
 from avwx_api.handle.base import ManagerHandler, ReportHandler
-
 
 HEADERS = ["Authorization", "Content-Type"]
 

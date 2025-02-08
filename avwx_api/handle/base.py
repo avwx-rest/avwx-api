@@ -4,18 +4,17 @@ Data handling between inputs, cache, and avwx core
 
 # pylint: disable=broad-except
 
-# stdlib
+
 import asyncio as aio
 from contextlib import suppress
 from dataclasses import asdict
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timedelta
+from http import HTTPStatus
 from typing import Any, Coroutine, Optional
 
-# library
+import avwx
 import rollbar
 
-# module
-import avwx
 from avwx_api import app
 from avwx_api.station_manager import station_data_for
 from avwx_api.structs import DataStatus, ParseConfig
@@ -57,12 +56,14 @@ class BaseHandler:
     listed_data: bool = False
     cache: bool = True
     use_station: bool = True
+    max_out_of_date: int = 3 * 24 * 60  # minutes
+    strict_out_of_date: int = 24 * 60
 
     def __init__(self):
         if not self.report_type:
             self.report_type = self.parser.__name__.lower()
         if self.option_keys is None:
-            self.option_keys = tuple()
+            self.option_keys = []
 
     @staticmethod
     def validate_supplied_report(report: str) -> Optional[DataStatus]:
@@ -70,16 +71,24 @@ class BaseHandler:
         Returns a data status tuple only if an error is found
         """
         if len(report) < 4 or "{" in report or "[" in report:
-            return {"error": "Doesn't look like the raw report string"}, 400
+            return {"error": "Doesn't look like the raw report string"}, HTTPStatus.BAD_REQUEST
         return None
 
     @staticmethod
     def make_meta() -> dict:
         """Create base metadata dict"""
         return {
-            "timestamp": datetime.now(tz=timezone.utc),
+            "timestamp": datetime.now(UTC),
             "stations_updated": avwx.station.__LAST_UPDATED__,
         }
+
+    def _report_out_of_date(self, timestamp: str, strict: bool = False) -> bool:
+        """Returns True if the report is out of date"""
+        diff = timedelta(
+            minutes=self.strict_out_of_date if strict else self.max_out_of_date
+        )
+        now = datetime.now(UTC)
+        return datetime.fromisoformat(timestamp) + diff < now
 
     def _make_data(self, parser: avwx.base.AVWXBase) -> dict:
         """Create the cached data representation from an updated parser"""
@@ -129,29 +138,29 @@ class BaseHandler:
                                     self.report_type, err_station
                                 )
                             },
-                            400,
+                            HTTPStatus.BAD_REQUEST,
                         )
                     break
             else:
-                return {"error": ERRORS[5].format(err_source)}, 502
+                return {"error": ERRORS[5].format(err_source)}, HTTPStatus.BAD_GATEWAY
         except aio.CancelledError:
             print("Cancelled Error")
-            return {"error": "Server rebooting. Try again"}, 503
+            return {"error": "Server rebooting. Try again"}, HTTPStatus.SERVICE_UNAVAILABLE
         except ConnectionError as exc:
             print("Connection Error:", exc)
             # rollbar.report_exc_info(extra_data=state_info)
-            return {"error": str(exc)}, 502
+            return {"error": str(exc)}, HTTPStatus.BAD_GATEWAY
         # except avwx.exceptions.SourceError as exc:
         #     print("Source Error:", exc)
         #     rollbar.report_exc_info(extra_data=state_info)
         #     return {"error": str(exc)}, int(str(exc)[-3:])
         except avwx.exceptions.InvalidRequest as exc:
             print("Invalid Request:", exc)
-            return {"error": ERRORS[0].format(self.report_type, err_station)}, 400
+            return {"error": ERRORS[0].format(self.report_type, err_station)}, HTTPStatus.BAD_REQUEST
         except Exception as exc:
             print("Unknown Fetching Error", exc)
             rollbar.report_exc_info(extra_data=state)
-            return {"error": ERRORS[4].format(self.report_type)}, 500
+            return {"error": ERRORS[4].format(self.report_type)}, HTTPStatus.INTERNAL_SERVER_ERROR
 
     async def _parse_given(self, report: str, config: ParseConfig) -> DataStatus:
         """Attempts to parse a given report supplied by the user"""
@@ -162,7 +171,7 @@ class BaseHandler:
                 station = avwx.Station.from_code(find_code(report))
             except avwx.exceptions.BadStation:
                 print("No station")
-                return {"error": ERRORS[2].format(report[:4])}, 400
+                return {"error": ERRORS[2].format(report[:4])}, HTTPStatus.BAD_REQUEST
         report = report.replace("\\n", "\n")
         parser = self.parser.from_report(report)
         resp = asdict(parser.data)
@@ -179,7 +188,7 @@ class BaseHandler:
         # Add station info if requested
         if self.use_station and config.station:
             resp["info"] = await station_data_for(station, config)
-        return resp, 200
+        return resp, HTTPStatus.OK
 
     async def parse_given(self, report: str, config: ParseConfig) -> DataStatus:
         """Attempts to parse a given report supplied by the user"""
@@ -189,7 +198,7 @@ class BaseHandler:
         except Exception as exc:
             print("Unknown Parsing Error", exc)
             rollbar.report_exc_info(extra_data={"state": "given", "raw": report})
-            data, code = {"error": ERRORS[1].format(self.report_type)}, 500
+            data, code = {"error": ERRORS[1].format(self.report_type)}, HTTPStatus.INTERNAL_SERVER_ERROR
         return data, code
 
 
@@ -229,13 +238,13 @@ class ReportHandler(BaseHandler):
             await parser._post_update()  # pylint: disable=protected-access
         except avwx.exceptions.BadStation as exc:
             print("Unknown Station:", exc)
-            return {"error": ERRORS[2].format(parser.station)}, 400
+            return {"error": ERRORS[2].format(parser.station)}, HTTPStatus.BAD_REQUEST
         except Exception as exc:
             print("Unknown Parsing Error", exc)
             state_info["state"] = "parse"
             state_info["raw"] = parser.raw
             rollbar.report_exc_info(extra_data=state_info)
-            return {"error": ERRORS[1].format(self.report_type), "raw": parser.raw}, 500
+            return {"error": ERRORS[1].format(self.report_type), "raw": parser.raw}, HTTPStatus.INTERNAL_SERVER_ERROR
         return None, None
 
     @staticmethod
@@ -246,11 +255,11 @@ class ReportHandler(BaseHandler):
     async def _handle_cache_only(
         self, station: avwx.Station, config: ParseConfig
     ) -> DataStatus:
-        data, code = None, 200
+        data, code = None, HTTPStatus.OK
         report_type = app.cache_only[station.storage_code]
         data = await app.cache.get(report_type, station.storage_code, force=True)
         if data is None:
-            data, code = {"error": "No report found"}, 204
+            data, code = {"error": "No report found"}, HTTPStatus.NO_CONTENT
         data, code = await self._post_handle(data, code, None, station, config)
         with suppress(KeyError):
             if "ADVISORY" in data["raw"]:
@@ -258,11 +267,11 @@ class ReportHandler(BaseHandler):
         return data, code
 
     async def _new_report(
-        self, parser: avwx.base.AVWXBase, cache: bool = None, report_type: str = None
+        self, parser: avwx.base.AVWXBase, cache: bool | None = None, report_type: str | None = None
     ) -> DataStatus:
         """Fetch and parse report data for a given station"""
         # Conditional defaults
-        cache = cache or self.cache
+        cache = cache if cache is not None else self.cache
         report_type = report_type or self.report_type
         # Fetch a new parsed report
         location_key = parser.code or parser.coord.pair
@@ -277,18 +286,18 @@ class ReportHandler(BaseHandler):
             coros.append(app.cache.update(report_type, location_key, data))
         if coros:
             await aio.gather(*coros)
-        return data, 200
+        return data, HTTPStatus.OK
 
     async def _station_cache_or_fetch(
         self,
         station: avwx.Station,
         force_cache: bool = False,
-        use_cache: bool = None,
-        report_type: str = None,
+        use_cache: bool | None = None,
+        report_type: str | None = None,
         parser: avwx.base.AVWXBase = None,
     ) -> tuple[dict, dict, int]:
         """For a station, fetch data from the cache or return a new report"""
-        data, code = None, 200
+        data, code = None, HTTPStatus.OK
         report_type = report_type or self.report_type
         cache = await app.cache.get(
             report_type, station.storage_code, force=force_cache
@@ -312,7 +321,7 @@ class ReportHandler(BaseHandler):
         if self._cache_only_source(station):
             return await self._handle_cache_only(station, config)
         if not station.sends_reports:
-            return {"error": ERRORS[6].format(station.storage_code)}, 204
+            return {"error": ERRORS[6].format(station.storage_code)}, HTTPStatus.NO_CONTENT
         # Fetch an existing and up-to-date cache or make a new report
         try:
             data, cache, code = await self._station_cache_or_fetch(
@@ -322,7 +331,7 @@ class ReportHandler(BaseHandler):
         except Exception as exc:
             print("Unknown Parsing Error", exc)
             rollbar.report_exc_info(extra_data={"state": "outer fetch"})
-            return {"error": ERRORS[1].format(self.report_type)}, 500
+            return {"error": ERRORS[1].format(self.report_type)}, HTTPStatus.INTERNAL_SERVER_ERROR
 
     # pylint: disable=too-many-arguments
     async def _post_handle(
@@ -335,10 +344,13 @@ class ReportHandler(BaseHandler):
     ) -> DataStatus:
         """Performs post parser update operations"""
         resp = {"meta": self.make_meta()}
+        # Handle out-of-date timestamps
+        # if self._report_out_of_date(data["timestamp"]):
+
         if cache_time := data.get("timestamp"):
             resp["meta"]["cache-timestamp"] = cache_time
         # Handle errors according to nofail argument
-        if code != 200:
+        if code != HTTPStatus.OK:
             if config.nearest_on_fail:
                 # We'll only check the first for now. Prevent looping
                 config.nearest_on_fail = False
@@ -352,11 +364,11 @@ class ReportHandler(BaseHandler):
                 return resp, code
             if config.cache_on_fail:
                 if cache is None:
-                    resp[
-                        "error"
-                    ] = "No report or cache was found for the requested station"
-                    return resp, 204
-                data, code = cache, 200
+                    resp["error"] = (
+                        "No report or cache was found for the requested station"
+                    )
+                    return resp, HTTPStatus.NO_CONTENT
+                data, code = cache, HTTPStatus.OK
                 resp["meta"].update(
                     {
                         "cache-timestamp": data["timestamp"],
@@ -386,7 +398,7 @@ class ListedReportHandler(ReportHandler):
         parser = self.parser("KJFK")  # We ignore the station
         await parser.async_parse(report)
         resp = asdict(parser.data[0])
-        return resp, 200
+        return resp, HTTPStatus.OK
 
 
 class ManagerHandler(BaseHandler):
@@ -426,9 +438,7 @@ class ManagerHandler(BaseHandler):
         manager.reports = []
         for raw, source in manager._raw:
             try:
-                report = self.parser.from_report(
-                    raw
-                )  # pylint: disable=protected-access
+                report = self.parser.from_report(raw)
             except Exception as exc:
                 print("Unknown Parsing Error", exc)
                 state_info["state"] = "parse"
@@ -439,7 +449,7 @@ class ManagerHandler(BaseHandler):
                 manager.reports.append(report)
         return None, None
 
-    async def _new_report(self, cache: bool = None) -> tuple[list[dict], int]:
+    async def _new_report(self, cache: bool | None = None) -> tuple[list[dict], int]:
         """Fetch and parse new reports from manager"""
         # Conditional defaults
         cache = self.cache if cache is None else cache
@@ -457,15 +467,15 @@ class ManagerHandler(BaseHandler):
             coros.append(app.cache.update_many(self.report_type, keys, data))
         if coros:
             await aio.gather(*coros)
-        return data, 200
+        return data, HTTPStatus.OK
 
     async def _cache_or_fetch(
         self,
         force_cache: bool = False,
-        use_cache: bool = None,
+        use_cache: bool | None = None,
     ) -> tuple[list[dict], list[dict], int]:
         """For a station, fetch data from the cache or return a new report"""
-        data, code = None, 200
+        data, code = None, HTTPStatus.OK
         cache = await app.cache.all(self.report_type, force=force_cache)
         if not cache:
             data, code = await self._new_report(use_cache)
@@ -483,12 +493,12 @@ class ManagerHandler(BaseHandler):
         """Performs post manager update operations"""
         resp = {"meta": self.make_meta()}
         # Handle errors according to nofail argument
-        if code != 200:
+        if code != HTTPStatus.OK:
             if config.cache_on_fail and not data.get("reports"):
                 if not cache:
                     resp["error"] = "No reports or cache are available"
-                    return resp, 204
-                data, code = cache, 200
+                    return resp, HTTPStatus.NO_CONTENT
+                data, code = cache, HTTPStatus.OK
                 resp["meta"]["warning"] = ERRORS[7]
             else:
                 resp |= data
@@ -511,4 +521,4 @@ class ManagerHandler(BaseHandler):
         except Exception as exc:
             print("Unknown Parsing Error", exc)
             rollbar.report_exc_info(extra_data={"state": "outer fetch"})
-            return {"error": ERRORS[1].format(self.report_type)}, 500
+            return {"error": ERRORS[1].format(self.report_type)}, HTTPStatus.INTERNAL_SERVER_ERROR

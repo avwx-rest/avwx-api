@@ -2,18 +2,16 @@
 Station API endpoints
 """
 
-# stdlib
+
 from typing import Optional
 
-# library
+import avwx
+from avwx_api_core.token import Token
 from quart import Response
 from quart_openapi.cors import crossdomain
 
-# module
-import avwx
-from avwx_api_core.token import Token
 from avwx_api import app, structs, validate
-from avwx_api.api.base import Base, HEADERS, parse_params, token_check
+from avwx_api.api.base import HEADERS, Base, parse_params, token_check
 from avwx_api.station_manager import station_data_for
 
 

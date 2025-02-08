@@ -1,18 +1,16 @@
 """Search API endpoints."""
 
-# stdlib
+
 from typing import Any, Optional
 
-# library
+import avwx.station
+from avwx_api_core.token import Token
 from quart import Response
 from quart_openapi.cors import crossdomain
 
-# module
-import avwx.station
-from avwx_api_core.token import Token
 import avwx_api.handle.current as handle
 from avwx_api import app, structs, validate
-from avwx_api.api.base import Base, HEADERS, MultiReport, parse_params, token_check
+from avwx_api.api.base import HEADERS, Base, MultiReport, parse_params, token_check
 from avwx_api.station_manager import station_data_for
 
 SEARCH_HANDLERS = {

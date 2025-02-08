@@ -3,24 +3,21 @@ Michael duPont - michael@mdupont.com
 avwx_api.__init__ - High-level Quart application
 """
 
-# stdlib
+
 from os import environ
 
-# library
 import rollbar
+from avwx import exceptions as avwx_exceptions
+from avwx_api_core.app import CustomJSONProvider, add_cors
+from avwx_api_core.cache import CacheManager
+from avwx_api_core.token import TokenManager
 from dotenv import load_dotenv
 from motor.motor_asyncio import AsyncIOMotorClient
 from quart import got_request_exception
 from quart_openapi import Pint
 from rollbar.contrib.quart import report_exception
 
-# module
-from avwx import exceptions as avwx_exceptions
-from avwx_api_core.app import add_cors, CustomJSONProvider
-from avwx_api_core.cache import CacheManager
-from avwx_api_core.token import TokenManager
 from avwx_api.station_counter import StationCounter
-
 
 load_dotenv()
 

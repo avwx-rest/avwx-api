@@ -4,32 +4,29 @@ Current report API endpoints
 
 # pylint: disable=missing-class-docstring,too-many-ancestors
 
-# stdlib
+
 from contextlib import suppress
 from typing import Optional
 
-# library
+from avwx.structs import Coord
+from avwx_api_core.token import Token
 from quart import Response
 from quart_openapi.cors import crossdomain
 from shapely.geometry import Point, Polygon
 
-# module
-from avwx.structs import Coord
-from avwx_api_core.token import Token
 import avwx_api.handle.current as handle
 from avwx_api import app, structs, validate
-from avwx_api.handle.notam import NotamHandler
-from avwx_api.handle.summary import SummaryHandler
 from avwx_api.api.base import (
-    Base,
-    Report,
-    Parse,
-    MultiReport,
     HEADERS,
+    Base,
+    MultiReport,
+    Parse,
+    Report,
     parse_params,
     token_check,
 )
-
+from avwx_api.handle.notam import NotamHandler
+from avwx_api.handle.summary import SummaryHandler
 
 MT_REPL = {"base": "altitude"}
 MT_REMV = ("top",)

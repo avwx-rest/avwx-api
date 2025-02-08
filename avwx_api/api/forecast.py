@@ -6,8 +6,7 @@ Forecast API endpoints
 
 import avwx_api.handle.forecast as handle
 from avwx_api import app
-from avwx_api.api.base import Report, Parse
-
+from avwx_api.api.base import Parse, Report
 
 PLANS = ("pro", "enterprise")
 

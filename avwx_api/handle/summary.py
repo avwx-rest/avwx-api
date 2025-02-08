@@ -4,14 +4,15 @@ Handle airport summary requests
 
 # pylint: disable=missing-class-docstring
 
-# stdlib
+
 import asyncio as aio
 from contextlib import suppress
+from http import HTTPStatus
 from typing import Optional
 
-# module
 import avwx
-from avwx_api.handle.base import ReportHandler, ERRORS
+
+from avwx_api.handle.base import ERRORS, ReportHandler
 from avwx_api.station_manager import station_data_for
 from avwx_api.structs import DataStatus, ParseConfig
 
@@ -82,7 +83,7 @@ class SummaryHandler(ReportHandler):
         Cache report data is available for use, but summaries themselves are not cached
         """
         if not station.sends_reports:
-            return {"error": ERRORS[6].format(station.storage_code)}, 204
+            return {"error": ERRORS[6].format(station.storage_code)}, HTTPStatus.NO_CONTENT
         # Create summary from METAR and TAF reports
         (metar, *_), (taf, *_) = await aio.gather(
             self._station_cache_or_fetch(
@@ -100,4 +101,4 @@ class SummaryHandler(ReportHandler):
         # Add station info if requested
         if station and config.station:
             resp["info"] = await station_data_for(station, config)
-        return resp, 200
+        return resp, HTTPStatus.OK

@@ -2,12 +2,11 @@
 Test parameter validators
 """
 
-# library
+
 import pytest
 from voluptuous import Invalid
 
-# module
-import avwx_api.validate as validate
+from avwx_api import validate
 
 
 def test_split_in():

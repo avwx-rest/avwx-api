@@ -5,12 +5,23 @@ avwx_api.validators - Parameter validators
 
 # pylint: disable=invalid-name
 
-# stdlib
+
 from contextlib import suppress
 from typing import Callable
 
-# library
+from avwx import Station
+from avwx.structs import Coord
+from avwx_api_core.validate import (
+    HELP_TEXT,
+    FlightRoute,
+    Latitude,
+    Longitude,
+    SplitIn,
+    required,
+    station_for,
+)
 from voluptuous import (
+    REMOVE_EXTRA,
     All,
     Boolean,
     Coerce,
@@ -20,22 +31,7 @@ from voluptuous import (
     Range,
     Required,
     Schema,
-    REMOVE_EXTRA,
 )
-
-# module
-from avwx import Station
-from avwx.structs import Coord
-from avwx_api_core.validate import (
-    station_for,
-    required,
-    FlightRoute,
-    Latitude,
-    Longitude,
-    SplitIn,
-    HELP_TEXT,
-)
-
 
 REPORT_TYPES = (
     "metar",

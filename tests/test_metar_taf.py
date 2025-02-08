@@ -2,11 +2,10 @@
 Tests METAR serving capabilities of the API
 """
 
-# library
+
 import pytest
 from quart import Response
 
-# module
 from avwx_api import app
 
 CLIENT = app.test_client()

@@ -5,10 +5,9 @@ avwx_api.views - Routes and views for the Quart application
 
 # pylint: disable=W0702
 
-# library
+
 from quart import Response, jsonify, redirect
 
-# module
 from avwx_api import app
 
 # Static Web Pages

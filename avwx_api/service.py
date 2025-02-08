@@ -1,11 +1,11 @@
 """Notam service"""
 
-# stdlib
-import json
+
 import asyncio as aio
+import json
 from typing import Any
 
-# module
+import rollbar
 from avwx.exceptions import InvalidRequest
 from avwx.service.scrape import ScrapeService
 from avwx.structs import Coord
@@ -99,7 +99,12 @@ class FAA_NOTAM(ScrapeService):
         notams = []
         while True:
             text = await self._call(self.url, None, headers, data, timeout)
-            resp: dict = json.loads(text)
+            try:
+                resp: dict = json.loads(text)
+            except json.JSONDecodeError as exc:
+                fields = {"text": text, "icao": icao, "coord": coord.pair, "path": path, "radius": radius}
+                rollbar.report_exc_info(exc, extra_data=fields)
+                raise self._make_err("Failed to decode JSON response. The admin has been notified of the issue")
             if resp.get("error"):
                 raise self._make_err("Search criteria appears to be invalid")
             notams += resp["notamList"]

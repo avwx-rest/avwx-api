@@ -4,18 +4,18 @@ NOTAM handling during FAA ICAO format migration
 
 import re
 from datetime import date, datetime, timezone
+from http import HTTPStatus
 
 import avwx
-from avwx.exceptions import exception_intercept
 from avwx.current import notam as _notam
 from avwx.current.base import Reports
+from avwx.exceptions import exception_intercept
 from avwx.static.core import IN_UNITS
 from avwx.structs import Coord, NotamData, Qualifiers, Timestamp, Units
 
+from avwx_api.handle.base import ERRORS, ListedReportHandler
 from avwx_api.service import FAA_NOTAM
-from avwx_api.handle.base import ListedReportHandler, ERRORS
 from avwx_api.structs import DataStatus, ParseConfig
-
 
 TAG_PATTERN = re.compile(r"<[^>]*>")
 
@@ -158,7 +158,7 @@ class NotamHandler(ListedReportHandler):
 
         Caching only applies to stations with default radius, not coord or custom radius
         """
-        station, code, cache = None, 200, None
+        station, code, cache = None, HTTPStatus.OK, None
         # Don't cache coordinates
         if isinstance(loc, Coord):
             parser = self.parser(coord=loc)
@@ -167,7 +167,7 @@ class NotamHandler(ListedReportHandler):
         elif isinstance(loc, avwx.Station):
             station = loc
             if not station.sends_reports:
-                return {"error": ERRORS[6].format(station.storage_code)}, 204
+                return {"error": ERRORS[6].format(station.storage_code)}, HTTPStatus.NO_CONTENT
             # Don't cache non-default radius
             if config.distance != 10:
                 parser = self.parser(station.lookup_code)

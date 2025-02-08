@@ -4,18 +4,17 @@ Parameter dataclasses
 
 # pylint: disable=missing-class-docstring,invalid-name
 
-# stdlib
+
 from dataclasses import dataclass
+from http import HTTPStatus
 from typing import Optional
 
-# module
 import avwx
 from avwx.structs import Coord
 from avwx_api_core.structs import Params
 from avwx_api_core.token import Token
 
-
-DataStatus = tuple[dict, int]
+DataStatus = tuple[dict, HTTPStatus]
 
 
 @dataclass
