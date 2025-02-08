@@ -1,6 +1,5 @@
 # Start from the official Python 3.13 container
-FROM python:3.13.0
-
+FROM python:3.13.1
 # Expose the default Quart port
 EXPOSE 8000
 
