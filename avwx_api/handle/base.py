@@ -122,7 +122,7 @@ class BaseHandler:
         try:
             for _ in range(3):
                 with suppress(TimeoutError, avwx.exceptions.SourceError):
-                    if not await operation:
+                    if not await operation():
                         err = 0 if isinstance(err_station, str) else 3
                         return (
                             {"error": ERRORS[err].format(self.report_type, err_station)},
@@ -208,9 +208,13 @@ class ReportHandler(BaseHandler):
             "source": source,
         }
 
+        # NOTE: This uncalled wrapper is necessary to reuse the same coroutine
+        async def wrapper():
+            return await parser.async_update(timeout=2, disable_post=True)
+
         # Update the parser's raw data
         error = await self._call_update(
-            parser.async_update(timeout=2, disable_post=True),
+            wrapper,
             state_info,
             err_station,
             source,
@@ -396,8 +400,12 @@ class ManagerHandler(BaseHandler):
             "source": source,
         }
 
+        # NOTE: This uncalled wrapper is necessary to reuse the same coroutine
+        async def wrapper():
+            return await manager.async_update(timeout=2, disable_post=True)
+
         error = await self._call_update(
-            manager.async_update(timeout=2, disable_post=True),
+            wrapper,
             state_info,
             err_station,
             source,
