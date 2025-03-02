@@ -1,9 +1,4 @@
-"""
-Manages station counts for usage metrics
-"""
-
-# pylint: disable=arguments-differ
-
+"""Manages station counts for usage metrics."""
 
 import time
 from datetime import datetime, timezone
@@ -17,7 +12,7 @@ from avwx_api.structs import Params
 class StationCounter(DelayedCounter):
     """Aggregates station and method counts"""
 
-    async def _worker(self):
+    async def _worker(self) -> None:
         """Task worker increments ident counters"""
         while True:
             async with self._queue.get() as value:
@@ -31,7 +26,7 @@ class StationCounter(DelayedCounter):
                         upsert=True,
                     )
 
-    def update(self):
+    def update(self) -> None:
         """Sends station counts to worker queue"""
         to_update = self.gather_data()
         for key, count in to_update.items():
@@ -39,25 +34,25 @@ class StationCounter(DelayedCounter):
             self._queue.add((code, request_type, count))
         self.update_at = time.time() + self.interval
 
-    def _increment(self, code: str, request_type: str):
+    def _increment(self, code: str, request_type: str) -> None:
         key = f"{code};{request_type}"
         try:
             self._data[key] += 1
         except KeyError:
             self._data[key] = 1
 
-    async def add(self, code: str, request_type: str):
+    async def add(self, code: str, request_type: str) -> None:
         """Increment the counter for a station and type"""
         await self._pre_add()
         self._increment(code, request_type)
 
-    async def add_many(self, codes: list[str], request_type: str):
+    async def add_many(self, codes: list[str], request_type: str) -> None:
         """Increment the counts for a list of stations"""
         await self._pre_add()
         for code in codes:
             self._increment(code, request_type)
 
-    async def from_params(self, params: Params, report_type: str):
+    async def from_params(self, params: Params, report_type: str) -> None:
         """Counts station based on param values"""
         if hasattr(params, "station"):
             code = params.station.storage_code

@@ -1,14 +1,8 @@
-"""
-Handle airport summary requests
-"""
-
-# pylint: disable=missing-class-docstring
-
+"""Handle airport summary requests."""
 
 import asyncio as aio
 from contextlib import suppress
 from http import HTTPStatus
-from typing import Optional
 
 import avwx
 
@@ -33,12 +27,12 @@ def is_ceiling(cloud: dict) -> bool:
     return cloud["base"] and cloud["type"] in {"OVC", "BKN", "VV"}
 
 
-def get_ceiling(clouds: list[dict]):
+def get_ceiling(clouds: list[dict]) -> dict | None:
     """Get the cloud ceiling. Identical to parsing.core but with a dict"""
     return next((cloud for cloud in clouds if is_ceiling(cloud)), None)
 
 
-def metar_summary(metar: Optional[dict]) -> dict:
+def metar_summary(metar: dict | None) -> dict:
     """Extract summary fields from a METAR dict"""
     metar = metar or {}
     data = {key: metar.get(key) for key in _METAR_KEYS}
@@ -51,7 +45,7 @@ def taf_period(period: dict) -> dict:
     return clip_timestamps({key: period.get(key) for key in _TAF_KEYS})
 
 
-def taf_summary(taf: Optional[dict]) -> dict:
+def taf_summary(taf: dict | None) -> dict:
     """Extract summary fields from a TAF dict"""
     taf = taf or {}
     data = {
@@ -61,7 +55,7 @@ def taf_summary(taf: Optional[dict]) -> dict:
     return clip_timestamps(data)
 
 
-def make_summary(metar: Optional[dict], taf: Optional[dict]) -> dict:
+def make_summary(metar: dict | None, taf: dict | None) -> dict:
     """Generate a summary response from desired report types"""
     return {
         "metar": metar_summary(metar),
@@ -86,9 +80,7 @@ class SummaryHandler(ReportHandler):
             return {"error": ERRORS[6].format(station.storage_code)}, HTTPStatus.NO_CONTENT
         # Create summary from METAR and TAF reports
         (metar, *_), (taf, *_) = await aio.gather(
-            self._station_cache_or_fetch(
-                station, report_type="metar", parser=avwx.Metar
-            ),
+            self._station_cache_or_fetch(station, report_type="metar", parser=avwx.Metar),
             self._station_cache_or_fetch(station, report_type="taf", parser=avwx.Taf),
         )
         data = make_summary(metar.get("data"), taf.get("data"))
@@ -100,5 +92,5 @@ class SummaryHandler(ReportHandler):
         resp |= self._format_report(data, config)
         # Add station info if requested
         if station and config.station:
-            resp["info"] = await station_data_for(station, config)
+            resp["info"] = await station_data_for(station, config) or {}
         return resp, HTTPStatus.OK

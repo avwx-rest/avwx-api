@@ -1,5 +1,5 @@
-"""
-Client-facing API endpoints
-"""
+"""Client-facing API endpoints."""
 
-from . import current, forecast, router, search, station
+from avwx_api.api import current, forecast, router, search, station
+
+__all__ = ["current", "forecast", "router", "search", "station"]

@@ -1,13 +1,9 @@
-"""
-Parameter dataclasses
-"""
+"""Parameter dataclasses."""
 
 # pylint: disable=missing-class-docstring,invalid-name
 
-
 from dataclasses import dataclass
 from http import HTTPStatus
-from typing import Optional
 
 import avwx
 from avwx.structs import Coord
@@ -145,15 +141,15 @@ class ParseConfig:  # pylint: disable=too-many-instance-attributes
     aviowiki_data: bool
     cache_on_fail: bool
     nearest_on_fail: bool
-    distance: Optional[int]
+    distance: int | None
 
     @staticmethod
-    def use_aviowiki_data(token: Optional[Token]) -> bool:
+    def use_aviowiki_data(token: Token | None) -> bool:
         """Returns True if a token has the AvioWiki Data addon"""
         return token and "awdata" in token.addons
 
     @classmethod
-    def from_params(cls, params: Params, token: Optional[Token]) -> "ParseConfig":
+    def from_params(cls, params: Params, token: Token | None) -> "ParseConfig":
         """Create config from route inputs"""
         keys = getattr(params, "options", [])
         options = {key: key in keys for key in _NAMED_OPTIONS}

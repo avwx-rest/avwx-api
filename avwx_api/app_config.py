@@ -1,8 +1,4 @@
-"""
-Michael duPont - michael@mdupont.com
-avwx_api.__init__ - High-level Quart application
-"""
-
+"""API app configuration."""
 
 from os import environ
 
@@ -32,7 +28,7 @@ app = Pint(__name__)
 app.after_request(add_cors)
 
 
-def init_rollbar():
+def init_rollbar() -> None:
     """Initialize Rollbar exception logging"""
     key = environ.get("LOG_KEY")
     # if not (key and app.env == "production"):
@@ -46,7 +42,7 @@ def init_rollbar():
     avwx_exceptions.exception_intercept = exception_intercept
 
 
-async def init_cache_only_map():
+async def init_cache_only_map() -> None:
     """Fetch cache-only station lists for the duration of the worker"""
     if app.mdb is None:
         return
@@ -56,7 +52,7 @@ async def init_cache_only_map():
 
 
 @app.before_serving
-async def init_helpers():
+async def init_helpers() -> None:
     """Init API helpers
 
     Need async to connect helpers to event loop

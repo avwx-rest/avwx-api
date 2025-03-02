@@ -1,12 +1,6 @@
-"""
-Handle current report requests
-"""
-
-# pylint: disable=arguments-differ,missing-class-docstring
-
+"""Handle current report requests."""
 
 from http import HTTPStatus
-from typing import Optional
 
 import avwx
 from avwx.structs import Coord
@@ -63,11 +57,12 @@ class PirepHandler(ListedReportHandler):
                 return {"error": ERRORS[6].format(station.storage_code)}, HTTPStatus.NO_CONTENT
             data, cache, code = await self._station_cache_or_fetch(station)
         else:
-            raise ValueError(f"loc is not a valid value: {loc}")
+            msg = f"loc is not a valid value: {loc}"
+            raise TypeError(msg)
         return await self._post_handle(data, code, cache, station, config)
 
     @staticmethod
-    def validate_supplied_report(report: str) -> Optional[DataStatus]:
+    def validate_supplied_report(report: str) -> DataStatus | None:
         """Validates a report supplied by the user before parsing
         Returns a data status tuple only if an error is found"""
         if len(report) < 3 or "{" in report:

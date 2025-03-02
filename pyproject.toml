@@ -1,0 +1,76 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "avwx_api"
+dynamic = ["version"]
+description = "AVWX Rest API"
+readme = "README.md"
+requires-python = "<=3.14,>=3.10"
+license = "MIT"
+authors = [
+    { name = "Michael duPont", email = "michael@dupont.dev" },
+]
+dependencies = [
+    "avwx-api-core @ git+https://github.com/avwx-rest/avwx-api-core@44b5c9138e8e53ccc45763bc8cd696c29febbaab",
+    "avwx-engine[all]==1.9.2",
+    "hypercorn~=0.17",
+    "python-dotenv~=1.0",
+    "rollbar~=1.2",
+    "typing_extensions~=4.12",
+    "voluptuous~=0.15"
+]
+
+[tool.hatch.version]
+path = "avwx_api/__about__.py"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+    "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:avwx_api}"
+
+[tool.hatch.envs.serve.scripts]
+start = "hypercorn avwx_api:app -c file:hypercorn_config.py"
+reload = "hypercorn avwx_api:app -c file:hypercorn_config.py --reload"
+
+[tool.hatch.envs.hatch-test]
+extra-dependencies = [
+    "pytest-asyncio>=0.23.7",
+    "pytest-cov",
+]
+
+[tool.coverage.report]
+# fail_under = 50  # increase over time
+exclude_lines = [
+    "no cov",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
+
+[tool.mypy]
+disallow_any_unimported = false
+disallow_untyped_defs = true
+no_implicit_optional = true
+strict_equality = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_return_any = true
+check_untyped_defs = true
+show_error_codes = true
+
+[tool.ruff]
+lint.ignore = [
+    "D105",
+    "D203",
+    "D213",
+    "PLR2004", # Magic variable. Consider slowly re-enabling
+    "N818",
+    "T201", # print statement
+    "S101", # Use of assert detected
+]

@@ -1,8 +1,4 @@
-"""
-Forecast API endpoints
-"""
-
-# pylint: disable=missing-class-docstring,too-many-ancestors
+"""Forecast API endpoints."""
 
 import avwx_api.handle.forecast as handle
 from avwx_api import app
@@ -10,12 +6,12 @@ from avwx_api.api.base import Parse, Report
 
 PLANS = ("pro", "enterprise")
 
-GFS_HANDLERS = {"mav": handle.MavHandler, "mex": handle.MexHandler}
+GFS_HANDLERS = {"mav": handle.MavHandler(), "mex": handle.MexHandler()}
 NBM_HANDLERS = {
-    "nbh": handle.NbhHandler,
-    "nbs": handle.NbsHandler,
-    "nbe": handle.NbeHandler,
-    "nbx": handle.NbxHandler,
+    "nbh": handle.NbhHandler(),
+    "nbs": handle.NbsHandler(),
+    "nbe": handle.NbeHandler(),
+    "nbx": handle.NbxHandler(),
 }
 
 

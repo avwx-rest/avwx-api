@@ -1,6 +1,4 @@
-"""
-NOTAM handling during FAA ICAO format migration
-"""
+"""NOTAM handling during FAA ICAO format migration."""
 
 import re
 from datetime import date, datetime, timezone
@@ -14,7 +12,7 @@ from avwx.static.core import IN_UNITS
 from avwx.structs import Coord, NotamData, Qualifiers, Timestamp, Units
 
 from avwx_api.handle.base import ERRORS, ListedReportHandler
-from avwx_api.service import FAA_NOTAM
+from avwx_api.service import FaaNotam
 from avwx_api.structs import DataStatus, ParseConfig
 
 TAG_PATTERN = re.compile(r"<[^>]*>")
@@ -29,9 +27,9 @@ def timestamp_from_notam_date(text: str | None) -> Timestamp | None:
     if len(text) < 13:
         return None
     try:
-        issued_value = datetime.strptime(text[:16], r"%m/%d/%Y %H%M%Z")
+        issued_value = datetime.strptime(text[:16], r"%m/%d/%Y %H%M%Z")  # noqa: DTZ007
     except ValueError:
-        issued_value = datetime.strptime(text[:13], r"%m/%d/%Y %H%M")
+        issued_value = datetime.strptime(text[:13], r"%m/%d/%Y %H%M")  # noqa: DTZ007
     return Timestamp(text, issued_value)
 
 
@@ -97,7 +95,7 @@ class Notams(Reports):
 
     def __init__(self, code: str | None = None, coord: Coord | None = None):
         super().__init__(code, coord)
-        self.service = FAA_NOTAM("notam")
+        self.service = FaaNotam("notam")
 
     async def _post_update(self) -> None:
         self._post_parse()
@@ -113,7 +111,7 @@ class Notams(Reports):
                 else:
                     data, units = parse_legacy_notam(item)
                 self.data.append(data)
-            except Exception as exc:  # pylint: disable=broad-except
+            except Exception as exc:  # noqa: BLE001
                 exception_intercept(exc, raw=report)  # type: ignore
         if units:
             self.units = units
@@ -123,7 +121,7 @@ class Notams(Reports):
         """Sanitizes a NOTAM string"""
         return _notam.sanitize(report)
 
-    async def async_update(self, timeout: int = 10, disable_post: bool = False) -> bool:
+    async def async_update(self, timeout: int = 10, *, disable_post: bool = False) -> bool:
         """Async updates report data by fetching and parsing the report"""
         reports = await self.service.async_fetch(  # type: ignore
             icao=self.code, coord=self.coord, radius=self.radius, timeout=timeout
@@ -131,9 +129,7 @@ class Notams(Reports):
         self.source = self.service.root
         return await self._update(reports, None, disable_post=disable_post)
 
-    async def async_parse(
-        self, reports: str | list[str], issued: date | None = None
-    ) -> bool:
+    async def async_parse(self, reports: str | list[str], issued: date | None = None) -> bool:
         """Async updates report data by parsing a given report
 
         Can accept a report issue date if not a recent report string
@@ -141,8 +137,8 @@ class Notams(Reports):
         self.source = None
         if isinstance(reports, str):
             reports = [reports]
-        reports = [{"icaoMessage": r} for r in reports]
-        return await self._update(reports, issued, disable_post=False)
+        embedded_reports = [{"icaoMessage": r} for r in reports]
+        return await self._update(embedded_reports, issued, disable_post=False)
 
 
 class NotamHandler(ListedReportHandler):
@@ -162,19 +158,21 @@ class NotamHandler(ListedReportHandler):
         # Don't cache coordinates
         if isinstance(loc, Coord):
             parser = self.parser(coord=loc)
-            parser.radius = int(config.distance)
+            if config.distance:
+                parser.radius = int(config.distance)
             data, code = await self._new_report(parser, cache=False)
         elif isinstance(loc, avwx.Station):
             station = loc
             if not station.sends_reports:
                 return {"error": ERRORS[6].format(station.storage_code)}, HTTPStatus.NO_CONTENT
             # Don't cache non-default radius
-            if config.distance != 10:
+            if config.distance and config.distance != 10:
                 parser = self.parser(station.lookup_code)
                 parser.radius = int(config.distance)
                 data, code = await self._new_report(parser, cache=False)
             else:
                 data, cache, code = await self._station_cache_or_fetch(station)
         else:
-            raise ValueError(f"loc is not a valid value: {loc}")
+            msg = f"loc is not a valid value: {loc}"
+            raise TypeError(msg)
         return await self._post_handle(data, code, cache, station, config)

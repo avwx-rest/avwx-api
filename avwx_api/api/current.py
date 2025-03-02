@@ -1,12 +1,6 @@
-"""
-Current report API endpoints
-"""
-
-# pylint: disable=missing-class-docstring,too-many-ancestors
-
+"""Current report API endpoints."""
 
 from contextlib import suppress
-from typing import Optional
 
 from avwx.structs import Coord
 from avwx_api_core.token import Token
@@ -38,7 +32,7 @@ MT_REMV = ("top",)
 @app.route("/api/metar/<station>")
 class MetarFetch(Report):
     report_type = "metar"
-    handler = handle.MetarHandler
+    handler = handle.MetarHandler()
     key_repl = MT_REPL
     key_remv = MT_REMV
 
@@ -46,7 +40,7 @@ class MetarFetch(Report):
 @app.route("/api/parse/metar")
 class MetarParse(Parse):
     report_type = "metar"
-    handler = handle.MetarHandler
+    handler = handle.MetarHandler()
     key_repl = MT_REPL
     key_remv = MT_REMV
 
@@ -54,7 +48,7 @@ class MetarParse(Parse):
 @app.route("/api/multi/metar/<stations>")
 class MetarMulti(MultiReport):
     report_type = "metar"
-    handler = handle.MetarHandler
+    handler = handle.MetarHandler()
     example = "multi_metar"
     key_repl = MT_REPL
     key_remv = MT_REMV
@@ -66,7 +60,7 @@ class MetarMulti(MultiReport):
 @app.route("/api/taf/<station>")
 class TafFetch(Report):
     report_type = "taf"
-    handler = handle.TafHandler
+    handler = handle.TafHandler()
     key_repl = MT_REPL
     key_remv = MT_REMV
 
@@ -74,7 +68,7 @@ class TafFetch(Report):
 @app.route("/api/parse/taf")
 class TafParse(Parse):
     report_type = "taf"
-    handler = handle.TafHandler
+    handler = handle.TafHandler()
     key_repl = MT_REPL
     key_remv = MT_REMV
 
@@ -82,7 +76,7 @@ class TafParse(Parse):
 @app.route("/api/multi/taf/<stations>")
 class TafMulti(MultiReport):
     report_type = "taf"
-    handler = handle.TafHandler
+    handler = handle.TafHandler()
     example = "multi_taf"
     key_repl = MT_REPL
     key_remv = MT_REMV
@@ -97,8 +91,8 @@ class PirepFetch(Report):
     loc_param = "location"
     plan_types = ("pro", "enterprise")
     struct = structs.ReportLocation
-    validator = validate.report_location
-    handler = handle.PirepHandler
+    validator = validate.report_location  # type: ignore
+    handler = handle.PirepHandler()
     key_remv = ("direction",)
 
 
@@ -106,7 +100,7 @@ class PirepFetch(Report):
 class PirepParse(Parse):
     report_type = "pirep"
     plan_types = ("pro", "enterprise")
-    handler = handle.PirepHandler
+    handler = handle.PirepHandler()
     key_remv = ("direction",)
 
 
@@ -119,7 +113,7 @@ class AirSigFetch(Report):
     plan_types = ("pro", "enterprise")
     struct = structs.CachedReport
     validator = validate.global_report
-    handler = handle.AirSigHandler
+    handler = handle.AirSigHandler()
 
 
 @app.route("/api/parse/airsigmet")
@@ -128,7 +122,7 @@ class AirSigParse(Parse):
     plan_types = ("pro", "enterprise")
     struct = structs.ReportGiven
     validator = validate.report_given
-    handler = handle.AirSigHandler
+    handler = handle.AirSigHandler()
 
 
 @app.route("/api/airsigmet/<location>")
@@ -160,16 +154,13 @@ class AirSigContains(Base):
     @crossdomain(origin="*", headers=HEADERS)
     @parse_params
     @token_check
-    async def get(self, params: structs.Params, token: Optional[Token]) -> Response:
+    async def get(self, params: structs.Params, token: Token | None) -> Response:
         """Returns reports along a flight path"""
         config = structs.ParseConfig.from_params(params, token)
         data, code = await handle.AirSigHandler().fetch_reports(config)
         if code != 200:
             return self.make_response(data, params, code)
-        if isinstance(params.location, Coord):
-            coord = params.location
-        else:
-            coord = params.location.coord
+        coord = params.location if isinstance(params.location, Coord) else params.location.coord
         resp = {
             "meta": handle.MetarHandler().make_meta(),
             "point": coord,
@@ -188,7 +179,7 @@ class NotamFetch(Report):
     plan_types = ("enterprise",)
     struct = structs.NotamLocation
     validator = validate.notam_location
-    handler = NotamHandler
+    handler = NotamHandler()
     key_remv = ("remarks",)
 
 
@@ -197,7 +188,7 @@ class NotamParse(Parse):
     report_type = "notam"
     loc_param = "location"
     plan_types = ("enterprise",)
-    handler = NotamHandler
+    handler = NotamHandler()
     key_remv = ("remarks",)
 
 
@@ -207,7 +198,7 @@ class NotamParse(Parse):
 @app.route("/api/summary/<station>")
 class StationSummary(Report):
     report_type = "summary"
-    handler = SummaryHandler
+    handler = SummaryHandler()
     key_repl = MT_REPL
     key_remv = MT_REMV
 
@@ -216,7 +207,7 @@ class StationSummary(Report):
 class StationSummaryMulti(MultiReport):
     report_type = "summary"
     plan_types = ("pro", "enterprise")
-    handler = SummaryHandler
+    handler = SummaryHandler()
     example = "multi_summary"
     key_repl = MT_REPL
     key_remv = MT_REMV

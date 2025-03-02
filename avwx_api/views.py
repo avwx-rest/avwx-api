@@ -1,12 +1,9 @@
-"""
-Michael duPont - michael@mdupont.com
-avwx_api.views - Routes and views for the Quart application
-"""
+"""Non-API views."""
 
 # pylint: disable=W0702
 
-
 from quart import Response, jsonify, redirect
+from werkzeug.wrappers import Response as WerkzeugResponse
 
 from avwx_api import app
 
@@ -15,7 +12,7 @@ from avwx_api import app
 
 @app.route("/")
 @app.route("/home")
-def home() -> Response:
+def home() -> WerkzeugResponse:
     """Returns static home page"""
     return redirect("https://info.avwx.rest")
 
@@ -32,11 +29,11 @@ def ping() -> Response:
 @app.route("/api")
 async def no_report() -> Response:
     """Returns no report msg"""
-    return jsonify({"error": "No report type given"}), 400
+    return Response('{"error": "No report type given"}', 400, mimetype="application/json")
 
 
 @app.route("/api/metar")
 @app.route("/api/taf")
 async def no_station() -> Response:
     """Returns no station msg"""
-    return jsonify({"error": "No station given"}), 400
+    return Response('{"error": "No station given"}', 400, mimetype="application/json")

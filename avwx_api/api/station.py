@@ -1,9 +1,6 @@
-"""
-Station API endpoints
-"""
+"""Station API endpoints."""
 
-
-from typing import Optional
+from typing import Any
 
 import avwx
 from avwx_api_core.token import Token
@@ -15,7 +12,7 @@ from avwx_api.api.base import HEADERS, Base, parse_params, token_check
 from avwx_api.station_manager import station_data_for
 
 
-async def get_station(station: avwx.Station, token: Optional[Token]) -> dict:
+async def get_station(station: avwx.Station, token: Token | None) -> dict:
     """Log and returns station data as dict"""
     await app.station.add(station.storage_code, "station")
     return await station_data_for(station, token=token) or {}
@@ -31,7 +28,7 @@ class StationList(Base):
     @crossdomain(origin="*", headers=HEADERS)
     @parse_params
     @token_check
-    async def get(self, params: structs.Params, _) -> Response:
+    async def get(self, params: structs.Params, _: Any) -> Response:
         """Returns the current list of reporting stations"""
         data = avwx.station.station_list(reporting=params.reporting)
         return self.make_response(data, params)
@@ -48,7 +45,7 @@ class Station(Base):
     @crossdomain(origin="*", headers=HEADERS)
     @parse_params
     @token_check
-    async def get(self, params: structs.Params, token: Optional[Token]) -> Response:
+    async def get(self, params: structs.Params, token: Token | None) -> Response:
         """Returns station details for idents and coordinates"""
         data = await get_station(params.station, token)
         return self.make_response(data, params)
@@ -68,7 +65,7 @@ class MultiStation(Base):
     @crossdomain(origin="*", headers=HEADERS)
     @parse_params
     @token_check
-    async def get(self, params: structs.Params, token: Optional[Token]) -> Response:
+    async def get(self, params: structs.Params, token: Token | None) -> Response:
         """Returns station details for multiple idents"""
         data = {s.storage_code: await get_station(s, token) for s in params.stations}
         return self.make_response(data, params)

@@ -1,13 +1,8 @@
-"""
-Michael duPont - michael@mdupont.com
-avwx_api.validators - Parameter validators
-"""
+"""Parameter validators."""
 
-# pylint: disable=invalid-name
-
-
+from collections.abc import Callable
 from contextlib import suppress
-from typing import Callable
+from typing import Any
 
 from avwx import Station
 from avwx.structs import Coord
@@ -69,57 +64,59 @@ HELP = HELP_TEXT | {
 }
 
 
-def SplitChar(char: str) -> Callable:
+def SplitChar(char: str) -> Callable:  # noqa: N802
     """Returns a validator to split a string by a specific character"""
 
-    def validator(value: str) -> str:
+    def validator(value: str) -> list[str]:
         return value.split(char) if value else []
 
     return validator
 
 
-def Coordinate(coord: str) -> Coord:
+def Coordinate(coord: str) -> Coord:  # noqa: N802
     """Converts a coordinate string into float tuple"""
     try:
         split = coord.split(",")
         return Coord(lat=Latitude(split[0]), lon=Longitude(split[1]), repr=coord)
     except Exception as exc:
-        raise Invalid(f"{coord} is not a valid coordinate pair") from exc
+        msg = f"{coord} is not a valid coordinate pair"
+        raise Invalid(msg) from exc
 
 
-def Location(
-    coerce_station: bool = True, airport: bool = False, reporting: bool = True
+def Location(  # noqa: N802
+    *, coerce_station: bool = True, airport: bool = False, reporting: bool = True
 ) -> Callable:
     """Converts a station ident or coordinate pair string into a Station"""
 
-    def validator(loc: str) -> Station | Coord:
-        value = loc
-        loc = loc.upper().split(",")
+    def validator(value: str) -> Station | Coord:
+        loc = value.upper().split(",")
         if len(loc) == 1:
             return station_for(loc[0])
         if len(loc) == 2:
             try:
                 lat, lon = Latitude(loc[0]), Longitude(loc[1])
                 if coerce_station:
-                    return Station.nearest(
-                        lat, lon, is_airport=airport, sends_reports=reporting
-                    )[0]
+                    return Station.nearest(lat, lon, is_airport=airport, sends_reports=reporting)[0]
                 return Coord(lat=lat, lon=lon, repr=value)
             except Exception as exc:
-                raise Invalid(f"{value} is not a valid coordinate pair") from exc
+                msg = f"{value} is not a valid coordinate pair"
+                raise Invalid(msg) from exc
         else:
-            raise Invalid(f"{value} is not a valid station/coordinate pair")
+            msg = f"{value} is not a valid station/coordinate pair"
+            raise Invalid(msg)
 
     return validator
 
 
-def MultiStation(values: str) -> list[Station]:
+def MultiStation(value: str) -> list[Station]:  # noqa: N802
     """Validates a comma-separated list of station idents"""
-    values = values.upper().split(",")
+    values = value.upper().split(",")
     if not values:
-        raise Invalid("Could not find any stations in the request")
+        msg = "Could not find any stations in the request"
+        raise Invalid(msg)
     if len(values) > 10:
-        raise Invalid("Multi requests are limited to 10 stations or less")
+        msg = "Multi requests are limited to 10 stations or less"
+        raise Invalid(msg)
     stations = []
     for code in values:
         with suppress(Invalid):
@@ -148,12 +145,8 @@ _location = {Required("location"): Location(coerce_station=False)}
 _flight_path = {Required("route"): FlightRoute}
 _text_path = {Required("route"): SplitChar(";")}
 
-_distance_from = {
-    Required("distance", default=10): All(Coerce(int), Range(min=1, max=125))
-}
-_distance_along = {
-    Required("distance", default=5): All(Coerce(float), Range(min=0, max=100))
-}
+_distance_from = {Required("distance", default=10): All(Coerce(int), Range(min=1, max=125))}
+_distance_along = {Required("distance", default=5): All(Coerce(float), Range(min=0, max=100))}
 
 _search_counter = {Required("n", default=10): All(Coerce(int), Range(min=1, max=200))}
 _search_base = required | _station_search | _search_counter
@@ -168,21 +161,22 @@ def _schema(schema: dict) -> Schema:
     return Schema(schema, extra=REMOVE_EXTRA)
 
 
-def _coord_search_validator(param_name: str, coerce_station: bool) -> Callable:
+def _coord_search_validator(param_name: str, *, coerce_station: bool) -> Callable:
     """Returns a validator the pre-validates nearest station parameters"""
 
     # NOTE: API class is passing self param to this function
-    def validator(_, params: dict) -> dict:
+    def validator(_: Any, params: dict) -> dict:
+        """Validator replacement for schema(params)."""
         schema = _report_shared | _uses_cache
         search_params = _schema(_station_search)(params)
-        schema[Required(param_name)] = Location(coerce_station, **search_params)
+        schema[Required(param_name)] = Location(coerce_station=coerce_station, **search_params)
         return _schema(schema)(params)
 
     return validator
 
 
-report_station = _coord_search_validator("station", True)
-report_location = _coord_search_validator("location", False)
+report_station: Callable = _coord_search_validator("station", coerce_station=True)
+report_location: Callable = _coord_search_validator("location", coerce_station=False)
 
 report_given = _schema(_report_shared | _report_parse)
 report_along = _schema(_report_shared | _flight_path | _distance_along)
@@ -203,7 +197,5 @@ notam_along = _schema(required | _text_path | _distance_along)
 
 coord_search = _schema(_search_base | _coord_search)
 text_search = _schema(_search_base | _text_search)
-report_coord_search = _schema(
-    _search_base | _report_shared | _uses_cache | _coord_search
-)
+report_coord_search = _schema(_search_base | _report_shared | _uses_cache | _coord_search)
 report_text_search = _schema(_search_base | _report_shared | _uses_cache | _text_search)

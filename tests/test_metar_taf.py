@@ -1,7 +1,4 @@
-"""
-Tests METAR serving capabilities of the API
-"""
-
+"""Tests METAR serving capabilities of the API."""
 
 import pytest
 from quart import Response
@@ -14,7 +11,7 @@ URL = "/api/{}/{}"
 REPORT_TYPES = ("metar", "taf")
 
 
-async def _fetch(report_type: str, target: str = "KJFK", options: str = "") -> Response:
+async def _fetch(report_type: str, target: str = "KJFK") -> Response:
     resp = await CLIENT.get(URL.format(report_type, target))
     assert resp.status_code == 200
     return resp
@@ -47,13 +44,14 @@ async def test_coords(report_type: str):
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
-    "report_type,report",
+    ("report_type", "report"),
     zip(
         REPORT_TYPES,
         (
             "KJFK 192351Z 11006KT 10SM BKN055 BKN080 21/19 A3005",
             "PHKO 181735Z 1818/1918 VRB03KT P6SM FEW035",
         ),
+        strict=False,
     ),
 )
 async def test_parse(report_type: str, report: str):

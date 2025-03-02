@@ -1,6 +1,4 @@
-"""
-Tests shared and high-level attributes of the API
-"""
+"""Tests shared and high-level attributes of the API."""
 
 import pytest
 

@@ -1,9 +1,4 @@
-"""
-Handle forecast report requests
-"""
-
-# pylint: disable=missing-class-docstring
-
+"""Handle forecast report requests."""
 
 import avwx
 

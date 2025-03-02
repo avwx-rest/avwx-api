@@ -1,7 +1,4 @@
-"""
-Test parameter validators
-"""
-
+"""Test parameter validators."""
 
 import pytest
 from voluptuous import Invalid
