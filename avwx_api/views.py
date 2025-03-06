@@ -2,7 +2,7 @@
 
 # pylint: disable=W0702
 
-from quart import Response, jsonify, redirect
+from quart import Response, redirect
 from werkzeug.wrappers import Response as WerkzeugResponse
 
 from avwx_api import app

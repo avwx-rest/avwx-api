@@ -11,13 +11,14 @@ from avwx_api.handle.base import (
     ManagerHandler,
     ReportHandler,
 )
+from avwx_api.metar import Metar
 from avwx_api.structs import DataStatus, ParseConfig
 
 OPTIONS = ("summary", "speech", "translate")
 
 
 class MetarHandler(ReportHandler):
-    parser = avwx.Metar
+    parser = Metar
     option_keys = OPTIONS
 
 

@@ -7,6 +7,7 @@ from http import HTTPStatus
 import avwx
 
 from avwx_api.handle.base import ERRORS, ReportHandler
+from avwx_api.metar import Metar
 from avwx_api.station_manager import station_data_for
 from avwx_api.structs import DataStatus, ParseConfig
 
@@ -80,7 +81,7 @@ class SummaryHandler(ReportHandler):
             return {"error": ERRORS[6].format(station.storage_code)}, HTTPStatus.NO_CONTENT
         # Create summary from METAR and TAF reports
         (metar, *_), (taf, *_) = await aio.gather(
-            self._station_cache_or_fetch(station, report_type="metar", parser=avwx.Metar),
+            self._station_cache_or_fetch(station, report_type="metar", parser=Metar),
             self._station_cache_or_fetch(station, report_type="taf", parser=avwx.Taf),
         )
         data = make_summary(metar.get("data"), taf.get("data"))

@@ -1,7 +1,7 @@
 """Data handling between inputs, cache, and avwx core."""
 
 import asyncio as aio
-from collections.abc import Coroutine, Iterable
+from collections.abc import Callable, Coroutine, Iterable
 from contextlib import suppress
 from dataclasses import asdict
 from datetime import UTC, datetime, timedelta
@@ -116,7 +116,7 @@ class BaseHandler:
         return ret
 
     async def _call_update(
-        self, operation: Coroutine, state: dict, err_station: str, err_source: str
+        self, operation: Callable[[], Coroutine], state: dict, err_station: str, err_source: str
     ) -> DataStatus | None:
         """Attempts to run async operations five times before giving up"""
         try:
@@ -209,8 +209,8 @@ class ReportHandler(BaseHandler):
         }
 
         # NOTE: This uncalled wrapper is necessary to reuse the same coroutine
-        async def wrapper():
-            return await parser.async_update(timeout=2, disable_post=True)
+        async def wrapper() -> bool:
+            return await parser.async_update(timeout=2, disable_post=True)  # type: ignore
 
         # Update the parser's raw data
         error = await self._call_update(
@@ -401,8 +401,8 @@ class ManagerHandler(BaseHandler):
         }
 
         # NOTE: This uncalled wrapper is necessary to reuse the same coroutine
-        async def wrapper():
-            return await manager.async_update(timeout=2, disable_post=True)
+        async def wrapper() -> bool:
+            return await manager.async_update(timeout=2, disable_post=True)  # type: ignore
 
         error = await self._call_update(
             wrapper,
