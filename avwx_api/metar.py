@@ -6,6 +6,7 @@ from avwx import Metar as _Metar
 
 # Time to check a station again if the default provider fails
 SECOND_CHANCE_TIMES: dict[str, datetime] = {}
+DEFAULT_COOLDOWN = timedelta(minutes=5)
 
 
 class Metar(_Metar):
@@ -16,12 +17,13 @@ class Metar(_Metar):
         """Add a cooldown period to default provider check."""
         if not (self.code and super()._should_check_default):
             return False
+        now = datetime.now(UTC)
         try:
             last_check = SECOND_CHANCE_TIMES[self.code]
         except KeyError:
-            return True
-        now = datetime.now(UTC)
-        should_check = now > last_check
+            should_check = True
+        else:
+            should_check = now > last_check
         if should_check:
-            SECOND_CHANCE_TIMES[self.code] = now + timedelta(minutes=5)
+            SECOND_CHANCE_TIMES[self.code] = now + DEFAULT_COOLDOWN
         return should_check
