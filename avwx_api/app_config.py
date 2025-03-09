@@ -51,6 +51,19 @@ async def init_cache_only_map() -> None:
         app.cache_only.update({code: table for code in codes})
 
 
+async def load_noaa_stations() -> None:
+    """Load NOAA station codes from station cache.
+
+    This is used to determine if a station should be checked with the default provider.
+    """
+    if app.mdb is None:
+        return
+    if data := await app.mdb.cache["noaa-stations"].find_one({"_id": "metar"}):
+        app.noaa_stations.update(data["stations"])
+    else:
+        print("Failed to load noaa_stations")
+
+
 @app.before_serving
 async def init_helpers() -> None:
     """Init API helpers
@@ -62,5 +75,7 @@ async def init_helpers() -> None:
     app.token = TokenManager(app)
     app.station = StationCounter(app)
     app.cache_only = {}
+    app.noaa_stations = set()
     init_rollbar()
     await init_cache_only_map()
+    await load_noaa_stations()

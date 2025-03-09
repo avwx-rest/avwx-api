@@ -4,6 +4,8 @@ from datetime import UTC, datetime, timedelta
 
 from avwx import Metar as _Metar
 
+from avwx_api import app
+
 # Time to check a station again if the default provider fails
 SECOND_CHANCE_TIMES: dict[str, datetime] = {}
 DEFAULT_COOLDOWN = timedelta(minutes=5)
@@ -15,7 +17,7 @@ class Metar(_Metar):
     @property
     def _should_check_default(self) -> bool:
         """Add a cooldown period to default provider check."""
-        if not (self.code and super()._should_check_default):
+        if not (self.code and super()._should_check_default) or self.code not in app.noaa_stations:
             return False
         now = datetime.now(UTC)
         try:
