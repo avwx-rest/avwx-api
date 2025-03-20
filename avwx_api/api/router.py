@@ -184,7 +184,8 @@ class ReportsAlong(Base):
             parsed.append(data)
             stations.append(data["station"])
         if parsed:
-            await app.cache.update_many(report_type, stations, parsed)
+            # This is disabled since the data here doesn't conform to the mongo schema
+            # await app.cache.update_many(report_type, stations, parsed)
             await app.station.add_many(stations, f"{report_type}-route")
         resp = {
             "meta": handler.make_meta(),
