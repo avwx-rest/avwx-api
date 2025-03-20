@@ -18,7 +18,7 @@ from avwx_api.station_counter import StationCounter
 load_dotenv()
 
 
-CACHE_EXPIRES = {"metar": 1, "taf": 1, "awdata": 60 * 24}
+CACHE_EXPIRES = {"metar": 2, "taf": 2, "awdata": 60 * 24}
 MONGO_URI = environ.get("MONGO_URI")
 
 
