@@ -14,7 +14,7 @@ authors = [
 ]
 dependencies = [
     "avwx-api-core @ git+https://github.com/avwx-rest/avwx-api-core@44b5c9138e8e53ccc45763bc8cd696c29febbaab",
-    "avwx-engine[all]==1.9.3",
+    "avwx-engine[all]==1.9.4",
     "hypercorn~=0.17",
     "python-dotenv~=1.0",
     "rollbar~=1.2",
