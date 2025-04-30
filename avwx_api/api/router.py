@@ -16,7 +16,7 @@ import avwx_api.handle.current as handle
 from avwx_api import app, structs, validate
 from avwx_api.api.base import HEADERS, Base, parse_params, token_check
 from avwx_api.handle.notam import NotamHandler
-from avwx_api.service import FaaDinsNotam, FaaNotam
+from avwx_api.service import FaaDinsNotam
 from avwx_api.station_manager import station_data_for
 
 ROUTE_HANDLERS = {
@@ -130,8 +130,8 @@ class NotamAlong(Base):
         """Returns reports along a flight path"""
         config = structs.ParseConfig.from_params(params, token)
         try:
-            service = FaaDinsNotam if self.check_intl_code(params.route) else FaaNotam
-            reports = await service("notam").async_fetch(path=params.route)
+            # service = FaaDinsNotam if self.check_intl_code(params.route) else FaaNotam
+            reports = await FaaDinsNotam("notam").async_fetch(path=params.route)
         except InvalidRequest as exc:
             error_resp = {"error": f"Search criteria appears to be invalid: {exc.args[0]}"}
             return self.make_response(error_resp, params, 400)

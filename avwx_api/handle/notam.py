@@ -1,6 +1,5 @@
 """NOTAM handling during FAA ICAO format migration."""
 
-import re
 from datetime import date, datetime, timezone
 from http import HTTPStatus
 
@@ -9,93 +8,75 @@ from avwx.current import notam as _notam
 from avwx.current.base import Reports
 from avwx.exceptions import exception_intercept
 from avwx.static.core import IN_UNITS
-from avwx.structs import Coord, NotamData, Qualifiers, Timestamp, Units
+from avwx.structs import Coord, NotamData, Timestamp, Units
 
 from avwx_api.handle.base import ERRORS, ListedReportHandler
-from avwx_api.service import FaaNotam
+from avwx_api.service import FaaDinsNotam
 from avwx_api.structs import DataStatus, ParseConfig
 
-TAG_PATTERN = re.compile(r"<[^>]*>")
 
-
-def timestamp_from_notam_date(text: str | None) -> Timestamp | None:
-    """Convert FAA NOTAM dt format"""
+def _convert_time(text: str) -> Timestamp | None:
+    """Convert 04 MAR 13:00 2025 to Timestamp"""
     if not text:
         return None
     if text.startswith("PERM"):
         return Timestamp(text, datetime(2100, 1, 1, tzinfo=timezone.utc))
-    if len(text) < 13:
-        return None
-    try:
-        issued_value = datetime.strptime(text[:16], r"%m/%d/%Y %H%M%Z")  # noqa: DTZ007
-    except ValueError:
-        issued_value = datetime.strptime(text[:13], r"%m/%d/%Y %H%M")  # noqa: DTZ007
-    return Timestamp(text, issued_value)
+    return Timestamp(text, datetime.strptime(text, r"%d %b %H:%M %Y"))  # noqa: DTZ007
 
 
-def coord_from_pointer(text: str | None) -> Coord | None:
-    """Extract Coord from data payload"""
-    if not text:
-        return None
-    text = text[6:-1]
-    lat, lon = text.split()
-    return Coord(float(lat), float(lon), text)
+def _extract_number(report: str) -> tuple[str, str]:
+    """Extract the NOTAM number from the report"""
+    start = report.find(" - ")
+    return report[start + 3 :], report[:start]
 
 
-def parse_icao_notam(report: str, issue_text: str | None) -> tuple[NotamData, Units]:
+def _extract_timestamps(report: str) -> tuple[str, Timestamp, Timestamp]:
+    """Extract the start and end timestamps from the report"""
+    time_start = report.rfind(". ")
+    times = report[time_start + 2 :]
+    report = report[:time_start]
+    times = times.removesuffix(" ESTIMATED")
+    start, end = times.split(" UNTIL ")
+    time_start = start.rfind(", ")
+    if time_start > -1:
+        start = start[time_start + 2 :]
+    return report, _convert_time(start), _convert_time(end)
+
+
+def temp_parse_notam(report: str) -> tuple[NotamData, Units]:
     """Parse the standard ICAO format NOTAM with the avwx class"""
-    report = TAG_PATTERN.sub("", report).strip()
-    issued = timestamp_from_notam_date(issue_text) if issue_text else None
-    return _notam.parse(report, issued=issued)
-
-
-def parse_legacy_notam(data: dict) -> tuple[NotamData, Units]:
-    """Parse traditional NOTAM object from FAA API"""
-    qualifiers = Qualifiers(
-        repr="",
-        fir="",
-        subject=data["featureName"],
-        condition=None,
-        traffic=None,
-        purpose=[],
-        scope=[],
-        lower=None,
-        upper=None,
-        coord=coord_from_pointer(data.get("mapPointer")),
-        radius=None,
-    )
+    station, body = report[:4], report[5:]
+    body, issued = body.split(". CREATED: ")
+    body, number = _extract_number(body)
+    body, start, end = _extract_timestamps(body)
     return NotamData(
-        raw=data.get("traditionalMessage"),
-        sanitized=data.get("traditionalMessage"),
-        station=data.get("icaoId"),
-        time=timestamp_from_notam_date(data.get("issueDate")),
+        raw=report,
+        sanitized=report,
+        station=station,
+        time=_convert_time(issued),
         remarks=None,
-        number=data["notamNumber"],
+        number=number,
         replaces=None,
         type=None,
-        qualifiers=qualifiers,
-        start_time=timestamp_from_notam_date(data.get("startDate")),
-        end_time=timestamp_from_notam_date(data.get("endDate")),
+        qualifiers=None,
+        start_time=start,
+        end_time=end,
         schedule=None,
-        body=data.get("traditionalMessage"),
+        body=body,
         lower=None,
         upper=None,
     ), Units(**IN_UNITS)
 
 
 class Notams(Reports):
-    """Class to handle NOTAM reports
+    """Class to handle NOTAM reports."""
 
-    This copy keeps or converts the datasource dicts for data extraction
-    """
-
-    raw: list[dict] | None = None
     data: list[NotamData] | None = None  # type: ignore
     radius: int = 10
 
     def __init__(self, code: str | None = None, coord: Coord | None = None):
         super().__init__(code, coord)
-        self.service = FaaNotam("notam")
+        self.service = FaaDinsNotam("notam")
 
     async def _post_update(self) -> None:
         self._post_parse()
@@ -104,12 +85,9 @@ class Notams(Reports):
         self.data, units = [], None
         if self.raw is None:
             return
-        for item in self.raw:
+        for report in self.raw:
             try:
-                if report := item.get("icaoMessage", "").strip():
-                    data, units = parse_icao_notam(report, item.get("issueDate"))
-                else:
-                    data, units = parse_legacy_notam(item)
+                data, units = temp_parse_notam(report)
                 self.data.append(data)
             except Exception as exc:  # noqa: BLE001
                 exception_intercept(exc, raw=report)  # type: ignore
@@ -137,8 +115,7 @@ class Notams(Reports):
         self.source = None
         if isinstance(reports, str):
             reports = [reports]
-        embedded_reports = [{"icaoMessage": r} for r in reports]
-        return await self._update(embedded_reports, issued, disable_post=False)
+        return await self._update(reports, issued, disable_post=False)
 
 
 class NotamHandler(ListedReportHandler):

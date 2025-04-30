@@ -2,7 +2,7 @@
 
 import asyncio as aio
 import json
-from datetime import datetime
+import re
 from typing import Any
 
 import rollbar
@@ -14,6 +14,9 @@ from avwx.structs import Coord
 # This can be removed in the future once ICAO NOTAM format is more widely available.
 
 # Search fields https://notams.aim.faa.gov/NOTAM_Search_User_Guide_V33.pdf
+
+
+TAG_PATTERN = re.compile(r"<[^>]*>")
 
 
 class _FaaNotam(ScrapeService):
@@ -147,41 +150,40 @@ class FaaNotam(_FaaNotam):
 class FaaDinsNotam(_FaaNotam):
     """Secondary NOTAM source from FAA DINS"""
 
-    url = "https://www.notams.faa.gov/dinsQueryWeb/flightPathSearchMapAction.do"
+    url = "https://www.notams.faa.gov/dinsQueryWeb/{}SearchMapAction.do"
 
-    @staticmethod
-    def _convert_time(time: str) -> str:
-        """Convert 04 MAR 13:00 2025 to 2503041300"""
-        if time == "PERM":
-            return time
-        return datetime.strptime(time, r"%d %b %H:%M %Y").strftime(r"%y%m%d%H%M")  # noqa: DTZ007
-
-    def _post_for(
+    def _url_post_for(
         self,
         icao: str | None = None,
         coord: Coord | None = None,
         path: list[str] | None = None,
         radius: int = 10,
-    ) -> dict:
-        """Generate POST payload for search params in location order"""
+    ) -> tuple[str, dict]:
+        """Generate URL and POST payload for search params in location order"""
+        url: str
         data: dict[str, Any] = {}
         if icao:
+            url = self.url.format("icaoRadius")
             data["actionType"] = "radiusSearch"
             data["geoIcaoLocId"] = icao
             data["geoIcaoRadius"] = radius
         elif coord:
+            url = self.url.format("latLongRadius")
+            lat_degree, lat_minute, _ = Coord.to_dms(coord.lat)
+            lon_degree, lon_minute, _ = Coord.to_dms(coord.lon)
             data["actionType"] = "latLongSearch"
-            data["geoLatDegree"] = abs(coord.lat)
-            data["geoLatMinute"] = coord.lat % 1 * 60
+            data["geoLatDegree"] = abs(lat_degree)
+            data["geoLatMinute"] = lat_minute
             data["geoLatNorthSouth"] = "N" if coord.lat >= 0 else "S"
-            data["geoLongDegree"] = abs(coord.lon)
-            data["geoLongMinute"] = coord.lon % 1 * 60
+            data["geoLongDegree"] = abs(lon_degree)
+            data["geoLongMinute"] = lon_minute
             data["geoLongEastWest"] = "E" if coord.lon >= 0 else "W"
             data["geoLatLongRadius"] = radius
         elif path:
             if not 1 < len(path) < 6:
                 msg = "Flight path must have between 2 and 5 waypoints"
                 raise InvalidRequest(msg)
+            url = self.url.format("flightPath")
             data["actionType"] = "flightPathSearch"
             data["geoFlightPathbuffer"] = radius
             data["geoFlightPathOptionsCT"] = "C"
@@ -191,7 +193,7 @@ class FaaDinsNotam(_FaaNotam):
         else:
             msg = "Not enough info to request NOTAM data"
             raise InvalidRequest(msg)
-        return data
+        return url, data
 
     async def async_fetch(
         self,
@@ -202,24 +204,19 @@ class FaaDinsNotam(_FaaNotam):
         timeout: int = 10,
     ) -> list[str]:
         """Async fetch NOTAM list from the service via ICAO, coordinate, or ident path"""
-        data = self._post_for(icao, coord, path, radius)
+        url, data = self._url_post_for(icao, coord, path, radius)
         notams = []
-        text = await self._call(self.url, data=data, timeout=timeout)
-        snippets = text.split('<TD class="textBlack12" valign="top"><PRE>')
-        snippets.pop(0)
-        for snippet in snippets:
-            report = snippet[3 : snippet.find("</PRE>")].strip().upper()
-            report = report.replace("\n", " ").replace("</B> - ", " ").replace("<B>", " ").replace("... ", "...")
-            report = report[: report.find(". CREATED: ")]
-            time_start = report.rfind(". ")
-            times = report[time_start + 2 :]
-            report = report[:time_start]
-            if times.endswith(" ESTIMATED"):
-                times = times[:-10]
-            start, end = times.split(" UNTIL ")
-            time_start = start.rfind(", ")
-            if time_start > -1:
-                start = start[time_start + 2 :]
-            report = f"{report} {self._convert_time(start)}-{self._convert_time(end)}"
-            notams.append(report)
+        text = await self._call(url, data=data, timeout=timeout)
+        sections = text.split('<TD nowrap class="textBlack12Bu" width="370" valign="top"><A')
+        sections.pop(0)
+        for section in sections:
+            station_start = section.find('name="')
+            station = section[station_start + 6 : station_start + 10]
+            snippets = section.split('<TD class="textBlack12" valign="top"><PRE>')
+            snippets.pop(0)
+            for snippet in snippets:
+                report = snippet[3 : snippet.find("</PRE>")].strip().upper()
+                report = report.replace("\n", " ").replace("... ", "...")
+                report = TAG_PATTERN.sub("", report).strip()
+                notams.append(f"{station} {report}")
         return notams
