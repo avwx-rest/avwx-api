@@ -8,7 +8,7 @@ from avwx_api_core.app import CustomJSONProvider, add_cors
 from avwx_api_core.cache import CacheManager
 from avwx_api_core.token import TokenManager
 from dotenv import load_dotenv
-from motor.motor_asyncio import AsyncIOMotorClient
+from pymongo import AsyncMongoClient
 from quart import got_request_exception
 from quart_openapi import Pint
 from rollbar.contrib.quart import report_exception
@@ -70,7 +70,7 @@ async def init_helpers() -> None:
 
     Need async to connect helpers to event loop
     """
-    app.mdb = AsyncIOMotorClient(MONGO_URI) if MONGO_URI else None
+    app.mdb = AsyncMongoClient(MONGO_URI) if MONGO_URI else None
     app.cache = CacheManager(app, expires=CACHE_EXPIRES)
     app.token = TokenManager(app)
     app.station = StationCounter(app)

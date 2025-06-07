@@ -13,12 +13,12 @@ authors = [
     { name = "Michael duPont", email = "michael@dupont.dev" },
 ]
 dependencies = [
-    "avwx-api-core @ git+https://github.com/avwx-rest/avwx-api-core@44b5c9138e8e53ccc45763bc8cd696c29febbaab",
+    "avwx-api-core @ git+https://github.com/avwx-rest/avwx-api-core@7bd865d09769e78ad6e184319dbc209b1bffbe4b",
     "avwx-engine[all]==1.9.4",
     "hypercorn~=0.17",
-    "python-dotenv~=1.0",
-    "rollbar~=1.2",
-    "typing_extensions~=4.12",
+    "python-dotenv~=1.1",
+    "rollbar~=1.3",
+    "typing_extensions~=4.14",
     "voluptuous~=0.15"
 ]
 
